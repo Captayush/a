@@ -31,7 +31,7 @@ class Smsconfig_model extends MY_Model {
     }
 
     public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('type', $data['type']);
@@ -40,37 +40,34 @@ class Smsconfig_model extends MY_Model {
         if ($q->num_rows() > 0) {
             $this->db->where('type', $data['type']);
             $this->db->update('sms_config', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On sms config id ".$data['type'];
-			$action       = "Update";
-			$record_id    = $data['type'];
-			$this->log($message, $record_id, $action);
-			
+            $message = UPDATE_RECORD_CONSTANT . " On sms config id " . $data['type'];
+            $action = "Update";
+            $record_id = $data['type'];
+            $this->log($message, $record_id, $action);
         } else {
             $this->db->insert('sms_config', $data);
-			$insert_id = $this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On sms config id ".$insert_id;
-			$action       = "Insert";
-			$record_id    = $insert_id;
-			$this->log($message, $record_id, $action); 
-			
+            $insert_id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On sms config id " . $insert_id;
+            $action = "Insert";
+            $record_id = $insert_id;
+            $this->log($message, $record_id, $action);
         }
         if ($data['is_active'] == "enabled") {
             $this->changeStatus($data['type']);
         }
-		
-			//======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+        //======================Code End==============================
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-			} else {
-				return true;
-			}
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function getActiveSMS() {

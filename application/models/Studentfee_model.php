@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Studentfee_model extends CI_Model {
+class Studentfee_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
@@ -11,17 +11,16 @@ class Studentfee_model extends CI_Model {
         $this->current_date = $this->setting_model->getDateYmd();
     }
 
-    public function getStudentFeesArray($ids = null, $student_session_id) {
+    public function getStudentFeesArray($student_session_id, $ids = null) {
         $query = "SELECT feemasters.id as feemastersid, feemasters.amount as amount,IFNULL(student_fees.id, 'xxx') as invoiceno,IFNULL(student_fees.payment_mode, 'xxx') as payment_mode,IFNULL(student_fees.amount_discount, 'xxx') as discount,IFNULL(student_fees.amount_fine, 'xxx') as fine, IFNULL(student_fees.date, 'xxx') as date,feetype.type ,feecategory.category FROM feemasters LEFT JOIN (select student_fees.id,student_fees.payment_mode,student_fees.feemaster_id,student_fees.amount_fine,student_fees.amount_discount,student_fees.date,student_fees.student_session_id from student_fees , student_session where student_fees.student_session_id=student_session.id and student_session.id=" . $this->db->escape($student_session_id) . ") as student_fees ON student_fees.feemaster_id=feemasters.id LEFT JOIN feetype ON feemasters.feetype_id = feetype.id LEFT JOIN feecategory ON feetype.feecategory_id = feecategory.id where feemasters.id IN (" . $ids . ")";
 
         $query = $this->db->query($query);
         return $query->result_array();
     }
 
-    public function getCollectBy(){
-       // echo "asd";die;
-      return $this->db->select('id,name,surname')->from('staff')->get()->result_array(); 
-       //echo $this->db->last_query();die;
+    public function getCollectBy() {       
+        return $this->db->select('id,name,surname')->from('staff')->get()->result_array();
+       
     }
 
     public function getTotalCollectionBydate($date) {
@@ -44,7 +43,7 @@ class Studentfee_model extends CI_Model {
     }
 
     public function getFeeByInvoice($id = null) {
-        $this->db->select('feecategory.category,student_fees.date,student_fees.payment_mode,student_fees.id as `student_fee_id`,student_fees.amount,student_fees.amount_discount,student_fees.amount_fine,student_fees.created_at,classes.class,sections.section,feetype.type,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,students.dob ,students.current_address,    students.permanent_address,students.category_id,    students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name, students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.rte')->from('student_fees');
+        $this->db->select('feecategory.category,student_fees.date,student_fees.payment_mode,student_fees.id as `student_fee_id`,student_fees.amount,student_fees.amount_discount,student_fees.amount_fine,student_fees.created_at,classes.class,sections.section,feetype.type,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,students.dob ,students.current_address,    students.permanent_address,students.category_id,    students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name, students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.rte')->from('student_fees');
         $this->db->join('student_session', 'student_session.id = student_fees.student_session_id');
         $this->db->join('feemasters', 'feemasters.id = student_fees.feemaster_id');
         $this->db->join('feetype', 'feetype.id = feemasters.feetype_id');
@@ -60,7 +59,7 @@ class Studentfee_model extends CI_Model {
     }
 
     public function getTodayStudentFees() {
-        $this->db->select('student_fees.date,student_fees.id,student_fees.amount,student_fees.amount_discount,student_fees.amount_fine,student_fees.created_at,classes.class,sections.section,students.firstname,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,feetype.type')->from('student_fees');
+        $this->db->select('student_fees.date,student_fees.id,student_fees.amount,student_fees.amount_discount,student_fees.amount_fine,student_fees.created_at,classes.class,sections.section,students.firstname,students.middlename,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,feetype.type')->from('student_fees');
         $this->db->join('student_session', 'student_session.id = student_fees.student_session_id');
         $this->db->join('feemasters', 'feemasters.id = student_fees.feemaster_id');
         $this->db->join('feetype', 'feetype.id = feemasters.feetype_id');
@@ -74,10 +73,12 @@ class Studentfee_model extends CI_Model {
         return $query->result_array();
     }
 
-
     public function remove($id, $sub_invoice) {
+		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
         $this->db->where('id', $id);
-        $q = $this->db->get('student_transport_fees_deposite');
+        $q = $this->db->get('student_fees_deposite');
         if ($q->num_rows() > 0) {
             $result = $q->row();
             $a = json_decode($result->amount_detail, true);
@@ -85,227 +86,79 @@ class Studentfee_model extends CI_Model {
             if (!empty($a)) {
                 $data['amount_detail'] = json_encode($a);
                 $this->db->where('id', $id);
-                $this->db->update('student_fees_deposite', $data);
+                $this->db->update('student_fees_deposite', $data);				
+				$message = UPDATE_RECORD_CONSTANT . " On student fees deposite id " . $id;
+				$action = "Update";
+				$record_id = $id;
+				$this->log($message, $record_id, $action);
             } else {
                 $this->db->where('id', $id);
                 $this->db->delete('student_fees_deposite');
+				$message = DELETE_RECORD_CONSTANT . " On student fees deposite id " . $id;
+				$action = "Delete";
+				$record_id = $id;
+				$this->log($message, $record_id, $action);
             }
         }
-    }
-    
-    public function remove_transport_fee($id, $sub_invoice) {
-        $this->db->where('id', $id);
-        $q = $this->db->get('student_transport_fees_deposite');
-        if ($q->num_rows() > 0) {
-            $result = $q->row();
-            $a = json_decode($result->amount_detail, true);
-            unset($a[$sub_invoice]);
-            if (!empty($a)) {
-                $data['amount_detail'] = json_encode($a);
-                $this->db->where('id', $id);
-                $this->db->update('student_transport_fees_deposite', $data);
-            } else {
-                $this->db->where('id', $id);
-                $this->db->delete('student_transport_fees_deposite');
-            }
+		//======================Code End==============================
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
         }
     }
-    
-    public function remove_other_fee($id, $sub_invoice) {
-        $this->db->where('id', $id);
-        $q = $this->db->get('student_other_fees_deposite');
-        if ($q->num_rows() > 0) {
-            $result = $q->row();
-            $a = json_decode($result->amount_detail, true);
-            unset($a[$sub_invoice]);
-            if (!empty($a)) {
-                $data['amount_detail'] = json_encode($a);
-                $this->db->where('id', $id);
-                $this->db->update('student_other_fees_deposite', $data);
-            } else {
-                $this->db->where('id', $id);
-                $this->db->delete('student_other_fees_deposite');
-            }
-        }
-    }
-    
-     public function remove_form_fee($id, $sub_invoice) {
-        $this->db->where('id', $id);
-        $q = $this->db->get('student_form_fees_deposite');
-        if ($q->num_rows() > 0) {
-            $result = $q->row();
-            $a = json_decode($result->amount_detail, true);
-            unset($a[$sub_invoice]);
-            if (!empty($a)) {
-                $data['amount_detail'] = json_encode($a);
-                $this->db->where('id', $id);
-                $this->db->update('student_form_fees_deposite', $data);
-            } else {
-                $this->db->where('id', $id);
-                $this->db->delete('student_form_fees_deposite');
-            }
-        }
-    }
-
 
     public function add($data) {
+		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('student_fees', $data);
+			$message = UPDATE_RECORD_CONSTANT . " On  student fees id " . $data['id'];
+            $action = "Update";
+            $record_id = $id = $data['id'];
+            $this->log($message, $record_id, $action);
+
         } else {
-            $this->db->insert('student_fees', $data);
-            return $this->db->insert_id();
+            $this->db->insert('student_fees', $data);           
+			$id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On student fees id " . $id;
+            $action = "Insert";
+            $record_id = $id;
+            $this->log($message, $record_id, $action);
+        }
+		//======================Code End==============================
+
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            return $id;
         }
     }
 
-    public function getDueStudentFees($feegroup_id = null, $fee_groups_feetype_id = null, $class_id = null, $section_id = null) {
-
-        $query = "SELECT IFNULL(student_fees_deposite.id, 0) as student_fees_deposite_id, IFNULL(student_fees_deposite.fee_groups_feetype_id, 0) as fee_groups_feetype_id, IFNULL(student_fees_deposite.amount_detail, 0) as amount_detail, student_fees_master.id as `fee_master_id`,fee_groups_feetype.feetype_id ,fee_groups_feetype.amount,fee_groups_feetype.due_date, `classes`.`id` AS `class_id`, `student_session`.`id` as `student_session_id`, `students`.`id`, `classes`.`class`, `sections`.`id` AS `section_id`, `sections`.`section`, `students`.`id`, `students`.`admission_no`, `students`.`roll_no`, `students`.`admission_date`, `students`.`firstname`, `students`.`lastname`, `students`.`image`, `students`.`mobileno`, `students`.`email`, `students`.`state`, `students`.`city`, `students`.`pincode`, `students`.`religion`, `students`.`dob`, `students`.`current_address`, `students`.`permanent_address`, IFNULL(students.category_id, 0) as `category_id`, IFNULL(categories.category, '') as `category`, `students`.`adhar_no`, `students`.`samagra_id`, `students`.`bank_account_no`, `students`.`bank_name`, `students`.`ifsc_code`, `students`.`guardian_name`, `students`.`guardian_relation`, `students`.`guardian_phone`, `students`.`guardian_address`, `students`.`is_active`, `students`.`created_at`, `students`.`updated_at`, `students`.`father_name`, `students`.`rte`, `students`.`gender` FROM `students` JOIN `student_session` ON `student_session`.`student_id` = `students`.`id` JOIN `classes` ON `student_session`.`class_id` = `classes`.`id` JOIN `sections` ON `sections`.`id` = `student_session`.`section_id` LEFT JOIN `categories` ON `students`.`category_id` = `categories`.`id` INNER JOIN student_fees_master on student_fees_master.student_session_id=student_session.id and student_fees_master.fee_session_group_id=" . $this->db->escape($feegroup_id) . " LEFT JOIN student_fees_deposite on student_fees_deposite.student_fees_master_id=student_fees_master.id and student_fees_deposite.fee_groups_feetype_id=" . $this->db->escape($fee_groups_feetype_id) . "  INNER JOIN fee_groups_feetype on fee_groups_feetype.id = " . $this->db->escape($fee_groups_feetype_id) . " WHERE `student_session`.`session_id` = " . $this->current_session . " AND 
-            `students`.`is_active` = 'yes'  AND 
-            `student_session`.`class_id` = " . $this->db->escape($class_id) . " AND `student_session`.`section_id` = " . $this->db->escape($section_id) . " ORDER BY `students`.`id`";
-        $query = $this->db->query($query);
-        return $query->result_array();
-    }
-    
-    public function getDueStudentFees1($class_id) {
-
-        if($class_id=='all'){
-            $query = "SELECT IFNULL(student_fees_deposite.id, 0) as student_fees_deposite_id, 
-            IFNULL(student_fees_deposite.fee_groups_feetype_id, 0) as fee_groups_feetype_id,
-            IFNULL(student_fees_deposite.amount_detail, 0) as amount_detail, 
-            student_fees_master.id as `fee_master_id`,
-            fee_groups_feetype.feetype_id ,
-            fee_groups_feetype.amount,
-            fee_groups_feetype.due_date, 
-            `classes`.`id` AS `class_id`, 
-            `student_session`.`id` as `student_session_id`, `students`.`id`, 
-            `classes`.`class`, `sections`.`id` AS `section_id`, `sections`.`section`, 
-            `students`.`id`, `students`.`admission_no`, `students`.`roll_no`, `students`.`admission_date`, 
-            `students`.`firstname`, `students`.`lastname`, `students`.`image`, `students`.`mobileno`, 
-            `students`.`email`, `students`.`state`, `students`.`city`, `students`.`pincode`, 
-            `students`.`religion`, `students`.`dob`, `students`.`current_address`, `students`.`permanent_address`, 
-            IFNULL(students.category_id, 0) as `category_id`, IFNULL(categories.category, '') as `category`, 
-            `students`.`adhar_no`, `students`.`samagra_id`, `students`.`bank_account_no`, `students`.`bank_name`, 
-            `students`.`ifsc_code`, `students`.`guardian_name`, `students`.`guardian_relation`, `students`.`guardian_phone`, 
-            `students`.`guardian_address`, `students`.`is_active`, `students`.`created_at`, `students`.`updated_at`, 
-            `students`.`father_name`, `students`.`rte`, `students`.`gender` 
-            FROM `students` 
-            
-            JOIN `student_session` ON `student_session`.`student_id` = `students`.`id` 
-            JOIN `classes` ON `student_session`.`class_id` = `classes`.`id`
-            
-            JOIN `sections` ON `sections`.`id` = `student_session`.`section_id`
-            
-            LEFT JOIN `categories` ON `students`.`category_id` = `categories`.`id` 
-            
-            INNER JOIN student_fees_master on student_fees_master.student_session_id=student_session.id  
-            
-            LEFT JOIN student_fees_deposite on student_fees_deposite.student_fees_master_id=student_fees_master.id   
-            
-            INNER JOIN fee_groups_feetype on fee_groups_feetype.id = student_fees_deposite.fee_groups_feetype_id 
-            
-            WHERE `student_session`.`session_id` = " . $this->current_session . "  AND  `students`.`is_active` = 'yes'  ORDER BY `students`.`id`";
-        }else{
-            $query = "SELECT IFNULL(student_fees_deposite.id, 0) as student_fees_deposite_id, IFNULL(student_fees_deposite.fee_groups_feetype_id, 0) as fee_groups_feetype_id, IFNULL(student_fees_deposite.amount_detail, 0) as amount_detail, student_fees_master.id as `fee_master_id`,fee_groups_feetype.feetype_id ,fee_groups_feetype.amount,fee_groups_feetype.due_date, `classes`.`id` AS `class_id`, `student_session`.`id` as `student_session_id`, `students`.`id`, `classes`.`class`, `sections`.`id` AS `section_id`, `sections`.`section`, `students`.`id`, `students`.`admission_no`, `students`.`roll_no`, `students`.`admission_date`, `students`.`firstname`, `students`.`lastname`, `students`.`image`, `students`.`mobileno`, `students`.`email`, `students`.`state`, `students`.`city`, `students`.`pincode`, `students`.`religion`, `students`.`dob`, `students`.`current_address`, `students`.`permanent_address`, IFNULL(students.category_id, 0) as `category_id`, IFNULL(categories.category, '') as `category`, `students`.`adhar_no`, `students`.`samagra_id`, `students`.`bank_account_no`, `students`.`bank_name`, `students`.`ifsc_code`, `students`.`guardian_name`, `students`.`guardian_relation`, `students`.`guardian_phone`, `students`.`guardian_address`, `students`.`is_active`, `students`.`created_at`, `students`.`updated_at`, `students`.`father_name`, `students`.`rte`, `students`.`gender` 
-            FROM `students` 
-            
-            JOIN `student_session` ON `student_session`.`student_id` = `students`.`id` 
-            JOIN `classes` ON `student_session`.`class_id` = `classes`.`id`
-            
-            JOIN `sections` ON `sections`.`id` = `student_session`.`section_id`
-            
-            LEFT JOIN `categories` ON `students`.`category_id` = `categories`.`id` 
-            
-            INNER JOIN student_fees_master on student_fees_master.student_session_id=student_session.id  
-            
-            LEFT JOIN student_fees_deposite on student_fees_deposite.student_fees_master_id=student_fees_master.id   
-            
-            INNER JOIN fee_groups_feetype on fee_groups_feetype.id = student_fees_deposite.fee_groups_feetype_id 
-            
-            WHERE `student_session`.`session_id` = " . $this->current_session . " AND `student_session`.`class_id` = " . $this->db->escape($class_id) . " AND  `students`.`is_active` = 'yes'  ORDER BY `students`.`id`";
+    public function getDueStudentFees($feegroup_id = null, $fee_groups_feetype_id = null, $class_id = NULL, $section_id = NULL) {
+        $where_condition=array();
+        if ($class_id !=NULL){
+           $where_condition[]= " AND student_session.class_id=".$class_id;
         }
-        
-        $query = $this->db->query($query);
-        return $query->result_array();
-    }
-    
-    public function getDueStudentBusFees($class_id) {
-        if($class_id=='all'){
-            $query = "SELECT 
-            IFNULL(student_transport_fees_deposite.id, 0) as student_transport_fees_deposite_id, 
-            IFNULL(student_transport_fees_deposite.fee_groups_feetype_id, 0) as fee_groups_feetype_id, 
-            IFNULL(student_transport_fees_deposite.amount_detail, 0) as amount_detail, 
-            student_transport_fees_master.id as `fee_master_id`,
-            transport_fee_groups_feetype.feetype_id ,
-            transport_fee_groups_feetype.amount,
-            transport_fee_groups_feetype.due_date, 
-            `classes`.`id` AS `class_id`, `student_session`.`id` as `student_session_id`, 
-            `students`.`id`, `classes`.`class`, `sections`.`id` AS `section_id`, 
-            `sections`.`section`, `students`.`id`, 
-            `students`.`admission_no`, 
-            `students`.`roll_no`, 
-            `students`.`admission_date`, 
-            `students`.`firstname`, 
-            `students`.`lastname`, 
-            `students`.`image`, 
-            `students`.`mobileno`, 
-            `students`.`email`, `students`.`state`, `students`.`city`, `students`.`pincode`, `students`.`religion`, `students`.`dob`, `students`.`current_address`, `students`.`permanent_address`, IFNULL(students.category_id, 0) as `category_id`, IFNULL(categories.category, '') as `category`, `students`.`adhar_no`, `students`.`samagra_id`, `students`.`bank_account_no`, `students`.`bank_name`, `students`.`ifsc_code`, `students`.`guardian_name`, `students`.`guardian_relation`, `students`.`guardian_phone`, `students`.`guardian_address`, `students`.`is_active`, `students`.`created_at`, `students`.`updated_at`, `students`.`father_name`, `students`.`rte`, `students`.`gender` 
-            FROM `students` 
-            
-            JOIN `student_session` ON `student_session`.`student_id` = `students`.`id` 
-            
-            JOIN `classes` ON `student_session`.`class_id` = `classes`.`id`
-            
-            JOIN `sections` ON `sections`.`id` = `student_session`.`section_id`
-            
-            LEFT JOIN `categories` ON `students`.`category_id` = `categories`.`id` 
-            
-            INNER JOIN student_transport_fees_master on student_transport_fees_master.student_session_id=student_session.id  
-            
-            LEFT JOIN student_transport_fees_deposite on student_transport_fees_deposite.student_fees_master_id=student_transport_fees_master.id   
-            
-            INNER JOIN transport_fee_groups_feetype on transport_fee_groups_feetype.id = student_transport_fees_deposite.fee_groups_feetype_id 
-            
-            WHERE `student_session`.`session_id` = " . $this->current_session . " AND  `students`.`is_active` = 'yes'  ORDER BY `students`.`id`";
-        }else{
-           $query = "SELECT 
-            IFNULL(student_transport_fees_deposite.id, 0) as student_transport_fees_deposite_id, 
-            IFNULL(student_transport_fees_deposite.fee_groups_feetype_id, 0) as fee_groups_feetype_id, 
-            IFNULL(student_transport_fees_deposite.amount_detail, 0) as amount_detail, 
-            student_transport_fees_master.id as `fee_master_id`,
-            transport_fee_groups_feetype.feetype_id ,
-            transport_fee_groups_feetype.amount,
-            transport_fee_groups_feetype.due_date, 
-            `classes`.`id` AS `class_id`, `student_session`.`id` as `student_session_id`, 
-            `students`.`id`, `classes`.`class`, `sections`.`id` AS `section_id`, 
-            `sections`.`section`, `students`.`id`, 
-            `students`.`admission_no`, 
-            `students`.`roll_no`, 
-            `students`.`admission_date`, 
-            `students`.`firstname`, 
-            `students`.`lastname`, 
-            `students`.`image`, 
-            `students`.`mobileno`, 
-            `students`.`email`, `students`.`state`, `students`.`city`, `students`.`pincode`, `students`.`religion`, `students`.`dob`, `students`.`current_address`, `students`.`permanent_address`, IFNULL(students.category_id, 0) as `category_id`, IFNULL(categories.category, '') as `category`, `students`.`adhar_no`, `students`.`samagra_id`, `students`.`bank_account_no`, `students`.`bank_name`, `students`.`ifsc_code`, `students`.`guardian_name`, `students`.`guardian_relation`, `students`.`guardian_phone`, `students`.`guardian_address`, `students`.`is_active`, `students`.`created_at`, `students`.`updated_at`, `students`.`father_name`, `students`.`rte`, `students`.`gender` 
-            FROM `students` 
-            
-            JOIN `student_session` ON `student_session`.`student_id` = `students`.`id` 
-            
-            JOIN `classes` ON `student_session`.`class_id` = `classes`.`id`
-            
-            JOIN `sections` ON `sections`.`id` = `student_session`.`section_id`
-            
-            LEFT JOIN `categories` ON `students`.`category_id` = `categories`.`id` 
-            
-            INNER JOIN student_transport_fees_master on student_transport_fees_master.student_session_id=student_session.id  
-            
-            LEFT JOIN student_transport_fees_deposite on student_transport_fees_deposite.student_fees_master_id=student_transport_fees_master.id   
-            
-            INNER JOIN transport_fee_groups_feetype on transport_fee_groups_feetype.id = student_transport_fees_deposite.fee_groups_feetype_id 
-            
-            WHERE `student_session`.`session_id` = " . $this->current_session . " AND `student_session`.`class_id` = " . $this->db->escape($class_id) . " AND  `students`.`is_active` = 'yes'  ORDER BY `students`.`id`"; 
+        if ($section_id !=NULL){
+           $where_condition[]= "student_session.section_id=".$section_id;
         }
-        
+
+        $where_condition_string= implode(" AND ", $where_condition);
+
+        $query = "SELECT IFNULL(student_fees_deposite.id, 0) as student_fees_deposite_id, IFNULL(student_fees_deposite.fee_groups_feetype_id, 0) as fee_groups_feetype_id, IFNULL(student_fees_deposite.amount_detail, 0) as amount_detail, student_fees_master.id as `fee_master_id`,fee_groups_feetype.feetype_id ,fee_groups_feetype.amount,fee_groups_feetype.due_date, `classes`.`id` AS `class_id`, `student_session`.`id` as `student_session_id`, `students`.`id`, `classes`.`class`, `sections`.`id` AS `section_id`, `sections`.`section`, `students`.`id`, `students`.`admission_no`, `students`.`roll_no`, `students`.`admission_date`, `students`.`firstname`,`students`.`middlename`, `students`.`lastname`, `students`.`image`, `students`.`mobileno`, `students`.`email`, `students`.`state`, `students`.`city`, `students`.`pincode`, `students`.`religion`, `students`.`dob`, `students`.`current_address`, `students`.`permanent_address`, IFNULL(students.category_id, 0) as `category_id`, IFNULL(categories.category, '') as `category`, `students`.`adhar_no`, `students`.`samagra_id`, `students`.`bank_account_no`, `students`.`bank_name`, `students`.`ifsc_code`, `students`.`guardian_name`, `students`.`guardian_relation`, `students`.`guardian_phone`, `students`.`guardian_address`, `students`.`is_active`, `students`.`created_at`, `students`.`updated_at`, `students`.`father_name`, `students`.`rte`, `students`.`gender` FROM `students` JOIN `student_session` ON `student_session`.`student_id` = `students`.`id` JOIN `classes` ON `student_session`.`class_id` = `classes`.`id` JOIN `sections` ON `sections`.`id` = `student_session`.`section_id` LEFT JOIN `categories` ON `students`.`category_id` = `categories`.`id` INNER JOIN student_fees_master on student_fees_master.student_session_id=student_session.id and student_fees_master.fee_session_group_id=" . $this->db->escape($feegroup_id) . " LEFT JOIN student_fees_deposite on student_fees_deposite.student_fees_master_id=student_fees_master.id and student_fees_deposite.fee_groups_feetype_id=" . $this->db->escape($fee_groups_feetype_id) . "  INNER JOIN fee_groups_feetype on fee_groups_feetype.id = " . $this->db->escape($fee_groups_feetype_id) . " WHERE `student_session`.`session_id` = " . $this->current_session . " AND 
+            `students`.`is_active` = 'yes' ".$where_condition_string." ORDER BY `students`.`id`";
         $query = $this->db->query($query);
         return $query->result_array();
     }
@@ -330,7 +183,7 @@ class Studentfee_model extends CI_Model {
 
     public function getFeeBetweenDate($start_date, $end_date) {
 
-        $this->db->select('student_fees.date,student_fees.id,student_fees.amount,student_fees.amount_discount,student_fees.amount_fine,student_fees.created_at,students.rte,classes.class,sections.section,students.firstname,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,feetype.type')->from('student_fees');
+        $this->db->select('student_fees.date,student_fees.id,student_fees.amount,student_fees.amount_discount,student_fees.amount_fine,student_fees.created_at,students.rte,classes.class,sections.section,students.firstname,students.middlename,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,feetype.type')->from('student_fees');
         $this->db->join('student_session', 'student_session.id = student_fees.student_session_id');
         $this->db->join('feemasters', 'feemasters.id = student_fees.feemaster_id');
         $this->db->join('feetype', 'feetype.id = feemasters.feetype_id');

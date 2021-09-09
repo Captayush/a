@@ -13,26 +13,24 @@ class visitors_purpose_model extends MY_Model {
     }
 
     function add($visitors_purpose) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->insert('visitors_purpose', $visitors_purpose);
-		$id=$this->db->insert_id();
-        $message      = INSERT_RECORD_CONSTANT." On visitors purpose id ".$id;
-        $action       = "Insert";
-        $record_id    = $id;
+        $id = $this->db->insert_id();
+        $message = INSERT_RECORD_CONSTANT . " On visitors purpose id " . $id;
+        $action = "Insert";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//echo $this->db->last_query();die;
         //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
-
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -52,54 +50,51 @@ class visitors_purpose_model extends MY_Model {
     }
 
     public function delete($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('visitors_purpose');
-		$message      = DELETE_RECORD_CONSTANT." On visitors purpose id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On visitors purpose id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
 
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
 
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
-
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
     public function update($id, $data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->update('visitors_purpose', $data);
-		$message      = UPDATE_RECORD_CONSTANT." On visitors purpose id ".$id;
-        $action       = "Update";
-        $record_id    = $id;
+        $message = UPDATE_RECORD_CONSTANT . " On visitors purpose id " . $id;
+        $action = "Update";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
 
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
 
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
-
         } else {
-        //return $return_value;
+            //return $return_value;
         }
-       
     }
 
 }

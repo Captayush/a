@@ -4,16 +4,13 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Notificationsetting_model extends MY_Model
-{
+class Notificationsetting_model extends MY_Model {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
-    public function get($id = null)
-    {
+    public function get($id = null) {
         $this->db->select()->from('notification_setting');
         if ($id != null) {
             $this->db->where('notification_setting.id', $id);
@@ -28,8 +25,7 @@ class Notificationsetting_model extends MY_Model
         }
     }
 
-    public function add($data)
-    {
+    public function add($data) {
         $this->db->select()->from('notification_setting');
         $this->db->where('notification_setting.type', $data['type']);
         $q = $this->db->get();
@@ -44,48 +40,45 @@ class Notificationsetting_model extends MY_Model
         }
     }
 
-    public function update($data)
-    {
+    public function update($data) {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
-		//=======================Code Start===========================
+        //=======================Code Start===========================
         $this->db->where('id', $data['id']);
         $this->db->update('notification_setting', $data);
-		$message      = UPDATE_RECORD_CONSTANT." On notification setting id ".$data['id'];
-		$action       = "Update";
-		$record_id    = $data['id'];
-		$this->log($message, $record_id, $action);			
-		//======================Code End==============================
-		$this->db->trans_complete(); # Completing transaction
-		/*Optional*/
+        $message = UPDATE_RECORD_CONSTANT . " On notification setting id " . $data['id'];
+        $action = "Update";
+        $record_id = $data['id'];
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-		if ($this->db->trans_status() === false) {
-			# Something went wrong.
-			$this->db->trans_rollback();
-			return false;
-
-		} else {
-			return true;
-		}
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    public function updatebatch($update_array)
-    {
+    public function updatebatch($update_array) {
 
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
-		//=======================Code Start===========================
+        //=======================Code Start===========================
         if (isset($update_array) && !empty($update_array)) {
 
             $this->db->update_batch('notification_setting', $update_array, 'id');
         }
-		foreach($update_array as $ua){
-			$message      = UPDATE_RECORD_CONSTANT." On notification setting id ".$ua['id'];
-			$action       = "Update";
-			$record_id    = $ua['id'];
-			$this->log($message, $record_id, $action);
-		}
-		//======================Code End==============================
+        foreach ($update_array as $ua) {
+            $message = UPDATE_RECORD_CONSTANT . " On notification setting id " . $ua['id'];
+            $action = "Update";
+            $record_id = $ua['id'];
+            $this->log($message, $record_id, $action);
+        }
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
 
         if ($this->db->trans_status() === false) {
@@ -95,7 +88,6 @@ class Notificationsetting_model extends MY_Model
             $this->db->trans_commit();
             return true;
         }
-
     }
 
 }

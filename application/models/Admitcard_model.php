@@ -1,11 +1,14 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
-class Admitcard_model extends MY_model {
+class Admitcard_model extends MY_model
+{
 
-    function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->current_session = $this->setting_model->getCurrentSession();
     }
@@ -13,12 +16,12 @@ class Admitcard_model extends MY_model {
     // public function getcard() {
     //     $this->db->select('*');
     //     $this->db->from('template_admitcards');
-    //     $query = $this->db->get();        
+    //     $query = $this->db->get();
     //     return $query->result();
     // }
 
-
-    public function get($id = null) {
+    public function get($id = null)
+    {
         $this->db->select()->from('template_admitcards');
         if ($id != null) {
             $this->db->where('id', $id);
@@ -33,7 +36,8 @@ class Admitcard_model extends MY_model {
         }
     }
 
-    public function getidcardbyid($idcard) {
+    public function getidcardbyid($idcard)
+    {
         $this->db->select('*');
         $this->db->from('template_admitcards');
         $this->db->where('id', $idcard);
@@ -41,54 +45,51 @@ class Admitcard_model extends MY_model {
         return $query->result();
     }
 
-      public function add($data) {
-		 $this->db->trans_start(); # Starting Transaction
+    public function add($data)
+    {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('template_admitcards', $data);
-            //echo $this->db->last_query();die;
-			$message      = UPDATE_RECORD_CONSTANT." On  admit cards id ". $data['id'];
-			$action       = "Update";
-			$record_id    =  $id = $data['id'];
-			$this->log($message, $record_id, $action);			
-           
+            $message   = UPDATE_RECORD_CONSTANT . " On  admit cards id " . $data['id'];
+            $action    = "Update";
+            $record_id = $id = $data['id'];
+            $this->log($message, $record_id, $action);
         } else {
             $this->db->insert('template_admitcards', $data);
-           
-			$id=$this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On admit cards id ".$id;
-			$action       = "Insert";
-			$record_id    = $id;
-			$this->log($message, $record_id, $action);			
-			//return $id;
+
+            $id        = $this->db->insert_id();
+            $message   = INSERT_RECORD_CONSTANT . " On admit cards id " . $id;
+            $action    = "Insert";
+            $record_id = $id;
+            $this->log($message, $record_id, $action);           
         }
-		//======================Code End==============================
+        //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				return $id;
-			}
-        
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            return $id;
+        }
     }
 
-    public function remove($id){
-		$this->db->trans_start(); # Starting Transaction
+    public function remove($id)
+    {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where('id',$id);
+        $this->db->where('id', $id);
         $this->db->delete('template_admitcards');
-		$message      = DELETE_RECORD_CONSTANT." On admit cards id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message   = DELETE_RECORD_CONSTANT . " On admit cards id " . $id;
+        $action    = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
         $this->db->trans_complete();
         if ($this->db->trans_status() === false) {
@@ -96,10 +97,6 @@ class Admitcard_model extends MY_model {
         } else {
             return true;
         }
-        
     }
 
-
 }
-
-?>

@@ -1,11 +1,14 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
-class Cms_program_model extends MY_Model {
+class Cms_program_model extends MY_Model
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->current_session = $this->setting_model->getCurrentSession();
     }
@@ -16,7 +19,8 @@ class Cms_program_model extends MY_Model {
      * @param int $id
      * @return mixed
      */
-    public function get($id = null) {
+    public function get($id = null)
+    {
         $this->db->select()->from('front_cms_programs');
         if ($id != null) {
             $this->db->where('id', $id);
@@ -31,8 +35,8 @@ class Cms_program_model extends MY_Model {
         }
     }
 
-
-    function getByCategory($category = null, $params = array()) {
+    public function getByCategory($category = null, $params = array())
+    {
         $this->db->select('*');
         $this->db->from('front_cms_programs');
         $this->db->order_by('created_at', 'desc');
@@ -45,51 +49,52 @@ class Cms_program_model extends MY_Model {
 
         $query = $this->db->get();
 
-        return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+        return ($query->num_rows() > 0) ? $query->result_array() : false;
     }
 
-    function updateFeaturedImage($id, $record_id) {
+    public function updateFeaturedImage($id, $record_id)
+    {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-		
+
         $data = array(
-            'featured_img' => 'yes'
+            'featured_img' => 'yes',
         );
         $this->db->where('id', $record_id);
         $this->db->update('front_cms_program_photos', $data);
         $data = array(
-            'featured_img' => 'no'
+            'featured_img' => 'no',
         );
         $this->db->where('id !=', $record_id);
         $this->db->where('program_id =', $id);
         $this->db->update('front_cms_program_photos', $data);
-		
-			$message      = UPDATE_RECORD_CONSTANT." On  update Featured Image id ".$record_id;
-			$action       = "Update";
-			$record_id    = $record_id;
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+        $message   = UPDATE_RECORD_CONSTANT . " On  update Featured Image id " . $record_id;
+        $action    = "Update";
+        $record_id = $record_id;
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-			} else {
-				//return $return_value;
-			}
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
+        }
     }
 
-    public function getBySlug($slug = null) {
+    public function getBySlug($slug = null)
+    {
         $this->db->select()->from('front_cms_programs');
         if ($slug != null) {
             $this->db->where('slug', $slug);
         }
-        $query = $this->db->get();
+        $query  = $this->db->get();
         $result = $query->row_array();
         if ($query->num_rows()) {
             $result['page_contents'] = $this->front_cms_program_photos($query->row()->id);
@@ -102,7 +107,8 @@ class Cms_program_model extends MY_Model {
      * This function will delete the record based on the id
      * @param $id
      */
-    public function front_cms_program_photos($program_id) {
+    public function front_cms_program_photos($program_id)
+    {
         $this->db->select('front_cms_media_gallery.*');
         $this->db->from('front_cms_program_photos');
         $this->db->join('front_cms_media_gallery', 'front_cms_program_photos.media_gallery_id = front_cms_media_gallery.id');
@@ -111,25 +117,26 @@ class Cms_program_model extends MY_Model {
         return $query->result();
     }
 
-    public function remove($slug) {
-		$this->db->trans_start(); # Starting Transaction
+    public function remove($slug)
+    {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('slug', $slug);
         $this->db->delete('front_cms_programs');
-		$message      = DELETE_RECORD_CONSTANT." On event id ".$slug;
-        $action       = "Delete";
-        $record_id    = $slug;
+        $message   = DELETE_RECORD_CONSTANT . " On event id " . $slug;
+        $action    = "Delete";
+        $record_id = $slug;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -139,58 +146,58 @@ class Cms_program_model extends MY_Model {
      * else an insert. One function doing both add and edit.
      * @param $data
      */
-    public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+    public function add($data)
+    {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('front_cms_programs', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On  event id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $data['id'];
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
+            $message   = UPDATE_RECORD_CONSTANT . " On  event id " . $data['id'];
+            $action    = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         } else {
             $this->db->insert('front_cms_programs', $data);
             $insert_id = $this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On event id ".$insert_id;
-			$action       = "Insert";
-			$record_id    = $insert_id;
-			$this->log($message, $record_id, $action);
-			//echo $this->db->last_query();die;
-			//======================Code End==============================
+            $message   = INSERT_RECORD_CONSTANT . " On event id " . $insert_id;
+            $action    = "Insert";
+            $record_id = $insert_id;
+            $this->log($message, $record_id, $action);
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            //======================Code End==============================
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			} else {
-				//return $return_value;
-			}
-			return $insert_id;
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
+            return $insert_id;
         }
     }
 
-    public function inst_batch($data, $contents) {
+    public function inst_batch($data, $contents)
+    {
         $this->db->trans_start(); # Starting Transaction
-        $this->db->trans_strict(FALSE); # See Note 01. If you wish can remove as well 
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
 
         $this->db->insert('front_cms_programs', $data);
         $insert_id = $this->db->insert_id();
@@ -204,18 +211,19 @@ class Cms_program_model extends MY_Model {
         }
         $this->db->trans_complete(); # Completing transaction
 
-        if ($this->db->trans_status() === FALSE) {
+        if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            return FALSE;
+            return false;
         } else {
             $this->db->trans_commit();
-            return TRUE;
+            return true;
         }
     }
 
-    public function update_batch($data, $contents, $remove_content) {
+    public function update_batch($data, $contents, $remove_content)
+    {
         $this->db->trans_start(); # Starting Transaction
-        $this->db->trans_strict(FALSE); # See Note 01. If you wish can remove as well 
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         $this->db->where('id', $data['id']);
         $this->db->update('front_cms_programs', $data);
 
@@ -234,88 +242,91 @@ class Cms_program_model extends MY_Model {
 
         $this->db->trans_complete(); # Completing transaction
 
-        if ($this->db->trans_status() === FALSE) {
+        if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            return FALSE;
+            return false;
         } else {
             $this->db->trans_commit();
-            return TRUE;
+            return true;
         }
     }
 
-    public function addImage($data) {
-		$this->db->trans_start(); # Starting Transaction
+    public function addImage($data)
+    {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->insert('front_cms_program_photos', $data);
         $insert_id = $this->db->insert_id();
-		$message      = INSERT_RECORD_CONSTANT." On cms program photos id ".$insert_id;
-		$action       = "Insert";
-		$record_id    = $insert_id;
-		$this->log($message, $record_id, $action);
-		//echo $this->db->last_query();die;
-		//======================Code End==============================
-
-		$this->db->trans_complete(); # Completing transaction
-		/*Optional*/
-
-		if ($this->db->trans_status() === false) {
-			# Something went wrong.
-			$this->db->trans_rollback();
-			return false;
-
-		} else {
-			//return $return_value;
-		}
-		return $insert_id;
-    }
-
-    public function removeImage($id) {
-		$this->db->trans_start(); # Starting Transaction
-        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
-        //=======================Code Start===========================
-        $this->db->where('id', $id);
-        $this->db->delete('front_cms_program_photos');
-		$message      = DELETE_RECORD_CONSTANT." On event id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message   = INSERT_RECORD_CONSTANT . " On cms program photos id " . $insert_id;
+        $action    = "Insert";
+        $record_id = $insert_id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+
+        //======================Code End==============================
+
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
+
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
+        }
+        return $insert_id;
+    }
+
+    public function removeImage($id)
+    {
+        $this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
+        $this->db->where('id', $id);
+        $this->db->delete('front_cms_program_photos');
+        $message   = DELETE_RECORD_CONSTANT . " On event id " . $id;
+        $action    = "Delete";
+        $record_id = $id;
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
         }
     }
 
-    public function removeBySlug($slug, $type) {
-		$this->db->trans_start(); # Starting Transaction
+    public function removeBySlug($slug, $type)
+    {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('slug', $slug);
         $this->db->where('type', $type);
         $this->db->delete('front_cms_programs');
-		$message      = DELETE_RECORD_CONSTANT." On event title ".$slug;
-        $action       = "Delete";
-        $record_id    = $slug;
+        $message   = DELETE_RECORD_CONSTANT . " On event title " . $slug;
+        $action    = "Delete";
+        $record_id = $slug;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
-    public function banner($banner_content, $data) {
+    public function banner($banner_content, $data)
+    {
         $this->db->trans_begin();
 
         //===============
@@ -324,8 +335,8 @@ class Cms_program_model extends MY_Model {
             $data['program_id'] = $banner_content_record[0]['id'];
             $this->db->insert('front_cms_program_photos', $data);
         } else {
-            $insert_program = array('type' => $banner_content, 'title' => 'Banner Images');
-            $insert_program_id = $this->add($insert_program);
+            $insert_program     = array('type' => $banner_content, 'title' => 'Banner Images');
+            $insert_program_id  = $this->add($insert_program);
             $data['program_id'] = $insert_program_id;
             $this->db->insert('front_cms_program_photos', $data);
         }
@@ -333,16 +344,17 @@ class Cms_program_model extends MY_Model {
         //=======================
 
         $this->db->trans_complete(); # Completing transaction
-        if ($this->db->trans_status() === FALSE) {
+        if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            return FALSE;
+            return false;
         } else {
             $this->db->trans_commit();
-            return TRUE;
+            return true;
         }
     }
 
-    public function bannerDelete($banner_content, $media_gallery_id) {
+    public function bannerDelete($banner_content, $media_gallery_id)
+    {
         $this->db->trans_begin();
 
         //===============
@@ -351,23 +363,23 @@ class Cms_program_model extends MY_Model {
             $data = array('program_id' => $banner_content_record[0]['id'], 'media_gallery_id' => $media_gallery_id);
             $this->db->where($data);
             $this->db->delete('front_cms_program_photos');
-			$message      = DELETE_RECORD_CONSTANT." On banner delete id ".$banner_content_record[0]['id'];
-			$action       = "Delete";
-			$record_id    = $banner_content_record[0]['id'];
-			$this->log($message, $record_id, $action);
-			} else {
-            
-			}
+            $message   = DELETE_RECORD_CONSTANT . " On banner delete id " . $banner_content_record[0]['id'];
+            $action    = "Delete";
+            $record_id = $banner_content_record[0]['id'];
+            $this->log($message, $record_id, $action);
+        } else {
+
+        }
 
         //=======================
 
         $this->db->trans_complete(); # Completing transaction
-        if ($this->db->trans_status() === FALSE) {
+        if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            return FALSE;
+            return false;
         } else {
             $this->db->trans_commit();
-            return TRUE;
+            return true;
         }
     }
 

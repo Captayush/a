@@ -40,12 +40,12 @@ class Enquiry extends Admin_Controller {
             $enquiry_list = $this->enquiry_model->getenquiry_list();
         }
         foreach ($enquiry_list as $key => $value) {
-            $follow_up = $this->enquiry_model->getFollowByEnquiry($value["id"]);			
-			$enquiry_list[$key]["followupdate"] = isset($follow_up["date"])?$follow_up["date"]:'';
+            $follow_up = $this->enquiry_model->getFollowByEnquiry($value["id"]);
+            $enquiry_list[$key]["followupdate"] = isset($follow_up["date"])?$follow_up["date"]:'';
             $enquiry_list[$key]["next_date"] = isset($follow_up["next_date"])?$follow_up["next_date"]:'';
             $enquiry_list[$key]["response"] = isset($follow_up["response"])?$follow_up["response"]:'';
             $enquiry_list[$key]["note"] = isset($follow_up["note"])?$follow_up["note"]:'';
-            $enquiry_list[$key]["followup_by"] = isset($follow_up["followup_by"])?$follow_up["followup_by"]:'';			
+            $enquiry_list[$key]["followup_by"] = isset($follow_up["followup_by"])?$follow_up["followup_by"]:'';
         }
         $data['enquiry_list'] = $enquiry_list;
         $data['enquiry_status'] = $this->enquiry_status;

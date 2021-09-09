@@ -17,9 +17,9 @@ class Timetable_model extends CI_Model {
     public function add($data) {
         if (($data['id']) != 0) {
             $this->db->where('id', $data['id']);
-            $this->db->update('timetables', $data); 
+            $this->db->update('timetables', $data);
         } else {
-            $this->db->insert('timetables', $data); 
+            $this->db->insert('timetables', $data);
             return $this->db->insert_id();
         }
     }

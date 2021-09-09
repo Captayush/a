@@ -9,12 +9,18 @@ class Expensehead_model extends MY_Model {
         parent::__construct();
     }
 
-    /**
-     * This funtion takes id as a parameter and will fetch the record.
-     * If id is not provided, then it will fetch all the records form the table.
-     * @param int $id
-     * @return mixed
-     */
+
+     public function getDatatableExpenseHead()
+    {
+
+        $sql="SELECT * FROM `expense_head`  ";
+        $this->datatables->query($sql)
+        ->searchable('expense_head.exp_category')
+        ->orderable('`expense_head`.`id`,`expense_head`.`exp_category`')
+        ->sort('expense_head.id','asc') ;
+        return $this->datatables->generate('json');   
+    }
+
     public function get($id = null) {
         $this->db->select()->from('expense_head');
         if ($id != null) {
@@ -35,24 +41,24 @@ class Expensehead_model extends MY_Model {
      * @param $id
      */
     public function remove($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('expense_head');
-		$message      = DELETE_RECORD_CONSTANT." On  expense head id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On  expense head id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -63,64 +69,65 @@ class Expensehead_model extends MY_Model {
      * @param $data
      */
     public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('expense_head', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On  expense head id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $data['id'];
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
+            $message = UPDATE_RECORD_CONSTANT . " On  expense head id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         } else {
             $this->db->insert('expense_head', $data);
-			$id=$this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On  expense head id ".$id;
-			$action       = "Insert";
-			$record_id    = $id;
-			$this->log($message, $record_id, $action);
-			//echo $this->db->last_query();die;
-			//======================Code End==============================
+            $id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On  expense head id " . $id;
+            $action = "Insert";
+            $record_id = $id;
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         }
     }
 
-    public function searchexpensegroup($start_date, $end_date,$head_id=null){
-        $this->db->select('GROUP_CONCAT(expenses.id,"@",expenses.date,"@",expenses.name,"@",expenses.invoice_no,"@",expenses.amount) as expense, expense_head.exp_category,expenses.exp_head_id,sum(expenses.amount) as total_amount')->from('expenses');
-            $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
-            $this->db->where('expenses.date >=', $start_date);
-            $this->db->where('expenses.date <=', $end_date);
-            if($head_id!=null){
-                $this->db->where('expenses.exp_head_id',$head_id);
-            }
-            $this->db->group_by('expenses.exp_head_id');
-            $query = $this->db->get();
-            return $query->result_array();
+    public function searchexpensegroup($start_date, $end_date, $head_id = null) {
+        
+        $this->datatables
+            ->select('GROUP_CONCAT(expenses.id,"@",expenses.date,"@",expenses.name,"@",expenses.invoice_no,"@",expenses.amount) as expense, expense_head.exp_category,expenses.exp_head_id,sum(expenses.amount) as total_amount')
+            ->searchable('expense_head.exp_category,expenses.id,expenses.name,expenses.date,expenses.invoice_no,expenses.amount')
+            ->orderable('expense_head.exp_category,expenses.id,expenses.name,expenses.date,expenses.invoice_no')
+            ->join('expense_head', 'expenses.exp_head_id = expense_head.id')
+            ->where('expenses.date >=', $start_date)
+            ->where('expenses.date <=', $end_date)
+            ->from('expenses');
+        if ($head_id != null) {
+            $this->datatables->where('expenses.exp_head_id', $head_id);
+        }
+        $this->datatables->group_by('expenses.exp_head_id');
+        return $this->datatables->generate('json');
     }
 
 }
