@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Language_model extends CI_Model {
+class Language_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
@@ -46,23 +46,38 @@ class Language_model extends CI_Model {
         }
     }
 
-    public function getEnable_languages(){
-        $languages_id=$this->db->select('languages')->from('sch_settings')->get()->row_array();
-       // print_r(json_decode($languages_id['languages']));
-        
-        $query=$this->db->select()->from('languages')->where_in('id',json_decode($languages_id['languages']))->get()->result_array();
+    public function getEnable_languages() {
+        $languages_id = $this->db->select('languages')->from('sch_settings')->get()->row_array();
+       
+        $query = $this->db->select()->from('languages')->where_in('id', json_decode($languages_id['languages']))->get()->result_array();
         return $query;
-
-
     }
 
     /**
      * This function will delete the record based on the id
      * @param $id
      */
-    public function remove($id) {
+    public function remove($id) {        
+
+        $this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('languages');
+        $message = DELETE_RECORD_CONSTANT . " On languages id " . $id;
+        $action = "Delete";
+        $record_id = $id;
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
+        }
     }
 
     /**
@@ -80,22 +95,23 @@ class Language_model extends CI_Model {
         }
     }
 
-    function set_userlang($id,$data){
+    function set_userlang($id, $data) {
 
-            $this->db->where('id', $id);          
-            $this->db->update('staff', $data);
-    }
-    function set_studentlang($id,$data){
-        $this->db->where('user_id', $id);          
-            $this->db->update('users', $data);
+        $this->db->where('id', $id);
+        $this->db->update('staff', $data);
     }
 
-    
-    function set_parentlang($id,$data){
-       
-        $this->db->where('id', $id);          
-            $this->db->update('users', $data);
+    function set_studentlang($id, $data) {
+        $this->db->where('user_id', $id);
+        $this->db->update('users', $data);
     }
+
+    function set_parentlang($id, $data) {
+
+        $this->db->where('id', $id);
+        $this->db->update('users', $data);
+    }
+
     public function valid_check_exists($str) {
         $language = $this->input->post('language');
         $id = $this->input->post('id');
@@ -109,8 +125,8 @@ class Language_model extends CI_Model {
         } else {
             return TRUE;
         }
-    }
-
+    } 
+ 
     function check_data_exists($name, $id) {
         $this->db->where('language', $name);
 
@@ -121,10 +137,10 @@ class Language_model extends CI_Model {
         } else {
             return FALSE;
         }
-    }
+    } 
 
-    function update_520(){
-       return $this->db->select('*')->from('languages')->get()->result_array();
+    function update_520() {
+        return $this->db->select('*')->from('languages')->where('id', 93)->get()->result_array();
     }
 
 }

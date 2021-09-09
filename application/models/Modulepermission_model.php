@@ -9,7 +9,6 @@ class Modulepermission_model extends CI_Model {
         parent::__construct();
     }
 
-
     public function get($id = null) {
         $this->db->select()->from('module_permissions');
         if ($id != null) {

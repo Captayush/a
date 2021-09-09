@@ -71,7 +71,7 @@
 
 
  <?php
-if ($this->config->item('SSLK') == "") {
+if (!$this->config->item('SSLK') == "") {
     ?>
  <div class="topaleart">
     <div class="slidealert">

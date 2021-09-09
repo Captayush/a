@@ -16,7 +16,7 @@ class Staffroles_model extends CI_Model {
         $this->db->join('roles', 'roles.id=staff_roles.role_id', 'inner');
         $this->db->where('staff_roles.staff_id', $staffid);
         $query = $this->db->get();
-        return $query->result(); 
+        return $query->result();
     }
 
 }

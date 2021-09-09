@@ -44,9 +44,10 @@ class Calendar extends Admin_Controller
         $config['cur_tag_close']   = '</a></li>';
         $config['num_tag_open']    = '<li>';
         $config['num_tag_close']   = '</li>';
-        $this->pagination->initialize($config);     
- 
-        $tasklist         = $this->calendar_model->getTask($userdata["id"], $userdata["role_id"], 10, $this->uri->segment(4));
+        $this->pagination->initialize($config);  
+		
+		$tasklist         = $this->calendar_model->getTask($userdata["id"], $userdata["role_id"], 10, $this->uri->segment(4));
+		
         $data["tasklist"] = $tasklist;
         $data["title"]    = "Event Calendar";
         $this->load->view("layout/header.php");

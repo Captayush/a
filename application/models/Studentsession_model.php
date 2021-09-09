@@ -16,7 +16,7 @@ class Studentsession_model extends CI_Model
     public function searchStudents($class_id = null, $section_id = null, $key = null)
     {
         $this->db->select('student_session.id,student_session.student_id,classes.class,sections.section,
-            students.firstname,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,
+            students.firstname,students.middlename,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,
             ')->from('student_session');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
@@ -31,7 +31,7 @@ class Studentsession_model extends CI_Model
     public function searchStudentsBySession($student_session_id = null)
     {
         $this->db->select('students.admission_no,students.roll_no,student_session.session_id, student_session.class_id, student_session.section_id,student_session.id,student_session.student_id,classes.class,sections.section,
-            students.firstname,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,students.father_name')->from('student_session');
+            students.firstname,students.middlename,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,students.father_name')->from('student_session');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
         $this->db->join('students', 'students.id = student_session.student_id');
@@ -44,7 +44,7 @@ class Studentsession_model extends CI_Model
     public function getStudentClass($id)
     {
         $this->db->select('students.admission_no,students.roll_no,student_session.session_id, student_session.class_id, student_session.section_id,student_session.id,student_session.student_id,classes.class,sections.section,
-            students.firstname,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,
+            students.firstname,students.middlename,students.lastname,students.admission_no,students.roll_no,students.dob,students.guardian_name,
             ')->from('student_session');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
@@ -66,10 +66,16 @@ class Studentsession_model extends CI_Model
         return $query->row_array();
     }
 
-        public function getSessionById($id)
+    public function updateById($update_array)
+    {
+        $this->db->where('id', $update_array['id']);
+        $this->db->update('student_session', $update_array);
+    }
+
+    public function getSessionById($id)
     {
         $this->db->select()->from('student_session');
-        $this->db->where('id', $id);   
+        $this->db->where('id', $id);
         $this->db->order_by('id');
         $query = $this->db->get();
         return $query->row();
@@ -101,7 +107,6 @@ class Studentsession_model extends CI_Model
                     $this->db->insert('student_session', $insert_array[$insert_array_key]);
                     $not_delarray[] = $this->db->insert_id();
                 }
-
             }
             // $this->db->insert_batch('student_session', $insert_array);
         }
@@ -112,7 +117,6 @@ class Studentsession_model extends CI_Model
             $this->db->delete('student_session');
         }
 
-        // print_r($insert_array);
         $this->db->trans_complete();
 
         if ($this->db->trans_status() === false) {
@@ -130,7 +134,7 @@ class Studentsession_model extends CI_Model
     {
 
         $students = $this->student_model->searchByClassSectionWithSession($class_id, $section_id);
-        
+
         if (!empty($students)) {
             foreach ($students as $student_key => $student_value) {
 
@@ -140,41 +144,39 @@ class Studentsession_model extends CI_Model
                 $this->db->order_by('id');
                 $query                                      = $this->db->get();
                 $students[$student_key]['student_sessions'] = $query->result();
-
             }
         }
         return $students;
-
     }
+
     public function searchMultiClsSectionByStudent($student_id)
     {
         $this->db->select('student_session.*,classes.class,sections.section,student_session.id as `student_session_id`')->from('student_session');
         $this->db->where('student_id', $student_id);
         $this->db->where('session_id', $this->current_session);
-         $this->db->join('classes', 'student_session.class_id = classes.id');
+        $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
+        $this->db->order_by('student_session.default_login','desc');
         $this->db->order_by('id');
         $query = $this->db->get();
         return $query->result();
-
     }
-       public function searchActiveClassSectionStudent($student_id,$enable_session = null)
+
+    public function searchActiveClassSectionStudent($student_id, $enable_session = null)
     {
-     
+
         $this->db->select('student_session.*,classes.class,sections.section')->from('student_session');
         $this->db->where('student_id', $student_id);
-        if($enable_session == null){
-        $this->db->where('session_id', $this->current_session);
-        }else{
+        if ($enable_session == null) {
+            $this->db->where('session_id', $this->current_session);
+        } else {
             $this->db->where('session_id', $enable_session);
-            
         }
-         $this->db->join('classes', 'student_session.class_id = classes.id');
+        $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
         $this->db->order_by('id');
         $query = $this->db->get();
         return $query->row();
-
     }
 
 }

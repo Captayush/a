@@ -75,7 +75,7 @@
     </head>
     <body class="hold-transition skin-blue fixed sidebar-mini">
          <?php
-if ($this->config->item('SSLK') == "") {
+if (!$this->config->item('SSLK') == "") {
     ?>
  <div class="topaleart">
     <div class="slidealert">
@@ -282,7 +282,7 @@ if($this->studentmodule_lib->hasActive('multi_class')){
 						
 						<?php
                        if($this->module_lib->hasModule('online_course') && $this->studentmodule_lib->hasActive('online_course') && $this->auth->addonchk('ssoclc',false)){                    
-                       ?>
+                       ?>								
 							<li class="<?php echo set_topmenu('user/studentcourse'); ?>"><a href="<?php echo base_url(); ?>user/studentcourse"><i class="fa fa-file-video-o ftlayer"></i> <span><?php echo $this->lang->line('online_course'); ?></span></a></li>
 							
 						<?php } ?>  

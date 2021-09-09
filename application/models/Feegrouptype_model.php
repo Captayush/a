@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Feegrouptype_model extends CI_Model {
+class Feegrouptype_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
@@ -79,6 +79,9 @@ class Feegrouptype_model extends CI_Model {
      * @param $id
      */
     public function remove($id) {
+		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
         $this->db->select()->from('fee_groups_feetype');
         $this->db->where('id', $id);
         $query = $this->db->get();
@@ -94,6 +97,20 @@ class Feegrouptype_model extends CI_Model {
         $this->db->where('id', $id);
         $this->db->delete('fee_groups_feetype');
 		
+		$message = DELETE_RECORD_CONSTANT . " On fee groups fee type id " . $id;
+        $action = "Delete";
+        $record_id = $id;
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
+        }
     }
 
     /**
@@ -131,32 +148,56 @@ class Feegrouptype_model extends CI_Model {
     }
 
     public function add($data) {
+		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('fee_groups_feetype', $data);
+			$message = UPDATE_RECORD_CONSTANT . " On  fee groups fee type id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+           
         } else {
             $this->db->insert('fee_groups_feetype', $data);
-            return $this->db->insert_id();
+            $id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On fee groups fee type id " . $id;
+            $action = "Insert";
+            $record_id = $id;
+            $this->log($message, $record_id, $action);
+            
         }
+		
+		//======================Code End==============================
+
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
+
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                return $id;
+            }
+            
     }
 
     public function getFeeTypeDueDateReminder($date) {
-        $query = "SELECT fee_groups_feetype.*,feetype.type,feetype.code FROM `fee_groups_feetype` INNER JOIN feetype on feetype.id=fee_groups_feetype.feetype_id WHERE due_date= ". $this->db->escape($date);
+        $query = "SELECT fee_groups_feetype.*,feetype.type,feetype.code FROM `fee_groups_feetype` INNER JOIN feetype on feetype.id=fee_groups_feetype.feetype_id WHERE due_date= " . $this->db->escape($date);
 
         $query = $this->db->query($query);
         $fee_group_type_array = $query->result();
         return $fee_group_type_array;
     }
 
-
-	public function getFeeTypeStudents($fee_session_group_id,$fee_groups_feetype_id) {
-        $query =  "SELECT student_fees_master.*,student_fees_deposite.student_fees_master_id,student_fees_deposite.fee_groups_feetype_id,student_fees_deposite.amount_detail, students.id as `student_id`, students.roll_no,students.admission_date,students.firstname,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,students.dob ,students.current_address,    students.permanent_address,students.category_id, IFNULL(categories.category, '') as `category`,   students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name, students.guardian_relation,students.guardian_phone,students.guardian_email,`classes`.`class`,students.guardian_address,students.is_active,`students`.`father_name`,`students`.`app_key`,`students`.`parent_app_key`,`students`.`gender` FROM `student_fees_master` LEFT JOIN student_fees_deposite on student_fees_deposite.student_fees_master_id=student_fees_master.id and student_fees_deposite.fee_groups_feetype_id = ". $this->db->escape($fee_groups_feetype_id)." INNER JOIN student_session on student_session.id=student_fees_master.student_session_id INNER JOIN students on students.id=student_session.student_id JOIN `classes` ON `student_session`.`class_id` = `classes`.`id` LEFT JOIN `categories` ON `students`.`category_id` = `categories`.`id` WHERE students.is_active='yes' and student_fees_master.fee_session_group_id =". $this->db->escape($fee_session_group_id);
+    public function getFeeTypeStudents($fee_session_group_id, $fee_groups_feetype_id) {
+        $query = "SELECT student_fees_master.*,student_fees_deposite.student_fees_master_id,student_fees_deposite.fee_groups_feetype_id,student_fees_deposite.amount_detail, students.id as `student_id`, students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,students.dob ,students.current_address,    students.permanent_address,students.category_id, IFNULL(categories.category, '') as `category`,   students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name, students.guardian_relation,students.guardian_phone,students.guardian_email,`classes`.`class`,students.guardian_address,students.is_active,`students`.`father_name`,`students`.`app_key`,`students`.`parent_app_key`,`students`.`gender` FROM `student_fees_master` LEFT JOIN student_fees_deposite on student_fees_deposite.student_fees_master_id=student_fees_master.id and student_fees_deposite.fee_groups_feetype_id = " . $this->db->escape($fee_groups_feetype_id) . " INNER JOIN student_session on student_session.id=student_fees_master.student_session_id INNER JOIN students on students.id=student_session.student_id JOIN `classes` ON `student_session`.`class_id` = `classes`.`id` LEFT JOIN `categories` ON `students`.`category_id` = `categories`.`id` WHERE students.is_active='yes' and student_fees_master.fee_session_group_id =" . $this->db->escape($fee_session_group_id);
 
         $query = $this->db->query($query);
         $fee_group_type_array = $query->result();
         return $fee_group_type_array;
     }
-
-   
 
 }
