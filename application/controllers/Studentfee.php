@@ -1,5 +1,5 @@
-nk
-<?php
+aayush
+fclose <?php
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
@@ -7,7 +7,7 @@ if (!defined('BASEPATH')) {
 
 class Studentfee extends Admin_Controller
 {
-fff 
+
     public function __construct()
     {
         parent::__construct();
@@ -33,9 +33,9 @@ fff
         $this->load->view('studentfee/studentfeeSearch', $data);
         $this->load->view('layout/footer', $data);
     }
-nk
+
     public function collection_report()
-nk    {
+    {
         if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
             access_denied();
         }
