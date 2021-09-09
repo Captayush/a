@@ -1,6 +1,8 @@
 <?php $currency_symbol = $this->customlib->getSchoolCurrencyFormat(); ?>
 <style type="text/css">
-    .page-break	{ display: block; page-break-before: always; }
+@media print {
+	.page-break	{ display: block; page-break-before: always; }
+}
     @media print {
         .page-break	{ display: block; page-break-before: always; }
         .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
@@ -204,133 +206,122 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/AdminLTE.min.css">
     </head>
     <body>       
-        <div class="container"> 
+        <div class="container">
             <div class="row">
-                <div id="content" class="col-lg-12 col-sm-12 ">
-                    <div class="invoice">
-                        <div class="row header ">
-                            <div class="col-sm-12">
-                                <?php
-                                ?>
-
-                                <img  src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php $this->setting_model->get_receiptheader(); ?>" style="height: 100px;width: 100%;">
-                                <?php
-                                ?>
-                            </div>
-
-                        </div> 
-                        <?php
-                        if ($settinglist[0]['is_duplicate_fees_invoice']) {
-                            ?>
-                            <div class="row">
-                                <div class="col-md-12 text text-center">
-                                    <?php echo $this->lang->line('office_copy'); ?>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                        ?>
-                        <div class="row">                           
-                            <div class="col-xs-6 text-left">
-                                <br/>
-                                <address>
-                                    <strong><?php
-                                   echo $this->customlib->getFullName($feeList->firstname,$feeList->middlename,$feeList->lastname,$sch_setting->middlename,$sch_setting->lastname);
-                                      ?></strong><?php echo " (".$feeList->admission_no.")"; ?> <br>
-
-                                    <?php echo $this->lang->line('father_name'); ?>: <?php echo $feeList->father_name; ?><br>
-                                    <?php echo $this->lang->line('class'); ?>: <?php echo $feeList->class . " (" . $feeList->section . ")"; ?>
-                                </address>
-                            </div>
-                            <div class="col-xs-6 text-right">
-                                <br/>
-                                <address>
-                                    <strong><?php echo $this->lang->line('date') ; ?>: <?php
-                                        $date = date('d-m-Y');
-
-                                        echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($date));
-                                        ?></strong><br/>
-
-                                </address>                               
-                            </div>
-                        </div>
-                        <hr style="margin-top: 0px;margin-bottom: 0px;" />
-                        <div class="row">
-                            <?php
-                            if (!empty($feeList)) {
-                                ?>
-
-                                <table class="table table-striped table-responsive" style="font-size: 8pt;">
-                                    <thead>
-                                    <th><?php echo $this->lang->line('fees_group'); ?></th>
-                                    <th><?php echo $this->lang->line('fees_code'); ?></th>
-                                    <th  class=""><?php echo $this->lang->line('due_date'); ?></th>
-                                    <th class=""><?php echo $this->lang->line('status'); ?></th>
-                                    <th  class="text text-right"><?php echo $this->lang->line('amount'); ?></th>
-                                    <th  class="text text-center"><?php echo $this->lang->line('payment_id'); ?></th>
-                                    <th  class="text text-center"><?php echo $this->lang->line('mode'); ?></th>
-                                    <th  class=""><?php echo $this->lang->line('date'); ?></th>
-                                    <th  class="text text-right"><?php echo $this->lang->line('paid'); ?></th>
-                                    <th  class="text text-right"><?php echo $this->lang->line('fine'); ?></th>
-                                    <th class="text text-right" ><?php echo $this->lang->line('discount'); ?></th>
-                                    <th  class="text text-right"><?php echo $this->lang->line('balance'); ?></th>
-                                    <th></th>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $amount = 0;
-                                        $discount = 0;
-                                        $fine = 0;
-                                        $total = 0;
-                                        $grd_total = 0;
-
-                                        if (empty($feeList)) {
-                                            ?>
-                                            <tr>
-                                                <td colspan="11" class="text-danger text-center">
-                                                    <?php echo $this->lang->line('no_transaction_found'); ?>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                        } else {
-                                            $fee_discount = 0;
-                                            $fee_paid = 0;
-
-                                            $fee_fine = 0;
-                                            $alot_fee_discount = 0;
-                                            if ($feeList->is_system) {
-                                                $feeList->amount = $feeList->student_fees_master_amount;
-                                            }
-                                            if (!empty($feeList->amount_detail)) {
-                                                $fee_deposits = json_decode(($feeList->amount_detail));
-
+                <div id="content" class="col-lg-12 col-sm-12 " style="padding: 20px;">
+                    <div class="col-sm-6">
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td colspan="3">
+                                            <h4><?php echo $settinglist[0]['name']; ?></h4>
+                                            <div style="width:20%; float:left;padding:5px;">
+                                                    <img  src="<?php echo base_url(); ?>uploads/school_content/logo/<?php echo $settinglist[0]['image']; ?>" style="width: 100%;">
+                                            </div>
+                                            <div style="width:80%; float:left;padding:5px;">
+                                                
+                                                <span style="font-size: 12px;float: left;width: 100%;font-weight: 500;">
+                                                    <?php echo $settinglist[0]['email']; ?>
+                                                </span>
+                                                <span style="font-size: 11px;float: left;width: 100%;font-weight: 400;">
+                                                    <?php echo $settinglist[0]['address']; ?>
+                                                </span>
+                                                
+                                            
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td colspan="3">
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;"> Admission No. : <b><?php echo $feeList->admission_no; ?></b> </div>
+                                            
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;"> Name : <b><?php echo $feeList->firstname . " " . $feeList->lastname; ?></b></div>
+                                            
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;"> Father Name : <b><?php echo $feeList->father_name; ?></b></div>
+                                            
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;"> Register : <b><?php echo $feeList->register; ?></b></div>
+                                            
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;">Payment Mode : <b>
+                                                <?php
+                                            $fee_deposits = json_decode(($feeList->amount_detail));
+                                            if (is_object($fee_deposits)) {
                                                 foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
-                                                    $fee_paid = $fee_paid + $fee_deposits_value->amount;
-                                                    $fee_discount = $fee_discount + $fee_deposits_value->amount_discount;
-                                                    $fee_fine = $fee_fine + $fee_deposits_value->amount_fine;
+                                            ?><?php 
+                                                echo $fee_deposits_value->payment_mode; 
                                                 }
                                             }
-                                            $feetype_balance = $feeList->amount - ($fee_paid + $fee_discount);
-                                            ?>
-                                            <tr  class="dark-gray">
+                                            ?></b> </div>
+                                            
+                                            <div style="width:50%; float:left;padding:5px;font-size: 11px;">Class : <b><?php echo $feeList->class; ?></b></div>
+                                            
+                                            <div style="width:50%; float:left;padding:5px;font-size: 11px;">Section : <b><?php echo $feeList->section; ?></b> </div>
+                                            
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td colspan="3">
+                                            <div style="width:50%; float:left;padding:10px;font-size: 11px;">
+                                                    Reciept Number : <?php echo $feeList->student_reciept_no; ?>
+                                            </div>
+                                            <div style="width:50%; float:left;padding:10px;font-size: 11px;font-weight: 400;">
+                                                Date : <span style="font-size: 11px;font-weight: 400;"><?php $date = date('d-m-Y');
+                                                            echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($date));
+                                                            ?> 
+                                                        </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                </thead>
+                                <tbody>
+                                <?php
+                                    if (!empty($feeList)) {
+                                ?>
+                                
+                                <?php
+                                $amount = 0;
+                                $discount = 0;
+                                $fine = 0;
+                                $total = 0;
+                                $grd_total = 0;
+                                if (empty($feeList)) {
+                                    ?>
+                                    <tr>
+                                        <td colspan="3" class="text-danger text-center" style="font-size: 11px;font-weight: 400;">
+                                            <?php echo $this->lang->line('no_transaction_found'); ?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                } else {
+                                        $fee_discount = 0;
+                                        $fee_paid = 0;
 
-                                                <td><?php
-                                                    echo $feeList->name;
-                                                    ?></td>
-                                                <td><?php echo $feeList->code; ?></td>
-                                                <td class="">
+                                        $fee_fine = 0;
+                                        $alot_fee_discount = 0;
+                                        if($feeList->is_system){
+                                            $feeList->amount=$feeList->student_fees_master_amount;
+                                        }
+                                        if (!empty($feeList->amount_detail)) {
+                                            $fee_deposits = json_decode(($feeList->amount_detail));
 
-                                                    <?php
-                                                    if ($feeList->due_date == "0000-00-00") {
-                                                        
-                                                    } else {
-
-                                                        echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($feeList->due_date));
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td class="">
-                                                    <?php
+                                            foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
+                                                $fee_paid = $fee_paid + $fee_deposits_value->amount;
+                                                $fee_discount = $fee_discount + $fee_deposits_value->amount_discount;
+                                                $fee_fine = $fee_fine + $fee_deposits_value->amount_fine;
+                                            }
+                                        }
+                                        $feetype_balance = $feeList->amount - ($fee_paid + $fee_discount);
+                                        $fee_deposits = json_decode(($feeList->amount_detail));
+                                        if (!is_object($fee_deposits)) {
+                                        ?>
+                                        
+                                        <tr  class="dark-gray" style="">
+                                            <td colspan="2"><div style="width:70%;float: left;font-size: 11px;font-weight: 400;"><?php echo $feeList->name; ?> 
+                                                    (<?php
                                                     if ($feetype_balance == 0) {
                                                         echo $this->lang->line('paid');
                                                     } else if (!empty($feeList->amount_detail)) {
@@ -338,311 +329,350 @@
                                                     } else {
                                                         echo $this->lang->line('unpaid');
                                                     }
-                                                    ?>
-
-                                                </td>
-                                                <td class="text text-right"><?php echo $currency_symbol . $feeList->amount; ?></td>
-
-                                                <td colspan="3"></td>
-                                                <td class="text text-right"><?php
-                                                    echo ($currency_symbol . number_format($fee_paid, 2, '.', ''));
-                                                    ?></td>
-                                                <td class="text text-right"><?php
-                                                    echo ($currency_symbol . number_format($fee_fine, 2, '.', ''));
-                                                    ?></td>
-                                                <td class="text text-right"><?php
-                                                    echo ($currency_symbol . number_format($fee_discount, 2, '.', ''));
-                                                    ?></td>
-                                                <td class="text text-right"><?php
-                                                    $display_none = "ss-none";
-                                                    if ($feetype_balance > 0) {
-                                                        $display_none = "";
-
-
-                                                        echo ($currency_symbol . number_format($feetype_balance, 2, '.', ''));
-                                                    }
-                                                    ?>
-
-                                                </td>
-
-
-
-                                            </tr>
-
-                                            <?php
-                                            $fee_deposits = json_decode(($feeList->amount_detail));
-                                            if (is_object($fee_deposits)) {
-
-
-                                                foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
-                                                    ?>
-                                                    <tr class="white-td">
-                                                        <td colspan="5" class="text-right"><img src="<?php echo base_url(); ?>backend/images/table-arrow.png" alt="" /></td>
-                                                        <td class="text text-center">
-
-
-                                                            <?php echo $feeList->student_fees_deposite_id . "/" . $fee_deposits_value->inv_no; ?>
-
-
-
-                                                        </td>
-                                                        <td class="text text-center"><?php echo $fee_deposits_value->payment_mode; ?></td>
-                                                        <td class="text text-center">
-
-                                                            <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($fee_deposits_value->date)); ?>
-                                                        </td>
-                                                        <td class="text text-right"><?php echo ($currency_symbol . number_format($fee_deposits_value->amount, 2, '.', '')); ?></td>
-                                                        <td class="text text-right"><?php echo ($currency_symbol . number_format($fee_deposits_value->amount_fine, 2, '.', '')); ?></td>
-                                                        <td class="text text-right"><?php echo ($currency_symbol . number_format($fee_deposits_value->amount_discount, 2, '.', '')); ?></td>
-
-                                                    </tr>
-                                                    <?php
-                                                }
-                                            }
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                                <?php
-                            }
-                            ?>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row header ">
-                    <div class="col-sm-12">
-                        <?php
-                        ?>
-
-                        <?php $this->setting_model->get_receiptfooter(); ?>
-                        <?php
-                        ?>
-                    </div>
-
-                </div>  
-            </div>
-            <?php
-            if ($settinglist[0]['is_duplicate_fees_invoice']) {
-                ?>
-                <div class="page-break"></div>
-                <div class="row">
-                    <div id="content" class="col-lg-12 col-sm-12 ">
-                        <div class="invoice">
-                            <div class="row header ">
-                                <div class="col-sm-12">
-                                    <?php ?>
-
-                                    <img  src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php $this->setting_model->get_receiptheader(); ?>" style="height: 100px;width: 100%;">
-                                    <?php
-                                    ?>
-                                </div>
-
-                            </div>
-                            <?php
-                            if ($settinglist[0]['is_duplicate_fees_invoice']) {
-                                ?>
-                                <div class="row">
-                                    <div class="col-md-12 text text-center">
-                                        <?php echo $this->lang->line('student_copy'); ?>
-                                    </div>
-                                </div>
-                                <?php
-                            }
-                            ?>
-                            <div class="row">                           
-                                <div class="col-xs-6">
-                                    <br/>
-                                    <address>
-                                        <strong><?php echo $feeList->firstname . " " . $feeList->lastname . " (" . $feeList->admission_no . ")"; ?></strong><br>
-
-                                        <?php echo $this->lang->line('father_name'); ?>: <?php echo $feeList->father_name; ?><br>
-                                        <?php echo $this->lang->line('class'); ?>: <?php echo $feeList->class . " (" . $feeList->section . ")"; ?>
-                                    </address>
-                                </div>
-                                <div class="col-xs-6 text-right">
-                                    <br/>
-                                    <address>
-                                        <strong>Date: <?php
-                                            $date = date('d-m-Y');
-
-                                            echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($date));
-                                            ?></strong><br/>
-
-                                    </address>                               
-                                </div>
-                            </div>
-                            <hr style="margin-top: 0px;margin-bottom: 0px;" />
-                            <div class="row">
-                                <?php
-                                if (!empty($feeList)) {
-                                    ?>
-
-                                    <table class="table table-striped table-responsive" style="font-size: 8pt;">
-                                        <thead>
-                                        <th><?php echo $this->lang->line('fees_group'); ?></th>
-                                        <th><?php echo $this->lang->line('fees_code'); ?></th>
-                                        <th  class=""><?php echo $this->lang->line('due_date'); ?></th>
-                                        <th class=""><?php echo $this->lang->line('status'); ?></th>
-                                        <th  class="text text-right"><?php echo $this->lang->line('amount'); ?></th>
-                                        <th  class="text text-center"><?php echo $this->lang->line('payment_id'); ?></th>
-                                        <th  class="text text-center"><?php echo $this->lang->line('mode'); ?></th>
-                                        <th  class=""><?php echo $this->lang->line('date'); ?></th>
-                                        <th  class="text text-right"><?php echo $this->lang->line('paid'); ?></th>
-                                        <th  class="text text-right"><?php echo $this->lang->line('fine'); ?></th>
-                                        <th class="text text-right" ><?php echo $this->lang->line('discount'); ?></th>
-                                        <th  class="text text-right"><?php echo $this->lang->line('balance'); ?></th>
-                                        <th></th>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $amount = 0;
-                                            $discount = 0;
-                                            $fine = 0;
-                                            $total = 0;
-                                            $grd_total = 0;
-
-                                            if (empty($feeList)) {
-                                                ?>
-                                                <tr>
-                                                    <td colspan="11" class="text-danger text-center">
-                                                        <?php echo $this->lang->line('no_transaction_found'); ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            } else {
-                                                $fee_discount = 0;
-                                                $fee_paid = 0;
-
-                                                $fee_fine = 0;
-                                                $alot_fee_discount = 0;
-                                                if ($feeList->is_system) {
-                                                    $feeList->amount = $feeList->student_fees_master_amount;
-                                                }
-                                                if (!empty($feeList->amount_detail)) {
-                                                    $fee_deposits = json_decode(($feeList->amount_detail));
-
-                                                    foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
-                                                        $fee_paid = $fee_paid + $fee_deposits_value->amount;
-                                                        $fee_discount = $fee_discount + $fee_deposits_value->amount_discount;
-                                                        $fee_fine = $fee_fine + $fee_deposits_value->amount_fine;
-                                                    }
-                                                }
-                                                $feetype_balance = $feeList->amount - ($fee_paid + $fee_discount);
-                                                ?>
-                                                <tr  class="dark-gray">
-
-                                                    <td><?php
-                                                        echo $feeList->name;
-                                                        ?></td>
-                                                    <td><?php echo $feeList->code; ?></td>
-                                                    <td class="">
-
-                                                        <?php
-                                                        if ($feeList->due_date == "0000-00-00") {
-                                                            
-                                                        } else {
-
-                                                            echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($feeList->due_date));
-                                                        }
-                                                        ?>
-                                                    </td>
-                                                    <td class="">
-                                                        <?php
-                                                        if ($feetype_balance == 0) {
-                                                            echo $this->lang->line('paid');
-                                                        } else if (!empty($feeList->amount_detail)) {
-                                                            ?><?php echo $this->lang->line('partial'); ?><?php
-                                                        } else {
-                                                            echo $this->lang->line('unpaid');
-                                                        }
-                                                        ?>
-
-                                                    </td>
-                                                    <td class="text text-right"><?php echo $currency_symbol . $feeList->amount; ?></td>
-
-                                                    <td colspan="3"></td>
-                                                    <td class="text text-right"><?php
-                                                        echo ($currency_symbol . number_format($fee_paid, 2, '.', ''));
-                                                        ?></td>
-                                                    <td class="text text-right"><?php
-                                                        echo ($currency_symbol . number_format($fee_fine, 2, '.', ''));
-                                                        ?></td>
-                                                    <td class="text text-right"><?php
-                                                        echo ($currency_symbol . number_format($fee_discount, 2, '.', ''));
-                                                        ?></td>
-                                                    <td class="text text-right"><?php
-                                                        $display_none = "ss-none";
-                                                        if ($feetype_balance > 0) {
-                                                            $display_none = "";
-
-
-                                                            echo ($currency_symbol . number_format($feetype_balance, 2, '.', ''));
-                                                        }
-                                                        ?>
-
-                                                    </td>
-
-
-
-                                                </tr>
-
-                                                <?php
-                                                $fee_deposits = json_decode(($feeList->amount_detail));
-                                                if (is_object($fee_deposits)) {
-
-
-                                                    foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
-                                                        ?>
-                                                        <tr class="white-td">
-                                                            <td colspan="5" class="text-right"><img src="<?php echo base_url(); ?>backend/images/table-arrow.png" alt="" /></td>
-                                                            <td class="text text-center">
-
-
-                                                                <?php echo $feeList->student_fees_deposite_id . "/" . $fee_deposits_value->inv_no; ?>
-
-
-
-                                                            </td>
-                                                            <td class="text text-center"><?php echo $fee_deposits_value->payment_mode; ?></td>
-                                                            <td class="text text-center">
-
-                                                                <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($fee_deposits_value->date)); ?>
-                                                            </td>
-                                                            <td class="text text-right"><?php echo ($currency_symbol . number_format($fee_deposits_value->amount, 2, '.', '')); ?></td>
-                                                            <td class="text text-right"><?php echo ($currency_symbol . number_format($fee_deposits_value->amount_fine, 2, '.', '')); ?></td>
-                                                            <td class="text text-right"><?php echo ($currency_symbol . number_format($fee_deposits_value->amount_discount, 2, '.', '')); ?></td>
-
-                                                        </tr>
-                                                        <?php
-                                                    }
-                                                }
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                    <?php
+                                                    ?>)
+                                                </div>
+                                                <div style="width:30%;float: left;font-size: 11px;font-weight: 400;"><?php echo $feeList->code; ?></div>
+                                            </td>
+                                            <td class="text text-right" style="font-size: 11px;font-weight: 400;">
+                                            <?php echo $currency_symbol . $feeList->amount; ?>
+                                            <?php //echo $currency_symbol . $fee_deposits_value->amount; ?></td>
+                                        </tr>
+                                        
+                                        <?php
+                                    }
                                 }
                                 ?>
 
-                            </div>
+                                <?php
+                                $fee_deposits = json_decode(($feeList->amount_detail));
+                                if (is_object($fee_deposits)) {
+
+
+                                    foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
+                                ?>
+                                <tr  class="dark-gray" style="">
+                                    <td colspan="2"><div style="width:70%;float: left;font-size: 11px;font-weight: 400;"><?php echo $feeList->name; ?> 
+                                            (<?php
+                                            if ($feetype_balance == 0) {
+                                                echo $this->lang->line('paid');
+                                            } else if (!empty($feeList->amount_detail)) {
+                                                ?><?php echo $this->lang->line('partial'); ?><?php
+                                            } else {
+                                                echo $this->lang->line('unpaid');
+                                            }
+                                            ?>)
+                                        </div>
+                                        <div style="width:30%;float: left;font-size: 11px;font-weight: 400;"><?php echo $feeList->code; ?></div>
+                                    </td>
+                                    <td class="text text-right" style="font-size: 11px;font-weight: 400;">
+                                    <?php echo ($currency_symbol . number_format($fee_deposits_value->amount, 2, '.', '')); ?>
+                                    
+                                </tr>
+                                <?php
+                                        }
+                                    }
+                                
+                                ?>
+                                
+                                <tr class="dark-gray" style="min-height: 100px;height: 100px;" >
+                                    <td colspan="3"> </td>   
+                                </tr>
+                                
+                                
+                        
+                                <?php if($fee_fine!=0){ ?>
+                                        <tr class="dark-gray" >
+                                            <td colspan="2" style="font-size: 11px;font-weight: 400;">Fine : </td>
+                                            
+                                            <td class="text text-right" style="font-size: 11px;font-weight: 400;"><?php echo ($currency_symbol . number_format($fee_fine, 2, '.', '')); ?></td> 
+                                        </tr>
+                                <?php } if($fee_discount!=0){ ?>
+                                            <tr class="dark-gray" >
+                                            <td colspan="2" style="font-size: 11px;font-weight: 400;">Discount : </td>
+                                            
+                                            <td class="text text-right" style="font-size: 11px;font-weight: 400;"><?php echo ($currency_symbol . number_format($fee_discount, 2, '.', '')); ?></td> 
+                                            </tr>
+                                <?php } ?>
+                        
+                                <tr class="success">
+                                    <td colspan="2" align="left" class="text text-left" style="font-size: 13px;font-weight: 600;" >
+                                        <b>    <?php echo $this->lang->line('grand_total'); ?></b>
+                                    </td>
+                                    <td class="text text-right" style="font-size: 13px;font-weight: 600;">
+                                        <b>  
+                                        <?php
+                                        if ($feetype_balance > 0) {
+                                            echo ($currency_symbol . number_format($feetype_balance, 2, '.', ''));
+                                        }
+                                        ?>    
+                                        <?php
+                                           // echo ($currency_symbol . number_format($total_amount, 2, '.', ''));
+                                        ?></b>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="dark-gray" >
+                                    <td colspan="3" style="font-size: 11px;font-weight: 400;"><?php echo getIndianCurrency($feetype_balance); ?></td>
+                                    
+                                </tr>
+                                    
+                                    <tr class="dark-gray" >
+                                    <td colspan="3" style="font-size: 11px;font-weight: 400;">
+                                        <div style="width:50%;float: left;"></div>
+                                        <div style="width:50%;float: right;text-align: end;font-size:14px; font-wieght:600;">Recievers <br> Signature</div>
+                                    </td>
+                                    
+                                    </tr>
+                                
+                                
+                                <?php
+                                }
+                                ?>
+                                
+
+                                
+                                    
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="row header ">
-                        <div class="col-sm-12">
-                            <?php $this->setting_model->get_receiptfooter(); ?>
 
+                    <div class="col-sm-6">
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td colspan="3">
+                                            <h4><?php echo $settinglist[0]['name']; ?></h4>
+                                            <div style="width:20%; float:left;padding:5px;">
+                                                    <img  src="<?php echo base_url(); ?>uploads/school_content/logo/<?php echo $settinglist[0]['image']; ?>" style="width: 100%;">
+                                            </div>
+                                            <div style="width:80%; float:left;padding:5px;">
+                                                
+                                                <span style="font-size: 12px;float: left;width: 100%;font-weight: 500;">
+                                                    <?php echo $settinglist[0]['email']; ?>
+                                                </span>
+                                                <span style="font-size: 11px;float: left;width: 100%;font-weight: 400;">
+                                                    <?php echo $settinglist[0]['address']; ?>
+                                                </span>
+                                                
+                                            
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td colspan="3">
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;"> Admission No. : <b><?php echo $feeList->admission_no; ?></b> </div>
+                                            
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;"> Name : <b><?php echo $feeList->firstname . " " . $feeList->lastname; ?></b></div>
+                                            
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;"> Father Name : <b><?php echo $feeList->father_name; ?></b></div>
+                                            
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;"> Register : <b><?php echo $feeList->register; ?></b></div>
+                                            
+                                            <div style="padding: 0px 5px 0 5px;font-size: 11px;">Payment Mode : <b>
+                                                <?php
+                                            $fee_deposits = json_decode(($feeList->amount_detail));
+                                            if (is_object($fee_deposits)) {
+                                                foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
+                                            ?><?php 
+                                                echo $fee_deposits_value->payment_mode; 
+                                                }
+                                            }
+                                            ?></b> </div>
+                                            
+                                            <div style="width:50%; float:left;padding:5px;font-size: 11px;">Class : <b><?php echo $feeList->class; ?></b></div>
+                                            
+                                            <div style="width:50%; float:left;padding:5px;font-size: 11px;">Section : <b><?php echo $feeList->section; ?></b> </div>
+                                            
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td colspan="3">
+                                            <div style="width:50%; float:left;padding:10px;font-size: 11px;">
+                                                    Reciept Number : <?php echo $feeList->student_reciept_no; ?>
+                                            </div>
+                                            <div style="width:50%; float:left;padding:10px;font-size: 11px;font-weight: 400;">
+                                                Date : <span style="font-size: 11px;font-weight: 400;"><?php $date = date('d-m-Y');
+                                                            echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($date));
+                                                            ?> 
+                                                        </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                </thead>
+                                <tbody>
+                                <?php
+                                    if (!empty($feeList)) {
+                                ?>
+                                
+                                <?php
+                                $amount = 0;
+                                $discount = 0;
+                                $fine = 0;
+                                $total = 0;
+                                $grd_total = 0;
+                                if (empty($feeList)) {
+                                    ?>
+                                    <tr>
+                                        <td colspan="3" class="text-danger text-center" style="font-size: 11px;font-weight: 400;">
+                                            <?php echo $this->lang->line('no_transaction_found'); ?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                } else {
+                                        $fee_discount = 0;
+                                        $fee_paid = 0;
+
+                                        $fee_fine = 0;
+                                        $alot_fee_discount = 0;
+                                        if($feeList->is_system){
+                                            $feeList->amount=$feeList->student_fees_master_amount;
+                                        }
+                                        if (!empty($feeList->amount_detail)) {
+                                            $fee_deposits = json_decode(($feeList->amount_detail));
+
+                                            foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
+                                                $fee_paid = $fee_paid + $fee_deposits_value->amount;
+                                                $fee_discount = $fee_discount + $fee_deposits_value->amount_discount;
+                                                $fee_fine = $fee_fine + $fee_deposits_value->amount_fine;
+                                            }
+                                        }
+                                        $feetype_balance = $feeList->amount - ($fee_paid + $fee_discount);
+                                        $fee_deposits = json_decode(($feeList->amount_detail));
+                                        if (!is_object($fee_deposits)) {
+                                        ?>
+                                        
+                                        <tr  class="dark-gray" style="">
+                                            <td colspan="2"><div style="width:70%;float: left;font-size: 11px;font-weight: 400;"><?php echo $feeList->name; ?> 
+                                                    (<?php
+                                                    if ($feetype_balance == 0) {
+                                                        echo $this->lang->line('paid');
+                                                    } else if (!empty($feeList->amount_detail)) {
+                                                        ?><?php echo $this->lang->line('partial'); ?><?php
+                                                    } else {
+                                                        echo $this->lang->line('unpaid');
+                                                    }
+                                                    ?>)
+                                                </div>
+                                                <div style="width:30%;float: left;font-size: 11px;font-weight: 400;"><?php echo $feeList->code; ?></div>
+                                            </td>
+                                            <td class="text text-right" style="font-size: 11px;font-weight: 400;">
+                                            <?php echo $currency_symbol . $feeList->amount; ?>
+                                            <?php //echo $currency_symbol . $fee_deposits_value->amount; ?></td>
+                                        </tr>
+                                        
+                                        <?php
+                                    }
+                                }
+                                ?>
+
+                                <?php
+                                $fee_deposits = json_decode(($feeList->amount_detail));
+                                if (is_object($fee_deposits)) {
+
+
+                                    foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
+                                ?>
+                                <tr  class="dark-gray" style="">
+                                    <td colspan="2"><div style="width:70%;float: left;font-size: 11px;font-weight: 400;"><?php echo $feeList->name; ?> 
+                                            (<?php
+                                            if ($feetype_balance == 0) {
+                                                echo $this->lang->line('paid');
+                                            } else if (!empty($feeList->amount_detail)) {
+                                                ?><?php echo $this->lang->line('partial'); ?><?php
+                                            } else {
+                                                echo $this->lang->line('unpaid');
+                                            }
+                                            ?>)
+                                        </div>
+                                        <div style="width:30%;float: left;font-size: 11px;font-weight: 400;"><?php echo $feeList->code; ?></div>
+                                    </td>
+                                    <td class="text text-right" style="font-size: 11px;font-weight: 400;">
+                                    <?php echo ($currency_symbol . number_format($fee_deposits_value->amount, 2, '.', '')); ?>
+                                    
+                                </tr>
+                                <?php
+                                        }
+                                    }
+                                
+                                ?>
+                                
+                                <tr class="dark-gray" style="min-height: 100px;height: 100px;" >
+                                    <td colspan="3"> </td>   
+                                </tr>
+                                
+                                
+                        
+                                <?php if($fee_fine!=0){ ?>
+                                        <tr class="dark-gray" >
+                                            <td colspan="2" style="font-size: 11px;font-weight: 400;">Fine : </td>
+                                            
+                                            <td class="text text-right" style="font-size: 11px;font-weight: 400;"><?php echo ($currency_symbol . number_format($fee_fine, 2, '.', '')); ?></td> 
+                                        </tr>
+                                <?php } if($fee_discount!=0){ ?>
+                                            <tr class="dark-gray" >
+                                            <td colspan="2" style="font-size: 11px;font-weight: 400;">Discount : </td>
+                                            
+                                            <td class="text text-right" style="font-size: 11px;font-weight: 400;"><?php echo ($currency_symbol . number_format($fee_discount, 2, '.', '')); ?></td> 
+                                            </tr>
+                                <?php } ?>
+                        
+                                <tr class="success">
+                                    <td colspan="2" align="left" class="text text-left" style="font-size: 13px;font-weight: 600;" >
+                                        <b>    <?php echo $this->lang->line('grand_total'); ?></b>
+                                    </td>
+                                    <td class="text text-right" style="font-size: 13px;font-weight: 600;">
+                                        <b> 
+                                        <?php
+                                       
+                                        if ($feetype_balance > 0) {
+                                      
+                                            echo ($currency_symbol . number_format($feetype_balance, 2, '.', ''));
+                                        }
+                                        ?>   
+                                        <?php
+                                        
+                                            //echo ($currency_symbol . number_format($total_amount, 2, '.', ''));
+                                        ?>
+                                        </b>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="dark-gray" >
+                                    <td colspan="3" style="font-size: 11px;font-weight: 400;"><?php echo getIndianCurrency($feetype_balance); ?></td>
+                                    
+                                </tr>
+                                    
+                                    <tr class="dark-gray" >
+                                    <td colspan="3" style="font-size: 11px;font-weight: 400;">
+                                        <div style="width:50%;float: left;"></div>
+                                        <div style="width:50%;float: right;text-align: end;font-size:14px; font-wieght:600;">Recievers <br> Signature</div>
+                                    </td>
+                                    
+                                    </tr>
+                                
+                                
+                                <?php
+                                }
+                                ?>
+                                
+
+                                
+                                    
+                                </tbody>
+                            </table>
                         </div>
-
-                    </div>  
+                    </div>
                 </div>
-                <?php
-            }
-            ?>
+            </div>
         </div>
+       
         <div class="clearfix"></div>
 
-        <footer>           
-        </footer>
     </body>
 </html>

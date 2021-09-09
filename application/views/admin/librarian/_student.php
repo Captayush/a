@@ -2,7 +2,7 @@
 <div class="box box-primary">
     <div class="box-body box-profile">
         <img class="profile-user-img img-responsive img-circle" src="<?php echo base_url() . $memberList->image ?>" alt="User profile picture">
-        <h3 class="profile-username text-center"><?php echo $this->customlib->getFullName($memberList->firstname,$memberList->middlename,$memberList->lastname,$sch_setting->middlename,$sch_setting->lastname); ?></h3>
+        <h3 class="profile-username text-center"><?php echo $memberList->firstname . " " . $memberList->lastname ?></h3>
         <ul class="list-group list-group-unbordered">
             <li class="list-group-item">
                 <b><?php echo $this->lang->line('member_id'); ?></b> <a class="pull-right text-aqua"><?php echo $memberList->lib_member_id ?></a>

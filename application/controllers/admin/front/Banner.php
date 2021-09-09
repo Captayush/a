@@ -26,7 +26,7 @@ class Banner extends Admin_Controller {
         $this->load->view('admin/front/banner/index', $data);
         $this->load->view('layout/footer');
     }
-
+ 
     function add() {
         if (!$this->rbac->hasPrivilege('banner_images', 'can_add')) {
             access_denied();

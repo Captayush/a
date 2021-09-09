@@ -1,16 +1,16 @@
-<?php
-$currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+
+
+<?php $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 $language = $this->customlib->getLanguage();
 $language_name = $language["short_code"];
-?>
-<style type="text/css">
-
-     @media print {
-               .no-print {
-                 visibility: hidden !important;
-                  display:none !important;
-               }
-            }
+ ?><style type="text/css">
+    @media print
+    {
+        .no-print, .no-print *
+        {
+            display: none !important;
+        }
+    }
 </style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -123,14 +123,12 @@ $language_name = $language["short_code"];
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                       
+                        <div class="download_label"><?php echo $this->lang->line('income_list'); ?></div>
                         <div class="table-responsive mailbox-messages">
-                                 <table class="table table-striped table-bordered table-hover income-list" data-export-title="<?php echo $this->lang->line('income_list'); ?>">
+                            <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('name'); ?>
-                                        </th>
-                                         <th><?php echo $this->lang->line('description'); ?>
                                         </th>
                                         <th><?php echo $this->lang->line('invoice_no'); ?>
                                         </th>
@@ -140,12 +138,92 @@ $language_name = $language["short_code"];
                                         </th>
                                         <th><?php echo $this->lang->line('amount'); ?>
                                         </th>
-                                        <th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>
+                                        <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                    if (empty($incomelist)) {
+                                        ?>
+
+                                        <?php
+                                    } else {
+                                        foreach ($incomelist as $income) {
+                                            ?>
+                                            <tr>
+                                                <td class="mailbox-name">
+                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $income['name'] ?></a>
+
+                                                    <div class="fee_detail_popover " style="display: none">
+                                                        <?php
+                                                        if ($income['note'] == "") {
+                                                            ?>
+                                                            <p class="text text-danger no-print"><?php echo $this->lang->line('no_description'); ?></p>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <p class="text text-info no-print" ><?php echo $income['note']; ?></p>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                                <td class="mailbox-name">
+                                                    <?php echo $income["invoice_no"]; ?>
+                                                </td>
+                                                <td class="mailbox-name">
+                                                    <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($income['date'])) ?></td>
+
+                                                <td class="mailbox-name">
+                                                    <?php
+                                                    $income_head = $income['income_category'];
+                                                    echo "$income_head";
+                                                    ?>
+
+
+                                                </td>
+
+                                                <?php
+                                                $inc_head_id = $income['inc_head_id'];
+                                                $arr1 = str_split($inc_head_id);
+                                                ?>
+
+                                                <td class="mailbox-name"><?php echo ($currency_symbol . $income['amount']); ?></td>
+                                                <td class="mailbox-date pull-right">
+                                                    <?php if ($income['documents']) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/income/download/<?php echo $income['documents'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('download'); ?>">
+                                                            <i class="fa fa-download"></i>
+                                                        </a>
+                                                    <?php }
+                                                    ?>
+
+                                                    <?php
+                                                    if ($this->rbac->hasPrivilege('income', 'can_edit')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/income/edit/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    <?php } ?>
+                                                    <?php
+                                                    if ($this->rbac->hasPrivilege('income', 'can_delete')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/income/delete/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
                                 </tbody>
                             </table><!-- /.table -->
+
+
+
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>
@@ -156,11 +234,41 @@ $language_name = $language["short_code"];
 
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
-<script>
-    ( function ( $ ) {
-    'use strict';
+
+<script type="text/javascript">
     $(document).ready(function () {
-        initDatatable('income-list','admin/income/getincomelist',[],[],100);
+       
+       
+
+
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+
     });
-} ( jQuery ) )
+
+    $(document).ready(function () {
+        $('.detail_popover').popover({
+            placement: 'right',
+            trigger: 'hover',
+            container: 'body',
+            html: true,
+            content: function () {
+                return $(this).closest('td').find('.fee_detail_popover').html();
+            }
+        });
+    });
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                customize: function ( win ) {
+                 alert();
+                }
+            }
+        ]
+    } );
+} );
 </script>

@@ -56,13 +56,13 @@ class Itemstore extends Admin_Controller {
                 'description' => $this->input->post('description'),
             );
             $this->itemstore_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/itemstore/index');
         }
     }
 
     function edit($id) {
-
+        
         if (!$this->rbac->hasPrivilege('store', 'can_edit')) {
             access_denied();
         }
@@ -88,7 +88,7 @@ class Itemstore extends Admin_Controller {
                 'description' => $this->input->post('description'),
             );
             $this->itemstore_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('update_message').'</div>');
             redirect('admin/itemstore/index');
         }
     }

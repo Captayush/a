@@ -4,6 +4,9 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
+/**
+ *
+ */
 class Generatecertificate extends Admin_Controller
 {
 
@@ -12,7 +15,6 @@ class Generatecertificate extends Admin_Controller
         parent::__construct();
 
         $this->load->library('Customlib');
-        $this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
     public function index()
@@ -70,7 +72,6 @@ class Generatecertificate extends Admin_Controller
                     $data['title']             = $this->lang->line('std_dtl_for') . ' ' . $title['class'] . "(" . $title['section'] . ")";
                 }
             }
-            $data['sch_setting'] = $this->sch_setting_detail;
             $this->load->view('layout/header', $data);
             $this->load->view('admin/certificate/generatecertificate', $data);
             $this->load->view('layout/footer', $data);
@@ -85,7 +86,27 @@ class Generatecertificate extends Admin_Controller
         $data['resultlist']        = $resultlist;
 
         $this->load->view('admin/certificate/transfercertificate', $data);
+
     }
+
+    // public function generatemultipledd() {
+
+    //     $studentid = $this->input->post('data');
+    //     $student_array = json_decode($studentid);
+    //     $class = $this->input->post('class_id');
+    //     $results = array();
+    //     foreach ($student_array as $key => $value) {
+    //         $student = $value->student_id;
+    //         $result = $this->student_model->searchByClassStudent($class, $student);
+    //         $results[] = $result;
+    //         $certificate = $this->input->post('certificate_id');
+    //         $certificateResult = $this->Generatecertificate_model->getcertificatebyid($certificate);
+    //         $data['certificateResult'] = $certificateResult;
+    //     }
+    //     $data['resultlist'] = $results;
+    //     $this->load->view('admin/certificate/stugeneratecertificate', $data);
+
+    // }
 
     public function generatemultiple()
     {
@@ -104,12 +125,8 @@ class Generatecertificate extends Admin_Controller
             $std_arr[] = $value->student_id;
         }
         $data['students'] = $this->student_model->getStudentsByArray($std_arr);
-        foreach ($data['students'] as $key => $value) {
-            $data['students'][$key]->name = $this->customlib->getFullName($value->firstname, $value->middlename, $value->lastname, $this->sch_setting_detail->middlename, $this->sch_setting_detail->lastname);
-        }
-
-        $data['sch_setting'] = $this->sch_setting_detail;
-        $certificates        = $this->load->view('admin/certificate/printcertificate', $data, true);
+        // print_r($data); die;
+        $certificates = $this->load->view('admin/certificate/printcertificate', $data, true);
         echo $certificates;
     }
 

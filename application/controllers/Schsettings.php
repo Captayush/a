@@ -13,25 +13,56 @@ class Schsettings extends Admin_Controller
         $this->load->library('upload');
     }
 
-  
-    public function index()
+    public function index_old()
     {
-
         if (!$this->rbac->hasPrivilege('general_setting', 'can_view')) {
             access_denied();
         }
-        $app_ver = $this->config->item('app_ver');
+        $this->session->set_userdata('top_menu', 'System Settings');
+        $this->session->set_userdata('sub_menu', 'schsettings/index');
+        $data['title']         = 'Setting List';
+        $setting_result        = $this->setting_model->get();
+        $data['settinglist']   = $setting_result;
+        $timezoneList          = $this->customlib->timezone_list();
+        $currencyPlace         = $this->customlib->getCurrencyPlace();
+        $data['title']         = 'School Setting';
+        $session_result        = $this->session_model->get();
+        $language_result       = $this->language_model->get();
+        $data['sessionlist']   = $session_result;
+        $month_list            = $this->customlib->getMonthList();
+        $data['languagelist']  = $language_result;
+        $data['timezoneList']  = $timezoneList;
+        $data['currencyPlace'] = $currencyPlace;
+        $data['monthList']     = $month_list;
+        $dateFormat            = $this->customlib->getDateFormat();
+        $currency              = $this->customlib->getCurrency();
+        $digit                 = $this->customlib->getDigits();
+
+        $data['dateFormatList'] = $dateFormat;
+        $data['currencyList']   = $currency;
+        $data['digitList']      = $digit;
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('setting/settingList_old', $data);
+        $this->load->view('layout/footer', $data);
+    }
+    public function index()
+    {
+        if (!$this->rbac->hasPrivilege('general_setting', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'schsettings/index');
         $data['title']          = 'Setting List';
+        $setting_result         = $this->setting_model->get();
+        $data['settinglist']    = $setting_result;
         $timezoneList           = $this->customlib->timezone_list();
         $data['title']          = 'School Setting';
         $session_result         = $this->session_model->get();
         $language_result        = $this->language_model->getEnable_languages();
+     
         $data['sessionlist']    = $session_result;
         $month_list             = $this->customlib->getMonthList();
-        $days_list              = $this->customlib->getDayList();
-        $data['daysList']       = $days_list;
         $data['languagelist']   = $language_result;
         $data['timezoneList']   = $timezoneList;
         $data['monthList']      = $month_list;
@@ -44,7 +75,6 @@ class Schsettings extends Admin_Controller
         $currencyPlace          = $this->customlib->getCurrencyPlace();
         $data['currencyPlace']  = $currencyPlace;
         $data['result']         = $this->setting_model->getSetting();
-        $data['app_response']   = $this->auth->andapp_validate();
         $this->load->view('layout/header', $data);
         $this->load->view('setting/settingList', $data);
         $this->load->view('layout/footer', $data);
@@ -74,8 +104,8 @@ class Schsettings extends Admin_Controller
             echo json_encode($array);
         }
     }
-
-    public function ajax_editadmin_smalllogo()
+    
+ public function ajax_editadmin_smalllogo()
     {
 
         $this->form_validation->set_rules('id', $this->lang->line('id'), 'trim|required|xss_clean');
@@ -101,8 +131,7 @@ class Schsettings extends Admin_Controller
         }
     }
 
-    public function ajax_editadmin_adminlogo()
-    {
+    public function ajax_editadmin_adminlogo(){
 
         $this->form_validation->set_rules('id', $this->lang->line('id'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('file', $this->lang->line('image'), 'callback_handle_upload');
@@ -124,9 +153,8 @@ class Schsettings extends Admin_Controller
             $this->setting_model->add($data_record);
             $array = array('success' => true, 'error' => '', 'message' => $this->lang->line('success_message'));
             echo json_encode($array);
-        }
+        } 
     }
-
     public function editLogo($id)
     {
         $data['title']       = 'School Logo';
@@ -171,7 +199,7 @@ class Schsettings extends Admin_Controller
                 return false;
             }
             if ($_FILES["file"]["size"] > 102400) {
-                $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . " 1MB");
+                $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than'));
                 return false;
             }
             return true;
@@ -220,10 +248,11 @@ class Schsettings extends Admin_Controller
         $this->form_validation->set_rules('sch_date_format', $this->lang->line('date_format'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('sch_is_rtl', $this->lang->line('rtl'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('theme', $this->lang->line('theme'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('sch_start_week', $this->lang->line('start_day_of_week'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('attendence_type', $this->lang->line('attendance') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('attendence_type', $this->lang->line('attendance')." ".$this->lang->line('type'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('online_admission', $this->lang->line('online') . " " . $this->lang->line('admission'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('is_duplicate_fees_invoice', $this->lang->line('duplicate')." ".$this->lang->line('fees')." ".$this->lang->line('invoice'), 'trim|required|xss_clean');
 
-        $this->form_validation->set_rules('is_duplicate_fees_invoice', $this->lang->line('duplicate') . " " . $this->lang->line('fees') . " " . $this->lang->line('invoice'), 'trim|required|xss_clean');
+        
 
         if ($this->input->post('adm_auto_insert')) {
             $this->form_validation->set_rules('adm_prefix', $this->lang->line('admission_no_prefix'), 'trim|required|xss_clean');
@@ -240,11 +269,11 @@ class Schsettings extends Admin_Controller
         if ($this->form_validation->run() == false) {
             $data = array(
                 'is_student_house'          => form_error('is_student_house'),
+             
                 'sch_session_id'            => form_error('sch_session_id'),
                 'sch_name'                  => form_error('sch_name'),
                 'sch_phone'                 => form_error('sch_phone'),
                 'sch_start_month'           => form_error('sch_start_month'),
-                'sch_start_week'            => form_error('sch_start_week'),
                 'sch_address'               => form_error('sch_address'),
                 'sch_email'                 => form_error('sch_email'),
                 'sch_lang_id'               => form_error('sch_lang_id'),
@@ -263,7 +292,7 @@ class Schsettings extends Admin_Controller
                 'staffid_start_from'        => form_error('staffid_start_from'),
                 'staffid_prefix'            => form_error('staffid_prefix'),
                 'staffid_no_digit'          => form_error('staffid_no_digit'),
-
+                'online_admission'          => form_error('online_admission'),
                 'is_duplicate_fees_invoice' => form_error('is_duplicate_fees_invoice'),
                 'attendence_type'           => form_error('attendence_type'),
                 'fee_due_days'              => form_error('fee_due_days'),
@@ -272,7 +301,7 @@ class Schsettings extends Admin_Controller
             echo json_encode($array);
         } else {
             $setting_result = $this->setting_model->getSetting();
-
+ 
             $data = array(
                 'id'                        => $this->input->post('sch_id'),
                 'attendence_type'           => $this->input->post('attendence_type'),
@@ -281,7 +310,6 @@ class Schsettings extends Admin_Controller
                 'phone'                     => $this->input->post('sch_phone'),
                 'dise_code'                 => $this->input->post('sch_dise_code'),
                 'start_month'               => $this->input->post('sch_start_month'),
-                'start_week'                => $this->input->post('sch_start_week'),
                 'address'                   => $this->input->post('sch_address'),
                 'email'                     => $this->input->post('sch_email'),
                 'lang_id'                   => $this->input->post('sch_lang_id'),
@@ -300,32 +328,25 @@ class Schsettings extends Admin_Controller
                 'staffid_start_from'        => $this->input->post('staffid_start_from'),
                 'staffid_prefix'            => $this->input->post('staffid_prefix'),
                 'staffid_no_digit'          => $this->input->post('staffid_no_digit'),
+                'online_admission'          => $this->input->post('online_admission'),
                 'staffid_auto_insert'       => $this->input->post('staffid_auto_insert'),
                 'class_teacher'             => $this->input->post('class_teacher'),
-                'biometric_device'          => $this->input->post('biometric_device'),
-                'biometric'                 => $this->input->post('biometric'),
+               
+                'biometric_device'            => $this->input->post('biometric_device'),
+                'biometric'            => $this->input->post('biometric'),
                 'is_duplicate_fees_invoice' => $this->input->post('is_duplicate_fees_invoice'),
-                'app_primary_color_code'    => $this->input->post('app_primary_color_code'),
+                 'app_primary_color_code'    => $this->input->post('app_primary_color_code'),
                 'app_secondary_color_code'  => $this->input->post('app_secondary_color_code'),
-                'mobile_api_url'            => $this->input->post('mobile_api_url'),
-                'my_question'               => $this->input->post('my_question'),
-
+                'mobile_api_url'            => $this->input->post('mobile_api_url')
             );
-            $this->session->userdata['admin']['is_rtl'] = $this->input->post('sch_is_rtl');
-            $language_result                            = $this->language_model->get($this->input->post('sch_lang_id'));
-            if ($this->customlib->get_rtl_languages($language_result['short_code'])) {
-                $this->session->userdata['admin']['is_rtl'] = 'enabled';
-                $data['is_rtl']                             = 'enabled';
-            }
-
-            $session_result = $this->session_model->get($this->input->post('sch_session_id'));
-
-            $session = array(
+            $session_result=$this->session_model->get($this->input->post('sch_session_id'));
+          // echo "<pre>"; print_r($session_result); echo "<pre>";die;
+            $session=array(
                 'session_id' => $session_result['id'],
-                'session'    => $session_result['session'],
+                'session' => $session_result['session'],
             );
-            $this->session->set_userdata('session_array', $session);
-
+            $this->session->set_userdata('session_array',$session);
+          
             $data['adm_update_status']     = 1;
             $data['staffid_update_status'] = 1;
             if ($this->input->post('adm_auto_insert')) {
@@ -347,53 +368,56 @@ class Schsettings extends Admin_Controller
             }
 
             $data['adm_update_status'];
+
             $this->setting_model->add($data);
             $this->load->helper('lang');
             $this->session->userdata['admin']['date_format']     = $this->input->post('sch_date_format');
             $this->session->userdata['admin']['currency_symbol'] = $this->input->post('sch_currency_symbol');
-            $this->session->userdata['admin']['start_week']      = date("w", strtotime($this->input->post('sch_start_week')));
+            $this->session->userdata['admin']['is_rtl']          = $this->input->post('sch_is_rtl');
             $this->session->userdata['admin']['timezone']        = $this->input->post('sch_timezone');
             $this->session->userdata['admin']['theme']           = $this->input->post('theme');
             $this->session->userdata['admin']['currency_place']  = $this->input->post('currency_place');
-            $session                                             = $this->session->userdata('admin');
-            $staff_id                                            = $session['id'];
-            $defoultlang                                         = $this->setting_model->get_stafflang($staff_id);
 
-            if ($defoultlang['lang_id'] != 0) {
-
-                set_language($defoultlang['lang_id']);
-            } else {
-                set_language($this->input->post('sch_lang_id'));
-            }
-
+            $session=$this->session->userdata('admin');      
+            $staff_id=$session['id'];
+            $defoultlang=$this->setting_model->get_stafflang($staff_id);
+                                          
+             if($defoultlang['lang_id']!=0){
+               
+                    set_language($defoultlang['lang_id']);  
+                
+            }else{
+                  set_language($this->input->post('sch_lang_id'));  
+                }
+            
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
             echo json_encode($array);
         }
     }
 
-    public function ajax_applogo()
-    {
+
+  function ajax_applogo() {
         $this->form_validation->set_rules('id', 'ID', 'trim|required|xss_clean');
         $this->form_validation->set_rules('file', 'Image', 'callback_handle_upload');
-
+    
         if ($this->form_validation->run() == false) {
             $data = array(
-                'file' => form_error('file'),
+                'file' => form_error('file')
             );
             $array = array('success' => false, 'error' => $data);
             echo json_encode($array);
         } else {
 
             $id = $this->input->post('id');
-
-            if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
+         
+             if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
                 $fileInfo = pathinfo($_FILES["file"]["name"]);
                 $img_name = $id . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["file"]["tmp_name"], "./uploads/school_content/logo/app_logo/" . $img_name);
             }
-
+                
             $data_record = array('id' => $id, 'app_logo' => $img_name);
-
+          
             $this->setting_model->add($data_record);
             $array = array('success' => true, 'error' => '', 'message' => 'Record Updated Successfully');
             echo json_encode($array);

@@ -32,66 +32,66 @@
                         <?php } ?>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <div class="download_label"><?php echo $this->lang->line('notice_list'); ?></div>
+                         <div class="download_label"><?php echo $this->lang->line('notice_list'); ?></div>
                         <div class="mailbox-controls">
                             <div class="pull-right">
                             </div><!-- /.pull-right -->
                         </div>
                         <div class="mailbox-messages">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('title'); ?></th>
-                                            <th><?php echo $this->lang->line('url'); ?></th>
-                                            <th class="text-right no-print">
-                                                <?php echo $this->lang->line('action'); ?>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (empty($listResult)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            foreach ($listResult as $page) {
-                                                ?>
-                                                <tr id="<?php echo $page["id"]; ?>">
-
-                                                    <td class="mailbox-name">
-                                                        <a href="#" ><?php echo $page['title'] ?></a>
-
-
-                                                    </td>
-                                                    <td class="mailbox-name"> <a href="<?php echo base_url() . $page['url'] ?>" target="_blank"><?php echo base_url() . $page['url'] ?></a></td>
-
-                                                    <td class="mailbox-date pull-right no-print">
-                                                        <?php
-                                                        if ($this->rbac->hasPrivilege('notice', 'can_edit')) {
-                                                            ?>
-                                                            <a data-placement="left" href="<?php echo site_url('admin/front/notice/edit/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                            <?php
-                                                        }
-                                                        if ($this->rbac->hasPrivilege('notice', 'can_delete')) {
-                                                            ?>
-                                                            <a data-placement="left" href="<?php echo site_url('admin/front/notice/delete/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            $count++;
-                                        }
+                          <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('title'); ?></th>
+                                        <th><?php echo $this->lang->line('url'); ?></th>
+                                        <th class="text-right no-print">
+                                            <?php echo $this->lang->line('action'); ?>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($listResult)) {
                                         ?>
-                                    </tbody>
-                                </table><!-- /.table -->
-                            </div>  
+
+                                        <?php
+                                    } else {
+                                        $count = 1;
+                                        foreach ($listResult as $page) {
+                                            ?>
+                                            <tr id="<?php echo $page["id"]; ?>">
+
+                                                <td class="mailbox-name">
+                                                    <a href="#" ><?php echo $page['title'] ?></a>
+
+
+                                                </td>
+                                                <td class="mailbox-name"> <a href="<?php echo base_url() . $page['url'] ?>" target="_blank"><?php echo base_url() . $page['url'] ?></a></td>
+
+                                                <td class="mailbox-date pull-right no-print">
+                                                    <?php
+                                                    if ($this->rbac->hasPrivilege('notice', 'can_edit')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo site_url('admin/front/notice/edit/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <?php
+                                                    }
+                                                    if ($this->rbac->hasPrivilege('notice', 'can_delete')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo site_url('admin/front/notice/delete/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table><!-- /.table -->
+                          </div>  
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>

@@ -17,27 +17,20 @@ class Msgnineone
     {
         $this->_CI = &get_instance();
 
-        $this->authKey     = $array['authkey'];
-        $this->senderId    = $array['senderid'];
-        $this->template_id = $array['templateid'];
+        $this->authKey  = $array['authkey'];
+        $this->senderId = $array['senderid'];
     }
 
     public function sendSMS($to, $message)
     {
-
-        // $message = urlencode("Hello {#var#} your login details for Url: {#var#} Username: {#var#} Password: {#var#} . Message sent by Webfeb Systems.");
-        $DLT_TE_ID = $this->template_id;
-
         $postData = array(
-            "sender"    => $this->senderId,
-            'DLT_TE_ID' => $DLT_TE_ID,
-            'route'     => $this->route,
-            "country"   => "91",
-            "unicode"   => 1,
-            'sms'       => array(array('message' => $message, 'to' => array($to))),
+            "sender"  => $this->senderId,
+            'route'   => $this->route,
+            "country" => "91",
+            "unicode" => 1,
+            'sms'     => array(array('message' => $message, 'to' => array($to))),
 
         );
-
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL            => $this->url,
@@ -61,6 +54,11 @@ class Msgnineone
 
         curl_close($curl);
         return true;
+        // if ($err) {
+        //     echo "cURL Error #:" . $err;
+        // } else {
+        //     echo $response;
+        // }
 
     }
 

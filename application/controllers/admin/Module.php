@@ -31,7 +31,7 @@ class Module extends Admin_Controller {
         $status = $this->input->post("status");
 
         if (!empty($id)) {
-
+ 
             $data = array('id' => $id, 'is_active' => $status);
             $result = $this->module_model->changeStatus($data);
             $response = array('status' => 1, 'msg' => 'Status change successfully');
@@ -53,13 +53,13 @@ class Module extends Admin_Controller {
             $response = array('status' => 1, 'msg' => 'Status change successfully');
             echo json_encode($response);
         }
-    }
+    } 
 
     public function changeStudentStatus() {
 
         $id = $this->input->post("id");
         $status = $this->input->post("status");
-        $role = $this->input->post('role');
+        $role=$this->input->post('role');
         if (!empty($id)) {
 
             $data = array('id' => $id, $role => $status);

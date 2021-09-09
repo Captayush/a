@@ -1,4 +1,4 @@
-<div class="content-wrapper">  
+<div class="content-wrapper" style="min-height: 348px;">  
     <section class="content-header">
         <h1>
             <i class="fa fa-ioxhost"></i> <?php echo $this->lang->line('front_office'); ?></h1>
@@ -97,17 +97,18 @@
                                         ?>
                                         <?php
                                     } else {
-                                        foreach ($receiveList as $key => $value) {                                           
+                                        foreach ($receiveList as $key => $value) {
+                                            //print_r($value);
                                             ?>
                                             <tr>                                              
                                                 <td class="mailbox-name"><?php echo $value->from_title; ?></td>
                                                 <td class="mailbox-name"><?php echo $value->reference_no; ?></td>
                                                 <td class="mailbox-name"> <?php echo $value->to_title; ?></td>
                                                 <td class="mailbox-name"> <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($value->date)); ?></td>
-                                                <td class="mailbox-date pull-right white-space-nowrap">
+                                                <td class="mailbox-date pull-right">
 
-                                                    <a data-placement="left" onclick="getRecord(<?php echo $value->id; ?>)" class="btn btn-default btn-xs" data-target="#receviedetails" data-toggle="modal"  title="<?php echo $this->lang->line('view') ?>"><i class="fa fa-reorder"></i></a>
-                                                    <?php if ($value->image !== "") { ?><a data-placement="left" href="<?php echo base_url(); ?>admin/dispatch/download/<?php echo $value->image; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('download'); ?>">
+                                                    <a data-placement="left" onclick="getRecord(<?php echo $value->id; ?>)" class="btn btn-default btn-xs" data-target="#receviedetails" data-toggle="modal"  title="View"><i class="fa fa-reorder"></i></a>
+        <?php if ($value->image !== "") { ?><a data-placement="left" href="<?php echo base_url(); ?>admin/dispatch/download/<?php echo $value->image; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('download'); ?>">
                                                             <i class="fa fa-download"></i>
                                                         </a>  <?php } ?>   <?php if ($this->rbac->hasPrivilege('postal_receive', 'can_edit')) { ?>                                              
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/receive/editreceive/<?php echo $value->id; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
@@ -115,15 +116,15 @@
                                                         </a>
                                                     <?php } if ($this->rbac->hasPrivilege('postal_receive', 'can_delete')) { ?>
 
-                                                        <?php if ($value->image !== "") { ?><a data-placement="left" href="<?php echo base_url(); ?>admin/receive/imagedelete/<?php echo $value->id; ?>/<?php echo $value->image; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete') ?>">
+                                                        <?php if ($value->image !== "") { ?><a data-placement="left" href="<?php echo base_url(); ?>admin/receive/imagedelete/<?php echo $value->id; ?>/<?php echo $value->image; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="Delete">
                                                                 <i class="fa fa-remove"></i>
                                                             </a>
-                                                        <?php } else { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/receive/delete/<?php echo $value->id; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete') ?>">
+            <?php }else{ ?>
+                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/receive/delete/<?php echo $value->id; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="Delete">
                                                                 <i class="fa fa-remove"></i>
                                                             </a>
-                                                        <?php } ?>
-                                                    <?php } ?>
+            <?php } ?>
+                                            <?php } ?>
                                                 </td>
                                             </tr>
                                             <?php
@@ -156,10 +157,14 @@
 </div>
 </div><!-- /.content-wrapper -->
 <script type="text/javascript">
-    function getRecord(id) {       
+   
+
+    function getRecord(id) {
+        //alert(id);
         $.ajax({
             url: '<?php echo base_url(); ?>admin/dispatch/details/' + id + '/receive',
-            success: function (result) {               
+            success: function (result) {
+                //alert(result);
                 $('#getdetails').html(result);
             }
         });

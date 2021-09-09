@@ -1,29 +1,33 @@
-<div class="content-wrapper">
+<div class="content-wrapper" style="min-height: 348px;">  
     <section class="content-header">
         <h1>
             <i class="fa fa-ioxhost"></i> <?php echo $this->lang->line('front_office'); ?></h1>
     </section>
     <section class="content">
         <div class="row">
-            <?php if ($this->rbac->hasPrivilege('visitor_book', 'can_add')) {?>
+            <?php if ($this->rbac->hasPrivilege('visitor_book', 'can_add')) { ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('add'); ?> <?php echo $this->lang->line('visitor'); ?></h3>
                         </div><!-- /.box-header -->
+                        <?php //echo $this->session->flashdata('msg')  ?>
                         <form id="form1" action="<?php echo site_url('admin/visitors') ?>"   method="post" accept-charset="utf-8" enctype="multipart/form-data" >
                             <div class="box-body">
+
                                 <?php echo $this->session->flashdata('msg') ?>
+
+
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('purpose'); ?></label><small class="req"> *</small>
 
-                                    <select name="purpose" class="form-control">
-                                        <option value=""><?php echo $this->lang->line('select'); ?> </option>
-                                        <?php foreach ($Purpose as $key => $value) {?>
+                                    <select name="purpose" class="form-control"> 
+                                        <option value="">Select</option>  
+                                        <?php foreach ($Purpose as $key => $value) { ?>
 
-                                            <option value="<?php print_r($value['visitors_purpose']);?>"<?php if (set_value('purpose') == $value['visitors_purpose']) {?>selected=""<?php }?>><?php print_r($value['visitors_purpose']);?></option>
-                                        <?php }?>
+                                            <option value="<?php print_r($value['visitors_purpose']); ?>"<?php if (set_value('purpose') == $value['visitors_purpose']) { ?>selected=""<?php } ?>><?php print_r($value['visitors_purpose']); ?></option>
+                                        <?php } ?>
 
                                     </select>
                                     <span class="text-danger"><?php echo form_error('purpose'); ?></span>
@@ -46,7 +50,7 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="email"><?php echo $this->lang->line('number_of_person'); ?></label>
+                                    <label for="email"><?php echo $this->lang->line('number_of_person'); ?></label> 
                                     <input type="text" class="form-control" value="<?php echo set_value('pepples'); ?>" name="pepples">
                                 </div>
                                 <div class="form-group">
@@ -67,6 +71,8 @@
                                             </div>
                                         </div>
                                     </div>
+
+
                                     <span class="text-danger"><?php echo form_error('time'); ?></span>
                                 </div>
                                 <div class="form-group">
@@ -81,19 +87,25 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <span class="text-danger"><?php echo form_error('out_time'); ?></span>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="pwd"><?php echo $this->lang->line('note'); ?></label>
                                     <textarea class="form-control" id="description" name="note" name="note" rows="3"><?php echo set_value('note'); ?></textarea>
                                     <span class="text-danger"><?php echo form_error('date'); ?></span>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="exampleInputFile"><?php echo $this->lang->line('attach_document'); ?></label>
                                     <div><input class="filestyle form-control" type='file' name='file'  />
                                     </div>
                                     <span class="text-danger"><?php echo form_error('file'); ?></span></div>
+
                             </div><!-- /.box-body -->
+
+
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
                             </div>
@@ -102,15 +114,15 @@
 
                 </div><!--/.col (right) -->
                 <!-- left column -->
-            <?php }?>
+            <?php } ?>
 
             <div class="col-md-<?php
-if ($this->rbac->hasPrivilege('visitor_book', 'can_add')) {
-    echo "8";
-} else {
-    echo "12";
-}
-?>">
+            if ($this->rbac->hasPrivilege('visitor_book', 'can_add')) {
+                echo "8";
+            } else {
+                echo "12";
+            }
+            ?>">
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
@@ -135,14 +147,14 @@ if ($this->rbac->hasPrivilege('visitor_book', 'can_add')) {
                                 </thead>
                                 <tbody>
                                     <?php
-if (empty($visitor_list)) {
-    ?>
+                                    if (empty($visitor_list)) {
+                                        ?>
 
                                         <?php
-} else {
-    foreach ($visitor_list as $key => $value) {
-
-        ?>
+                                    } else {
+                                        foreach ($visitor_list as $key => $value) {
+                                            // print_r($value);
+                                            ?>
                                             <tr>
                                                 <td class="mailbox-name"><?php echo $value['purpose']; ?></td>
                                                 <td class="mailbox-name"><?php echo $value['name']; ?></td>
@@ -150,39 +162,38 @@ if (empty($visitor_list)) {
                                                 <td class="mailbox-name"> <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($value['date'])); ?></td>
                                                 <td class="mailbox-name"> <?php echo $value['in_time']; ?></td>
                                                 <td class="mailbox-name"> <?php echo $value['out_time']; ?></td>
-                                                <td class="mailbox-date pull-right white-space-nowrap">
-                                                    <a data-placement="left"  onclick="getRecord(<?php echo $value['id']; ?>)" class="btn btn-default btn-xs" data-target="#visitordetails" data-toggle="modal"  title="<?php echo $this->lang->line('view'); ?>"><i class="fa fa-reorder"></i></a>
-                                                    <?php if ($value['image'] !== "") {?>
+                                                <td class="mailbox-date pull-right">
+                                                    <a data-placement="left"  onclick="getRecord(<?php echo $value['id']; ?>)" class="btn btn-default btn-xs" data-target="#visitordetails" data-toggle="modal"  title="<?php echo $this->lang->line('view'); ?>"><i class="fa fa-reorder"></i></a> 
+        <?php if ($value['image'] !== "") { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/download/<?php echo $value['image']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('download'); ?>">
                                                             <i class="fa fa-download"></i>
-                                                        </a>  <?php }?>
-                                                    <?php if ($this->rbac->hasPrivilege('visitor_book', 'can_edit')) {?>
+                                                        </a>  <?php } ?> 
+        <?php if ($this->rbac->hasPrivilege('visitor_book', 'can_edit')) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/edit/<?php echo $value['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                     <?php }
-        ?>
+                                                    ?>
 
-                                                    <?php if ($this->rbac->hasPrivilege('visitor_book', 'can_delete')) {
-            ?>
-                                                        <?php if ($value['image'] !== "") {?><a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/imagedelete/<?php echo $value['id']; ?>/<?php echo $value['image']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
+        <?php if ($this->rbac->hasPrivilege('visitor_book', 'can_delete')) { ?>
+                                                        <?php if ($value['image'] !== "") { ?><a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/imagedelete/<?php echo $value['id']; ?>/<?php echo $value['image']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
                                                                 <i class="fa fa-remove"></i>
                                                             </a>
-                                                        <?php } else {?>
+            <?php } else { ?>
                                                             <a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/delete/<?php echo $value['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
                                                                 <i class="fa fa-remove"></i>
                                                             </a>
-                                                            <?php
-}
+            <?php }
         }
         ?>
                                                 </td>
 
+
                                             </tr>
                                             <?php
-}
-}
-?>
+                                        }
+                                    }
+                                    ?>
 
                                 </tbody>
                             </table><!-- /.table -->
@@ -191,7 +202,9 @@ if (empty($visitor_list)) {
                 </div>
             </div><!--/.col (left) col-8 end-->
             <!-- right column -->
+
         </div>
+
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
@@ -205,6 +218,7 @@ if (empty($visitor_list)) {
             </div>
             <div class="modal-body" id="getdetails">
 
+
             </div>
         </div>
     </div>
@@ -215,22 +229,33 @@ if (empty($visitor_list)) {
 
 <script type="text/javascript">
 
-                                                                $(function () {
 
-                                                                    $(".timepicker").timepicker({
 
-                                                                    });
-                                                                });
+                                                $(function () {
 
-                                                                function getRecord(id) {
-                                                                    $.ajax({
-                                                                        url: '<?php echo base_url(); ?>admin/visitors/details/' + id,
-                                                                        success: function (result) {
+                                                    $(".timepicker").timepicker({
+                                                        // showInputs: false,
+                                                        // defaultTime: false,
+                                                        // explicitMode: false,
+                                                        // minuteStep: 1
+                                                    });
+                                                });
+                                              
 
-                                                                            $('#getdetails').html(result);
-                                                                        }
 
-                                                                    });
-                                                                }
+                                             
+                                                function getRecord(id) {
+                                                    //alert(id);
+                                                    $.ajax({
+                                                        url: '<?php echo base_url(); ?>admin/visitors/details/' + id,
+                                                        success: function (result) {
+                                                            //alert(result);
+                                                            $('#getdetails').html(result);
+                                                        }
+
+
+                                                    });
+
+                                                }
 
 </script>

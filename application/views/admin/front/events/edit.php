@@ -99,14 +99,14 @@
                                 <div class="col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('event_start'); ?></label>
-                                        <input id="start_date" name="start_date" placeholder="" type="text" class="form-control date"  value="<?php echo date($this->customlib->getSchoolDateFormat(), strtotime($result["event_start"]))  ?>" readonly="readonly" />
+                                        <input id="start_date" name="start_date" placeholder="" type="text" class="form-control date"  value="<?php echo date($this->customlib->getSchoolDateFormat(), strtotime($result["event_start"])) //echo set_value('start_date', date($this->customlib->getSchoolDateFormat()));   ?>" readonly="readonly" />
                                         <span class="text-danger"><?php echo form_error('event_start'); ?></span>
                                     </div> 
                                 </div>  
                                 <div class="col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('event_end'); ?></label>
-                                        <input id="end_date" name="end_date" placeholder="" type="text" class="form-control date"  value="<?php echo date($this->customlib->getSchoolDateFormat(), strtotime($result["event_end"]));  ?>" readonly="readonly" />
+                                        <input id="end_date" name="end_date" placeholder="" type="text" class="form-control date"  value="<?php echo date($this->customlib->getSchoolDateFormat(), strtotime($result["event_end"])); //echo set_value('end_date', date($this->customlib->getSchoolDateFormat()));   ?>" readonly="readonly" />
                                         <span class="text-danger"><?php echo form_error('event_end'); ?></span>
                                     </div>
                                 </div>
@@ -233,7 +233,7 @@
 
     $(document).ready(function () {
         var popup_target = 'media_images';
-
+       
 
 
 

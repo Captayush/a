@@ -107,7 +107,7 @@
                                         </th>
                                         <th><?php echo $this->lang->line('intake'); ?></th>
                                         <th class="text-right no-print">
-                                            <?php echo $this->lang->line('action'); ?>
+<?php echo $this->lang->line('action'); ?>
                                         </th>
                                     </tr>
                                 </thead>
@@ -142,15 +142,15 @@
                                                 <td class="mailbox-name"> <?php echo $hostel['address'] ?></td>
                                                 <td class="mailbox-name"> <?php echo $hostel['intake'] ?></td>
                                                 <td class="mailbox-date pull-right no-print">
-                                                    <?php if ($this->rbac->hasPrivilege('hostel', 'can_edit')) { ?>
+        <?php if ($this->rbac->hasPrivilege('hostel', 'can_edit')) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/hostel/edit/<?php echo $hostel['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php } if ($this->rbac->hasPrivilege('hostel', 'can_delete')) { ?>
+        <?php } if ($this->rbac->hasPrivilege('hostel', 'can_delete')) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/hostel/delete/<?php echo $hostel['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
-                                                    <?php } ?>
+                                            <?php } ?>
                                                 </td>
                                             </tr>
                                             <?php
@@ -172,7 +172,14 @@
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('.detail_popover').popover({

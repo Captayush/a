@@ -12,7 +12,7 @@
             <div class="alert alert-warning alert-dismissible">
 
                 <h4><i class="icon fa fa-warning"></i>Cancelled!</h4>
-                You have cancelled this payment, please <a style='color: #3c8dbc;  display: inline-table;' href="<?php echo site_url('user/user/getfees') ?>">click here</a> to fees payment page.
+                You have cancelled this payment, please <a style='color: #3c8dbc;  display: inline-table;' href="<?php echo site_url('user/user/dashboard') ?>">click here</a> for Dashboard.
             </div>       
         </div>      
     </section>    

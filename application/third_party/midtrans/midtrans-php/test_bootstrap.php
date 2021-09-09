@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Include test library if you are using composer
  * Example: Psysh (debugging library similar to pry in Ruby)

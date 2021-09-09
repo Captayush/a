@@ -150,7 +150,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <th><?php echo $this->lang->line('student_name'); ?></th>
                                         <th><?php echo $this->lang->line('punch_in'); ?></th>	
                                         <th><?php echo $this->lang->line('device') . " " . $this->lang->line('serial') . " " . $this->lang->line('number'); ?></th>	
-
+                                      
                                         <th><?php echo $this->lang->line('ip_address'); ?></th>			
                                     </tr>
                                 </thead>
@@ -195,7 +195,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     }
                                                     ?>
                                                 </td>
-
+                                           
                                                 <td>
                                                     <?php
                                                     if (!empty($device_info)) {

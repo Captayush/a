@@ -11,7 +11,6 @@
        
 
         <?php
-        $sch_setting=$this->setting_model->getSetting();
         $this->load->view('layout/theme');
         ?>
         <?php
@@ -20,7 +19,7 @@
             <!-- Bootstrap 3.3.5 RTL -->
             <link rel="stylesheet" href="<?php echo base_url(); ?>backend/rtl/bootstrap-rtl/css/bootstrap-rtl.min.css"/>  
             <!-- Theme RTL style -->
-            <link rel="stylesheet" href="<?php echo base_url(); ?>backend/rtl/dist/css/admin-rtl.min.css" />
+            <link rel="stylesheet" href="<?php echo base_url(); ?>backend/rtl/dist/css/AdminLTE-rtl.min.css" />
             <link rel="stylesheet" href="<?php echo base_url(); ?>backend/rtl/dist/css/ss-rtlmain.css">
             <link rel="stylesheet" href="<?php echo base_url(); ?>backend/rtl/dist/css/skins/_all-skins-rtl.min.css" />
 
@@ -69,7 +68,6 @@
 
         <script type="text/javascript">
             var baseurl = "<?php echo base_url(); ?>";
-            var start_week="<?php echo $this->customlib->getStartWeek();?>";
         </script>
 
     </head>
@@ -102,12 +100,14 @@ if (!$this->config->item('SSLK') == "") {
         }
 
     function checksidebar() {
+       // alert(sessionStorage.getItem('sidebar-toggle-collapsed1'));
         if (Boolean(sessionStorage.getItem('sidebar-toggle-collapsed1'))) {
         var body = document.getElementsByTagName('body')[0];
        
         body.className = body.className + ' sidebar-collapse';
         }
     }
+
     checksidebar();
 
 </script> 
@@ -170,7 +170,7 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                                         </a>
                                         <ul class="dropdown-menu menuboxshadow">
 
-                                            <li class="todoview plr10 ssnoti"><?php echo $this->lang->line('today_you_have')." " . $count . " ".$this->lang->line('pending_task') ?><a href="<?php echo base_url() ?>user/calendar/" class="pull-right pt0"> <?php echo $this->lang->line('view')." ".$this->lang->line('all'); ?></a></li>
+                                            <li class="todoview plr10 ssnoti"><?php echo "Today you have " . $count . " pending task." ?><a href="<?php echo base_url() ?>user/calendar/" class="pull-right pt0"> <?php echo $this->lang->line('view')." ".$this->lang->line('all'); ?></a></li>
                                             <li>
                                                 <ul class="todolist">
                                                     <?php
@@ -189,45 +189,30 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                                    
                                 <?php }  if ($this->studentmodule_lib->hasActive('chat')){
                                 ?>
-                                 <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="<?php echo base_url()?>user/chat" data-original-title="<?php echo $this->lang->line('chat');?>" class="todoicon"><i class="fa fa-whatsapp"></i></a></li> 
+                                 <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="<?php echo base_url()?>user/chat" data-original-title="Chat" class="todoicon"><i class="fa fa-whatsapp"></i></a></li> 
                                 <?php }
-
-
                                     $student_data = $this->customlib->getLoggedInUserData();
-                                   
                                     $file = $student_data["image"];
 
                                     $image = $student_data["image"];
                                     if (!empty($image)) {
 
-                                        $file = $image; 
+                                        $file = $image;
                                     } else {
-                                            if($student_data['gender']=='Female'){
-                                                             $file= "uploads/student_images/default_female.jpg";
-                                                        }else{
-                                                             $file ="uploads/student_images/default_male.jpg";
-                                                        }
-                                       
+
+                                        $file = "uploads/student_images/no_image.png";
                                     }
                                     ?>
                                     <li class="dropdown user-menu">
                                         <a class="dropdown-toggle" style="padding: 15px 13px;" data-toggle="dropdown" href="#" aria-expanded="false">
-                                            <?php if($sch_setting->student_photo){
-                                                ?>
-                                                <img src="<?php echo base_url() . $file; ?>" class="topuser-image" alt="User Image">
-                                                <?php
-                                            }?>
-                                            
+                                            <img src="<?php echo base_url() . $file; ?>" class="topuser-image" alt="User Image">
                                         </a>
                                         <ul class="dropdown-menu dropdown-user menuboxshadow">
 
                                             <li> 
                                                 <div class="sstopuser">
-                                                    <div class="ssuserleft">  
-                                                    <?php if($sch_setting->student_photo){
-                                                ?> 
+                                                    <div class="ssuserleft">   
                                                         <img src="<?php echo base_url() . $file; ?>" alt="User Image">
-                                                    <?php } ?>
                                                     </div>
 
                                                     <div class="sstopuser-test">
@@ -278,6 +263,9 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                             <?php
                         }
                         ?>
+                            <?php
+                         if($this->module_lib->hasModule('zoom_live_classes')){
+                       if ($this->studentmodule_lib->hasActive('live_classes')) {
 						
 						
 						<?php
@@ -301,8 +289,8 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                          if($this->module_lib->hasModule('gmeet_live_classes') && $this->studentmodule_lib->hasActive('gmeet_live_classes') && $this->auth->addonchk('ssglc',false)){
                      
                             ?>
-  <li class="<?php echo set_topmenu('Gmeet'); ?>"><a href="<?php echo base_url('user/gmeet'); ?>"><i class="fa fa-video-camera ftlayer"></i> <?php echo $this->lang->line('gmeet')." ".$this->lang->line('live_class'); ?></a></li>
-<?php } ?>
+ <li class="<?php echo set_topmenu('Conference'); ?>"><a href="<?php echo base_url('user/conference'); ?>"><i class="fa fa-video-camera ftlayer"></i> <?php echo $this->lang->line('live_class'); ?></a></li>
+<?php } } ?>
                         <?php
 
                         if ($this->studentmodule_lib->hasActive('class_timetable')) {
@@ -379,7 +367,7 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                                 <a href="<?php echo base_url(); ?>user/notification">
                                     <i class="fa fa-envelope ftlayer"></i> <span><?php echo $this->lang->line('notice_board'); ?></span>
                                     <?php
-                                    $ntf = $this->customlib->getUserunreadNotification();
+                                    $ntf = $this->customlib->getStudentunreadNotification();
                                     if ($ntf) {
                                         ?>
                                         <small class="label pull-right bg-red" style="margin-top: -7px;">
@@ -389,7 +377,7 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                                     }
                                     ?>
                                 </a>
-                            </li> 
+                            </li>
                             <?php
                         }
 
@@ -433,7 +421,7 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                     </ul>
                 </section>              
             </aside> 
-            <script> 
+            <script>
  
                  function set_languages(lang_id){
                    
@@ -444,7 +432,7 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                     //dataType: "json",
                     success: function (data) {
                         successMsg("Status Change Successfully");
-                       window.location.reload('true');
+                        window.location.reload('true');
 
                     }
                 });

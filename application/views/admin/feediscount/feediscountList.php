@@ -98,7 +98,7 @@
                                         ?>
                                         <tr>
                                             <!-- <td class="mailbox-name">
-                                            <?php echo $feediscount['name'] ?>
+                                                <?php echo $feediscount['name'] ?>
                                             </td> -->
                                             <td class="mailbox-name">
                                                 <a href="#" data-toggle="popover" class="detail_popover"><?php echo $feediscount['name'] ?></a>
@@ -127,7 +127,7 @@
                                             </td>
 
 
-                                            <td class="mailbox-date pull-right white-space-nowrap">
+                                            <td class="mailbox-date pull-right">
                                                 <?php
                                                 if ($this->rbac->hasPrivilege('fees_discount_assign', 'can_view')) {
                                                     ?>

@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -26,6 +27,7 @@ class Examgroup extends Admin_Controller
         $filepath = "./backend/import/import_marks_sample_file.csv";
         $data     = file_get_contents($filepath);
         $name     = 'import_marks_sample_file.csv';
+
         force_download($name, $data);
     }
 
@@ -33,10 +35,13 @@ class Examgroup extends Admin_Controller
     {
 
         $this->form_validation->set_error_delimiters('', '');
+
         $this->form_validation->set_rules('file', $this->lang->line('image'), 'callback_handle_upload');
+
         if ($this->form_validation->run() == false) {
             $data = array(
                 'file' => form_error('file'),
+
             );
             $array = array('status' => 0, 'error' => $data);
             echo json_encode($array);
@@ -49,12 +54,12 @@ class Examgroup extends Admin_Controller
                 if (isset($_FILES["file"]) && !empty($_FILES['file']['name']) && $_FILES["file"]["size"] > 0) {
 
                     $file = fopen($fileName, "r");
+
                     $flag = true;
                     while (($column = fgetcsv($file, 10000, ",")) !== false) {
                         if ($flag) {
                             $flag = false;
-                            continue;
-                        }
+                            continue;}
                         if (trim($column['0']) != "" && trim($column['1']) != "" && trim($column['2']) != "") {
                             $return_array[] = json_encode(
                                 array(
@@ -66,13 +71,16 @@ class Examgroup extends Admin_Controller
                             );
                         }
                     }
+
                 }
 
                 $array = array('status' => '1', 'error' => '', 'student_marks' => $return_array);
                 echo json_encode($array);
             }
             //=============
+
         }
+
     }
 
     public function handle_upload()
@@ -87,9 +95,11 @@ class Examgroup extends Admin_Controller
             $file_name         = $_FILES["file"]["name"];
             $allowed_extension = $image_validate['allowed_extension'];
             $ext               = pathinfo($file_name, PATHINFO_EXTENSION);
+
             $allowed_mime_type = $image_validate['allowed_mime_type'];
-            $finfo             = finfo_open(FILEINFO_MIME_TYPE);
-            $mtype             = finfo_file($finfo, $_FILES['file']['tmp_name']);
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mtype = finfo_file($finfo, $_FILES['file']['tmp_name']);
             finfo_close($finfo);
 
             if (!in_array($mtype, $allowed_mime_type)) {
@@ -111,6 +121,7 @@ class Examgroup extends Admin_Controller
             $this->form_validation->set_message('handle_upload', 'Please choose a file to upload.');
             return false;
         }
+
     }
 
     public function index()
@@ -123,6 +134,7 @@ class Examgroup extends Admin_Controller
         $data['title']      = 'Add Batch';
         $data['title_list'] = 'Recent Batch';
         $data['examType']   = $this->exam_type;
+
         $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('exam_type', $this->lang->line('exam') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
 
@@ -166,7 +178,7 @@ class Examgroup extends Admin_Controller
         if (!$this->examgroup_model->delete_exam($id)) {
             echo json_encode(array('status' => 0, 'message' => $this->lang->line('something_wrong')));
         } else {
-            echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
+            echo json_encode(array('status' => 1, 'message' => 'Record deleted successfully'));
         }
     }
 
@@ -231,11 +243,13 @@ class Examgroup extends Admin_Controller
             $data['class_id']                               = $this->input->post('class_id');
             $data['section_id']                             = $this->input->post('section_id');
             $data['session_id']                             = $this->input->post('session_id');
-            $resultlist                                     = $this->examgroupstudent_model->examGroupSubjectResult($exam_subject_id, $class_id, $section_id, $session_id);
-            $subject_detail                                 = $this->batchsubject_model->getExamSubject($exam_subject_id);
-            $data['subject_detail']                         = $subject_detail;
-            $data['attendence_exam']                        = $this->attendence_exam;
-            $data['resultlist']                             = $resultlist;
+
+            $resultlist     = $this->examgroupstudent_model->examGroupSubjectResult($exam_subject_id, $class_id, $section_id, $session_id);
+            $subject_detail = $this->batchsubject_model->getExamSubject($exam_subject_id);
+
+            $data['subject_detail']  = $subject_detail;
+            $data['attendence_exam'] = $this->attendence_exam;
+            $data['resultlist']      = $resultlist;
         }
 
         $this->load->view('layout/header', $data);
@@ -316,7 +330,8 @@ class Examgroup extends Admin_Controller
         $data['subjectlist'] = $subjectlist;
 
         $data['current_session'] = $this->sch_current_session;
-        $data['examgroup']       = $this->examgroup_model->get($id);
+
+        $data['examgroup'] = $this->examgroup_model->get($id);
 
         $this->load->view('layout/header', $data);
         $this->load->view('admin/examgroup/addexam', $data);
@@ -330,19 +345,20 @@ class Examgroup extends Admin_Controller
 
     public function subjectstudent()
     {
-        $this->form_validation->set_error_delimiters('<p>', '</p>');
+        $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('subject_id', $this->lang->line('subject'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('session_id', $this->lang->line('session'), 'required|trim|xss_clean');
-        $userdata = $this->customlib->getUserData();
-        $role_id  = $userdata["role_id"];
-        $can_edit = 1;
-        if (isset($role_id) && ($userdata["role_id"] == 2) && ($userdata["class_teacher"] == "yes")) {
-            $myclasssubjects = $this->subjecttimetable_model->canAddExamMarks($userdata["id"], $this->input->post('class_id'), $this->input->post('section_id'), $this->input->post('teachersubject_id'));
-            $can_edit        = $myclasssubjects;
-        }
+         $userdata          = $this->customlib->getUserData();
+         $role_id = $userdata["role_id"];
+         $can_edit=1;
+         if (isset($role_id) && ($userdata["role_id"] == 2) && ($userdata["class_teacher"] == "yes")) {
+                $myclasssubjects=$this->subjecttimetable_model->canAddExamMarks($userdata["id"],$this->input->post('class_id'),$this->input->post('section_id'),$this->input->post('teachersubject_id'));
+               $can_edit=$myclasssubjects; 
+             }
 
+            
         if ($this->form_validation->run() == false) {
             $data = array(
                 'class_id'   => form_error('class_id'),
@@ -352,11 +368,14 @@ class Examgroup extends Admin_Controller
             );
             $array = array('status' => 0, 'error' => $data);
             echo json_encode($array);
-        } elseif ($can_edit == 0) {
-            $msg   = array('lesson' => $this->lang->line('not_authoried'));
+      
+        } elseif($can_edit==0){
+          $msg=array('lesson'=>$this->lang->line('not_authoried'));
             $array = array('status' => 0, 'error' => $msg);
-            echo json_encode($array);
+             echo json_encode($array);
+    
         } else {
+
             $exam_subject_id                                = $this->input->post('subject_id');
             $data['exam_group_class_batch_exam_subject_id'] = $exam_subject_id;
             $class_id                                       = $this->input->post('class_id');
@@ -366,13 +385,14 @@ class Examgroup extends Admin_Controller
             $data['section_id']                             = $this->input->post('section_id');
             $data['session_id']                             = $this->input->post('session_id');
             $resultlist                                     = $this->examgroupstudent_model->examGroupSubjectResult($exam_subject_id, $class_id, $section_id, $session_id);
+
             $subject_detail = $this->batchsubject_model->getExamSubject($exam_subject_id);
 
             $data['subject_detail']  = $subject_detail;
             $data['attendence_exam'] = $this->attendence_exam;
             $data['resultlist']      = $resultlist;
-            $data['sch_setting']     = $this->sch_setting_detail;
-            $student_exam_page       = $this->load->view('admin/examgroup/_partialstudentmarkEntry', $data, true);
+
+            $student_exam_page = $this->load->view('admin/examgroup/_partialstudentmarkEntry', $data, true);
 
             $array = array('status' => '1', 'error' => '', 'page' => $student_exam_page);
             echo json_encode($array);
@@ -381,10 +401,10 @@ class Examgroup extends Admin_Controller
 
     public function examstudent()
     {
-        $this->form_validation->set_error_delimiters('<li>', '</li>');
+        $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'required|trim|xss_clean');
-
+        // $this->form_validation->set_rules('exam_id', $this->lang->line('exam'), 'required|trim|xss_clean');
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
         $data['sch_setting']     = $this->sch_setting_detail;
         if ($this->form_validation->run() == false) {
@@ -450,7 +470,6 @@ class Examgroup extends Admin_Controller
                 'is_active'     => $is_active,
                 'is_publish'    => $is_publish,
                 'description'   => $this->input->post('description'),
-                'use_exam_roll_no'   => $this->input->post('use_exam_roll_no')
             );
 
             if ($exam_id != 0) {
@@ -460,6 +479,7 @@ class Examgroup extends Admin_Controller
             $inserted_id = $this->examgroup_model->add_exam($postarray);
             $exam_data   = $this->examgroup_model->getExamByID($exam_id);
             if ($is_publish) {
+
                 $exam_students = $this->examgroupstudent_model->searchExamStudentsByExam($exam_id);
                 $student_exams = array('exam' => $exam_data, 'exam_result' => $exam_students);
                 $s             = $this->mailsmsconf->mailsms('exam_result', $student_exams);
@@ -516,6 +536,7 @@ class Examgroup extends Admin_Controller
                         'note'                                   => $this->input->post('exam_group_student_note_' . $exam_group_student_value),
                     );
                     $insert_array[] = $array;
+
                 }
             }
 
@@ -574,7 +595,7 @@ class Examgroup extends Admin_Controller
         $data['subject_page'] = $this->load->view('admin/examgroup/_partialexamSubjects', $data, true);
 
         echo json_encode($data);
-    }
+    } 
 
     public function getSubjectByExam()
     {
@@ -583,24 +604,13 @@ class Examgroup extends Admin_Controller
         $data['examgroupDetail'] = $this->examgroup_model->getExamByID($id);
 
         $data['exam_subjects'] = $this->batchsubject_model->getExamSubjects($id);
-
+       
         $class                   = $this->class_model->get();
         $data['classlist']       = $class;
         $session                 = $this->session_model->get();
         $data['sessionlist']     = $session;
         $data['current_session'] = $this->sch_current_session;
         $data['subject_page']    = $this->load->view('admin/examgroup/_getSubjectByExam', $data, true);
-        echo json_encode($data);
-    }
-
-    public function getTeacherRemarkByExam()
-    {
-        $data                      = array();
-        $id                        = $this->input->post('recordid');
-        $data['examgroupDetail']   = $this->examgroup_model->getExamByID($id);
-        $data['examgroupStudents'] = $this->examgroupstudent_model->searchExamStudentsByExam($id);
-        $data['sch_setting']       = $this->sch_setting_detail;
-        $data['subject_page']      = $this->load->view('admin/examgroup/_getTeacherRemarkByExam', $data, true);
         echo json_encode($data);
     }
 
@@ -611,14 +621,11 @@ class Examgroup extends Admin_Controller
         $this->form_validation->set_rules('examgroup_id', $this->lang->line('exam') . " " . $this->lang->line('group'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('exam_group_class_batch_exam_id', $this->lang->line('exam') . " " . $this->lang->line('id'), 'trim|required|xss_clean');
 
-        $this->form_validation->set_rules('rows[]', $this->lang->line('subject'), 'trim|required|xss_clean');
-
         if ($this->form_validation->run() == false) {
 
             $msg = array(
                 'examgroup_id'                   => form_error('examgroup_id'),
                 'exam_group_class_batch_exam_id' => form_error('exam_group_class_batch_exam_id'),
-                'rows'                           => form_error('rows[]'),
             );
 
             $array = array('status' => '0', 'error' => $msg, 'message' => '');
@@ -635,9 +642,16 @@ class Examgroup extends Admin_Controller
                 $update_id = $this->input->post('prev_row[' . $row_value . ']');
                 if ($update_id == 0) {
 
-                    if ($this->input->post('exam_group_class_batch_exam_id') != "" && $this->input->post('subject_' . $row_value) != "" && $this->input->post('date_from_' . $row_value) != "" && $this->input->post('time_from' . $row_value) != "" && $this->input->post('duration' . $row_value) != "" && $this->input->post('max_marks_' . $row_value) != "" && $this->input->post('min_marks_' . $row_value) != "") {
+                    if ($this->input->post('exam_group_class_batch_exam_id') != ""
+                        && $this->input->post('subject_' . $row_value) != ""
+                        && $this->input->post('date_from_' . $row_value) != ""
+                        && $this->input->post('time_from' . $row_value) != ""
+                        && $this->input->post('duration' . $row_value) != ""
+                        && $this->input->post('max_marks_' . $row_value) != ""
+                        && $this->input->post('min_marks_' . $row_value) != "") {
 
                         $insert_array[] = array(
+
                             'exam_group_class_batch_exams_id' => $this->input->post('exam_group_class_batch_exam_id'),
                             'subject_id'                      => $this->input->post('subject_' . $row_value),
                             'credit_hours'                    => $this->input->post('credit_hours' . $row_value),
@@ -649,6 +663,7 @@ class Examgroup extends Admin_Controller
                             'min_marks'                       => $this->input->post('min_marks_' . $row_value),
                         );
                     }
+
                 } else {
                     $not_be_del[]   = $update_id;
                     $update_array[] = array(
@@ -759,6 +774,7 @@ class Examgroup extends Admin_Controller
                 $this->examgroup_model->deleteExamGroupConnection($exam_group_id);
                 $array = array('status' => 1, 'error' => '', 'message' => $this->lang->line('update_message'));
                 echo json_encode($array);
+
             } elseif ($this->input->post('action') == "save") {
 
                 $this->form_validation->set_error_delimiters('', '');
@@ -784,6 +800,7 @@ class Examgroup extends Admin_Controller
                                 if (count($exam_group['exam_subject_array']) != count($exam_array)) {
                                     $array          = array('status' => 0, 'error' => '', 'message' => $this->lang->line('please_check_exam_subjects'));
                                     $insert_success = 0;
+
                                 } else {
 
                                     reset($exam_group['exam_subject_array']);
@@ -839,6 +856,7 @@ class Examgroup extends Admin_Controller
                 }
             }
         }
+
     }
 
     public function compare_multi_Arrays($array1, $array2)
@@ -915,29 +933,24 @@ class Examgroup extends Admin_Controller
                 }
             }
 
+            // if (!empty($check_alreay_inserted_students)) {
+
+            //     $student_exists = $this->examstudent_model->checkStudentExists($check_alreay_inserted_students, $exam_group_class_batch_exam_id);
+            //     if (!empty($student_exists)) {
+            //         $state = 0;
+            //     }
+            // }
+
+            // if ($state) {
             $this->examstudent_model->add_student($insert_array, $exam_group_class_batch_exam_id, $all_students);
-            $array = array('status' => '1', 'error' => '', 'message' => $this->lang->line('success_message'));            
+            $array = array('status' => '1', 'error' => '', 'message' => $this->lang->line('success_message'));
+            // } else {
+
+            //     $array = array('status' => '0', 'error' => '', 'message' => $this->lang->line('some_students_are_already_added_in_other_session'));
+            // }
 
             echo json_encode($array);
         }
-    }
-
-    public function saveexamremark()
-    {
-        $students = $this->input->post('exam_group_class_batch_exam_student');
-        if (!empty($students)) {
-            $batch_update_array = array();
-            foreach ($students as $student_key => $student_value) {
-                $update_array = array(
-                    'id'             => $student_value,
-                    'teacher_remark' => $this->input->post('remark_' . $student_value),
-                );
-            $batch_update_array[]=$update_array;
-            }
-            $this->examgroupstudent_model->updateExamStudent($batch_update_array);
-        }
-        $array = array('status' => '1', 'error' => '', 'message' => $this->lang->line('success_message'));
-        echo json_encode($array);
     }
 
 }

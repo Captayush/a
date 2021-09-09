@@ -1,7 +1,8 @@
 <style type="text/css">
+
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         line-height: 22px !important; border-radius: 0 !important; padding-left: 0 !important;}
-    .input-group-addon .glyphicon{font-size: 12px;}
+    .input-group-addon .glyphicon{font-size: 12px;}    
 
     .show{
         display : block;
@@ -11,29 +12,30 @@
         background-repeat : no-repeat;
         background-position : center;
     }
-    /* .tab-pane{min-height: 200px;}*/
+   /* .tab-pane{min-height: 200px;}*/
     .commentForm .input-group {position: relative;display: block;border-collapse: separate;}
     .commentForm .input-group-addon{
-        position: absolute;
-        right: 26px;
-        top: 0px;
-        z-index: 3;
-    }
-    .relative{position: relative;}
-    .commentForm .input-group-addon i,
-    .commentForm .input-group-addon span{padding-left: 13px;}
-    .commentForm .relative label.text-danger{position: absolute; bottom: 5px;}
-    .addbtnright{ position: absolute;right: 0;top: -46px;}
+    position: absolute;
+    right: 26px;
+    top: 0px;
+    z-index: 3;
+}
+.relative{position: relative;}
+.commentForm .input-group-addon i,
+.commentForm .input-group-addon span{padding-left: 13px;}
+.commentForm .relative label.text-danger{position: absolute; bottom: 5px;}
+.addbtnright{ position: absolute;right: 0;top: -46px;}
 
-    @media(max-width:767px){
-        .timeresponsive{overflow-x: auto;     overflow-y: hidden;}
-        .timeresponsive .dropdown-menu{z-index: 1060;    bottom: 0 !important; height: 250px; padding: 20px;}
-        .tablewidthRS{width: 690px;}
-    }
+@media(max-width:767px){
+    .timeresponsive{overflow-x: auto;     overflow-y: hidden;}
+    .timeresponsive .dropdown-menu{z-index: 1060;    bottom: 0 !important; height: 250px; padding: 20px;}
+    .tablewidthRS{width: 690px;}
+}
 </style>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> -->
 <script src="<?php echo base_url(); ?>backend/custom/jquery.validate.min.js"></script>
 
-<div class="content-wrapper">
+<div class="content-wrapper" style="min-height: 946px;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -60,16 +62,16 @@
                                         <select autofocus="" id="class_id" name="class_id" class="form-control" >
                                             <option value=""><?php echo $this->lang->line('select'); ?></option>
                                             <?php
-foreach ($classlist as $class) {
-    ?>
+                                            foreach ($classlist as $class) {
+                                                ?>
                                                 <option value="<?php echo $class['id'] ?>" <?php
-if (set_value('class_id') == $class['id']) {
-        echo "selected=selected";
-    }
-    ?>><?php echo $class['class'] ?></option>
+                                                if (set_value('class_id') == $class['id']) {
+                                                    echo "selected=selected";
+                                                }
+                                                ?>><?php echo $class['class'] ?></option>
                                                         <?php
-}
-?>
+                                                    }
+                                                    ?>
                                         </select>
                                         <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                     </div>
@@ -98,53 +100,62 @@ if (set_value('class_id') == $class['id']) {
                             <button type="submit" class="btn btn-primary pull-right btn-sm"><?php echo $this->lang->line('search'); ?></button>
                         </div>
                     </form>
+                
+                <?php
+                if (isset($getDaysnameList)) {
+                    ?>
+                    <div class="box-header ptbnull"></div>
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs" id="myTabs">
+                            <?php
+                            $count = 1;
 
-                    <?php
-if (isset($getDaysnameList)) {
-    ?>
-                        <div class="box-header ptbnull"></div>
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs" id="myTabs">
+                            foreach ($getDaysnameList as $days_key => $days_value) {
+                                $cls = "";
+                                if ($count == 1) {
+                                    // $cls="class='active'";
+                                }
+                                ?>
+                                <li <?php echo $cls; ?>><a href="#tab_<?php echo $count; ?>" data-c="<?php echo set_value('class_id'); ?>" data-days="<?php echo $days_value; ?>" data-s="<?php echo set_value('section_id'); ?>" data-group="<?php echo set_value('subject_group_id'); ?>" data-day="<?php echo $days_key; ?>" data-toggle="tab" aria-expanded="true"><?php echo $days_value; ?></a></li>
+
                                 <?php
-$count = 1;
+                                $count++;
+                            }
+                            ?>
+                        </ul>
+                        <div class="tab-content">
+                            <?php
+                            $count = 1;
+                            foreach ($getDaysnameList as $days_key => $days_value) {
+                                $cls = "class='tab-pane'";
+                                if ($count == 1) {
+                                    //   $cls="class='tab-pane active'";
+                                }
+                                ?>
+                                <div <?php echo $cls; ?> id="tab_<?php echo $count; ?>">
 
-    foreach ($getDaysnameList as $days_key => $days_value) {
-        $cls = "";
-        if ($count == 1) {
-        }
-        ?>
-                                    <li <?php echo $cls; ?>><a href="#tab_<?php echo $count; ?>" data-c="<?php echo set_value('class_id'); ?>" data-days="<?php echo $days_value; ?>" data-s="<?php echo set_value('section_id'); ?>" data-group="<?php echo set_value('subject_group_id'); ?>" data-day="<?php echo $days_key; ?>" data-toggle="tab" aria-expanded="true"><?php echo $days_value; ?></a></li>
 
-                                    <?php
-$count++;
-    }
-    ?>
-                            </ul>
-                            <div class="tab-content">
+
+
+                                </div>
+
                                 <?php
-$count = 1;
-    foreach ($getDaysnameList as $days_key => $days_value) {
-        $cls = "class='tab-pane'";
-        if ($count == 1) {
+                                $count++;
+                            }
+                            ?>
 
-        }
-        ?>
-                                    <div <?php echo $cls; ?> id="tab_<?php echo $count; ?>">
-                                    </div>
-
-                                    <?php
-$count++;
-    }
-    ?>
-
-                            </div>
                         </div>
                     </div>
+                 </div>   
                     <?php
-}
-?>
+                }
+                ?>
+
+ 
                 </section>
             </div>
+
+
             <script type="text/javascript">
                 $(document).on('focus', '.time', function () {
                     var $this = $(this);
@@ -207,6 +218,8 @@ $count++;
                     });
                 });
 
+
+
                 function getSectionByClass(class_id, section_id) {
                     if (class_id != "" && section_id != "") {
                         $('#section_id').html("");
@@ -259,10 +272,13 @@ $count++;
                                 $('#subject_group_id').append(div_data);
                             }
                         });
+
                     }
+
                 }
 
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
 
                     var target = $(e.target).attr("href"); // activated tab
                     var target_id = $(e.target).attr("id"); // activated tab
@@ -337,19 +353,14 @@ $count++;
                         tot_count++;
                     });
 
-                    $(document).on("click", ".ibtnDel", function (event) {
-                          if($(this).closest('tr').prev('input').val()){
-                          if (confirm('<?php echo $this->lang->line("are_you_sure_you_want_to_delete"); ?>')) {
-                          $(this).closest("tr").remove();
-                            counter -= 1
-                             }
-                    return false;
 
-                }else{
-                      $(this).closest("tr").remove();
-                            counter -= 1
-                }
+
+                    $(document).on("click", ".ibtnDel", function (event) {
+                        $(this).closest("tr").remove();
+                        counter -= 1
                     });
+
+
 
                     $(document).on('click', '.submit_subject_group', function () {
                         var form_id = $(this).closest("form").attr('id');
@@ -358,31 +369,33 @@ $count++;
                         var ajax_data = $('.nav-tabs .active a').data(); // activated tab
 
                     });
+
                 });
+
+
+
+
             </script>
+
+
             <script type="text/template" id="staff_dropdown">
-                <option value=""><?php echo $this->lang->line('select') ?></option>
+                <option value=""><?php echo $this->lang->line('select')?></option>
                 <?php
-foreach ($staff as $staff_key => $staff_value) {
-    ?>
-                    <option value="<?php echo $staff_value['id']; ?>"><?php echo $staff_value['name'] . " " . $staff_value['surname'] . " (" . $staff_value['employee_id'] . ")"; ?></option>
+                foreach ($staff as $staff_key => $staff_value) {
+                    ?>
+                    <option value="<?php echo $staff_value['id']; ?>"><?php echo $staff_value['name']." ".$staff_value['surname']." (".$staff_value['employee_id'].")"; ?></option>
                     <?php
-}
-?>
+                }
+                ?>
             </script>
 
             <script type="text/template" id="subject_dropdown">
-                <option value=""><?php echo $this->lang->line('select') ?></option>
+                <option value=""><?php echo $this->lang->line('select')?></option>
                 <?php
-foreach ($subject as $subject_key => $subject_value) {
-    if ($subject_value->code !== '') {
-        $sub_name = $subject_value->name . " (" . $subject_value->code . ")";
-    } else {
-        $sub_name = $subject_value->name;
-    }
-    ?>
-                    <option value="<?php echo $subject_value->id; ?>" ><?php echo $sub_name; ?></option>
+                foreach ($subject as $subject_key => $subject_value) {
+                    ?>
+                    <option value="<?php echo $subject_value->id; ?>" ><?php echo $subject_value->name." (".$subject_value->code.")"; ?></option>
                     <?php
-}
-?>
+                }
+                ?>
             </script>

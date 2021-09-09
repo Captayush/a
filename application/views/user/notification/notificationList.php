@@ -28,7 +28,7 @@
                                     <div class="panel box box-primary">
                                         <div class="box-header with-border">
                                             <h4 class="box-title">
-                                                <a data-toggle="collapse" class="notification_msg" data-msgid="<?php echo $notification['id']; ?>" data-parent="#accordion" href="#collapse<?php echo $notification['id']; ?>" aria-expanded="false" class="collapsed">
+                                                <a data-toggle="collapse" class="notification_msg text-aqua" data-msgid="<?php echo $notification['id']; ?>" data-parent="#accordion" href="#collapse<?php echo $notification['id']; ?>" aria-expanded="false" class="collapsed">
                                                     <?php echo $notification['title']; ?>&nbsp;
                                                     <?php
                                                     if ($notification['notification_id'] == "read") {
@@ -43,7 +43,7 @@
                                                     ?>
                                                 </a>
                                             </h4>
-                                            <div class="pull-right pt5">
+                                            <div class="pull-right">
                                                 <i class="fa fa-calendar"></i> <?php echo $this->lang->line('date'); ?> : <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($notification['date'])) ?>
                                             </div>
                                         </div>
@@ -69,7 +69,18 @@
 </div>
 </section>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.date').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
 
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+</script>
 <script>
     $(document).on('click', '.notification_msg', function () {
         var base_url = '<?php echo base_url() ?>';

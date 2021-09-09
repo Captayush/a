@@ -1,5 +1,5 @@
 <?php
-
+ 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -72,15 +72,16 @@ class Book extends Student_Controller {
                 'author' => $this->input->post('author'),
                 'qty' => $this->input->post('qty'),
                 'perunitcost' => $this->input->post('perunitcost'),
+                
                 'description' => $this->input->post('description')
             );
 
-            if (isset($_POST['postdate']) && $_POST['postdate'] != '') {
-                $data['postdate'] = date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('postdate')));
-            } else {
-                $data['postdate'] = "";
+            if(isset($_POST['postdate']) && $_POST['postdate']!=''){
+                $data['postdate'] =date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('postdate')));
+            }else{
+                $data['postdate'] ="";
             }
-
+           
 
             $this->book_model->addbooks($data);
             $this->session->set_flashdata('msg', '<div feemaster="alert alert-success text-center">book details added to Database!!!</div>');
@@ -103,7 +104,7 @@ class Book extends Student_Controller {
         $student_id = $this->customlib->getStudentSessionUserID();
 
         $checkIsMember = $this->librarymember_model->checkIsMember($member_type, $student_id);
-
+         
         if (is_array($checkIsMember)) {
             $data['bookList'] = $checkIsMember;
             $data['isCheck'] = "1";

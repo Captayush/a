@@ -1,4 +1,4 @@
-<div class="content-wrapper" style="min-height: 946px;">
+    <div class="content-wrapper" style="min-height: 946px;">
     <section class="content-header">
         <h1>
             <i class="fa fa-line-chart"></i> <?php echo $this->lang->line('reports'); ?> <small> <?php echo $this->lang->line('filter_by_name1'); ?></small></h1>
@@ -14,148 +14,287 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                     </div>
-                    <div class="box-body">    
-                        <form role="form" action="<?php echo site_url('student/studentreportvalidation') ?>" method="post" class="" id="reportform">
-                            <div class="row">
+                 <div class="box-body">    
+                    <form role="form" action="<?php echo site_url('student/studentreport') ?>" method="post" class="">
+                        <div class="row">
 
-                                <?php echo $this->customlib->getCSRF(); ?>
+                            <?php echo $this->customlib->getCSRF(); ?>
 
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group">
-                                        <label><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
-                                        <select autofocus="" id="class_id" name="class_id" class="form-control" >
-                                            <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                            <?php
-                                            foreach ($classlist as $class) {
-                                                ?>
-                                                <option value="<?php echo $class['id'] ?>" <?php if (set_value('class_id') == $class['id']) echo "selected=selected" ?>><?php echo $class['class'] ?></option>
-                                                <?php
-                                                $count++;
-                                            }
-                                            ?>
-                                        </select>
-                                         <span class="text-danger" id="error_class_id"></span>
-                                    </div>
-                                </div> 
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group">  
-                                        <label><?php echo $this->lang->line('section'); ?></label>
-                                        <select  id="section_id" name="section_id" class="form-control" >
-                                            <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                        </select>
-                                        <span class="text-danger"><?php echo form_error('section_id'); ?></span>
-                                    </div>  
-                                </div>
-                                <?php if ($sch_setting->category) { ?>
-                                    <div class="col-sm-3 col-md-2">
-                                        <div class="form-group"> 
-                                            <label><?php echo $this->lang->line('category'); ?></label>
-                                            <select  id="category_id" name="category_id" class="form-control" >
-                                                <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                                <?php
-                                                foreach ($categorylist as $category) {
-                                                    ?>
-                                                    <option value="<?php echo $category['id'] ?>" <?php if (set_value('category_id') == $category['id']) echo "selected=selected"; ?>><?php echo $category['category'] ?></option>
-                                                    <?php
-                                                    $count++;
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>  
-                                    </div>
-                                <?php } ?>
-                                <div class="col-sm-3 col-md-2">
-                                    <div class="form-group">
-                                        <label><?php echo $this->lang->line('gender'); ?></label>
-                                        <select class="form-control" name="gender">
-                                            <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                            <?php
-                                            foreach ($genderList as $key => $value) {
-                                                ?>
-                                                <option value="<?php echo $key; ?>" <?php if (set_value('gender') == $key) echo "selected"; ?>><?php echo $value; ?></option>
-                                                <?php
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>  
-                                </div>
-                                <?php if ($sch_setting->rte) { ?>
-                                    <div class="col-sm-3 col-md-2">
-                                        <div class="form-group"> 
-                                            <label><?php echo $this->lang->line('rte'); ?></label>
-                                            <select  id="rte" name="rte" class="form-control" >
-                                                <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                                <?php
-                                                foreach ($RTEstatusList as $k => $rte) {
-                                                    ?>
-                                                    <option value="<?php echo $k; ?>" <?php if (set_value('rte') == $k) echo "selected"; ?>><?php echo $rte; ?></option>
-
-                                                    <?php
-                                                    $count++;
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>  
-                                    </div>
-                                <?php } ?>
+                            <div class="col-sm-6 col-md-3">
                                 <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <button type="submit" name="search" value="search_filter" class="btn btn-primary btn-sm checkbox-toggle pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
-                                    </div>
-                                </div>
-                            </div><!--./row-->     
-                        </form>
-                    </div><!--./box-body-->   
-
-
-                    
-                        <div class="">
-                            <div class="box-header ptbnull"></div> 
-                            <div class="box-header ptbnull">
-                                <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo form_error('student'); ?> <?php echo $this->lang->line('student') . " " . $this->lang->line('report'); ?></h3>
-                            </div>
-                            <div class="box-body table-responsive">
-                                
-                                    <div class="download_label"> <?php echo $this->lang->line('student') . " " . $this->lang->line('report'); ?></div>
-                            <div >
-                                <table class="table table-striped table-bordered table-hover student-list" data-export-title="<?php echo $this->lang->line('student') . " " . $this->lang->line('report'); ?>">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('section'); ?></th>
-
-                                            <th><?php echo $this->lang->line('admission_no'); ?></th>
-
-                                            <th><?php echo $this->lang->line('student_name'); ?></th>
-                                            <?php if ($sch_setting->father_name) { ?>
-                                                <th><?php echo $this->lang->line('father_name'); ?></th>
-                                                <?php } ?>
-                                            <th><?php echo $this->lang->line('date_of_birth'); ?></th>
-                                            <th><?php echo $this->lang->line('gender'); ?></th>
-                                            <?php if ($sch_setting->category) { ?>
-                                                <th><?php echo $this->lang->line('category'); ?></th>
-                                            <?php } if ($sch_setting->mobile_no) { ?>
-                                                <th><?php echo $this->lang->line('mobile_no'); ?></th>
+                                    <label><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
+                                    <select autofocus="" id="class_id" name="class_id" class="form-control" >
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                         <option value="all">All Class</option>
+                                        <?php
+                                        foreach ($classlist as $class) {
+                                            ?>
+                                            <option value="<?php echo $class['id'] ?>" <?php if (set_value('class_id') == $class['id']) echo "selected=selected" ?>><?php echo $class['class'] ?></option>
                                             <?php
-                                            }
-                                            if ($sch_setting->local_identification_no) {
-                                                ?>
-                                                <th><?php echo $this->lang->line('local_identification_no'); ?></th>
-                                            <?php } if ($sch_setting->national_identification_no) { ?>
-                                                <th><?php echo $this->lang->line('national_identification_no'); ?></th>
-                                            <?php } if ($sch_setting->rte) { ?>
-                                                <th><?php echo $this->lang->line('rte'); ?></th>
-                                            <?php } ?>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                            $count++;
+                                        }
+                                        ?>
+                                    </select>
+                                    <span class="text-danger"><?php echo form_error('class_id'); ?></span>
+                                </div>
+                            </div> 
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group">  
+                                    <label><?php echo $this->lang->line('section'); ?></label>
+                                    <select  id="section_id" name="section_id" class="form-control" >
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                    </select>
+                                    <span class="text-danger"><?php echo form_error('section_id'); ?></span>
+                                </div>  
                             </div>
-                        </div>
-                    </div><!--./box box-primary -->
+							<?php if ($sch_setting->category) {  ?>
+                            <div class="col-sm-3 col-md-2">
+                                <div class="form-group"> 
+                                    <label><?php echo $this->lang->line('category'); ?></label>
+                                    <select  id="category_id" name="category_id" class="form-control" >
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                        <?php
+                                        foreach ($categorylist as $category) {
+                                            ?>
+                                            <option value="<?php echo $category['id'] ?>" <?php if (set_value('category_id') == $category['id']) echo "selected=selected"; ?>><?php echo $category['category'] ?></option>
+                                            <?php
+                                            $count++;
+                                        }
+                                        ?>
+                                    </select>
+                                </div>  
+                            </div>
+							<?php } ?>
+                            <div class="col-sm-3 col-md-2">
+                                <div class="form-group">
+                                    <label><?php echo $this->lang->line('gender'); ?></label>
+                                    <select class="form-control" name="gender">
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                        <?php
+                                        foreach ($genderList as $key => $value) {
+                                            ?>
+                                            <option value="<?php echo $key; ?>" <?php if (set_value('gender') == $key) echo "selected"; ?>><?php echo $value; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>  
+                            </div>
+							<?php  if ($sch_setting->rte) { ?>
+                            <div class="col-sm-3 col-md-2">
+                                <div class="form-group"> 
+                                    <label><?php echo $this->lang->line('rte'); ?></label>
+                                    <select  id="rte" name="rte" class="form-control" >
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                        <?php
+                                        foreach ($RTEstatusList as $k => $rte) {
+                                            ?>
+                                            <option value="<?php echo $k; ?>" <?php if (set_value('rte') == $k) echo "selected"; ?>><?php echo $rte; ?></option>
 
-   
-            </div><!-- ./col-md-12 -->  
+                                            <?php
+                                            $count++;
+                                        }
+                                        ?>
+                                    </select>
+                                </div>  
+                            </div>
+							<?php } ?>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button type="submit" name="search" value="search_filter" class="btn btn-primary btn-sm checkbox-toggle pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                                </div>
+                            </div>
+                       </div><!--./row-->     
+                    </form>
+                 </div><!--./box-body-->   
+               
+             
+            <?php
+            if (isset($resultlist)) {
+                ?>
+                <div class="">
+                   <div class="box-header ptbnull"></div> 
+                    <div class="box-header ptbnull">
+                        <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo form_error('student'); ?> <?php echo $this->lang->line('student') . " " . $this->lang->line('report'); ?></h3>
+                    </div>
+                    <div class="box-body table-responsive">
+					<div class="download_label"><?php echo $this->lang->line('student') . " " . $this->lang->line('report')."<br>";$this->customlib->get_postmessage();
+                        ?></div>
+                        <table class="table table-striped table-bordered table-hover example" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>S.no.</th>
+                                    <th><?php echo $this->lang->line('register'); ?></th>
+                                    <th><?php echo $this->lang->line('admission_no'); ?></th>
+                                    <th><?php echo $this->lang->line('roll_no'); ?></th>
+                                    <th><?php echo $this->lang->line('session'); ?></th>
+                                    <th><?php echo $this->lang->line('admission_date'); ?></th>
+                                    <th><?php echo $this->lang->line('admission_class'); ?> </th>
+                                    <th><?php echo $this->lang->line('first_name'); ?></th>
+                                    <th><?php echo $this->lang->line('last_name'); ?></th>
+                                    <th><?php echo $this->lang->line('class'); ?></th>
+                                    <th><?php echo $this->lang->line('section'); ?></th>
+                                    <th><?php echo $this->lang->line('gender'); ?></th>
+                                    <th><?php echo $this->lang->line('date_of_birth'); ?></th>
+                                    
+                                    <?php if ($sch_setting->category) {  ?>
+                                    <th><?php echo $this->lang->line('category'); ?></th>
+									<?php }   ?>
+                                   
+                                    <th><?php echo $this->lang->line('religion'); ?></th>
+                                    
+                                    <th><?php echo $this->lang->line('cast'); ?></th>
+                                     
+                                    <?php if ($sch_setting->mobile_no) {  ?>
+                                        <th><?php echo $this->lang->line('mobile_no'); ?></th>
+									<?php } ?>
+                                   
+                                    <th><?php echo $this->lang->line('email'); ?></th>
+                                    <th><?php echo $this->lang->line('blood_group'); ?></th>
+                                    <th><?php echo $this->lang->line('house'); ?></th>
+                                    <th><?php echo $this->lang->line('height'); ?></th>
+                                    <th><?php echo $this->lang->line('weight'); ?></th>
+                                    <th><?php echo $this->lang->line('measurement_date'); ?></th>
+                                    
+                                    <?php if ($sch_setting->father_name) {  ?>
+                                        <th><?php echo $this->lang->line('father_name'); ?></th>
+									<?php } ?>
+									
+									<th><?php echo $this->lang->line('father_phone'); ?></th>
+									<th><?php echo $this->lang->line('father_occupation'); ?></th>
+									<th><?php echo $this->lang->line('father_qualification'); ?></th>
+									<th><?php echo $this->lang->line('mother_name'); ?></th>
+									<th><?php echo $this->lang->line('mother_phone'); ?></th>
+									<th><?php echo $this->lang->line('mother_occupation'); ?></th>
+									<th><?php echo $this->lang->line('mother_qualification'); ?></th>
+									<th><?php echo $this->lang->line('guardian_name'); ?></th>
+                                    <th><?php echo $this->lang->line('guardian_relation'); ?></th>
+                                    <th><?php echo $this->lang->line('guardian_phone'); ?></th>
+                                    <th><?php echo $this->lang->line('guardian_occupation'); ?></th>
+                                    <th><?php echo $this->lang->line('guardian_address'); ?></th>
+                                    
+                                    <th><?php echo $this->lang->line('current_address'); ?></th>
+                                    <th><?php echo $this->lang->line('permanent_address'); ?></th>
+                                    <th>Specific Colony</th>
+                                    <th><?php echo $this->lang->line('bank_account_no'); ?></th>
+                                    <th><?php echo $this->lang->line('bank_name'); ?></th>
+                                    <th><?php echo $this->lang->line('ifsc_code'); ?></th>
+                                    
+                                    <?php if ($sch_setting->national_identification_no) { ?>
+                                    <th><?php echo $this->lang->line('national_identification_no'); ?></th>
+									<?php }  ?>
+                                    
+                                  
+									<?php 
+                                    if ($sch_setting->local_identification_no) { ?>
+                                        <th><?php echo $this->lang->line('local_identification_no'); ?></th>
+                                        <th><?php echo $this->lang->line('fssm_no'); ?></th>
+                                    
+									<?php } if ($sch_setting->rte) { ?>
+                                    <th><?php echo $this->lang->line('rte'); ?></th>
+									<?php } ?>
+									
+									<th><?php echo $this->lang->line('previous_school_details'); ?></th>
+									<th><?php echo $this->lang->line('note'); ?></th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($resultlist)) { ?>
+                                <?php } else { $count = 1;
+                                    foreach ($resultlist as $student) {        ?>
+                                <tr>
+                                    <td><?php echo $count; ?></td>
+                                    <td><?php echo $student['register']; ?></td>
+                                    <td><?php echo $student['admission_no']; ?></td>
+                                    <td><?php echo $student['roll_no']; ?></td>
+                                    <td><?php echo $student['session']; ?></td>
+                                    <td><?php echo $student['admission_date']; ?></td>
+                                    <td><?php echo $student['class']; ?></td>
+                                     
+                                    <td><a href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>"><?php echo $student['firstname']; ?></a></td>
+                                    <td><?php echo $student['lastname']; ?></td>
+                                    <td><?php echo $student['class_name']; ?></td>
+                                    <td><?php echo $student['section']; ?></td>
+                                    <td><?php echo $student['gender']; ?></td>
+                                    <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob'])); ?></td>
+                                    
+                                    <?php if ($sch_setting->category) {  ?>
+                                        <td><?php echo $student['category']; ?></td>
+									<?php }   ?>
+									
+									<td><?php echo $student['religion']; ?></td>
+									<td><?php echo $student['cast']; ?></td>
+									
+									<?php if ($sch_setting->mobile_no) {  ?>
+                                        <td><?php echo $student['mobileno']; ?></td>
+									<?php } ?>
+									
+									<td><?php echo $student['email']; ?></td>
+                                    <td><?php echo $student['blood_group']; ?></td>
+                                    <td><?php echo $student['house_name']; ?></td>
+                                    <td><?php echo $student['height']; ?></td>
+                                    <td><?php echo $student['weight']; ?></td>
+                                    <td><?php echo $student['measurement_date']; ?></td>
+                                    
+                                    <?php if ($sch_setting->father_name) {  ?>
+                                        <td><?php echo $student['father_name']; ?></td>
+									<?php } ?>
+                                   
+                                    <td><?php echo $student['father_phone']; ?></td>
+                                    <td><?php echo $student['father_occupation']; ?></td>
+                                    <td><?php echo $student['father_qualification']; ?></td>
+                                    <td><?php echo $student['mother_name']; ?></td>
+                                    <td><?php echo $student['mother_phone']; ?></td>
+                                    <td><?php echo $student['mother_occupation']; ?></td>
+                                    <td><?php echo $student['mother_qualification']; ?></td>
+                                    <td><?php echo $student['guardian_name']; ?></td>
+                                    <td><?php echo $student['guardian_relation']; ?></td>
+                                    <td><?php echo $student['guardian_phone']; ?></td>
+                                    <td><?php echo $student['guardian_occupation']; ?></td>
+                                    <td><?php echo $student['guardian_address']; ?></td>
+                                    
+                                    <td><?php echo $student['current_address']; ?></td>
+                                    <td><?php echo $student['permanent_address']; ?></td>
+                                    <td><?php echo $student['specific_colony']; ?></td>
+                                    
+                                    
+                                    <td><?php echo $student['bank_account_no']; ?></td>
+                                    <td><?php echo $student['bank_name']; ?></td>
+                                    <td><?php echo $student['ifsc_code']; ?></td>
+                                    
+                                    
+                                    <?php if ($sch_setting->national_identification_no) { ?>
+                                    <td><?php echo $student['adhar_no']; ?></td>
+									<?php }  ?>
+                                   
+                       
+									<?php if ($sch_setting->local_identification_no) { ?>
+                                        <td><?php echo $student['samagra_id']; ?></td>
+                                        <td><?php echo $student['fsssm_id']; ?></td>
+									<?php } if ($sch_setting->rte) { ?>
+                                        <td><?php echo $student['rte']; ?></td>
+									<?php } ?>
+									
+									<td><?php echo $student['previous_school']; ?></td>
+                                    <td><?php echo $student['note']; ?></td>
+									
+                                </tr>
+                                <?php   $count++;
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               </div><!--./box box-primary -->
+             
+                <?php
+            }
+            ?>
+           </div><!-- ./col-md-12 -->  
         </div>       
 </div>  
 </section>
@@ -211,54 +350,4 @@
             });
         });
     });
-</script>
-/script>
- <script>
-$(document).ready(function() {
-     emptyDatatable('student-list','data');
-});
-</script>           
-<script type="text/javascript">
-$(document).ready(function(){ 
-$(document).on('submit','#reportform',function(e){
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-    var $this = $(this).find("button[type=submit]:focus");  
-    var form = $(this);
-    var url = form.attr('action');
-    var form_data = form.serializeArray();
-    form_data.push({name: 'search_type', value: $this.attr('value')});
-  
-    $.ajax({
-           url: url,
-           type: "POST",
-           dataType:'JSON',
-           data: form_data, // serializes the form's elements.
-              beforeSend: function () {
-                $('[id^=error]').html("");
-                $this.button('loading');
-              
-               },
-              success: function(response) { // your success handler
-                
-                if(!response.status){
-                    $.each(response.error, function(key, value) {
-                    $('#error_' + key).html(value);
-                    });
-                }else{
-                 
-                   initDatatable('student-list','student/dtstudentreportlist',response.params,[],100);
-                }
-              },
-             error: function() { // your error handler
-                 $this.button('reset');
-             },
-             complete: function() {
-             $this.button('reset');
-             }
-         });
-
-        });
-
-    });
-   
 </script>

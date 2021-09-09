@@ -105,6 +105,8 @@
                             }
                             ?>
                             <?php echo $this->customlib->getCSRF(); ?>
+
+                            <?php //echo validation_errors(); ?>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('menu_item'); ?></label><small class="req"> *</small>
                                 <input autofocus="" id="menu" name="menu" placeholder="" type="text" class="form-control"  value="<?php echo set_value('menu', $result['menu']); ?>" />
@@ -258,7 +260,7 @@
         $('#confirm-delete').on('click', '.btn-ok', function (e) {
             var $modalDiv = $(e.delegateTarget);
             var id = $('.del_menuid').val();
-            var tmenu = "<?php echo $top_menu; ?>";
+            var tmenu="<?php echo $top_menu; ?>";
 
             $.ajax({
                 type: "post",
@@ -272,7 +274,7 @@
                     if (data.status == 1) {
                         successMsg(data.message);
                         // location.reload(true);
-                        window.location.href = baseurl + "admin/front/menus/additem/" + tmenu;
+                        window.location.href =baseurl+"admin/front/menus/additem/"+tmenu;
 
                     } else {
                         errorMsg(data.message);
@@ -295,7 +297,14 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-    $('.ext_url_chk').change(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+
+
+
+        $('.ext_url_chk').change(function () {
             var c = this.checked ? 1 : 0;
             if (c) {
                 $('#ext_url_link').prop("disabled", false);

@@ -3,7 +3,7 @@ $current_class=($this->session->userdata('current_class'));
 if(!empty($studentclasses)){
 foreach ($studentclasses as $student_key => $student_value) {
         if ($role == "parent") {
-            $name = $this->customlib->getFullName($student_value->firstname,$student_value->middlename,$student_value->lastname,$sch_setting->middlename,$sch_setting->lastname);
+            $name = ($student_value->lastname == "") ? $student_value->firstname : $student_value->firstname . '&nbsp;' . $student_value->lastname;
         }
 	?>
 <div class="row">

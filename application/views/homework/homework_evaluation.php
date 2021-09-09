@@ -4,23 +4,23 @@
             <i class="fa fa-flask"></i> <?php echo $this->lang->line('homework'); ?>
     </section>
     <!-- Main content -->
-    <section class="content">
-        <?php
-$this->load->view('reports/_studentinformation');
-?>
+    <section class="content"> 
+    <?php 
+           $this->load->view('reports/_studentinformation');
+      ?>      
         <div class="box removeboxmius">
-            <div class="box-header ptbnull"></div>
+          <div class="box-header ptbnull"></div>
             <div class="box-header with-border">
                 <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
-
+                
             </div>
             <form  class="assign_teacher_form" action="<?php echo base_url(); ?>homework/evaluation_report" method="post" enctype="multipart/form-data">
-                <div class="box-body">
+                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <?php if ($this->session->flashdata('msg')) {?>
+                            <?php if ($this->session->flashdata('msg')) { ?>
                                 <?php echo $this->session->flashdata('msg') ?>
-                            <?php }?>
+                            <?php } ?>
                             <?php echo $this->customlib->getCSRF(); ?>
                         </div>
                         <div class="col-md-3 col-lg-3 col-sm-6">
@@ -29,16 +29,16 @@ $this->load->view('reports/_studentinformation');
                                 <select autofocus="" id="searchclassid" name="class_id" onchange="getSectionByClass(this.value, 0, 'secid')"  class="form-control" >
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     <?php
-foreach ($classlist as $class) {
-    ?>
+                                    foreach ($classlist as $class) {
+                                        ?>
                                         <option <?php
-if ($class_id == $class["id"]) {
-        echo "selected";
-    }
-    ?> value="<?php echo $class['id'] ?>"><?php echo $class['class'] ?></option>
+                                        if ($class_id == $class["id"]) {
+                                            echo "selected";
+                                        }
+                                        ?> value="<?php echo $class['id'] ?>"><?php echo $class['class'] ?></option>
                                             <?php
-}
-?>
+                                        }
+                                        ?>
                                 </select>
                                 <span class="class_id_error text-danger"><?php echo form_error('class_id'); ?></span>
                             </div>
@@ -74,61 +74,54 @@ if ($class_id == $class["id"]) {
                     <button type="submit" id="search_filter" name="search" value="search_filter" class="btn btn-primary btn-sm checkbox-toggle pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
                 </div>
             </form>
+        
+        <div class="col-md-12" id="errorinfo">
 
-            <div class="col-md-12" id="errorinfo">
+        </div>
+        <div class="" id="box_display">
+          <div class="box-header ptbnull"></div>  
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-users"> </i> <?php echo $this->lang->line('evaluation_report'); ?></h3>
             </div>
-            <div class="" id="box_display">
-                <div class="box-header ptbnull"></div>
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-users"> </i> <?php echo $this->lang->line('evaluation_report'); ?></h3>
-                </div>
-                <div class="box-body table-responsive">
-                    <div class="download_label"> <?php echo $this->lang->line('evaluation_report') . "<br>";
-$this->customlib->get_postmessage();
-?></div>
-                    <table class="table table-striped table-bordered table-hover example" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th><?php echo $this->lang->line('subject') ?></th>
-                                <th><?php echo $this->lang->line('homework_date'); ?> </th>
-                                <th><?php echo $this->lang->line('submission_date'); ?></th>
-                                <th><?php echo $this->lang->line('complete') . "/" . $this->lang->line('incomplete'); ?></th>
-                                <th><?php echo $this->lang->line('complete'); ?>%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-if (!empty($resultlist)) {
+            <div class="box-body table-responsive">
+                <div class="download_label"> <?php echo $this->lang->line('evaluation_report')."<br>";$this->customlib->get_postmessage(); ?></div>
+                <table class="table table-striped table-bordered table-hover example" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th><?php echo $this->lang->line('subject') ?></th>
+                            <th><?php echo $this->lang->line('homework_date'); ?> </th>
+                            <th><?php echo $this->lang->line('submission_date'); ?></th>
+                            <th><?php echo $this->lang->line('complete') . "/" . $this->lang->line('incomplete'); ?></th>
+                            <th><?php echo $this->lang->line('complete'); ?>%</th>
+                            
+                        </tr>
 
-    foreach ($resultlist as $key => $homework) {
-        ?>
-                                    <tr>
-                                        <td><?php echo $homework["subject_name"]; ?></td>
-                                        <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($homework['homework_date'])); ?></td>
-                                        <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($homework['submit_date'])); ?></td>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if (!empty($resultlist)) {
 
-                                        <td><?php
-if (!empty($report[$homework['id']])) {
-            echo $report[$homework['id']]['completed'] . "/" . ($report[$homework['id']]["total"] - $report[$homework['id']]["completed"]);
-        }
-        ?></td>
-                                        <td><?php
-if (!empty($report[$homework['id']])) {
-            echo $report[$homework['id']]["percentage"];
-        }
-        ?></td>
+                            foreach ($resultlist as $key => $homework) {
 
-
-                                    </tr>
-        <?php
-}
+                                ?>
+                                <tr>
+                                    <td><?php echo $homework["subject_name"]; ?></td>
+                                    <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($homework['homework_date'])); ?></td>
+                                    <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($homework['submit_date'])); ?></td>
+       
+                                    <td><?php if(!empty($report[$homework['id']])){ echo $report[$homework['id']]['completed'] . "/" . ($report[$homework['id']]["total"] - $report[$homework['id']]["completed"]); }  ?></td> 
+                                    <td><?php if(!empty($report[$homework['id']])){ echo $report[$homework['id']]["percentage"]; } ?></td>   
+                               
+                                   
+                                </tr>
+    <?php }
 }
 ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div><!--./box box-primary-->
+                    </tbody>
+                </table>         
+            </div>           
+        </div> 
+      </div><!--./box box-primary-->        
     </section>
 </div>
 
@@ -154,34 +147,37 @@ if (!empty($report[$homework['id']])) {
             language: '<?php echo $language_name ?>'
         });
 
-
+        
 
     });
 
+  
 
 </script>
 <script>
+
 
 </script>
 <script type="text/javascript">
 
     var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'MM', 'Y' => 'yyyy']) ?>';
 
+
     $(document).ready(function (e) {
 
         getSectionByClass("<?php echo $class_id ?>", "<?php echo $section_id ?>", 'secid');
-
+        // getSubjectByClassandSection("<?php echo $class_id ?>", "<?php echo $section_id ?>", "<?php echo $subject_id ?>", 'subid');
         getSubjectGroup("<?php echo $class_id ?>", "<?php echo $section_id ?>", "<?php echo $subject_group_id ?>", 'subject_group_id')
         getsubjectBySubjectGroup("<?php echo $class_id ?>", "<?php echo $section_id ?>", "<?php echo $subject_group_id ?>", "<?php echo $subject_id ?>", 'subid');
 
     });
 
+   
 
 
 
 
-
-
+   
 
 
 
@@ -224,8 +220,8 @@ if (!empty($report[$homework['id']])) {
     }
 
 
-
-
+   
+  
 
     $(document).on('change', '#secid', function () {
         var class_id = $('#searchclassid').val();
@@ -234,7 +230,7 @@ if (!empty($report[$homework['id']])) {
     });
 
 
-
+    
     $(document).on('change', '#subject_group_id', function () {
         var class_id = $('#searchclassid').val();
         var section_id = $('#secid').val();
@@ -244,7 +240,7 @@ if (!empty($report[$homework['id']])) {
 
     });
 
-
+   
 
 
 
@@ -324,5 +320,5 @@ if (!empty($report[$homework['id']])) {
     }
 
 
-
+   
 </script>

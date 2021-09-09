@@ -910,8 +910,6 @@ class SVG {
             $svg_h = $this->mpdf_ref->ConvertSize($attribs['height']); // mm
 
 
-
-
             
 ///*
         // mPDF 5.0.005
@@ -1783,8 +1781,6 @@ class SVG {
         // is equivalent to omitting the elliptical arc segment entirely
         if ($x1 == $x2 && $y1 == $y2)
             return array('', $bounds); // mPD 5.0.040
-
-
 
 
             

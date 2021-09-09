@@ -87,10 +87,10 @@
                                     <span class="text-danger"><?php echo form_error('subject_id'); ?></span>
                                 </div>
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="1" name="is_exam"> No Exam --r
-                                    </label>
-                                </div>
+    <label>
+      <input type="checkbox" value="1" name="is_exam"> No Exam --r
+    </label>
+  </div>
                             </div><!-- /.box-body -->
 
                             <div class="box-footer">
@@ -199,6 +199,9 @@
 
                                 </tbody>
                             </table><!-- /.table -->
+
+
+
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>
@@ -229,7 +232,7 @@
         var batch_id = '<?php echo set_value('batch_id', 0) ?>';
 
         getSectionByClass(class_id, section_id);
-        getBatchStudents(section_id, batch_id);
+        getBatchStudents(section_id,batch_id);
 
         $(document).on('change', '#class_id', function (e) {
             $('#section_id').html("");
@@ -249,7 +252,7 @@
                 $('#section_id').html("");
                 var base_url = '<?php echo base_url() ?>';
                 var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
-                $.ajax({
+                 $.ajax({
                     type: "GET",
                     url: base_url + "sections/getByClass",
                     data: {'class_id': class_id},

@@ -18,11 +18,14 @@ class Issueitem extends Admin_Controller {
         $this->session->set_userdata('sub_menu', 'issueitem/index');
         $data['title'] = 'Add Issue item';
         $data['title_list'] = 'Recent Issue items';
+        $itemcategory = $this->itemissue_model->get();
+      
+        $data['itemissueList'] = $itemcategory;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/issueitem/issueitemList', $data);
         $this->load->view('layout/footer', $data);
     }
-
+ 
     public function create() {
         $this->session->set_userdata('top_menu', 'Inventory');
         $this->session->set_userdata('sub_menu', 'issueitem/index');
@@ -34,22 +37,22 @@ class Issueitem extends Admin_Controller {
         $itemcategory = $this->itemcategory_model->get();
         $data['itemcatlist'] = $itemcategory;
         $data['staff'] = $this->staff_model->inventry_staff();
-
+        
         $this->load->view('layout/header', $data);
         $this->load->view('admin/issueitem/issueitemCreate', $data);
         $this->load->view('layout/footer', $data);
     }
-
+ 
     function add() {
         $this->form_validation->set_rules('account_type', $this->lang->line('account_type'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('issue_to', $this->lang->line('issue_to'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('issue_by', $this->lang->line('issue_by'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('issue_date', $this->lang->line('issue_date'), 'required|trim|xss_clean');
-
+      
         $this->form_validation->set_rules('item_category_id', $this->lang->line('item_category'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('item_id', $this->lang->line('item'), 'required|trim|xss_clean');
-
-        $this->form_validation->set_rules('quantity', $this->lang->line('quantity'), 'trim|integer|required|xss_clean|callback_check_available_quantity');
+        
+          $this->form_validation->set_rules('quantity', $this->lang->line('quantity'), 'trim|integer|required|xss_clean|callback_check_available_quantity');
 
         if ($this->form_validation->run() == false) {
             $data = array(
@@ -86,24 +89,27 @@ class Issueitem extends Admin_Controller {
         }
     }
 
-    public function check_available_quantity() {
+ public function check_available_quantity()
+    {
         $item_category_id = $this->input->post('item_category_id');
         $item_id = $this->input->post('item_id');
-        $quantity = $this->input->post('quantity');
-        if ($quantity != "" && $item_category_id != "" && $item_id != "") {
+        $quantity   = $this->input->post('quantity');
+        if($quantity != "" && $item_category_id != "" && $item_id != ""){
+       
+        $data = $this->item_model->getItemAvailable($item_id);
+        $available = ($data['added_stock'] - $data['issued']);
 
-            $data = $this->item_model->getItemAvailable($item_id);
-            $available = ($data['added_stock'] - $data['issued']);
+        if ($quantity <= $available) {
 
-            if ($quantity <= $available) {
-
-                return TRUE;
-            }
-            $this->form_validation->set_message('check_available_quantity', $this->lang->line('unavailable_quantity') . $quantity);
-            return FALSE;
+            return TRUE;
+        } 
+         $this->form_validation->set_message('check_available_quantity',$this->lang->line('unavailable_quantity').$quantity);
+        return FALSE;
         }
         return TRUE;
     }
+
+
 
     function delete($id) {
         $data['title'] = 'Delete';
@@ -141,67 +147,6 @@ class Issueitem extends Admin_Controller {
 
         $result_final = array('status' => 'pass', 'message' => $this->lang->line('success_message'));
         echo json_encode($result_final);
-    }
-
-     public function getitemlist()
-    {
-
-        $m       = $this->itemissue_model->getitemlist();
-        $m       = json_decode($m);
-        $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
-        $dt_data = array();
-        if (!empty($m->data)) {
-            foreach ($m->data as $key => $value) {
-                $editbtn   = '';
-                $deletebtn = '';
-                $documents = '' ;
-             
-                if ($value->note == "") { 
-                    $condition = "<p class='text text-danger no-print'>".$this->lang->line('no_description')." </p>" ;
-                 }else{
-                    $condition = "<p class='text text-info no-print' >".$value->note."</p>" ;
-                 }
-
-                $title = "<a href='#' data-toggle='popover' class='detail_popover'>".$value->item_name."</a> <div class='fee_detail_popover' style='display: none'> ".$condition ." </div> " ;
-
-                if($value->is_returned == 1){
-                    $is_return= "<span class='label label-danger item_remove' data-item=".$value->id." data-category=".$value->item_category." data-item_name=".$value->item_name." data-quantity=".$value->quantity." data-toggle='modal' data-target='#confirm-delete'>".$this->lang->line('click_to_return')."</span>" ;
-                }else{
-                      $is_return=" <span class='label label-success'>".$this->lang->line('returned')."</span>" ;
-                }
-
-             
-                if ($this->rbac->hasPrivilege('issue_item', 'can_delete')) {
-                    $deletebtn = '';
-                    $deletebtn = "<a onclick='return confirm(" . '"' . $this->lang->line('delete_confirm') . '"' . "  )' href='".base_url()."admin/issueitem/delete/".$value->id."' class='btn btn-default btn-xs' data-placement='left' title='" . $this->lang->line('delete') . "' data-toggle='tooltip'><i class='fa fa-remove'></i></a>";
-                }
-             
-                $row       = array();
-                $row[]     = $title;
-                $row[]     = $value->item_category; 
-                if($value->return_date == "0000-00-00"){
-                     $return_date="";
-                }else{
-                 $return_date     = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($value->return_date));
-                }
-                $row[]     = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($value->issue_date)) . " - " . $return_date;
-               
-                $row[]     =  $value->staff_name . " " . $value->surname . " (" . $value->employee_id . ")";
-                $row[]     =  $value->issue_by;
-                $row[]     =  $value->quantity ;
-                $row[]     =  $is_return ;
-                $row[]     =  $deletebtn;
-                $dt_data[] = $row;
-            }
-        }
-
-        $json_data = array(
-            "draw"            => intval($m->draw),
-            "recordsTotal"    => intval($m->recordsTotal),
-            "recordsFiltered" => intval($m->recordsFiltered),
-            "data"            => $dt_data,
-        );
-        echo json_encode($json_data);
     }
 
 }

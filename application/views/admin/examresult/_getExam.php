@@ -2,7 +2,7 @@
 if (empty($examresult)) {
     ?>
     <div class="alert alter-info">
-        <?php echo $this->lang->line('no_record_found') ?>
+       <?php echo $this->lang->line('no_record_found')?>
     </div>
     <?php
 } else {
@@ -19,39 +19,39 @@ if (empty($examresult)) {
         <table class="table table-stripped table-hover">
             <thead>
                 <tr>
-                    <th> <?php echo $this->lang->line('subject'); ?></th>
+                    <th> <?php echo $this->lang->line('subject');?></th>
                     <?php
                     if ($examresult->exam_type != "gpa") {
                         ?>
 
-                        <th class="text-center"><?php echo $this->lang->line('max') . " " . $this->lang->line('marks'); ?></th>
-                        <th class="text-center"><?php echo $this->lang->line('min') . " " . $this->lang->line('marks'); ?></th>
-                        <th class="text-center"><?php echo $this->lang->line('obtain_marks'); ?></th>
+                        <th class="text-center"><?php echo $this->lang->line('max')." ".$this->lang->line('marks');?></th>
+                        <th class="text-center"><?php echo $this->lang->line('min')." ".$this->lang->line('marks');?></th>
+                        <th class="text-center"><?php echo $this->lang->line('obtain_marks');?></th>
                         <?php
                         if ($examresult->exam_type == "basic_system") {
                             ?>
-                            <th class="text-center"><?php echo $this->lang->line('result'); ?></th>
+                            <th class="text-center"><?php echo $this->lang->line('result');?></th>
                             <?php
                         }
                         ?>
 
-                        <th class="text-center"><?php echo $this->lang->line('percentage'); ?></th>
+                        <th class="text-center"><?php echo $this->lang->line('percentage');?></th>
 
                         <?php
                     }
                     ?>
 
-                    <th class="text-center"><?php echo $this->lang->line('grade') ?></th>
+                    <th class="text-center"><?php echo $this->lang->line('grade')?></th>
                     <?php
                     if ($examresult->exam_type == "gpa") {
                         ?>
-                        <th class="text-center"><?php echo $this->lang->line('grade') . " " . $this->lang->line('point'); ?></th>
-                        <th class="text-center"><?php echo $this->lang->line('credit') . " " . $this->lang->line('hours'); ?></th>
-                        <th class="text-center"><?php echo $this->lang->line('quality') . " " . $this->lang->line('points'); ?></th>
+                        <th class="text-center"><?php echo $this->lang->line('grade')." ".$this->lang->line('point');?></th>
+                        <th class="text-center"><?php echo $this->lang->line('credit')." ".$this->lang->line('hours');?></th>
+                        <th class="text-center"><?php echo $this->lang->line('quality')." ".$this->lang->line('points');?></th>
                         <?php
                     }
                     ?>
-                    <th class="text-center"><?php echo $this->lang->line('note'); ?></th>
+                    <th class="text-center"><?php echo $this->lang->line('note');?></th>
                 </tr>
             <tbody>
                 <?php
@@ -106,15 +106,16 @@ if (empty($examresult)) {
                                 ?>
                                 <td class="text-center">
                                     <?php
+
                                     if ($result_inner_flag) {
-                                        $result = $this->lang->line('pass');
+                                        $result =  $this->lang->line('pass');
                                         $exa_subjects_value->attendence = "present";
                                         if ($exa_subjects_value->attendence != "absent") {
                                             if ($exa_subjects_value->get_marks < $exa_subjects_value->min_marks) {
                                                 $result = $this->lang->line('fail');
-                                                $exam_pass_flag = 2; // exam result "Fail";
+                                                $exam_pass_flag = 2 ;// exam result "Fail";
                                             } else {
-                                                $result = $this->lang->line('pass');
+                                                $result =  $this->lang->line('pass');
                                             }
                                         }
                                         echo $result;
@@ -154,7 +155,7 @@ if (empty($examresult)) {
 
                         </td>
 
-
+                   
                         <?php
                         if ($examresult->exam_type == "gpa") {
                             ?>
@@ -217,11 +218,13 @@ if (empty($examresult)) {
                         ?>
                         <td class="text-center">
 
-                            <?php
-                            if ($exam_result_flag) {
-                                echo number_format($total_obtain_marks, 2, '.', '');
-                            }
-                            ?>
+                            <?php 
+
+    if ($exam_result_flag) {
+                             echo  number_format($total_obtain_marks, 2, '.', '');
+
+    }
+                             ?>
 
                         </td>
 
@@ -230,16 +233,17 @@ if (empty($examresult)) {
                             ?>
                             <td class="text-center"> 
                                 <?php
+
                                 if ($exam_pass_flag == 1) {
-                                    echo $this->lang->line('pass');
-                                } elseif ($exam_pass_flag == 2) {
+                                    echo  $this->lang->line('pass');
+                                }elseif ($exam_pass_flag == 2) {
                                     echo $this->lang->line('fail');
                                 } else {
                                     echo "N/A";
                                 }
                                 ?>
-
-                            </td>
+                                    
+                                </td>
                             <?php
                         }
                         ?>
@@ -259,7 +263,7 @@ if (empty($examresult)) {
                     <?php
                     if ($examresult->exam_type == "gpa") {
                         ?>
-
+                     
                         <td class="text-center">
                             <?php
                             if ($exam_result_flag) {
@@ -272,7 +276,7 @@ if (empty($examresult)) {
                             <?php
                             if ($exam_result_flag) {
                                 $exam_qulity_point = number_format($total_quality_point / $total_hours, 2, '.', '');
-
+                            
                                 echo $total_quality_point . "/" . $total_hours . "=" . $exam_qulity_point;
                             }
                             ?>

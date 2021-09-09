@@ -8,7 +8,7 @@ class Schoolhouse extends Admin_Controller {
     }
 
     public function index() {
-        if (!$this->rbac->hasPrivilege('student_houses', 'can_view')) {
+ if (!$this->rbac->hasPrivilege('student_houses', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Student Information');
@@ -45,7 +45,7 @@ class Schoolhouse extends Admin_Controller {
             );
             $this->schoolhouse_model->add($data);
 
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/schoolhouse/index');
         }
     }
@@ -75,7 +75,7 @@ class Schoolhouse extends Admin_Controller {
                 'description' => $this->input->post('description')
             );
             $this->schoolhouse_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('update_message').'</div>');
             redirect('admin/schoolhouse');
         }
     }
@@ -87,7 +87,7 @@ class Schoolhouse extends Admin_Controller {
         if (!empty($id)) {
 
             $this->schoolhouse_model->delete($id);
-            $this->session->set_flashdata('msgdelete', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
+			$this->session->set_flashdata('msgdelete', '<div class="alert alert-success text-left">'.$this->lang->line('delete_message').'</div>');
         }
         redirect('admin/schoolhouse/');
     }

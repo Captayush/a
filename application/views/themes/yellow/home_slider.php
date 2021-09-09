@@ -40,7 +40,7 @@ if (isset($banner_images) && !empty($banner_images)) {
                                         <?php
                                         foreach ($banner_notices as $banner_notice_key => $banner_notice_value) {
                                             ?>
-                                            <li><a href="<?php echo site_url('read/' . $banner_notice_value['slug']) ?>"><div class="datenews"><?php echo date('d', strtotime($banner_notice_value['date'])); ?><span><?php $this->lang->line(strtolower(date('F', strtotime($banner_notice_value['date'])))); ?></span></div><?php echo $banner_notice_value['title']; ?>
+                                            <li><a href="<?php echo site_url('read/' . $banner_notice_value['slug']) ?>"><div class="date"><?php echo date('d', strtotime($banner_notice_value['date'])); ?><span><?php $this->lang->line(strtolower(date('F', strtotime($banner_notice_value['date'])))); ?></span></div><?php echo $banner_notice_value['title']; ?>
                                                 </a></li>
                                             <?php
                                         }

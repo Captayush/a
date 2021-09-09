@@ -1,5 +1,5 @@
 <style type="text/css">
-    .files { 
+    .files {
         /* outline: 2px dashed #424242;
          outline-offset: -10px;*/
         -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
@@ -89,21 +89,22 @@
                                         <form method="post" action="#" id="fileupload">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('upload_your_file'); ?></label>
-                                                <div class="files" >  
+                                                <div class="files">  
                                                     <input type="file" name="files[]" class="form-control" id="file" multiple="">
                                                 </div>  
                                             </div>
                                         </form>
                                     </div>
                                 </div><!--./col-md-6-->
-                                <div class="col-md-6 col-sm-6">  
+                                <div class="col-md-6 col-sm-6">    
+                                    <!-- <h4>Upload Youtube Video --r</h4> -->
                                     <form action="<?php echo site_url('admin/front/media/addVideo'); ?>" id="video_form" method="POST" >
                                         <div class="form-group">
                                             <label for="video_url"><?php echo $this->lang->line('upload_youtube_video'); ?></label><small class="req"> *</small>
                                             <input type="text" class="form-control" name="video_url" id="video_url" placeholder="<?php echo $this->lang->line('url') ?>">
                                             <span class="text text-danger file_error"></span>
                                         </div>
-                                        <button type="submit" class="btn btn-info pull-right video_submit" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('loading');?>"><?php echo $this->lang->line('submit'); ?></button>
+                                        <button type="submit" class="btn btn-info pull-right video_submit" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Loading..."><?php echo $this->lang->line('submit'); ?></button>
                                     </form>
                                 </div>  
                             </div>    
@@ -172,7 +173,10 @@
             load(1);
         });
 
-      
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
 
         $("#confirm-delete").modal({
             backdrop: false,
@@ -188,14 +192,7 @@
         });
         $('#detail').on('show.bs.modal', function (e) {
             var data = $(e.relatedTarget).data();
-        if(data.media_type === 'image/png'||data.media_type === 'image/jpeg'|| data.media_type === 'image/jpeg'|| data.media_type === 'image/jpeg'|| data.media_type ==='image/gif'){
-         var media_content_path = "<a href='" + data.image + "' target='_blank'>" + data.image + "</a>";
-        }else{
-            var media_content_path = "<a href='" + data.source + "' target='_blank'>" + data.source + "</a>"; 
-        }
-       
-           
-           
+            var media_content_path = "<a href='" + data.image + "' target='_blank'>" + data.image + "</a>";
             $('#modal_media_name').text("").text(data.media_name);
             $('#modal_media_path').html("").html(media_content_path);
             $('#modal_media_type').text("").text(data.media_type);
@@ -242,7 +239,7 @@
                 dataType: 'json',
                 data: $('#video_form').serialize(),
                 beforeSend: function () {
-                    $this.button("<?php echo $this->lang->line('loading');?>");
+                    $this.button('loading');
                     $("[class$='_error']").html("");
                 },
                 success: function (data) {
@@ -326,7 +323,6 @@
 
         // file selected
         $("#file").change(function () {
-			$('#media_div').html('<center><i class="fa fa-spinner fa-spin"></i></center>');
             var fd = new FormData();
             var fileInput = document.getElementById('file');
             var filePath = fileInput.value;
@@ -348,25 +344,20 @@
 
 // Sending AJAX request and upload file
     function uploadData(formdata) {
-        var urls = baseurl + "admin/front/media/addImage";		
-		
+        var urls = baseurl + "admin/front/media/addImage";
         $.ajax({
             url: urls,
             type: 'post',
             data: formdata,
             contentType: false,
             processData: false,
-			 dataType: 'JSON',
-            // dataType: "html",			
-			success: function (response) {
-			console.log(response);
-                if (response.status == 0) {
-                    successMsg(response.msg);
-                     load(1);
-                } else {
-                    errorMsg(response.msg);
-                }
-
+//            dataType: 'json',
+            dataType: "html",
+            success: function (response) {
+                successMsg('File upload successfully');
+                load(1);
+//                $(response).appendTo(".gallery");
+//                $('#fileupload')[0].reset(); //reset form
             },
             beforeSend: function () {
 
@@ -387,13 +378,14 @@
             data: {'record_id': record_id},
             dataType: 'Json',
             beforeSend: function () {
-                $this.button("<?php echo $this->lang->line('loading');?>");
+                $this.button('loading');
             },
             success: function (data, textStatus, jqXHR)
             {
                 if (data.status === 1) {
                     successMsg(data.msg);
                     load(1);
+//                    $('.div_record_' + record_id).remove();
                 } else {
                     errorMsg(data.msg);
                 }
@@ -409,6 +401,7 @@
 
             }
         });
+
     });
 
 
@@ -428,10 +421,14 @@
 <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content fullshadow">
+            <!--<div class="modal-header">
+                 <h4 class="modal-title" id="myModalLabel">Media Detail r</h4>
+            </div> -->
             <button type="button" class="ukclose" data-dismiss="modal">&times;</button>
             <div class="smcomment-header">
                 <div class="row">
                     <div class="col-md-8 col-sm-8 popup_image">
+
 
                     </div>
                     <div class="col-md-4 col-sm-4 smcomment-title">
@@ -444,10 +441,14 @@
                             <dd id="modal_media_path"></dd>
                             <dt><?php echo $this->lang->line('media_size'); ?></dt>
                             <dd id="modal_media_size"></dd>
+
                         </dl>
                     </div>
                 </div>
             </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php //echo $this->lang->line('cancel');   ?></button>
+            </div> -->
         </div>
     </div>
 </div>
@@ -465,8 +466,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cancel'); ?></button>
-                <a class="btn btn_delete btn-danger" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('loading');?>"><?php echo $this->lang->line('delete'); ?></a>
+                <a class="btn btn_delete btn-danger" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.."><?php echo $this->lang->line('delete'); ?></a>
             </div>
         </div>
     </div>
 </div>
+

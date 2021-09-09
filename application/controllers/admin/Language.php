@@ -10,50 +10,74 @@ class Language extends Admin_Controller {
     }
 
     function index() {
-		
+       
+       
+  
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'language/index');
         $data['title'] = 'Language List';
         $language_result = $this->language_model->get();
-        $selected_lang = $this->setting_model->get();
-        $json_languages = json_decode($selected_lang[0]['languages']);
-        $data['selected_lang'] = $json_languages;
-
+        $selected_lang=$this->setting_model->get();
+        $json_languages=json_decode($selected_lang[0]['languages']);
+        $data['selected_lang']=$json_languages;
+        
         $data['languagelist'] = $language_result;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/language/languageList', $data);
         $this->load->view('layout/footer', $data);
     }
 
-    function onloadlanguage() {
+    function onloadlanguage(){
+
+
         $data['title'] = 'Language List';
         $language_result = $this->language_model->get();
-        $selected_lang = $this->setting_model->get();
-        $json_languages = json_decode($selected_lang[0]['languages']);
-        $data['selected_lang'] = $json_languages;
+        $selected_lang=$this->setting_model->get();
+        $json_languages=json_decode($selected_lang[0]['languages']);
+        $data['selected_lang']=$json_languages;
+        
         $data['languagelist'] = $language_result;
         $this->load->view('admin/language/languageResult', $data);
     }
 
-    function user_language($lang_id) {
-        $session = $this->session->userdata('admin');
-        $id = $session['id'];
-        $data['lang_id'] = $lang_id;
-        $this->language_model->set_userlang($id, $data);       
-
+    function user_language($lang_id){
+        $session=$this->session->userdata('admin');
+        $id=$session['id'];
+        $data['lang_id']=$lang_id;
+        $language_result = $this->language_model->set_userlang($id,$data);
+        $id=$session['id'];
+        $logusername=$session['username'];
+        $email=$session['email'];
+        $roles=$session['roles'];
         $setting_result = $this->setting_model->get();
         $setting = $this->staff_model->get($id);
-        //================
-        $this->session->userdata['admin']['language'] =   array('lang_id' => $setting['lang_id'], 'language' => $setting['language']);       
-        //==================
-        $language_result = $this->language_model->get($setting['lang_id']);
-        if ($this->customlib->get_rtl_languages($language_result['short_code'])) {
-            $this->session->userdata['admin']['is_rtl'] = 'enabled';
-        }else{
-            $this->session->userdata['admin']['is_rtl'] = 'disabled';
+        
+        $session_data = array(
+            'id' => $id,
+            'username' => $logusername,
+            'email' => $email,
+            'roles' => $roles,
+            'date_format' => $setting_result[0]['date_format'],
+            'currency_symbol' => $setting_result[0]['currency_symbol'],
+            'currency_place' => $setting_result[0]['currency_place'],
+            'start_month' => $setting_result[0]['start_month'],
+            'school_name' => $setting_result[0]['name'],
+            'timezone' => $setting_result[0]['timezone'],
+            'sch_name' => $setting_result[0]['name'],
+            'language' => array('lang_id' => $setting['lang_id'], 'language' =>$setting['language']),
+            'is_rtl' => $setting_result[0]['is_rtl'],
+            'theme' => $setting_result[0]['theme'],
+        );
+       
+        if(!empty($session_data)){
+        $this->session->unset_userdata('admin');
         }
-
+        $this->session->set_userdata('admin', $session_data);
+         
+        
     }
+  
+
 
     function view($id) {
         $data['title'] = 'Language List';
@@ -81,58 +105,21 @@ class Language extends Admin_Controller {
         $arr = array('status' => 1, 'message' => 'Record Updated');
         echo json_encode($arr);
     }
- 
+
     function delete($id) {
         $selected_lang = $this->customlib->getSessionLanguage();
         $language = $this->language_model->get($id);
-        $name=$language['language'];
         $data['title'] = 'Language List';
-       
+
         if ($language['is_deleted'] == "no") {
-            $this->session->set_flashdata('msg', '<div class="alert alert-info">'.$this->lang->line("default_language_cannot_be_deleted").'</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-info">Default language cannot be deleted. </div>');
         } else {
             if ($selected_lang == $id) {
-                $this->session->set_flashdata('msg', '<div class="alert alert-info">'.$this->lang->line("you_cannot_delete_your_current_selected_language").'</div>');
+                $this->session->set_flashdata('msg', '<div class="alert alert-info">You cannot delete your current selected language. </div>');
             } else {
                 $this->language_model->remove($id);
-                $setting_result = $this->setting_model->get();
-        $setting_id = $setting_result[0]["id"];
-        $last_languages = json_decode($setting_result[0]['languages']);
-        foreach ($last_languages as $value) {
-            if ($id != $value) {
-                $languages[] = $value;
-            }
-        }
-
-        $language_id = json_encode($languages);
-        $data = array('id' => $setting_id, 'languages' => $language_id);
-        $this->setting_model->add($data);
-                 $directory_app_files = APPPATH . '/language/' . $name.'/app_files/';
-                 $directory_language = APPPATH . '/language/' . $name."/";
-                if (is_dir($directory_app_files)) {
-
-                $files = glob($directory_app_files . '*', GLOB_MARK ); 
-
-                foreach( $files as $file ){
-
-                unlink($file);      
-                }
-
-                rmdir($directory_app_files); 
-                }
-                if (is_dir($directory_language)) {
-
-                $files = glob($directory_language . '*', GLOB_MARK );
-               
-                foreach( $files as $file ){
-
-                unlink($file);      
-                }
-
-                rmdir($directory_language); 
-                }
-        
-                $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line("delete_message").'</div>');
+                $this->langpharses_model->deletepharses($id);
+                $this->session->set_flashdata('msg', '<div class="alert alert-success">Language deleted successfully. </div>');
             }
         }
         redirect('admin/language/index');
@@ -150,14 +137,7 @@ class Language extends Admin_Controller {
             array('check_exists', array($this->language_model, 'valid_check_exists'))
                 )
         );
-             $this->form_validation->set_rules(
-                'short_code', $this->lang->line('short_code'), 'required')
-                
-        ;
-               $this->form_validation->set_rules(
-                'country_code', $this->lang->line('country_code'), 'required')
-                
-        ;
+
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('layout/header', $data);
             $this->load->view('admin/language/languageCreate', $data);
@@ -166,7 +146,7 @@ class Language extends Admin_Controller {
             $directory = APPPATH . '/language/' . $this->input->post('language');
             if (!is_dir($directory)) {
                 mkdir($directory, 0777);
-                $fromDir = APPPATH . '/language/English';
+                $fromDir = APPPATH . '/language/english';
                 $this->copydirr($fromDir, $directory, $chmod = 0757, $verbose = false);
             }
             $data = array(
@@ -246,7 +226,7 @@ class Language extends Admin_Controller {
         $key_end = key($language_pharses);
         foreach ($language_pharses as $key => $value) {
             $string = $value['pharses'];
-
+           
             if ($key_end != $key) {
                 $text .= $value['id'] . " " . $string . "\n";
             } else {
@@ -332,25 +312,70 @@ class Language extends Admin_Controller {
         $this->load->model("setting_model");
         $setting_result = $this->setting_model->get();
         $id = $setting_result[0]["id"];
-        $last_languages = json_decode($setting_result[0]['languages']);      
-        foreach ($last_languages as $value) {
-            $languages[] = $value;
+        
+        $last_languages=json_decode($setting_result[0]['languages']);
+       // print_r($last_languages);die;
+        foreach($last_languages as $value){
+            $languages[]=$value;
         }
-
-        $languages[] = $language_id;
-        $language_id = json_encode($languages);
+     
+        $languages[]=$language_id;
+        $language_id=json_encode($languages);
         $data = array('id' => $id, 'languages' => $language_id);
         $this->setting_model->add($data);
-        $this->load->view('admin/language/languageSwitcher');
+       $this->load->view('admin/language/languageSwitcher');
     }
 
     function defoult_language($language_id) {
 
-        $this->db->set('lang_id', $language_id); //if 2 columns
-
-        $this->db->update('sch_settings');
-
+        $this->db->set('lang_id', $language_id);//if 2 columns
         
+        $this->db->update('sch_settings');
+        
+       // $this->load->view('admin/language/languageSwitcher');
+
+       // $session=$this->session->userdata('admin');
+       //  $staff_id=$session['id'];
+       //      $defoultlang=$this->setting_model->get_stafflang($staff_id);
+                                          
+       //       if($defoultlang['lang_id']!=0){
+               
+       //             $data['lang_id']=($defoultlang['lang_id']);  
+                
+       //      }else{
+       //            $data['lang_id']=$language_id;
+       //          }
+       //  $id=$session['id'];
+        
+       //  $language_result = $this->language_model->set_userlang($id,$data);
+       //  $id=$session['id'];
+       //  $logusername=$session['username'];
+       //  $email=$session['email'];
+       //  $roles=$session['roles'];
+       //  $setting_result = $this->setting_model->get();
+       //  $setting = $this->staff_model->get($id);
+        
+       //  $session_data = array(
+       //      'id' => $id,
+       //      'username' => $logusername,
+       //      'email' => $email,
+       //      'roles' => $roles,
+       //      'date_format' => $setting_result[0]['date_format'],
+       //      'currency_symbol' => $setting_result[0]['currency_symbol'],
+       //      'currency_place' => $setting_result[0]['currency_place'],
+       //      'start_month' => $setting_result[0]['start_month'],
+       //      'school_name' => $setting_result[0]['name'],
+       //      'timezone' => $setting_result[0]['timezone'],
+       //      'sch_name' => $setting_result[0]['name'],
+       //      'language' => array('lang_id' => $setting['lang_id'], 'language' =>$setting['language']),
+       //      'is_rtl' => $setting_result[0]['is_rtl'],
+       //      'theme' => $setting_result[0]['theme'],
+       //  );
+       
+       //  if(!empty($session_data)){
+       //  $this->session->unset_userdata('admin');
+       //  }
+       //  $this->session->set_userdata('admin', $session_data);
     }
 
     function unselect_language($language_id) {
@@ -358,37 +383,43 @@ class Language extends Admin_Controller {
         $this->load->model("setting_model");
         $setting_result = $this->setting_model->get();
         $id = $setting_result[0]["id"];
-        $last_languages = json_decode($setting_result[0]['languages']);
-        foreach ($last_languages as $value) {
-            if ($language_id != $value) {
-                $languages[] = $value;
+        
+        $last_languages=json_decode($setting_result[0]['languages']);
+
+        foreach($last_languages as $value){
+            if($language_id!=$value){
+                $languages[]=$value;
             }
+            
         }
 
-        $language_id = json_encode($languages);
+        $language_id=json_encode($languages);
         $data = array('id' => $id, 'languages' => $language_id);
         $this->setting_model->add($data);
         $this->load->view('admin/language/languageSwitcher');
     }
 
     function write_lang_file($language, $writedata) {
-        echo $language;
-        if (is_dir(FCPATH . "application/language/" . $language)) {
+
+        if (!is_dir(FCPATH . "application/language/" . $language)) {
+
             mkdir(FCPATH . "application/language/" . $language);
             mkdir(FCPATH . "application/language/" . $language . "/app_files");
             $my_file = FCPATH . "application/language/" . $language . "/app_files/system_lang.php";
             $handle = fopen($my_file, 'w') or die('Cannot open file:  ' . $my_file);
-            echo "echo"; print_r($writedata); echo "<pre>";die;
+
             $sta = '$lang[';
             fwrite($handle, "<?php" . "\n");
             $i = 0;
             $tr = '"';
             foreach ($writedata as $sakey => $savalue) {
+
                 $data = $sta . "'" . $savalue["key"] . "'] =  " . $tr . $savalue["pharses"] . $tr . ";";
 
                 print_r($data . "<br/>");
                 fwrite($handle, $data . "\n");
             }
+
             fwrite($handle, "?>" . "\n");
             $i++;
         }
@@ -396,7 +427,11 @@ class Language extends Admin_Controller {
     }
 
     function create_language_file() {
+
+
+       
         $language_result = $this->language_model->get();
+
         foreach ($language_result as $langkey => $langvalue) {
             $lang_id = $langvalue["id"];
             $language = $langvalue["language"];
@@ -419,109 +454,258 @@ class Language extends Admin_Controller {
             $this->write_lang_file($language, $lang_arr);
         }
     }
+	
+	// Hospital Functions
+	 
+	
 
-  
-    function update_520() {
-//(,,)
-        $language_result =$this->db->select('*')->from('languages')->where_in('id',array(""))->get()->result_array();
+    public function languagetest() {
 
-        foreach ($language_result as $value11) {
-           echo "<pre>"; print_r($value11);  echo "</pre>";
-            $data = array();
-            $final_data = array();
-            $lang_pharses = array();
-            $sort_array="";
-            $language_pharses = array(array('key' => 'create', 'pharses' => 'create'));
-            if (file_exists(FCPATH . "application/language/English/app_files/system_lang.php")) {
-
-                $file_content = file(FCPATH . "application/language/English/app_files/system_lang.php");
-                $newdata = $file_content;
-
-                for ($i = 1722; $i < 1724; $i++) {
-                    $exp = explode("=", $newdata[$i]);
-                    $key = $exp[0];
-                    $pharses = '';
-                    if (isset($exp[1])) {
-                        $pharses = $exp[1];
-                    }
-                    $lang_pharses[$key] = $pharses;
-                    
-
-                }
-            } 
-            
-            $convert_from = 'en'; //change from langauge
-            $convert_to = $value11['short_code']; //change to langauge
-            $text = "";
-
-            foreach ($lang_pharses as $key => $value) {
-
-                $string = str_replace(';', '', $value);
-                $string = str_replace("'", "",$string);
-                $string = str_replace('"', '', $string);
-                $string = preg_replace('~[\r\n]+~', '', $string);
-                $text = trim($string);
-
-                $apiKey = '';
-                $url = 'https://www.googleapis.com/language/translate/v2?key=' . $apiKey . '&q=' . rawurlencode($text) . '&source=en&target=' . $convert_to;
-                $handle = curl_init($url);
-                curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, FALSE);
-                curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, FALSE);
-                curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($handle);
-                $responseDecoded = json_decode($response, true);
-
-                curl_close($handle);
-                $result = $responseDecoded['data']['translations'][0]['translatedText'];
-                $final_data[$key] = $result;
-            }
+        $data = array();
+        $final_data = array();
+        $lang_pharses = array();
+        $this->load->library('langconvert');
        
-          
-            $this->updateTranslateText($language = $value11['language'], $final_data);
+       if(file_exists(FCPATH . "application/language/English/app_files/system_lang.php")){
+
+        $file_content = file(FCPATH . "application/language/English/app_files/system_lang.php");
+        $newdata = $file_content;
+    
+      
+        for ($i=1; $i < 500 ; $i++) { 
+           
+           $exp = explode("=", $newdata[$i]);
+         
+           $key = $exp[0];
+            $pharses = '';
+            if(isset($exp[1])){
+                $pharses = $exp[1];
+            }
+            $lang_pharses[$key] = $pharses ; 
+
+         
+        }
+       
+
+       }
+        
+      // $language_id = 90; // change language id.
+        $convert_from = 'en'; //change from langauge
+        $convert_to = 'pl'; //change to langauge
+        $text = "";
+        end($lang_pharses);
+        $key_end = key($lang_pharses);
+        foreach ($lang_pharses as $key => $value) {
+
+            $string = str_replace(';', '', $value);
+
+            $text .= "+".$string;
+        }
+
+        $result = $this->langconvert->yandexTranslate($convert_from, $convert_to, $text);
+        $json_result = json_decode($result);
+    
+      
+        $exp_json = explode("+", $json_result->text[0]);
+
+        $j = 0; 
+        foreach ($lang_pharses as $lkey => $lvalue) {
+            if(isset($exp_json[$j+1])){
+            $final_data[$lkey] = $exp_json[$j+1] ;     
+        }else{
            
         }
+           
+            $j++ ;
+        } 
+        echo "<pre>";
+        print_r($final_data);
+        echo "<pre>";
+        die;
+
+                $this->writeTranslateText($language='Polish',$final_data);
+     
+       
+ 
     }
 
+    function update_520(){
+        $language_result = $this->language_model->update_520();
+		foreach ($language_result as $value11) {
+			echo $value11['language']." ".$value11['short_code'];
+			$data = array();
+			$final_data = array();
+			$lang_pharses = array();
+			$this->load->library('langconvert');
+			$language_pharses = array(array('key' => 'create', 'pharses' => 'create'));
+			if(file_exists(FCPATH . "application/language/English/app_files/system_lang.php")){
 
-    public function writeTranslateText($language, $writedata) {
-        mkdir(FCPATH . "application/language/" . $language);
-        mkdir(FCPATH . "application/language/" . $language . "/app_files");
-        if (is_dir(FCPATH . "application/language/" . $language)) {
+				$file_content = file(FCPATH . "application/language/English/app_files/system_lang.php");
+				$newdata = $file_content;     
+      
+				for ($i=1419; $i < 1460 ; $i++) { 
+           
+					$exp = explode("=", $newdata[$i]);
+         
+					$key = $exp[0];
+					$pharses = '';
+					if(isset($exp[1])){
+						$pharses = $exp[1];
+					}
+					$lang_pharses[$key] = $pharses ;          
+				}
+			}
+
+		// $language_id = 90; // change language id.
+        $convert_from = 'en'; //change from langauge
+        $convert_to = $value11['short_code']; //change to langauge
+        $text = "";
+        end($lang_pharses);
+        $key_end = key($lang_pharses);
+        foreach ($lang_pharses as $key => $value) {
+            $string = str_replace(';', '', $value);
+            $text .= "+".$string;
+        }
+
+        $result = $this->langconvert->yandexTranslate($convert_from, $convert_to, $text);
+        $json_result = json_decode($result);   
+     
+        $exp_json = explode("+", $json_result->text[0]);
+
+        $j = 0; 
+        foreach ($lang_pharses as $lkey => $lvalue) {
+            if(isset($exp_json[$j+1])){
+            $final_data[$lkey] = $exp_json[$j+1] ;     
+        }else{
+          
+        }
+           
+            $j++ ;
+        }
+        $this->updateTranslateText($language=$value11['language'],$final_data);    
+    
+       }
+    }
+
+    public function languagetest2() {
+
+        $data = array();
+        $final_data = array();
+        $lang_pharses = array();
+        $this->load->library('langconvert');
+        $language_pharses = array(array('key' => 'create', 'pharses' => 'create'));
+       if(file_exists(FCPATH . "application/language/English/app_files/system_lang.php")){
+
+        $file_content = file(FCPATH . "application/language/English/app_files/system_lang.php");
+        $newdata = $file_content;
+     
+      
+        for ($i=1312; $i < 1341 ; $i++) { 
+           
+           $exp = explode("=", $newdata[$i]);
+         
+           $key = $exp[0];
+            $pharses = '';
+            if(isset($exp[1])){
+                $pharses = $exp[1];
+            }
+            $lang_pharses[$key] = $pharses ; 
+        
+         
+        }
+      
+
+       }
+    
+      // $language_id = 90; // change language id.
+        $convert_from = 'en'; //change from langauge
+        $convert_to = 'fi'; //change to langauge
+        $text = "";
+        end($lang_pharses);
+        $key_end = key($lang_pharses);
+        foreach ($lang_pharses as $key => $value) {
+
+            $string = str_replace(';', '', $value);
+
+            $text .= "+".$string;
+        }
+
+        $result = $this->langconvert->yandexTranslate($convert_from, $convert_to, $text);
+        $json_result = json_decode($result);
+     
+     
+        $exp_json = explode("+", $json_result->text[0]);
+
+        $j = 0; 
+        foreach ($lang_pharses as $lkey => $lvalue) {
+            if(isset($exp_json[$j+1])){
+            $final_data[$lkey] = $exp_json[$j+1] ;     
+        }else{
+          
+        }
+           
+            $j++ ;
+        }
+        $this->updateTranslateText($language='French',$final_data);
+      
+       
+
+    }
+
+public function writeTranslateText($language,$writedata)
+{
+           mkdir(FCPATH . "application/language/" . $language);
+            mkdir(FCPATH . "application/language/" . $language . "/app_files"); 
+         if (is_dir(FCPATH . "application/language/" . $language)) {
+
+           
             $my_file = FCPATH . "application/language/" . $language . "/app_files/system_lang.php";
-            $handle = fopen($my_file, 'w') or die('Cannot open file:  ' . $my_file);
+
+           $handle = fopen($my_file, 'w') or die('Cannot open file:  ' . $my_file);
+
+          
             fwrite($handle, "" . "\n");
             $i = 0;
+           
+             foreach ($writedata as $fkey => $fvalue) {
+            $data =  $fkey ."=".strip_tags($fvalue).";" ;  
 
-            foreach ($writedata as $fkey => $fvalue) {
-                $data = $fkey . "=" . strip_tags($fvalue) . ";";
-                fwrite($handle, $data . "\n");
+                fwrite($handle, $data. "\n");
             }
-
+          
+       
             $i++;
         }
-    }
+   
+}
 
-    public function updateTranslateText($language, $writedata) {
 
-        if (is_dir(FCPATH . "application/language/" . $language)) {
-            $my_file = FCPATH . "application/language/" . $language . "/app_files/system_lang.php";
-            $handle = fopen($my_file, 'a') or die('Cannot open file:  ' . $my_file);
-             // fwrite($handle, ""."\n");
-             // fwrite($handle, "" . "\n");
-             // fwrite($handle, "#version 6.3.0 " . "\n");
-             // fwrite($handle, ""."\n");
-            $i = 0;
 
-            foreach ($writedata as $fkey => $fvalue) {
-                $data = $fkey . '="' . strip_tags($fvalue) . '";';
-                fwrite($handle, $data . "\n");
-            }
+public function updateTranslateText($language,$writedata)
+{
+   
+
+         if (is_dir(FCPATH . "application/language/" . $language)) {
 
             
+            $my_file = FCPATH . "application/language/" . $language . "/app_files/system_lang.php";
+           $handle = fopen($my_file, 'a') or die('Cannot open file:  ' . $my_file);
+
+          
+        fwrite($handle, "<?php" . "\n");
+            $i = 0;
+           
+             foreach ($writedata as $fkey => $fvalue) {
+            $data =  $fkey ."=".strip_tags($fvalue).";" ;  
+         
+                fwrite($handle, $data. "\n");
+            }
+          
+           fwrite($handle, "?>" . "\n"); 
             $i++;
         }
-    }
-
 
 }
+}
+
 ?>

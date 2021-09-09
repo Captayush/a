@@ -15,7 +15,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <div class="box-body">
                             <?php echo $this->customlib->getCSRF(); ?>
                             <div class="row">
-                                <div class="col-lg-6 col-md-6">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
                                         <select autofocus="" id="class_id" name="class_id" class="form-control" >
@@ -35,7 +35,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?></label><small class="req"> *</small>
                                         <select  id="section_id" name="section_id" class="form-control" >
@@ -51,7 +51,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
                             </div>
                         </div>
-                    </form>                
+
+                    </form>
+                
  
 
                 <?php
@@ -70,12 +72,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 foreach ($students as $student_key => $student_value) {
                                     ?>
                                     <form action="<?php echo site_url('student/savemulticlass'); ?>" method="POST" class="update">
+
                                         <div class="col-md-6">
+
                                             <div class="panel panel-info">
-                                                <div class="panel-body panelheight">
+
+                                                <div class="panel-body">
 
                                                     <?php
-                                                 echo $this->customlib->getFullName($student_value['firstname'],$student_value['middlename'],$student_value['lastname'],$sch_setting->middlename,$sch_setting->lastname)." (".$student_value['admission_no'].")";
+                                                    echo $name = $student_value['firstname'] . " " . $student_value['lastname']." (".$student_value['admission_no'].")";
                                                     ?>
                                                     <input type="hidden" value="<?php echo $student_value['id'] ?>" name="student_id">
                                                     <input type="hidden" value="<?php echo count($student_value['student_sessions']) + 1; ?>" name="nxt_row" class="nxt_row">
@@ -83,15 +88,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <div class="text-center">
 
                                                             <div class="col-xs-12 col-xs-offset-0 col-sm-3 col-sm-offset-9">
-                                                                 <?php if($this->rbac->hasPrivilege('multi_class_student','can_add')){ ?>
                                                                 <button type="button" class="btn btn-default btn-sm pull-right addrow addrow-mb2010">
                                                                     <i class="fa fa-plus"></i>
                                                                 </button>
-                                                            <?php }?>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="append_row pluscolmn">
+                                                    <div class="append_row">
 
                                                         <?php
                                                         if (!empty($student_value['student_sessions'])) {
@@ -100,7 +103,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 ?>
                                                                 <div class="row">
                                                                     <input type="hidden" name="row_count[]" value="<?php echo $count; ?>">
-                                                                    <div class="col-sm-5 col-lg-5 col-md-4">
+                                                                    <div class="col-sm-5">
                                                                         <div class="form-group">
                                                                             <label for="email"><?php echo $this->lang->line('class');?></label> 
                                                                             <select name="class_id_<?php echo $count; ?>" class="form-control class_id" >
@@ -115,8 +118,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-sm-5 col-lg-5 col-md-4">
-                                                                        <label for="email"><?php echo $this->lang->line('section'); ?></label>
+                                                                    <div class="col-sm-5">
+                                                                        <label for="email">Section</label>
                                                                         <div class="form-group">
                                                                             <select name="section_id_<?php echo $count; ?>" class="form-control section_id" >
                                                                                 <option value=""><?php echo $this->lang->line('select'); ?></option>
@@ -127,11 +130,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-sm-2 col-lg-2 col-md-4">
+                                                                    <div class="col-sm-2">
                                                                         <div class="form-group"><label for="email" style="opacity: 0;"><?php echo $this->lang->line('action')?></label>
-                                                                              <?php if($this->rbac->hasPrivilege('multi_class_student','can_delete')){ ?>
+
                                                                             <button class="btn btn-sm btn-danger rmv_row" type="button"><?php echo $this->lang->line('remove') ?></button>
-                                                                        <?php } ?>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -143,8 +145,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         ?>
 
                                                     </div>
+
+                                                    <hr>
                                                 </div>
-                                                <div class="panel-footer panel-fo">
+                                                <div class="panel-footer">
                                                     <div class="row text-center">
 
                                                         <div class="col-xs-12 col-xs-offset-0 col-sm-3 col-sm-offset-9">
@@ -254,6 +258,8 @@ function getSectionByClasses($classes, $class_selected, $section_selected) {
         $(this).closest( "div.row" ).remove();
     });
 
+
+
     var class_id = '<?php echo set_value('class_id', 0) ?>';
     var section_id = '<?php echo set_value('section_id', 0) ?>';
     getSectionByClass(class_id, section_id);
@@ -263,10 +269,13 @@ function getSectionByClasses($classes, $class_selected, $section_selected) {
         getSectionByClass(class_id, 0);
     });
 
-    $(document).on('change', '.class_id', function (e) {        
+    $(document).on('change', '.class_id', function (e) {
+        // $('#section_id').html("");
         var class_id = $(this).val();
 
-        var target_dropdown = $(this).closest("div.row").find('select.section_id');       
+        var target_dropdown = $(this).closest("div.row").find('select.section_id');
+
+        // getSectionByClass(class_id, 0);
         target_dropdown.html("");
         var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
         $.ajax({
@@ -292,9 +301,13 @@ function getSectionByClasses($classes, $class_selected, $section_selected) {
                 target_dropdown.removeClass('dropdownloading');
             }
         });
+
     });
 
+
+
     function getSectionByClass(class_id, section_id) {
+
         if (class_id != 0 && class_id !== "") {
             $('#section_id').html("");
             var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
@@ -325,31 +338,28 @@ function getSectionByClasses($classes, $class_selected, $section_selected) {
     }
 
     $(document).on('click', '.addrow', function () {
+
         var container = $(this).closest(".panel-body").find('.append_row');
         var nxt_row = $(this).closest(".panel-body").find('.nxt_row').val();
         var new_class_dropdown = $('#class_dropdown').html().replace("class_id", "class_id_" + nxt_row);
         var new_section_dropdown = $('#section_dropdown').html().replace("section_id", "section_id_" + nxt_row);
+
         var $newDiv = $('<div>').addClass('row').append(
                 $('<input>', {type: 'hidden', name: 'row_count[]', val: parseInt(nxt_row)})).append(
-                $('<div>').addClass('col-sm-5 col-lg-5 col-md-4').append($('<div>').addClass('form-group').append($('<label>').html('<?php echo $this->lang->line("class"); ?>')).append(new_class_dropdown))
+                $('<div>').addClass('col-sm-5').append($('<div>').addClass('form-group').append($('<label>').html('Class')).append(new_class_dropdown))
                 ).append(
-                $('<div>').addClass('col-sm-5 col-lg-5 col-md-4').append($('<div>').addClass('form-group').append($('<label>').html('<?php echo $this->lang->line("section"); ?>')).append(new_section_dropdown))
+                $('<div>').addClass('col-sm-5').append($('<div>').addClass('form-group').append($('<label>').html('Section')).append(new_section_dropdown))
                 ).append(
-                $('<div>').addClass('col-sm-2 col-lg-2 col-md-4').append($('<div>').addClass('form-group').append($('<label>',{ css: {'opacity': 0}}).html('Action')).append(
-                    
-                    <?php
-                      if($this->rbac->hasPrivilege('multi_class_student','can_delete')){ ?>
-                  
-                    $('<button>').html('<?php echo $this->lang->line("remove"); ?>').addClass('btn btn-sm btn-danger rmv_row')
-                    <?php }
-                    ?>
-                    )));
-
+                $('<div>').addClass('col-sm-2').append($('<div>').addClass('form-group').append($('<label>',{ css: {'opacity': 0}}).html('Action')).append($('<button>').html('Remove').addClass('btn btn-sm btn-danger rmv_row'))));
         $(this).closest(".panel-body").find('.nxt_row').val(parseInt(nxt_row) + 1);
         $newDiv.appendTo(container);
 
+
     });
+
 </script>
+
+
 <script type="text/template" id="class_dropdown">
 
     <select name="class_id" class="form-control class_id">
@@ -366,6 +376,6 @@ function getSectionByClasses($classes, $class_selected, $section_selected) {
 <script type="text/template" id="section_dropdown">
 
     <select name="section_id" class="form-control section_id" autocomplete="off">
-    <option value=""><?php echo $this->lang->line("select"); ?></option>
+    <option value="">Select</option>
     </select>
 </script>

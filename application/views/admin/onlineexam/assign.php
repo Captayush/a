@@ -1,7 +1,8 @@
 
-<div class="content-wrapper">    
+<div class="content-wrapper" style="min-height: 946px;">
+    
     <!-- Main content -->
-    <section class="content">  
+    <section class="content">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
@@ -16,8 +17,8 @@
                             <input type="hidden" name="onlineexam_id" value="<?php echo $onlineexam->id; ?>">
                            
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                    <label><?php echo $this->lang->line('class'); ?></label>  <small class="req"> *</small>
+                                     <div class="form-group">
+                                    <label><?php echo $this->lang->line('class'); ?></label>
                                     <select autofocus="" id="class_id" name="class_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
@@ -102,7 +103,7 @@
                                                             <th><?php echo $this->lang->line('father_name'); ?></th><?php }   if($sch_setting->category){ ?>
                                                             <th><?php echo $this->lang->line('category'); ?></th>
                                                         <?php } ?>
-                                                            <th class="pull-right"><?php echo $this->lang->line('gender'); ?></th>
+                                                            <th><?php echo $this->lang->line('gender'); ?></th>
                                                       
                                                         </tr>
                                                         <?php
@@ -136,13 +137,13 @@
 
                                                                     <td><?php echo $student['admission_no']; ?></td>
 
-                 <td><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname); ?></td>
+                                                                    <td><?php echo $student['firstname'] . " " . $student['lastname']; ?></td>
                                                                     <td><?php echo $student['class']." (".$student['section'].")"; ?></td><?php if($sch_setting->father_name){ ?>
                                                                     <td><?php echo $student['father_name']; ?></td>
                                                                 <?php } if($sch_setting->category){ ?>
                                                                     <td><?php echo $student['category']; ?></td>
                                                                 <?php } ?>
-                                                                    <td class="pull-right"><?php echo $student['gender']; ?></td>
+                                                                    <td><?php echo $student['gender']; ?></td>
 
                                                                 </tr>
                                                                 <?php

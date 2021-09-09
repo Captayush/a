@@ -16,23 +16,10 @@ $config['mailsms'] = array(
     'homework' => 'homework',
     'alumni_student' => 'alumni_student',
     'online_classes' => 'online_classes',
-    'online_meeting' => 'online_meeting',
-    'forgot_password' => 'forgot_password',
-    'online_examination_publish_exam' => 'online_examination_publish_exam',
-    'online_examination_publish_result' => 'online_examination_publish_result',
-    'online_admission_form_submission' => 'online_admission_form_submission',
-    'online_admission_fees_submission' => 'online_admission_fees_submission',
-);
-$config['smtp_encryption'] = array(
-    '' => 'OFF',
-    'ssl' => 'SSL',
-    'tls' => 'TLS',
+    'online_meeting' => 'online_meeting'
 );
 
-$config['smtp_auth'] = array(
-    'true' => 'ON',
-    'false' => 'OFF'
-);
+
 
 $config['attendence'] = array(
     'present' => 1,
@@ -45,26 +32,10 @@ $config['attendence'] = array(
 
 
 $config['attendence_exam'] = array(
+  
     'absent' => 'absent'
+    
 );
 $config['perm_category'] = array('can_view', 'can_add', 'can_edit', 'can_delete');
 
 $config['bloodgroup'] = array('1' => 'O+', '2' => 'A+', '3' => 'B+', '4' => 'AB+', '5' => 'O-', '6' => 'A-', '7' => 'B-', '8' => 'AB-');
-
-$config['question_type']=array(
-'singlechoice'=>'Single Choice',
-'multichoice'=>'Multiple Choice',
-'true_false'=>'True/False',
-'descriptive'=>'Descriptive'
-);
-
-$config['question_level']=array(
-'low'=>'Low',
-'medium'=>'Medium',
-'high'=>'High'
-);
-
-$config['question_true_false']=array(
-'true'=>'TRUE',
-'false'=>'FALSE'
-);

@@ -51,7 +51,7 @@ class Hostel extends Admin_Controller {
                 'description' => $this->input->post('description')
             );
             $this->hostel_model->addhostel($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/hostel/index');
         }
     }
@@ -84,7 +84,7 @@ class Hostel extends Admin_Controller {
                 'description' => $this->input->post('description')
             );
             $this->hostel_model->addhostel($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('update_message').'</div>');
             redirect('admin/hostel/index');
         }
     }

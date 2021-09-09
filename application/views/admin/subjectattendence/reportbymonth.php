@@ -6,11 +6,11 @@
     </section> 
     <!-- Main content -->
     <section class="content">
-        <?php $this->load->view('reports/_attendance'); ?>
+         <?php $this->load->view('reports/_attendance');?>
         <div class="row">
             <div class="col-md-12">
                 <div class="box removeboxmius">
-                    <div class="box-header ptbnull"></div>
+<div class="box-header ptbnull"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                     </div>
@@ -108,7 +108,7 @@
                     <?php
                     if (isset($resultlist)) {
                         ?>
-
+                  
                         <div class="">
                             <div class="box-header ptbnull"></div>  
                             <div class="box-header with-border">
@@ -120,9 +120,8 @@
                                 <?php
                                 if (!empty($resultlist)) {
                                     ?>
-									<div class="download_label"><?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list'); ?></div>
                                     <div class="table-responsive">
-                                        <table class="table table-hover table stripped attendance_table example" >
+                                        <table class="table table-hover table stripped attendance_table">
                                             <thead>
                                                 <tr>
                                                     <th>Student</th>
@@ -145,25 +144,21 @@
                                                     foreach ($resultlist['class_students'] as $student_key => $student_value) {
                                                         ?>
                                                         <tr>
-                                                            <td>
-                    <?php echo $this->customlib->getFullName($student_value['firstname'],$student_value['middlename'],$student_value['lastname'],$sch_setting->middlename,$sch_setting->lastname);  ?></td>
+                                                            <td><?php echo $student_value['firstname'] . " " . $student_value['lastname'] ?></td>
                                                             <?php
                                                             for ($i = 1; $i <= $no_of_days; $i++) {
                                                                 ?>
                                                                 <td class="text text-center">
                                                                     <?php
                                                                     if (!empty($resultlist['students_attendances'][$i]['subjects'])) {
-                        $students_attendance_list = getAttendance($resultlist['students_attendances'][$i]['students'], $student_value['id']);
+                                                                        $students_attendance_list = getAttendance($resultlist['students_attendances'][$i]['students'], $student_value['id']);
 
                                                                         $count = 1;
                                                                         foreach ($resultlist['students_attendances'][$i]['subjects'] as $subject_loop_key => $subject_loop_value) {
                                                                             ?>
                                                                             <div class="list-group" style="width: 180px;">
                                                                                 <?php
-                                                                                echo $subject_loop_value->name;
-                                                                                if ($subject_loop_value->code != '') {
-                                                                                    echo " (" . $subject_loop_value->code . ")";
-                                                                                }
+                                                                                echo $subject_loop_value->name; if($subject_loop_value->code!=''){ echo " (" . $subject_loop_value->code . ")";} 
                                                                                 echo "<br/>";
                                                                                 echo $subject_loop_value->time_from . " - " . $subject_loop_value->time_to;
                                                                                 echo "<br/>";

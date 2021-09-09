@@ -21,7 +21,7 @@
                     <!-- general form elements -->
                     <div class="box box-primary">
                         <div class="box-header ptbnull">
-                            <h3 class="box-title titlefix"><?php //echo $title_list;        ?></h3>
+                            <h3 class="box-title titlefix"><?php //echo $title_list;      ?></h3>
                             <div class="box-tools pull-right">
 
                             </div><!-- /.box-tools -->

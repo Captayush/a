@@ -68,7 +68,7 @@ class Form_builder {
         'default_no_label_class' => 'col-sm-offset-2',
         'default_form_control_class' => 'col-sm-9',
         'default_form_class' => 'form-horizontal col-sm-12',
-        'default_button_classes' => 'btn btn-primary pull-right',
+        'default_button_classes' => 'btn btn-primary',
         'default_date_post_addon' => '', // For instance '<span class="input-group-btn"><button class="btn default" type="button"><i class="glyphicon glyphicon-calendar"></i></button></span>'
         'default_date_format' => 'Y-m-d',
         'default_date_today_if_not_set' => FALSE,
@@ -95,9 +95,8 @@ class Form_builder {
         'post' => array(), /* container for post addons */
         'post_html' => ''
     );
-private $CI;
+
     function __construct($config = array()) {
-         $this->CI = &get_instance();
         if (!empty($config)) {
             $this->init($config);
         } else {
@@ -268,11 +267,12 @@ private $CI;
     function build_form_horizontal($options, $data_source = array()) {
         $this->_reset_builder();
         $this->data_source = (array) $data_source;
+       
         foreach ($options as $elm_options) {
             $this->elm_options = $elm_options;
+
             if (is_array($this->elm_options)) {
                 $this->_prep_options();
-
                 switch ($this->func) {
                     case 'form_hidden':
                         $this->print_string .= $this->_build_input();
@@ -315,12 +315,6 @@ private $CI;
                         $this->print_string .= $this->_post_elm();
 
                         $this->elm_options = $all_elm_options;
-                        break;
-                        case 'form_captcha':
-                        $this->print_string .= $this->_pre_elm();
-                        $this->print_string .= $this->_label();
-                        $this->print_string .= $this->_build_input();
-                        $this->print_string .= $this->_post_elm();
                         break;
                     default:
                         $this->print_string .= $this->_pre_elm();
@@ -591,10 +585,8 @@ private $CI;
              * textarea
              * file
              * checkbox
-             * captcha
              * radio
              */
-
             switch ($this->func) {
                 /*
                  * This should eventualy be expanded to be able to edit individual elements in the k=>v
@@ -666,22 +658,6 @@ private $CI;
                     break;
                 case 'form_input':
                     $input_html_string = form_input($this->elm_options);
-                    break;
-                case 'form_captcha':
-                  $is_captcha = $this->CI->captchalib->generate_captcha()['image'];                
-               $input_html_string ="<div class='row'>";
-               $input_html_string .="<div class='col-lg-3 col-md-5 col-sm-5'>";
-               $input_html_string .="<span id='captcha_image'>";
-               $input_html_string .= $is_captcha;
-               $input_html_string .="</span>";
-               $input_html_string .="<span class='fa fa-refresh catpcha' onclick='refreshCaptcha()' title='Refresh Catpcha'>";
-               $input_html_string .="</span>";
-               $input_html_string .="</div>";
-               $input_html_string .="<div class='col-lg-9 col-md-7 col-sm-7 mt10'>";
-               $input_html_string .="<input type='text' name='".$this->elm_options['name']."' value='' id='".$this->elm_options['id']."' placeholder='".$this->elm_options['placeholder']."' validation='".$this->elm_options['validation']."' class='".$this->elm_options['class']."'>";
-               $input_html_string .="</div>";
-               $input_html_string .="</div>";
-
                     break;
                 case 'form_hidden':
                     return form_hidden($this->elm_options['id'], $this->elm_options['value']);
@@ -860,15 +836,9 @@ private $CI;
             $label = '';
         }
 
-        if($this->func == 'form_captcha'){
-      
-         $label = '';
-        }
-    
-
         return form_label($label, $link_to_input_id ? $this->elm_options['name'] : '', array(
             'class' => $this->config['default_control_label_class']
-        )); // codeigninter form label librerary function
+        ));
     }
 
     private function _make_label($str) {

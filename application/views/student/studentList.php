@@ -14,7 +14,7 @@
                     <div class="box-body no-padding">
                         <?php
                         $count = 1;
-
+                       
                         foreach ($studentlist as $student) {
                             ?>
                             <div class="row carousel-row">
@@ -27,7 +27,7 @@
                                         </div>
                                     </div>
                                     <div class="slide-content">
-                                        <h4><a href="<?php echo base_url(); ?>student/view/<?php echo $student['id'] ?>"> <?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname); ?></a></h4>
+                                        <h4><a href="<?php echo base_url(); ?>student/view/<?php echo $student['id'] ?>"> <?php echo $student['firstname'] . " " . $student['firstname'] ?></a></h4>
                                         <address>
                                             <strong><?php echo $student['class'] . "(" . $student['section'] . ")" ?></strong><br>
                                             <b><?php echo $this->lang->line('admission_no'); ?>: </b><?php echo $student['admission_no'] ?><br/>

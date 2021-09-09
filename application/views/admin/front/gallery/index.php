@@ -35,68 +35,68 @@
                         <?php if ($this->session->flashdata('msg')) { ?>
                             <?php echo $this->session->flashdata('msg') ?>
                         <?php } ?>
-                        <div class="table-responsive">  
-                            <table class>
-                                <div class="mailbox-controls">
-                                    <div class="pull-right">
-                                    </div><!-- /.pull-right -->
-                                </div>
-                                <div class="mailbox-messages">
-                                    <div class="download_label"><?php ?> <?php echo $this->lang->line('gallery_list'); ?></div>
-                                    <table class="table table-striped table-bordered table-hover example">
-                                        <thead>
-                                            <tr>
-                                                <th><?php echo $this->lang->line('title'); ?></th>
-                                                <th><?php echo $this->lang->line('url'); ?></th>
-                                                <th class="text-right no-print">
-                                                    <?php echo $this->lang->line('action'); ?>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if (empty($listResult)) {
-                                                ?>
-
-                                                <?php
-                                            } else {
-                                                $count = 1;
-                                                foreach ($listResult as $page) {
-                                                    ?>
-                                                    <tr id="<?php echo $page["id"]; ?>">
-
-                                                        <td class="mailbox-name">
-                                                            <a href="#" ><?php echo $page['title'] ?></a>
-
-
-                                                        </td>
-                                                        <td class="mailbox-name"> <a href="<?php echo base_url() . $page['url'] ?>" target="_blank"><?php echo base_url() . $page['url'] ?></a></td>
-
-                                                        <td class="mailbox-date pull-right no-print">
-                                                            <?php
-                                                            if ($this->rbac->hasPrivilege('gallery', 'can_edit')) {
-                                                                ?>
-                                                                <a data-placement="left" href="<?php echo site_url('admin/front/gallery/edit/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                    <i class="fa fa-pencil"></i>
-                                                                </a>
-                                                                <?php
-                                                            }
-                                                            if ($this->rbac->hasPrivilege('gallery', 'can_delete')) {
-                                                                ?>
-                                                                <a data-placement="left" href="<?php echo site_url('admin/front/gallery/delete/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                    <i class="fa fa-remove"></i>
-                                                                </a>
-                                                            <?php } ?>
-                                                        </td>
-                                                    </tr>
-                                                    <?php
-                                                }
-                                                $count++;
-                                            }
+                      <div class="table-responsive">  
+                        <table class>
+                               <div class="mailbox-controls">
+                                <div class="pull-right">
+                                </div><!-- /.pull-right -->
+                            </div>
+                            <div class="mailbox-messages">
+                                <div class="download_label"><?php  ?> <?php echo $this->lang->line('gallery_list'); ?></div>
+                                <table class="table table-striped table-bordered table-hover example">
+                                    <thead>
+                                        <tr>
+                                            <th><?php echo $this->lang->line('title'); ?></th>
+                                            <th><?php echo $this->lang->line('url'); ?></th>
+                                            <th class="text-right no-print">
+                                                <?php echo $this->lang->line('action'); ?>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if (empty($listResult)) {
                                             ?>
-                                        </tbody>
-                                    </table><!-- /.table -->
-                                </div><!-- /.mail-box-messages -->
-                        </div>  
+
+                                            <?php
+                                        } else {
+                                            $count = 1;
+                                            foreach ($listResult as $page) {
+                                                ?>
+                                                <tr id="<?php echo $page["id"]; ?>">
+
+                                                    <td class="mailbox-name">
+                                                        <a href="#" ><?php echo $page['title'] ?></a>
+
+
+                                                    </td>
+                                                    <td class="mailbox-name"> <a href="<?php echo base_url() . $page['url'] ?>" target="_blank"><?php echo base_url() . $page['url'] ?></a></td>
+
+                                                    <td class="mailbox-date pull-right no-print">
+                                                        <?php
+                                                        if ($this->rbac->hasPrivilege('gallery', 'can_edit')) {
+                                                            ?>
+                                                            <a data-placement="left" href="<?php echo site_url('admin/front/gallery/edit/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </a>
+                                                            <?php
+                                                        }
+                                                        if ($this->rbac->hasPrivilege('gallery', 'can_delete')) {
+                                                            ?>
+                                                            <a data-placement="left" href="<?php echo site_url('admin/front/gallery/delete/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                                <i class="fa fa-remove"></i>
+                                                            </a>
+                                                        <?php } ?>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                            $count++;
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table><!-- /.table -->
+                            </div><!-- /.mail-box-messages -->
+                          </div>  
                     </div><!-- /.box-body -->
                 </div>
             </div><!--/.col (left) -->

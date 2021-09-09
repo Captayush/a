@@ -1,4 +1,4 @@
- ajaxSearch
+
  <?php
 
 if (!defined('BASEPATH')) {

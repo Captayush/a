@@ -16,17 +16,18 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><?php echo $this->lang->line('issue_item'); ?></h3>
                         <div class="box-tools pull-right">
-                            <?php if ($this->rbac->hasPrivilege('issue_item', 'can_add')) {
+                            <?php if($this->rbac->hasPrivilege('issue_item','can_add')){
                                 ?>
-                                <a href="<?php echo site_url('admin/issueitem/create') ?>" type="button" class="btn btn-primary btn-sm" ><i class="fa fa-plus"></i> <?php echo $this->lang->line('issue_item'); ?></a>
-                            <?php }
-                            ?>
-
+                                 <a href="<?php echo site_url('admin/issueitem/create') ?>" type="button" class="btn btn-primary btn-sm" ><i class="fa fa-plus"></i> <?php echo $this->lang->line('issue_item'); ?></a>
+                                <?php
+                            }?>
+                           
                         </div>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <div class="mailbox-messages table-responsive">
-                                 <table class="table table-striped table-bordered table-hover item-list" data-export-title="<?php echo $this->lang->line('issue_item'); ?>">
+                            <div class="download_label"><?php echo $this->lang->line('issue_item'); ?></div>
+                            <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('item'); ?></th>
@@ -36,10 +37,93 @@
                                         <th><?php echo $this->lang->line('issued_by'); ?></th>
                                         <th><?php echo $this->lang->line('quantity'); ?></th>
                                         <th><?php echo $this->lang->line('status'); ?></th>
-                                        <th class="text-right noExport"><?php echo $this->lang->line('action'); ?></th>
+                                        <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                   //echo "<pre>"; print_r($itemissueList); echo "<pre>";die;
+
+                                    if (empty($itemissueList)) {
+                                        ?>
+
+                                        <?php
+                                    } else {
+                                        foreach ($itemissueList as $item) {
+                                            ?>
+                                            <tr>
+                                                <td class="mailbox-name">
+                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $item['item_name'] ?></a>
+
+                                                    <div class="fee_detail_popover" style="display: none">
+                                                        <?php
+                                                        if ($item['note'] == "") {
+                                                            ?>
+                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <p class="text text-info"><?php echo $item['note']; ?></p>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                                <td class="mailbox-name">
+                                                    <?php echo $item['item_category']; ?>
+                                                </td>
+
+
+                                                <td class="mailbox-name">
+                                                    <?php
+                                                    if ($item['return_date'] == "0000-00-00") {
+                                                        $return_date = "";
+                                                    } else {
+                                                        $return_date = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($item['return_date']));
+                                                    }
+                                                    echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($item['issue_date'])) . " - " . $return_date;
+                                                    ?>
+                                                </td>
+                                                <td class="mailbox-name">
+                                                    <?php echo $item['staff_name'] . " " . $item['surname'] . " (" . $item['employee_id'] . ")";
+                                                    ;
+                                                    ?>
+                                                </td>
+                                                <td class="mailbox-name"><?php echo $item['issue_by']; ?></td>
+                                                <td class="mailbox-name"><?php echo $item['quantity']; ?></td>
+                                                <td class="mailbox-name"><?php
+                                                    if ($item['is_returned'] == 1) {
+                                                        ?>
+
+
+                                                        <span class="label label-danger item_remove" data-item="<?php echo $item['id'] ?>" data-category="<?php echo $item['item_category'] ?>" data-item_name="<?php echo $item['item_name'] ?>" data-quantity="<?php echo $item['quantity'] ?>" data-toggle="modal" data-target="#confirm-delete"><?php echo $this->lang->line('click_to_return'); ?></span>
+
+                                                        <?php
+                                                    } else {
+                                                        ?>
+
+                                                        <span class="label label-success"><?php echo $this->lang->line('returned'); ?></span>
+
+                                                        <?php
+                                                    }
+                                                    ?></td>
+
+                                                <td class="mailbox-date pull-right">
+
+                                                    <?php if($this->rbac->hasPrivilege('issue_item','can_delete')){
+                                                        ?><a data-placement="left" href="<?php echo base_url(); ?>admin/issueitem/delete/<?php echo $item['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
+                                                        <?php
+                                                    }?>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
                                 </tbody>
                             </table><!-- /.table -->
                         </div><!-- /.mail-box-messages -->
@@ -87,7 +171,16 @@
             show: false
 
         });
-      
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+
+
+        $('.date').datepicker({
+            format: date_format,
+            autoclose: true
+        });
+
+
+
     });
 
 
@@ -136,6 +229,10 @@
 
 
 </script>
+
+
+
+
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -164,11 +261,3 @@
     </div>
 </div>
 
-<script>
-    ( function ( $ ) {
-    'use strict';
-    $(document).ready(function () {
-        initDatatable('item-list','admin/issueitem/getitemlist',[],[],100);
-    });
-} ( jQuery ) )
-</script>

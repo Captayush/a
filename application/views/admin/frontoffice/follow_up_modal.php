@@ -40,14 +40,14 @@
                 </div>
             </div><!-- /.box-body --> 
             <div class="box-footer pr0">
-                <?php
-                if ($this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_add')) {
+                <?php 
+                if($this->rbac->hasPrivilege('follow_up_admission_enquiry','can_add')){
                     ?>
                     <a onclick="follow_save()" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></a>
                     <?php
                 }
                 ?>
-
+                
             </div>
 
         </form>
@@ -81,8 +81,8 @@
                                     echo "selected";
                                 }
                                 ?> value="<?php echo $enkey ?>"><?php echo $envalue ?></option>   
-                                <?php }
-                                ?>
+<?php }
+?>
                         </select>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
             <hr class="taskseparator" />
             <div class="task-info task-single-inline-wrap task-info-start-date">
                 <h5><i class="fa task-info-icon fa-fw fa-lg fa-calendar-plus-o pull-left fa-margin"></i>
-                    <?php echo $this->lang->line('enquiry'); ?> <?php echo $this->lang->line('date'); ?>: <?php print_r(date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($enquiry_data['date']))); ?>                                      
+<?php echo $this->lang->line('enquiry'); ?> <?php echo $this->lang->line('date'); ?>: <?php print_r(date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($enquiry_data['date']))); ?>                                      
                 </h5>
             </div>
 
@@ -137,19 +137,26 @@
     </div>  
 </div>
 <script>
+  
+
+   
+
     function follow_save() {
-       
+        //alert('Jai Shree Ram');
         var id = $('#enquiry_id').val();
-        var status = $('#enquiry_status').val();
+         var status = $('#enquiry_status').val();
         var responce = $('#response').val();
-        var follow_date = $('#follow_date').val();       
+        var follow_date = $('#follow_date').val();
+        //  alert(follow_date);
 
         $.ajax({
             url: '<?php echo base_url(); ?>admin/enquiry/follow_up_insert',
             type: 'POST',
             dataType: 'json',
             data: $("#folow_up_data").serialize(),
-            success: function (data) {               
+            success: function (data) {
+
+                //alert(data);
 
                 if (data.status == "fail") {
 
@@ -162,39 +169,67 @@
                 } else {
 
                     successMsg(data.message);
-                    follow_up_new(id, status);
+                    follow_up_new(id,status);
                 }
+
+               
             },
 
             error: function () {
                 alert("Fail")
             }
         });
+
+
     }
 
-    function follow_up_new(id, status) {
+    // function follow_up(id) {
+    //     $.ajax({
+    //         url: '<?php echo base_url(); ?>admin/enquiry/follow_up/' + id,
+    //         success: function (data) {
+    //             $('#getdetails_follow_up').html(data);
+    //             $.ajax({
+    //                 url: '<?php echo base_url(); ?>admin/enquiry/follow_up_list/' + id,
+    //                 success: function (data) {
+    //                     $('#timeline').html(data);
+    //                 },
+    //                 error: function () {
+    //                     alert("Fail")
+    //                 }
+    //             });
+    //         },
+    //         error: function () {
+    //             alert("Fail")
+    //         }
+    //     });
+    // }
 
-        $.ajax({
-            url: '<?php echo base_url(); ?>admin/enquiry/follow_up/' + id + '/' + status,
-            success: function (data) {
-                $('#getdetails_follow_up').html(data);
-                $.ajax({
-                    url: '<?php echo base_url(); ?>admin/enquiry/follow_up_list/' + id,
-                    success: function (data) {
-                        $('#timeline').html(data);
-                    },
-                    error: function () {
-                        alert("Fail")
-                    }
-                });
-            },
-            error: function () {
-                alert("Fail")
-            }
-        });
-    }
 
-    function changeStatus(status, id) {      
+function follow_up_new(id, status) {
+         
+            $.ajax({
+                url: '<?php echo base_url(); ?>admin/enquiry/follow_up/' + id + '/' + status,
+                success: function (data) {
+                    $('#getdetails_follow_up').html(data);
+                    $.ajax({
+                        url: '<?php echo base_url(); ?>admin/enquiry/follow_up_list/' + id,
+                        success: function (data) {
+                            $('#timeline').html(data);
+                        },
+                        error: function () {
+                            alert("Fail")
+                        }
+                    });
+                },
+                error: function () {
+                    alert("Fail")
+                }
+            });
+        }
+
+    function changeStatus(status, id) {
+
+       //alert(status+id);
 
         $.ajax({
             url: '<?php echo base_url(); ?>admin/enquiry/change_status/',
@@ -203,13 +238,16 @@
             data: {status: status, id: id},
             success: function (data) {
                 if (data.status == "fail") {
+
                     errorMsg(data.message);
                 } else {
+
                     successMsg(data.message);
-                    follow_up_new(id, status);
+                    follow_up_new(id,status);
                 }
             }
 
         })
     }
+
 </script>

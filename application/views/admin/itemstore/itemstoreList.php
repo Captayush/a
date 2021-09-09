@@ -69,72 +69,72 @@
                     <div class="box-body  ">
                         <div class="mailbox-messages ">
                             <div class="download_label"><?php echo $this->lang->line('item_store_list'); ?></div>
-                            <div class="table-responsive"> 
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('item_store_name'); ?></th>
-                                            <th><?php echo $this->lang->line('item_store_code'); ?></th>
-                                            <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (empty($itemstorelist)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            foreach ($itemstorelist as $store) {
-                                                ?>
-                                                <tr>   
-                                                    <td class="mailbox-name">
-
-                                                        <a href="#" data-toggle="popover" class="detail_popover" >
-                                                            <?php echo $store['item_store'] ?>
-                                                        </a>
-
-                                                        <div class="fee_detail_popover" style="display: none">
-                                                            <?php
-                                                            if ($store['description'] == "") {
-                                                                ?>
-                                                                <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                                <?php
-                                                            } else {
-                                                                ?>
-                                                                <p class="text text-info"><?php echo $store['description']; ?></p>
-                                                                <?php
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    </td>
-                                                    <td class="mailbox-name">
-
-                                                        <?php echo $store['code'] ?>
-
-                                                    </td>                                       
-
-                                                    <td class="mailbox-date pull-right no-print">
-                                                        <?php if ($this->rbac->hasPrivilege('store', 'can_edit')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/itemstore/edit/<?php echo $store['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                        <?php } if ($this->rbac->hasPrivilege('store', 'can_delete')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/itemstore/delete/<?php echo $store['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            $count++;
-                                        }
+                           <div class="table-responsive"> 
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('item_store_name'); ?></th>
+                                        <th><?php echo $this->lang->line('item_store_code'); ?></th>
+                                        <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($itemstorelist)) {
                                         ?>
 
-                                    </tbody>
-                                </table><!-- /.table -->
-                            </div>  
+                                        <?php
+                                    } else {
+                                        $count = 1;
+                                        foreach ($itemstorelist as $store) {
+                                            ?>
+                                            <tr>   
+                                                <td class="mailbox-name">
+
+                                                    <a href="#" data-toggle="popover" class="detail_popover" >
+        <?php echo $store['item_store'] ?>
+                                                    </a>
+
+                                                    <div class="fee_detail_popover" style="display: none">
+                                                        <?php
+                                                        if ($store['description'] == "") {
+                                                            ?>
+                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <p class="text text-info"><?php echo $store['description']; ?></p>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                                <td class="mailbox-name">
+
+        <?php echo $store['code'] ?>
+
+                                                </td>                                       
+
+                                                <td class="mailbox-date pull-right no-print">
+        <?php if ($this->rbac->hasPrivilege('store', 'can_edit')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/itemstore/edit/<?php echo $store['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+        <?php } if ($this->rbac->hasPrivilege('store', 'can_delete')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/itemstore/delete/<?php echo $store['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+        <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
+
+                                </tbody>
+                            </table><!-- /.table -->
+                          </div>  
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>

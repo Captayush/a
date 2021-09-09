@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+    <div class="content-wrapper">
     <section class="content-header">
         <h1>
             <?php echo $this->lang->line('general_form_elements'); ?>
@@ -33,10 +33,10 @@
     </section>
 </div>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnreset").click(function () {
-            /* Single line Reset function executes on click of Reset Button */
-            $("#form1")[0].reset();
+        $(document).ready(function(){
+        $("#btnreset").click(function(){
+        /* Single line Reset function executes on click of Reset Button */
+        $("#form1")[0].reset();
         });
-    });
+        });
 </script>

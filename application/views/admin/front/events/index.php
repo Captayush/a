@@ -34,94 +34,94 @@
                             </div><!-- /.pull-right -->
                         </div>
                         <div class="mailbox-messages">
-                            <div class="table-responsive">  
-                                <?php if ($this->session->flashdata('msg')) { ?>
-                                    <?php echo $this->session->flashdata('msg') ?>
-                                <?php } ?>
+                          <div class="table-responsive">  
+                            <?php if ($this->session->flashdata('msg')) { ?>
+                                <?php echo $this->session->flashdata('msg') ?>
+                            <?php } ?>
 
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('title'); ?></th>
-                                            <th><?php echo $this->lang->line('date'); ?></th>
-                                            <th><?php echo $this->lang->line('venue'); ?></th>
-                                            <th class="text-right">
-                                                <?php echo $this->lang->line('action'); ?>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (empty($listResult)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            foreach ($listResult as $event) {
-                                                ?>
-                                                <tr>
-                                                    <td class="mailbox-name">
-                                                        <a href="#" data-toggle="popover" class="detail_popover"><?php echo $event['title'] ?></a>
-
-                                                        <div class="fee_detail_popover" style="display: none">
-                                                            <?php
-                                                            if ($event['description'] == "") {
-                                                                ?>
-                                                                <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                                <?php
-                                                            } else {
-                                                                ?>
-                                                                <p class="text text-info"><?php echo $event['description']; ?></p>
-                                                                <?php
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    </td>
-                                                    <td class="mailbox-name"> <?php
-                                                        $start = strtotime($event['event_start']);
-                                                        $end = strtotime($event['event_end']);
-                                                        if ($event['event_start'] != "" && $event['event_end'] != "") {
-
-                                                            if ($start == $end) {
-                                                                echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($event['event_start']));
-                                                            } else {
-
-                                                                echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($event['event_start'])) . " - " . date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($event['event_end']));
-                                                            }
-                                                        } elseif ($event['event_start'] != "" && $event['event_end'] == "") {
-                                                            echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($event['event_start']));
-                                                        }
-                                                        ?></td>
-
-
-                                                    <td class="mailbox-name"> <?php echo $event['event_venue'] ?></td>
-
-                                                    <td class="mailbox-date pull-right no-print">
-                                                        <?php
-                                                        if ($this->rbac->hasPrivilege('event', 'can_edit')) {
-                                                            ?>
-                                                            <a data-placement="left" href="<?php echo site_url('admin/front/events/edit/' . $event['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-
-                                                            <?php
-                                                        }
-                                                        if ($this->rbac->hasPrivilege('event', 'can_delete')) {
-                                                            ?>
-                                                            <a data-placement="left" href="<?php echo site_url('admin/front/events/delete/' . $event['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            $count++;
-                                        }
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('title'); ?></th>
+                                        <th><?php echo $this->lang->line('date'); ?></th>
+                                        <th><?php echo $this->lang->line('venue'); ?></th>
+                                        <th class="text-right">
+                                            <?php echo $this->lang->line('action'); ?>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($listResult)) {
                                         ?>
-                                    </tbody>
-                                </table><!-- /.table -->
-                            </div>  
+
+                                        <?php
+                                    } else {
+                                        $count = 1;
+                                        foreach ($listResult as $event) {
+                                            ?>
+                                            <tr>
+                                                <td class="mailbox-name">
+                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $event['title'] ?></a>
+
+                                                    <div class="fee_detail_popover" style="display: none">
+                                                        <?php
+                                                        if ($event['description'] == "") {
+                                                            ?>
+                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <p class="text text-info"><?php echo $event['description']; ?></p>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                                <td class="mailbox-name"> <?php
+                                                    $start = strtotime($event['event_start']);
+                                                    $end = strtotime($event['event_end']);
+                                                    if ($event['event_start'] != "" && $event['event_end'] != "") {
+
+                                                        if ($start == $end) {
+                                                            echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($event['event_start']));
+                                                        } else {
+
+                                                            echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($event['event_start'])) . " - " . date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($event['event_end']));
+                                                        }
+                                                    } elseif ($event['event_start'] != "" && $event['event_end'] == "") {
+                                                        echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($event['event_start']));
+                                                    }
+                                                    ?></td>
+
+
+                                                <td class="mailbox-name"> <?php echo $event['event_venue'] ?></td>
+
+                                                <td class="mailbox-date pull-right no-print">
+                                                    <?php
+                                                    if ($this->rbac->hasPrivilege('event', 'can_edit')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo site_url('admin/front/events/edit/' . $event['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+
+                                                        <?php
+                                                    }
+                                                    if ($this->rbac->hasPrivilege('event', 'can_delete')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo site_url('admin/front/events/delete/' . $event['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table><!-- /.table -->
+                          </div>  
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>

@@ -74,7 +74,7 @@
 
                                     <?php }
                                     ?> 
-
+                                 
                                     <?php
                                     $i = 0;
 
@@ -198,7 +198,7 @@
             </div><!--/.col (left) -->
             <!-- right column -->
 
-
+ 
         </div>
         <div class="row">
             <!-- left column -->
@@ -213,8 +213,8 @@
 
 <script type="text/javascript">
     function getSectionByClass(class_id, section_id) {
-
-        if (class_id != "") {
+       
+        if (class_id != "" ) {
             $('#section_id').html("");
             var base_url = '<?php echo base_url() ?>';
             var div_data = '';
@@ -224,7 +224,7 @@
                 data: {'class_id': class_id},
                 dataType: "json",
                 success: function (data) {
-                    div_data += "<option value='' selected >" + "<?php echo $this->lang->line('select'); ?>" + "</option>";
+                    div_data += "<option value='' selected >"+"<?php echo $this->lang->line('select'); ?>"+"</option>";
                     $.each(data, function (i, obj)
                     {
                         var sel = "";
@@ -232,7 +232,7 @@
                             sel = "selected";
                         }
                         div_data += "<option value=" + obj.section_id + " " + sel + ">" + obj.section + "</option>";
-
+ 
 
                     });
 
@@ -262,18 +262,18 @@
         });
     });
 
-    var section = '';
-<?php
-if (isset($_POST['section'])) {
+    var section ='';
+    <?php 
+    if(isset($_POST['section'])){
+        ?>
+        section=$('#section_id').val();
+        <?php
+    }else{ ?>
+        section="<?php echo $section_id ?>";
+        <?php
+    }
     ?>
-        section = $('#section_id').val();
-<?php } else {
-    ?>
-        section = "<?php echo $section_id ?>";
-    <?php
-}
-?>
-
+    
     getSectionByClass('<?php echo $class_id ?>', section);
     var section_id = "<?php echo $section_id ?>";
 

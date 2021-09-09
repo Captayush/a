@@ -132,7 +132,7 @@
                                             <?php echo $this->lang->line('attendance'); ?>
                                             <?php echo $this->lang->line('date'); ?>
                                         </label>
-                                        <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="readonly"/>
+                                        <input id="date" name="date" placeholder="" type="text" class="form-control"  value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="readonly"/>
                                         <span class="text-danger"><?php echo form_error('date'); ?></span>
                                     </div>
                                 </div>
@@ -327,6 +327,10 @@
                             }
                         });
                     });
-                  
+                    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+                    $('#date').datepicker({
+                        format: date_format,
+                        autoclose: true
+                    });
                 });
             </script>

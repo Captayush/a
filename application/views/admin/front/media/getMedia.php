@@ -1,5 +1,5 @@
 <div class="col-lg-12">
-    <div class="form-horizontal">
+<div class="form-horizontal">
         <!-- left column -->
         <div class="col-sm-6">
             <div class="form-group">
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
 </div>
 <div class="row" id="media_div"></div>
 <div align="right" id="pagination_link"></div>

@@ -1,12 +1,25 @@
+<style type="text/css">
+    @media print
+    {
+        .no-print, .no-print *
+        {
+            display: none !important;
+        }
+    }
+</style>
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
 <div class="content-wrapper">
+
     <section class="content-header">
         <h1><i class="fa fa-newspaper-o"></i> <?php echo $this->lang->line('certificate'); ?></h1>
     </section>
+
     <section class="content">
         <div class="row">
+
+
             <?php
             if ($this->rbac->hasPrivilege('student_certificate', 'can_add')) {
                 ?>
@@ -49,9 +62,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <textarea class="form-control" id="certificate_text" name="certificate_text" placeholder="" rows="3" placeholder=""></textarea>
                                     <span class="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]
                                         <?php
+                                        
                                         if (!empty($custom_fields)) {
                                             foreach ($custom_fields as $field_key => $field_value) {
-                                                echo " [" . $field_value->name . "]";
+                                                echo " [" . $field_value->name. "]";
                                             }
                                         }
                                         ?>
@@ -180,7 +194,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <?php } ?>
 
                                                 </td>
-                                                <td class="mailbox-date text-right no-print white-space-nowrap">
+                                                <td class="mailbox-date text-right no-print">
                                                     <a data-placement="left" id="<?php echo $certificate->id ?>" class="btn btn-default btn-xs view_data" title="<?php echo $this->lang->line('view'); ?>">
                                                         <i class="fa fa-reorder"></i>
                                                     </a>
@@ -233,7 +247,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+</script>
 <script type="text/javascript">
     var base_url = '<?php echo base_url() ?>';
     function printDiv(elem) {
@@ -314,8 +338,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     function valueChanged()
     {
         if ($('#enable_student_img').is(":checked"))
-            $("#enableImageDiv").show();       
+            $("#enableImageDiv").show();
+        // alert("Hii")
         else
-            $("#enableImageDiv").hide();        
+            $("#enableImageDiv").hide();
+        //alert("Bye")
     }
 </script>

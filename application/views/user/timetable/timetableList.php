@@ -22,6 +22,7 @@
 
                             <?php
                             if (!empty($timetable)) {
+                              
                                 ?>
                                 <table class="table table-stripped">
                                     <thead>
@@ -54,12 +55,7 @@
                                                             ?>
                                                             <div class="attachment-block clearfix">
 
-                                                                <b class="text-green"><?php echo $this->lang->line('subject') ?>: <?php
-                                                                    echo $tm_kue->subject_name;
-                                                                    if ($tm_kue->code != '') {
-                                                                        echo " (" . $tm_kue->code . ")";
-                                                                    }
-                                                                    ?>
+                                                                <b class="text-green"><?php echo $this->lang->line('subject') ?>: <?php echo $tm_kue->subject_name; if($tm_kue->code!=''){ echo " (" . $tm_kue->code . ")"; } ?>
 
                                                                 </b><br>
 

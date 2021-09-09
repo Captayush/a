@@ -1,4 +1,5 @@
 <?php
+
 if ($page_form) {
     if (!empty($form)) {
         //build start form
@@ -24,7 +25,7 @@ if ($page_form) {
         $form_content .= $this->form_builder->build_form_horizontal($form, $defaults_object_or_array_from_db);
         $form_content .= $this->form_builder->close_form();
         //build end form
-
+       
         $replace_frm = '[form-builder:' . $form_name . ']';
         $replace_to = $form_content;
         echo $description = str_replace($replace_frm, $replace_to, $page['description']);
@@ -51,37 +52,37 @@ if ($page_form) {
                 ?>
                 <div class="row">
                     <?php
-                    if (!empty($page['category_content'][$page_content_key])) {
-
-                        foreach ($page['category_content'][$page_content_key] as $key => $value) {
-                            ?>  
-                            <div class="col-md-<?php echo $bootstrapColWidth; ?> col-sm-<?php echo $bootstrapColWidth; ?>">
-                                <div class="cuadro_intro_hover" style="background-color:#cccccc;">
-                                    <a href="<?php echo site_url($value['url']); ?>">
-                                        <?php
-                                        if ($value['feature_image'] == "") {
-                                            $feature_image = base_url('uploads/gallery/gallery_default.png');
-                                        } else {
-                                            $feature_image = $value['feature_image'];
-                                        }
-                                        ?>
-                                        <div align="center"><img src="<?php echo $feature_image; ?>" alt="" title=""></div>
-                                        <div class="eventcaption">
-                                            <div class="blur"></div>
-                                            <div class="event20">
-                                                <h3><?php echo $value['title']; ?></h3>
-                                                <p><?php echo substr($value['description'], 0, 85) . ".."; ?></p>
-                                            </div><!--./around20-->
-                                        </div>    
-                                    </a> 
-                                </div><!--./eventbox-->
-                            </div>
-                            <?php
-                            $rowCount++;
-                            if ($rowCount % $numOfCols == 0)
-                                echo '</div><div class="row">';
-                        }
+                      if(!empty($page['category_content'][$page_content_key])){
+                        
+                    foreach ($page['category_content'][$page_content_key] as $key => $value) {
+                        ?>  
+                        <div class="col-md-<?php echo $bootstrapColWidth; ?> col-sm-<?php echo $bootstrapColWidth; ?>">
+                            <div class="cuadro_intro_hover" style="background-color:#cccccc;">
+                                <a href="<?php echo site_url($value['url']); ?>">
+                                    <?php
+                                    if ($value['feature_image'] == "") {
+                                        $feature_image = base_url('uploads/gallery/gallery_default.png');
+                                    } else {
+                                        $feature_image = $value['feature_image'];
+                                    }
+                                    ?>
+                                    <div align="center"><img src="<?php echo $feature_image; ?>" alt="" title=""></div>
+                                    <div class="eventcaption">
+                                        <div class="blur"></div>
+                                        <div class="event20">
+                                            <h3><?php echo $value['title']; ?></h3>
+                                            <p><?php echo substr($value['description'], 0, 85) . ".."; ?></p>
+                                        </div><!--./around20-->
+                                    </div>    
+                                </a> 
+                            </div><!--./eventbox-->
+                        </div>
+                        <?php
+                        $rowCount++;
+                        if ($rowCount % $numOfCols == 0)
+                            echo '</div><div class="row">';
                     }
+                      }
                     ?>
                 </div>
 
@@ -90,15 +91,15 @@ if ($page_form) {
 
                 foreach ($page['category_content'][$page_content_key] as $key => $value) {
                     ?>
-
+                    
                     <div class="latestevent">
-
-                        <div class="alert-message alert-message-default">
-                            <h4><a href="<?php echo site_url($value['url']); ?>"><?php echo $value['title']; ?></a></h4>
-                            <p><?php echo substr($value['description'], 0, 85) . ".."; ?></p>
+                        
+                            <div class="alert-message alert-message-default">
+                                <h4><a href="<?php echo site_url($value['url']); ?>"><?php echo $value['title']; ?></a></h4>
+                                <p><?php echo substr($value['description'], 0, 85) . ".."; ?></p>
+                            </div>
                         </div>
-                    </div>
-
+                   
 
                     <?php
                 }
@@ -168,14 +169,4 @@ if ($page_form) {
             }
         });
     }
-   function refreshCaptcha(){
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url('site/refreshCaptcha'); ?>",
-            data: {},
-            success: function(captcha){
-                $("#captcha_image").html(captcha);
-            }
-        });
-    }    
 </script>

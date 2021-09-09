@@ -149,12 +149,12 @@
                                                 <td class="mailbox-name"><?php echo $value->no_of_child; ?> </td>
                                                 <td class="mailbox-name"> <?php echo $value->date_of_call; ?></td>
                                                 <td class="mailbox-name"> <?php echo $value->follow_up_date; ?></td>
-                                                <td class="mailbox-date pull-right">
+                                                <td class="mailbox-date pull-right" "="">
 
-                                                    <a href="#" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('edit') ?>">
+                                                    <a href="#" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="Edit">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
-                                                    <a href="#" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete') ?>">
+                                                    <a href="#" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="Delete">
                                                         <i class="fa fa-remove"></i>
                                                     </a>
                                                 </td>

@@ -1,17 +1,14 @@
 <?php
-
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
 class Cron extends CI_Controller
 {
-
     protected $cron_key;
-
-    /**
-     * This is default constructor of the class
-     */
+/**
+ * This is default constructor of the class
+ */
     public function __construct($key = "")
     {
         parent::__construct();
@@ -31,6 +28,7 @@ class Cron extends CI_Controller
             echo "Invalid Key or Direct access is not allowed";
             return;
         }
+
     }
 
     public function autobackup($key = '')
@@ -55,13 +53,14 @@ class Cron extends CI_Controller
             $backup = $this->dbutil->backup($prefs);
             $this->load->helper('file');
             write_file('./backup/database_backup/' . $filename, $backup);
-        }
-    }
 
+        }
+
+    }
 
     public function feereminder($key = "")
     {
-        $setting_result = $this->setting_model->getSetting();
+
         if ($key != "") {
             if ($key != "" && $this->cron_key != $key) {
                 echo "Invalid Key or Direct access is not allowed";
@@ -75,12 +74,10 @@ class Cron extends CI_Controller
             if (!empty($feereminder)) {
                 foreach ($feereminder as $feereminder_key => $feereminder_value) {
                     if ($feereminder_value->reminder_type == "before") {
-                       
+
                         $date               = date('Y-m-d', strtotime('+' . $feereminder_value->day . ' days'));
                         $fees_type_reminder = $this->feegrouptype_model->getFeeTypeDueDateReminder($date);
-
                         if (!empty($fees_type_reminder)) {
-
                             foreach ($fees_type_reminder as $reminder_key => $reminder_value) {
 
                                 $students = $this->feegrouptype_model->getFeeTypeStudents($reminder_value->fee_session_group_id, $reminder_value->id);
@@ -96,22 +93,21 @@ class Cron extends CI_Controller
                                     if (json_last_error() == JSON_ERROR_NONE) {
                                         $deposit_amount = 0;
                                         foreach ($fees_array as $fee_collected_key => $fee_collected_value) {
-                                            $deposit_amount = $deposit_amount + ($fee_collected_value->amount+$fee_collected_value->amount_discount);
+                                            $deposit_amount = $deposit_amount + $fee_collected_value->amount;
                                         };
                                         $students[$student_key]->{'deposit_amount'} = number_format((float) ($deposit_amount), 2, '.', '');
                                         $students[$student_key]->{'due_amount'}     = number_format((float) ($reminder_value->amount - $deposit_amount), 2, '.', '');
                                     };
-                                    $students[$student_key]->{'student_name'} = $this->customlib->getFullName($student_value->firstname, $student_value->middlename, $student_value->lastname, $setting_result->middlename, $setting_result->lastname);
-                                    $studentList[]                            = $student_value;
+
+                                    $studentList[] = $student_value;
                                 }
+
                             }
                         }
 
                     } else if ($feereminder_value->reminder_type == "after") {
-                       
                         $date               = date('Y-m-d', strtotime('-' . $feereminder_value->day . ' days'));
                         $fees_type_reminder = $this->feegrouptype_model->getFeeTypeDueDateReminder($date);
-                        
                         if (!empty($fees_type_reminder)) {
                             foreach ($fees_type_reminder as $reminder_key => $reminder_value) {
 
@@ -128,37 +124,41 @@ class Cron extends CI_Controller
                                     if (json_last_error() == JSON_ERROR_NONE) {
                                         $deposit_amount = 0;
                                         foreach ($fees_array as $fee_collected_key => $fee_collected_value) {
-                                      
-                                            $deposit_amount = $deposit_amount + ($fee_collected_value->amount+$fee_collected_value->amount_discount);
+                                            $deposit_amount = $deposit_amount + $fee_collected_value->amount;
                                         };
                                         $students[$student_key]->{'deposit_amount'} = number_format((float) ($deposit_amount), 2, '.', '');
                                         $students[$student_key]->{'due_amount'}     = number_format((float) ($reminder_value->amount - $deposit_amount), 2, '.', '');
                                     };
 
-                                    $students[$student_key]->{'student_name'} = $this->customlib->getFullName($student_value->firstname, $student_value->middlename, $student_value->lastname, $setting_result->middlename, $setting_result->lastname);
-                                    $students[$student_key]->{'school_name'}  =   $this->customlib->getSchoolName();
-                                    $studentList[]                            = $student_value;
+                                    $studentList[] = $student_value;
                                 }
+
                             }
                         }
+
                     }
+
                 }
-                  
+
                 if (!empty($studentList)) {
                     foreach ($studentList as $eachStudent_key => $eachStudent_value) {
                         if ($eachStudent_value->due_amount <= 0) {
                             unset($studentList[$eachStudent_key]);
                         }
                     }
+
                 }
                 if (!empty($studentList)) {
                     foreach ($studentList as $eachStudent_key => $eachStudent_value) {
-
+                     
                         $this->mailsmsconf->mailsms('fees_reminder', $eachStudent_value);
                     }
+
                 }
             }
+
         }
+
     }
 
 }

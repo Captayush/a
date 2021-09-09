@@ -21,10 +21,10 @@
                                 </div>
                                 <h4 class="pagetitleh2"><?php echo $this->lang->line('basic_information'); ?> </h4>
 
-                               
+
 
                                 <div class="around10">
-
+                                  
                                     <?php if ($this->session->flashdata('msg')) { ?>
                                         <?php echo $this->session->flashdata('msg') ?>
                                     <?php } ?>  
@@ -261,7 +261,68 @@
                                                     <span class="text-danger"></span></div>
                                             </div>                          
                                         <?php } ?>
-                                    </div>   
+                                    </div> 
+                                    
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>Select Fund Type<small class="req"> *</small>&nbsp;&nbsp;&nbsp;</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fund_type" id="fund_type" autocomplete="off" value="pf">PF
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fund_type" id="fund_type" autocomplete="off"  value="sf">SF
+                                            </label>
+                                            <span class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        
+                                    <div class="col-md-3 desc" id="pf" style="display:none;">
+                                        <div class="form-group">
+                                            <label for="pf1" class="control-label">P.F. Per Day For Both Side</label><small class="req"> *</small>
+                                            <input type="text" id="pf1" name="pf" class="form-control" value="0" autocomplete="off">
+                                            <span class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3 desc" id="sf" style="display:none;">
+                                        <div class="form-group">
+                                            <label for="sf1" class="control-label">Security Fund</label>
+                                            <small class="req"> *</small>
+                                            <input type="text" id="sf1" name="sf" class="form-control" value="0">
+                                            <span class="text-danger"></span>
+                                        </div>
+                                    </div> 
+                                  
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="esi" class="control-label">ESI</label>
+                                            <small class="req"> *</small>
+                                            <input type="text" id="esi" name="esi" class="form-control" value="<?php echo set_value('esi',$staff["esi"]); ?>">
+                                            <span class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                  
+                                    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="in_time" class="control-label">In Time</label>
+                                            <small class="req"> *</small>
+                                            <input type="time" id="in_time" name="in_time" class="form-control time"pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" value="<?php echo set_value('in_time',$staff["in_time"]); ?>">
+                                            <span class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="out_time" class="control-label">Out Time</label>
+                                            <small class="req"> *</small>
+                                            <input type="time" id="out_time" name="out_time" class="form-control time" pattern="([1]?[0-9]|2[0-3]):[0-5][0-9]" value="<?php echo set_value('out_time',$staff["out_time"]); ?>">
+                                            <span class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
 
                                     <div class="row">                                     
                                         <?php
@@ -298,7 +359,7 @@
                                                 <?php } if ($sch_setting->staff_basic_salary) { ?>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="exampleInputEmail1"><?php echo $this->lang->line('basic_salary'); ?></label>
+                                                            <label for="exampleInputEmail1">Salary With PF<?php //echo $this->lang->line('basic_salary'); ?></label>
                                                             <input type="text" class="form-control" name="basic_salary" value="<?php echo set_value('basic_salary') ?>" >
                                                         </div>
                                                     </div>
@@ -321,8 +382,8 @@
                                                 <?php } if ($sch_setting->staff_work_shift) { ?>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="exampleInputEmail1"><?php echo $this->lang->line('work_shift'); ?></label>
-                                                            <input id="shift" name="shift" placeholder="" type="text" class="form-control"  value="<?php echo set_value('shift') ?>" />
+                                                            <label for="exampleInputEmail1"><?php echo $this->lang->line('work_shift'); ?> (In Minuts)</label>
+                                                            <input id="shift" name="shift" placeholder="" readonly type="text" class="form-control"  value="<?php echo set_value('shift') ?>" />
                                                             <span class="text-danger"><?php echo form_error('shift'); ?></span>
                                                         </div>
                                                     </div>
@@ -528,10 +589,28 @@
 
 <script type="text/javascript">
 
+    $(document).ready(function() {
+        $(".desc").hide();
+        $("input[name=fund_type]").click(function() {
+            var test = $(this).val();
+            console.log(test);
+            if(test=='pf'){
+                $("#sf1").val('0');
+            }else{
+                $("#pf1").val('0');
+            }
+            $(".desc").hide();
+            $("#" + test).show();
+        });
+    });
 
-
-
-
-
+    $("#out_time").keyup(function() {
+        var day = '1/1/1970 ';// 1st January 1970
+        var start = $("#in_time").val();
+        var end = $("#out_time").val();
+        var diff_in_min = ( Date.parse(day + end) - Date.parse(day + start) ) / 1000 / 60;
+        $("#shift").val(diff_in_min);
+    });
+   
 </script>
 <script type="text/javascript" src="<?php echo base_url(); ?>backend/dist/js/savemode.js"></script>    

@@ -12,131 +12,72 @@
             <input type="hidden" name="class_id" name="" value="<?php echo $class_id; ?>">
             <input type="hidden" name="section_id" name="" value="<?php echo $section_id; ?>">
             <input type="hidden" name="subject_group_id" name="" value="<?php echo $subject_group_id; ?>">
-            <div class="">   
-                <table class="table table-bordered table-hover order-list tablewidthRS" id="tab_logic">
-                    <thead>
-                        <tr>
+         <div class="">   
+            <table class="table table-bordered table-hover order-list tablewidthRS" id="tab_logic">
+                <thead>
+                    <tr>
 
-                            <th>
-                                <?php echo $this->lang->line('subject') ?>
-                            </th>
-                            <th>
-                                <?php echo $this->lang->line('teacher'); ?>
-                            </th>
-                            <th>
-                                 <?php echo $this->lang->line('time') . " " . $this->lang->line('from') ?><small class="astrike"> *</small>
-                            </th>
-                            <th>
-                                <?php echo $this->lang->line('time') . " " . $this->lang->line('to') ?><small class="astrike"> *</small>
-                            </th>
-                            <th>
-                                <?php echo $this->lang->line('room') . " " . $this->lang->line('no') ?>
-                            </th>
-                            <th class="text-right">
-                                <?php echo $this->lang->line('action') ?>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if (!empty($prev_record)) {
-                            $counter = 1;
-                            foreach ($prev_record as $prev_rec_key => $prev_rec_value) {
-                                ?>
-                            <input type="hidden" name="prev_array[]" value="<?php echo $prev_rec_value->id; ?>">
-
-                            <tr id='addr0'>
-
-                                <td>
-                                    <input type="hidden" name="total_row[]" value="<?php echo $counter; ?>">
-                                    <input type="hidden" name="prev_id_<?php echo $counter; ?>" value="<?php echo $prev_rec_value->id; ?>">
-                                    <select class="form-control subject" id="subject_id_<?php echo $counter; ?>" name="subject_<?php echo $counter; ?>">
-
-                                        <option value=""><?php echo$this->lang->line('select') ?></option>
-                                        <?php
-                                        foreach ($subject as $subject_key => $subject_value) {
-                                            ?>
-
-                                            <option value="<?php echo $subject_value->id; ?>" <?php echo set_select('subject_' . $counter, $subject_value->id, ($prev_rec_value->subject_group_subject_id == $subject_value->id ) ? TRUE : FALSE ); ?> >
-                                                <?php
-                                                $sub_code = ($subject_value->code != "") ? " (" . $subject_value->code . ")" : "";
-                                                echo $subject_value->name . $sub_code;
-                                                ?>
-                                                <?php ?>
-                                            </option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-control staff" id="staff_id_<?php echo $counter; ?>" name="staff_<?php echo $counter; ?>">
-                                        <option value=""><?php echo $this->lang->line('select') ?></option>
-                                        <?php
-                                        foreach ($staff as $staff_key => $staff_value) {
-                                            ?>
-
-                                            <option value="<?php echo $staff_value['id']; ?>" <?php echo set_select('staff_' . $counter, $staff_value['id'], ($prev_rec_value->staff_id == $staff_value['id'] ) ? TRUE : FALSE ); ?> ><?php echo $staff_value['name'] . " " . $staff_value['surname'] . " (" . $staff_value['employee_id'] . ")"; ?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="text" name="time_from_<?php echo $counter; ?>" class="form-control time_from time" id="time_from_<?php echo $counter; ?>" value="<?php echo ($prev_rec_value->start_time != "") ? $prev_rec_value->time_from :  $this->customlib->timeFormat($prev_rec_value->start_time);?>">
-                                        <div class="input-group-addon">
-                                            <span class="fa fa-clock-o"></span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="text" name="time_to_<?php echo $counter; ?>" class="form-control time_to time" id="time_to_<?php echo $counter; ?>" value="<?php echo ($prev_rec_value->end_time != "") ? $prev_rec_value->time_to :  $this->customlib->timeFormat($prev_rec_value->end_time);?>">
-                                        <div class="input-group-addon">
-                                            <span class="fa fa-clock-o"></span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type="text" name='room_no_<?php echo $counter; ?>' value="<?php echo $prev_rec_value->room_no; ?>" placeholder='Room no' class="form-control room_no" id="room_no_<?php echo $counter; ?>"/>
-                                </td>
-                                <td class="text-right"><button class="ibtnDel btn btn-danger btn-sm btn-danger"> <i class="fa fa-trash"></i></button></td>
-
-                            </tr>
-
-                            <?php
-                            $counter ++;
-                        }
-                    } else {
-                        ?>
+                        <th>
+                            <?php echo $this->lang->line('subject') ?>
+                        </th>
+                        <th>
+                            <?php echo $this->lang->line('teacher'); ?>
+                        </th>
+                        <th>
+                            <?php echo $this->lang->line('time') . " " . $this->lang->line('from') ?>
+                        </th>
+                        <th>
+                            <?php echo $this->lang->line('time') . " " . $this->lang->line('to') ?>
+                        </th>
+                        <th>
+                            <?php echo $this->lang->line('room') . " " . $this->lang->line('no') ?>
+                        </th>
+                        <th class="text-right">
+                            <?php echo $this->lang->line('action') ?>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (!empty($prev_record)) {
+                        $counter = 1;
+                        foreach ($prev_record as $prev_rec_key => $prev_rec_value) {
+                            ?>
+                        <input type="hidden" name="prev_array[]" value="<?php echo $prev_rec_value->id; ?>">
 
                         <tr id='addr0'>
 
-                            <td class="relative">
-                                <input type="hidden" name="total_row[]" value="<?php echo $total_count; ?>">
-                                <input type="hidden" name="prev_id_<?php echo $total_count; ?>" value="0">
-                                <select class="form-control subject" id="subject_id_<?php echo $total_count; ?>" name="subject_<?php echo $total_count; ?>">
+                            <td>
+                                <input type="hidden" name="total_row[]" value="<?php echo $counter; ?>">
+                                <input type="hidden" name="prev_id_<?php echo $counter; ?>" value="<?php echo $prev_rec_value->id; ?>">
+                                <select class="form-control subject" id="subject_id_<?php echo $counter; ?>" name="subject_<?php echo $counter; ?>">
 
-                                    <option value=""><?php echo $this->lang->line('select') ?></option>
+                                    <option value=""><?php echo$this->lang->line('select') ?></option>
                                     <?php
                                     foreach ($subject as $subject_key => $subject_value) {
                                         ?>
 
-                                        <option value="<?php echo $subject_value->id; ?>"><?php echo $subject_value->name . " (" . $subject_value->code . ")"; ?></option>
+                                        <option value="<?php echo $subject_value->id; ?>" <?php echo set_select('subject_' . $counter, $subject_value->id, ($prev_rec_value->subject_group_subject_id == $subject_value->id ) ? TRUE : FALSE ); ?> >
+                                            <?php
+                                            $sub_code=($subject_value->code != "")? " (".$subject_value->code.")": "";
+                                             echo $subject_value->name.$sub_code;
+                                             ?>
+                                            <?php  ?>
+                                        </option>
                                         <?php
                                     }
                                     ?>
                                 </select>
                             </td>
-                            <td class="relative">
-                                <select class="form-control staff" id="staff_id_<?php echo $total_count; ?>" name="staff_<?php echo $total_count; ?>">
+                            <td>
+                                <select class="form-control staff" id="staff_id_<?php echo $counter; ?>" name="staff_<?php echo $counter; ?>">
                                     <option value=""><?php echo $this->lang->line('select') ?></option>
                                     <?php
+                                 
                                     foreach ($staff as $staff_key => $staff_value) {
                                         ?>
 
-                                        <option value="<?php echo $staff_value['id']; ?>"><?php echo $staff_value['name'] . " " . $staff_value['surname'] . " (" . $staff_value['employee_id'] . ")"; ?></option>
+                                        <option value="<?php echo $staff_value['id']; ?>" <?php echo set_select('staff_' . $counter, $staff_value['id'], ($prev_rec_value->staff_id == $staff_value['id'] ) ? TRUE : FALSE ); ?> ><?php echo $staff_value['name']." ".$staff_value['surname']." (".$staff_value['employee_id'].")"; ?></option>
                                         <?php
                                     }
                                     ?>
@@ -144,7 +85,7 @@
                             </td>
                             <td>
                                 <div class="input-group">
-                                    <input type="text" name="time_from_<?php echo $total_count; ?>" class="form-control time_from time" id="time_from_<?php echo $total_count; ?>" aria-invalid="false">
+                                    <input type="text" name="time_from_<?php echo $counter; ?>" class="form-control time_from time" id="time_from_<?php echo $counter; ?>" value="<?php echo $prev_rec_value->time_from; ?>">
                                     <div class="input-group-addon">
                                         <span class="fa fa-clock-o"></span>
                                     </div>
@@ -152,33 +93,93 @@
                             </td>
                             <td>
                                 <div class="input-group">
-                                    <input type="text" name="time_to_<?php echo $total_count; ?>" class="form-control time_to time" id="time_to_<?php echo $total_count; ?>" aria-invalid="false">
+                                    <input type="text" name="time_to_<?php echo $counter; ?>" class="form-control time_to time" id="time_to_<?php echo $counter; ?>" value="<?php echo $prev_rec_value->time_to; ?>">
                                     <div class="input-group-addon">
                                         <span class="fa fa-clock-o"></span>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <input type="text" name='room_no_<?php echo $total_count; ?>' id='room_no_<?php echo $total_count; ?>' placeholder='Room no' class="form-control room_no"/>
+                                <input type="text" name='room_no_<?php echo $counter; ?>' value="<?php echo $prev_rec_value->room_no; ?>" placeholder='Room no' class="form-control room_no" id="room_no_<?php echo $counter; ?>"/>
                             </td>
                             <td class="text-right"><button class="ibtnDel btn btn-danger btn-sm btn-danger"> <i class="fa fa-trash"></i></button></td>
 
                         </tr>
+
                         <?php
+                        $counter ++;
                     }
+                } else {
                     ?>
 
+                    <tr id='addr0'>
 
-                    </tbody>
-                </table>
-            </div>
-            <?php if ($this->rbac->hasPrivilege('class_timetable', 'can_edit')) {
+                        <td class="relative">
+                            <input type="hidden" name="total_row[]" value="<?php echo $total_count; ?>">
+                            <input type="hidden" name="prev_id_<?php echo $total_count; ?>" value="0">
+                            <select class="form-control subject" id="subject_id_<?php echo $total_count; ?>" name="subject_<?php echo $total_count; ?>">
+
+                                <option value=""><?php echo $this->lang->line('select') ?></option>
+                                <?php
+                                foreach ($subject as $subject_key => $subject_value) {
+                                    ?>
+
+                                    <option value="<?php echo $subject_value->id; ?>"><?php echo $subject_value->name." (".$subject_value->code.")"; ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                        <td class="relative">
+                            <select class="form-control staff" id="staff_id_<?php echo $total_count; ?>" name="staff_<?php echo $total_count; ?>">
+                                <option value=""><?php echo $this->lang->line('select') ?></option>
+                                <?php
+                                foreach ($staff as $staff_key => $staff_value) {
+                                    ?>
+
+                                    <option value="<?php echo $staff_value['id']; ?>"><?php echo $staff_value['name']." ".$staff_value['surname']." (".$staff_value['employee_id'].")"; ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" name="time_from_<?php echo $total_count; ?>" class="form-control time_from time" id="time_from_<?php echo $total_count; ?>" aria-invalid="false">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" name="time_to_<?php echo $total_count; ?>" class="form-control time_to time" id="time_to_<?php echo $total_count; ?>" aria-invalid="false">
+                                <div class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" name='room_no_<?php echo $total_count; ?>' id='room_no_<?php echo $total_count; ?>' placeholder='Room no' class="form-control room_no"/>
+                        </td>
+                        <td class="text-right"><button class="ibtnDel btn btn-danger btn-sm btn-danger"> <i class="fa fa-trash"></i></button></td>
+
+                    </tr>
+                    <?php
+                }
                 ?>
-                <button class="btn btn-primary btn-sm pull-right" type="submit"><i class="fa fa-save"></i> <?php echo $this->lang->line('save'); ?></button>
-            <?php }
-            ?>
 
 
+                </tbody>
+            </table>
+        </div>
+            <?php if($this->rbac->hasPrivilege('class_timetable','can_edit')){
+                ?>
+                <button class="btn btn-primary btn-sm pull-right" type="submit"><i class="fa fa-save"></i> <?php echo $this->lang->line('save');?></button>
+                <?php
+            }?>
+            
+         
         </form>
     </div>
 </div>
@@ -266,9 +267,9 @@
                         $(target).html(data.html);
                         if (data.status == 1) {
 
-                            successMsg(data.message);
-                            $(target).html("");
-                            getGroupdata(target, target_id, ajax_data);
+                           successMsg(data.message);
+                           $(target).html("");
+                           getGroupdata(target, target_id, ajax_data);
 
                         } else {
                             var list = $('<ul/>');

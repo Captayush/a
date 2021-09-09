@@ -25,7 +25,7 @@
                     foreach ($monthlist as $key => $value) {
 
                         $datemonth = date("m", strtotime($value));
-                        $att_dates = $year . "-" . $datemonth . "-" . sprintf("%02d", $i);
+                          $att_dates = $year . "-" . $datemonth . "-" . sprintf("%02d", $i);
                         ?>
                         <td><span data-toggle="popover" class="detail_popover" data-original-title="" title=""><a href="#" style="color:#333"><?php
                                     if (array_key_exists($att_dates, $resultlist)) {
@@ -37,11 +37,10 @@
 
                     <?php } ?>
                 </tr>
-                <?php
-                $j++;
+                <?php $j++;
             }
             ?>
-            <?php
+        <?php
         } else {
             echo "No Record Found";
         }

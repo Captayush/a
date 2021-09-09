@@ -158,6 +158,22 @@
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+
+        $('#date').datepicker({
+            //  format: "dd-mm-yyyy",
+            format: date_format,
+            autoclose: true
+        });
+
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('.detail_popover').popover({

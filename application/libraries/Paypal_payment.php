@@ -19,7 +19,7 @@ class Paypal_payment {
         $this->currency = $this->_CI->setting_model->getCurrency();
     }
 
-    public function payment($data, $pay_mode = "parent") {
+    public function payment($data,$pay_mode="parent") {
 
         $fee_groups_feetype_id = $data['fee_groups_feetype_id'];
         $student_fees_master_id = $data['student_fees_master_id'];
@@ -34,6 +34,7 @@ class Paypal_payment {
         $gateway->setTestMode(FALSE);
 
         $params = array(
+            
             'student_fees_master_id' => $student_fees_master_id,
             'fee_groups_feetype_id' => $fee_groups_feetype_id,
             'guardian_phone' => $data['guardian_phone'],
@@ -42,18 +43,18 @@ class Paypal_payment {
             'amount' => number_format($amount_balance, 2, '.', ''),
             'currency' => $currency,
         );
-        if ($pay_mode == "parent") {
-            $params['cancelUrl'] = base_url('parent/paypal/getsuccesspayment');
-            $params['returnUrl'] = base_url('parent/paypal/getsuccesspayment');
-        } else {
-            $params['cancelUrl'] = base_url('students/paypal/getsuccesspayment');
-            $params['returnUrl'] = base_url('students/paypal/getsuccesspayment');
+        if($pay_mode == "parent"){
+             $params['cancelUrl'] = base_url('parent/paypal/getsuccesspayment');
+             $params['returnUrl'] = base_url('parent/paypal/getsuccesspayment');
+        }else{
+             $params['cancelUrl'] = base_url('students/paypal/getsuccesspayment');
+             $params['returnUrl'] = base_url('students/paypal/getsuccesspayment');
         }
         $response = $gateway->purchase($params)->send();
         return $response;
     }
 
-    public function success($data, $pay_mode = "parent") {
+    public function success($data,$pay_mode="parent") {
 
         $fee_groups_feetype_id = $data['fee_groups_feetype_id'];
         $student_fees_master_id = $data['student_fees_master_id'];
@@ -78,18 +79,19 @@ class Paypal_payment {
             'amount' => number_format($amount_balance, 2, '.', ''),
             'currency' => $currency,
         );
-        if ($pay_mode == "parent") {
-            $params['cancelUrl'] = base_url('parent/paypal/getsuccesspayment');
-            $params['returnUrl'] = base_url('parent/paypal/getsuccesspayment');
-        } else {
-            $params['cancelUrl'] = base_url('students/paypal/getsuccesspayment');
-            $params['returnUrl'] = base_url('students/paypal/getsuccesspayment');
+        if($pay_mode == "parent"){
+             $params['cancelUrl'] = base_url('parent/paypal/getsuccesspayment');
+             $params['returnUrl'] = base_url('parent/paypal/getsuccesspayment');
+        }else{
+             $params['cancelUrl'] = base_url('students/paypal/getsuccesspayment');
+             $params['returnUrl'] = base_url('students/paypal/getsuccesspayment');
         }
         $response = $gateway->completePurchase($params)->send();
 
         return $response;
     }
 
+   
 }
 
 ?>

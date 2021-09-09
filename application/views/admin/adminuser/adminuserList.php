@@ -24,10 +24,10 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     <form id="form1" action="<?php echo site_url('admin/adminuser/create') ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
-                        <div class="box-body">
-                            <?php if ($this->session->flashdata('msg')) {?>
+                        <div class="box-body">                            
+                            <?php if ($this->session->flashdata('msg')) { ?>
                                 <?php echo $this->session->flashdata('msg') ?>
-                            <?php }?>
+                            <?php } ?>
                             <?php echo $this->customlib->getCSRF(); ?>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('admin_name'); ?></label>
@@ -43,13 +43,13 @@
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('admin_password'); ?></label>
                                 <input id="password" name="password" placeholder="" type="password" class="form-control"  value="<?php echo set_value('username'); ?>" />
                                 <span class="text-danger"><?php echo form_error('password'); ?></span>
-                            </div>
+                            </div>							
                         </div><!-- /.box-body -->
                         <div class="box-footer">
                             <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
                         </div>
                     </form>
-                </div>
+                </div>            
             </div><!--/.col (right) -->
             <!-- left column -->
             <div class="col-md-8">
@@ -65,46 +65,49 @@
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('admin_name'); ?></th>
-                                        <th><?php echo $this->lang->line('admin_email'); ?></th>
+                                        <th><?php echo $this->lang->line('admin_email'); ?></th>										
                                         <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (empty($adminlist)) {
-    ?>
+                                        ?>
 
                                         <?php
-} else {
-    $count = 1;
-    foreach ($adminlist as $admin) {
-        ?>
-                                            <tr>
+                                    } else {
+                                        $count = 1;
+                                        foreach ($adminlist as $admin) {
+                                            ?>
+                                            <tr>                                               
                                                 <td class="mailbox-name">
                                                     <?php echo $admin['username'] ?>
                                                 </td>
                                                 <td class="mailbox-name">
                                                     <?php echo $admin['email'] ?>
-                                                </td>
+                                                </td>												
                                                 <td class="mailbox-date pull-right no-print">
-                                                    <?php if ($admin['username'] != "Admin") {?>
+                                                    <?php if ($admin['username'] != "Admin") { ?>
                                                         <a href="<?php echo base_url(); ?>admin/adminuser/delete/<?php echo $admin['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
-                                                    <?php }?>
+                                                    <?php } ?>
                                                 </td>
                                             </tr>
                                             <?php
-}
-    $count++;
-}
-?>
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
 
                                 </tbody>
                             </table><!-- /.table -->
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>
-            </div> <!-- right column -->
+            </div>
+
+            <!-- right column -->
+
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div>

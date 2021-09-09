@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#424242" />
-        <title><?php echo $this->customlib->getAppName(); ?></title> 
+        <title>Smart School</title>
         <!--favican-->
         <!-- <link href="<?php echo base_url(); ?>backend/images/s-favican.png" rel="shortcut icon" type="image/x-icon"> -->
          <link href="<?php echo base_url(); ?>uploads/school_content/admin_small_logo/<?php $this->setting_model->getAdminsmalllogo();?>" rel="shortcut icon" type="image/x-icon">
@@ -150,13 +150,13 @@ if (!empty($student_lists)) {
 <form action="<?php echo site_url('user/user/choose'); ?>" method="POST" >
 
 <div class="selectform">
-   <h4 class="select-title"><?php echo $this->lang->line('select')." ".$this->lang->line('class'); ?></h4>
+   <h4 class="select-title"><?php echo $this->lang->line('select_child'); ?></h4>
 
 
     <?php
 foreach ($student_lists as $student_key => $student_value) {
         if ($role == "parent") {
-            $name = $this->customlib->getFullName($student_value->firstname,$student_value->middlename,$student_value->lastname,$sch_setting->middlename,$sch_setting->lastname);
+            $name = ($student_value->lastname == "") ? $student_value->firstname : $student_value->firstname . '&nbsp;' . $student_value->lastname;
         }
         ?>
 

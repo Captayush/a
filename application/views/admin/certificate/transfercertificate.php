@@ -14,110 +14,111 @@
         </style>
     </head>
     <?php
-if (isset($certificateResult) && isset($resultlist)) {
-    $name = $resultlist[0]['firstname'] . ' ' . $resultlist[0]['lastname'];
-    $dob  = date('d-m-Y', strtotime($resultlist[0]['dob']));
-    if (!is_null($resultlist[0]['permanent_address']) && !empty($resultlist[0]['permanent_address'])) {
-        $address = $resultlist[0]['permanent_address'];
-    } else {
-        $address = "Jabalpur Madhya Pradesh";
-    }
-
-    $guardian_name  = $resultlist[0]['guardian_name'];
-    $admission_no   = $resultlist[0]['admission_no'];
-    $roll_no        = $resultlist[0]['roll_no'];
-    $class          = $resultlist[0]['class'];
-    $section        = $resultlist[0]['section'];
-    $gender         = $resultlist[0]['gender'];
-    $admission_date = date('d-m-Y', strtotime($resultlist[0]['admission_date']));
-    $category       = $resultlist[0]['category'];
-    $cast           = $resultlist[0]['cast'];
-    $father_name    = $resultlist[0]['father_name'];
-    $mother_name    = $resultlist[0]['mother_name'];
-    $religion       = $resultlist[0]['religion'];
-    $email          = $resultlist[0]['email'];
-    $phone          = $resultlist[0]['father_phone'];
-    $created_at     = date('d-m-Y', strtotime($resultlist[0]['created_at']));
-    $image          = $resultlist[0]['image'];
-
-    $text = $certificateResult[0]->certificate_text;
-    preg_match_all("/\[(.*?)\]/", $text, $matches);
-
-    for ($i = 0; $i < count($matches[0]); $i++) {
-        if ($matches[0][$i] == '[name]') {
-
-            $text = str_replace($matches[0][$i], $name, $text);
+    if (isset($certificateResult) && isset($resultlist)) {
+        //echo "<pre>"; print_r($resultlist); echo "</pre>";
+        $name = $resultlist[0]['firstname'] . ' ' . $resultlist[0]['lastname'];
+        $dob = date('d-m-Y', strtotime($resultlist[0]['dob']));
+        if (!is_null($resultlist[0]['permanent_address']) && !empty($resultlist[0]['permanent_address'])) {
+            $address = $resultlist[0]['permanent_address'];
+        } else {
+            $address = "Jabalpur Madhya Pradesh";
         }
 
-        if ($matches[0][$i] == '[dob]') {
-            $text = str_replace($matches[0][$i], $dob, $text);
-        }
+        $guardian_name = $resultlist[0]['guardian_name'];
+        $admission_no = $resultlist[0]['admission_no'];
+        $roll_no = $resultlist[0]['roll_no'];
+        $class = $resultlist[0]['class'];
+        $section = $resultlist[0]['section'];
+        $gender = $resultlist[0]['gender'];
+        $admission_date = date('d-m-Y', strtotime($resultlist[0]['admission_date']));
+        $category = $resultlist[0]['category'];
+        $cast = $resultlist[0]['cast'];
+        $father_name = $resultlist[0]['father_name'];
+        $mother_name = $resultlist[0]['mother_name'];
+        $religion = $resultlist[0]['religion'];
+        $email = $resultlist[0]['email'];
+        $phone = $resultlist[0]['father_phone'];
+        $created_at = date('d-m-Y', strtotime($resultlist[0]['created_at']));
+        $image = $resultlist[0]['image'];
+        //echo $name;
+        $text = $certificateResult[0]->certificate_text;
+        preg_match_all("/\[(.*?)\]/", $text, $matches);
+        //var_dump($matches[0]);
+        for ($i = 0; $i < count($matches[0]); $i++) {
+            if ($matches[0][$i] == '[name]') {
+                //echo $matches[0][$i];
+                $text = str_replace($matches[0][$i], $name, $text);
+            }
 
-        if ($matches[0][$i] == '[present_address]') {
-            $text = str_replace($matches[0][$i], $address, $text);
-        }
+            if ($matches[0][$i] == '[dob]') {
+                $text = str_replace($matches[0][$i], $dob, $text);
+            }
 
-        if ($matches[0][$i] == '[guardian]') {
-            $text = str_replace($matches[0][$i], $guardian_name, $text);
-        }
+            if ($matches[0][$i] == '[present_address]') {
+                $text = str_replace($matches[0][$i], $address, $text);
+            }
 
-        if ($matches[0][$i] == '[created_at]') {
-            $text = str_replace($matches[0][$i], $admission_date, $text);
-        }
+            if ($matches[0][$i] == '[guardian]') {
+                $text = str_replace($matches[0][$i], $guardian_name, $text);
+            }
 
-        if ($matches[0][$i] == '[admission_no]') {
-            $text = str_replace($matches[0][$i], $admission_no, $text);
-        }
+            if ($matches[0][$i] == '[created_at]') {
+                $text = str_replace($matches[0][$i], $admission_date, $text);
+            }
 
-        if ($matches[0][$i] == '[roll_no]') {
-            $text = str_replace($matches[0][$i], $roll_no, $text);
-        }
+            if ($matches[0][$i] == '[admission_no]') {
+                $text = str_replace($matches[0][$i], $admission_no, $text);
+            }
 
-        if ($matches[0][$i] == '[class]') {
-            $text = str_replace($matches[0][$i], $class, $text);
-        }
+            if ($matches[0][$i] == '[roll_no]') {
+                $text = str_replace($matches[0][$i], $roll_no, $text);
+            }
 
-        if ($matches[0][$i] == '[section]') {
-            $text = str_replace($matches[0][$i], $section, $text);
-        }
+            if ($matches[0][$i] == '[class]') {
+                $text = str_replace($matches[0][$i], $class, $text);
+            }
 
-        if ($matches[0][$i] == '[gender]') {
-            $text = str_replace($matches[0][$i], $gender, $text);
-        }
+            if ($matches[0][$i] == '[section]') {
+                $text = str_replace($matches[0][$i], $section, $text);
+            }
 
-        if ($matches[0][$i] == '[admission_date]') {
-            $text = str_replace($matches[0][$i], $admission_date, $text);
-        }
+            if ($matches[0][$i] == '[gender]') {
+                $text = str_replace($matches[0][$i], $gender, $text);
+            }
 
-        if ($matches[0][$i] == '[category]') {
-            $text = str_replace($matches[0][$i], $category, $text);
-        }
+            if ($matches[0][$i] == '[admission_date]') {
+                $text = str_replace($matches[0][$i], $admission_date, $text);
+            }
 
-        if ($matches[0][$i] == '[cast]') {
-            $text = str_replace($matches[0][$i], $cast, $text);
-        }
+            if ($matches[0][$i] == '[category]') {
+                $text = str_replace($matches[0][$i], $category, $text);
+            }
 
-        if ($matches[0][$i] == '[father_name]') {
-            $text = str_replace($matches[0][$i], $father_name, $text);
-        }
+            if ($matches[0][$i] == '[cast]') {
+                $text = str_replace($matches[0][$i], $cast, $text);
+            }
 
-        if ($matches[0][$i] == '[mother_name]') {
-            $text = str_replace($matches[0][$i], $mother_name, $text);
-        }
+            if ($matches[0][$i] == '[father_name]') {
+                $text = str_replace($matches[0][$i], $father_name, $text);
+            }
 
-        if ($matches[0][$i] == '[religion]') {
-            $text = str_replace($matches[0][$i], $religion, $text);
-        }
+            if ($matches[0][$i] == '[mother_name]') {
+                $text = str_replace($matches[0][$i], $mother_name, $text);
+            }
 
-        if ($matches[0][$i] == '[email]') {
-            $text = str_replace($matches[0][$i], $email, $text);
-        }
+            if ($matches[0][$i] == '[religion]') {
+                $text = str_replace($matches[0][$i], $religion, $text);
+            }
 
-        if ($matches[0][$i] == '[phone]') {
-            $text = str_replace($matches[0][$i], $phone, $text);
+            if ($matches[0][$i] == '[email]') {
+                $text = str_replace($matches[0][$i], $email, $text);
+            }
+
+            if ($matches[0][$i] == '[phone]') {
+                $text = str_replace($matches[0][$i], $phone, $text);
+            }
         }
-    }
-    ?>
+        ?>
         <body>
             <div class="tc-container">
                 <img src="<?php echo base_url('uploads/certificate/'); ?><?php echo $certificateResult[0]->background_image ?>" width="100%" height="100%" />
@@ -125,9 +126,9 @@ if (isset($certificateResult) && isset($resultlist)) {
 
                     <tr style="position:absolute; margin-left: auto;margin-right: auto;left: 0;right: 0;  width:<?php echo $certificateResult[0]->content_width; ?>px; top:<?php echo $certificateResult[0]->enable_image_height; ?>px">
                         <td  valign="top" style="position: absolute;right: 0;">
-                            <?php if ($certificateResult[0]->enable_student_image == 1) {?>
+                            <?php if ($certificateResult[0]->enable_student_image == 1) { ?>
                                 <img src="<?php echo base_url() ?>/<?php echo $image; ?>" width="100" height="auto">
-                            <?php }?>
+                            <?php } ?>
                         </td>
                     </tr>
                     <tr style="position:absolute; margin-left: auto;margin-right: auto;left: 0;right: 0;  width:<?php echo $certificateResult[0]->content_width; ?>px; top:<?php echo $certificateResult[0]->header_height; ?>px">
@@ -146,6 +147,6 @@ if (isset($certificateResult) && isset($resultlist)) {
                     </tr>
                 </table>
             </div>
-        <?php }?>
-    </body>
+        <?php } ?>
+    </body>  
 </html>

@@ -5,8 +5,8 @@ namespace Midtrans;
 /**
  * Create Snap payment page and return snap token
  */
-class Snap {
-
+class Snap
+{
     /**
      * Create Snap payment page
      *
@@ -29,7 +29,8 @@ class Snap {
      * @return string Snap token.
      * @throws Exception curl error or midtrans error
      */
-    public static function getSnapToken($params) {
+    public static function getSnapToken($params)
+    {
         return (Snap::createTransaction($params)->token);
     }
 
@@ -52,12 +53,13 @@ class Snap {
      * @return object Snap response (token and redirect_url).
      * @throws Exception curl error or midtrans error
      */
-    public static function createTransaction($params) {
+    public static function createTransaction($params)
+    {
         $payloads = array(
-            'credit_card' => array(
-                // 'enabled_payments' => array('credit_card'),
-                'secure' => Config::$is3ds
-            )
+        'credit_card' => array(
+            // 'enabled_payments' => array('credit_card'),
+            'secure' => Config::$is3ds
+        )
         );
 
         if (array_key_exists('item_details', $params)) {
@@ -75,10 +77,11 @@ class Snap {
         $params = array_replace_recursive($payloads, $params);
 
         $result = SnapApiRequestor::post(
-                        Config::getSnapBaseUrl() . '/transactions', Config::$serverKey, $params
+            Config::getSnapBaseUrl() . '/transactions',
+            Config::$serverKey,
+            $params
         );
 
         return $result;
-    }
-
+    }  
 }

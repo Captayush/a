@@ -26,14 +26,14 @@
                                     <input autofocus="" id="language" name="language"  type="text" placeholder="" class="form-control col-md-7 col-xs-12"  value="<?php echo set_value('language'); ?>" />
                                     <span class="text-danger"><?php echo form_error('language'); ?></span>
                                 </div> </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="exampleInputEmail1"><?php echo $this->lang->line('language') . " " . $this->lang->line('short_code'); ?> <small class="req">  *</small></label></label>
+                                 <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="exampleInputEmail1"><?php echo $this->lang->line('language')." ".$this->lang->line('short_code'); ?></label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input autofocus="" id="short_code" name="short_code"  type="text" placeholder="" class="form-control col-md-7 col-xs-12"  value="<?php echo set_value('short_code'); ?>" />
                                     <span class="text-danger"><?php echo form_error('short_code'); ?></span>
                                 </div> </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="exampleInputEmail1"><?php echo $this->lang->line('country_code'); ?> <small class="req">  *</small></label></label>
+                                <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="exampleInputEmail1"><?php echo $this->lang->line('country_code'); ?></label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input autofocus="" id="country_code" name="country_code"  type="text" placeholder="" class="form-control col-md-7 col-xs-12"  value="<?php echo set_value('country_code'); ?>" />
                                     <span class="text-danger"><?php echo form_error('country_code'); ?></span>

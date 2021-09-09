@@ -25,7 +25,7 @@
                 <!-- Horizontal Form -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Follow Up's of(<?php echo $enquiry_data['name']; ?>)</h3>
+                        <h3 class="box-title">Follow Up's of(<?php echo $enquiry_data['name']; ?>)  --r</h3>
                     </div><!-- /.box-header -->
 
                     <form id="form1" action="<?php echo site_url('admin/enquiry/follow_up/' . $id) ?>"   method="post" >
@@ -125,8 +125,7 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                            <?php
-                                        }
+                                        <?php }
                                     }
                                     ?>
                                 </ul>

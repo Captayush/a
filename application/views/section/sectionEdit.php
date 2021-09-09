@@ -73,7 +73,7 @@
                                                 }
                                                 if ($this->rbac->hasPrivilege('section', 'can_delete')) {
                                                     ?>
-                                                    <a data-placement="left" href="<?php echo base_url(); ?>sections/delete/<?php echo $section['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('Section will also delete all students under this Section so be careful as this action is irreversible --r');">
+                                                    <a data-placement="left" href="<?php echo base_url(); ?>sections/delete/<?php echo $section['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>
                                                     </a>
                                                 <?php } ?>

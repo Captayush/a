@@ -1,3 +1,4 @@
+
 <?php
 $language = $this->customlib->getLanguage();
 $language_name = $language["short_code"];
@@ -18,7 +19,7 @@ $language_name = $language["short_code"];
                 <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
 
             </div>
-            <form  class="assign_teacher_form" action="<?php echo base_url(); ?>homework/searchvalidation" method="post" enctype="multipart/form-data">
+            <form  class="assign_teacher_form" action="<?php echo base_url(); ?>homework/" method="post" enctype="multipart/form-data">
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -44,7 +45,7 @@ $language_name = $language["short_code"];
                                         }
                                         ?>
                                 </select>
-                                <span class="text-danger" id="error_class_id"></span>
+                                <span class="class_id_error text-danger"><?php echo form_error('class_id'); ?></span>
                             </div>
                         </div>
                         <div class="col-md-3 col-lg-3 col-sm-6">
@@ -95,7 +96,7 @@ $language_name = $language["short_code"];
                         <div class="box-body table-responsive">
                             <div class="download_label"> <?php echo $this->lang->line('homework_list'); ?></div>
                             <div >
-                                <table class="table table-striped table-bordered table-hover homework-list" data-export-title="<?php echo $this->lang->line('homework_list'); ?>">
+                                <table class="table table-hover table-striped table-bordered example">
                                     <thead>
                                         <tr>
                                             <th><?php echo $this->lang->line('class') ?></th>
@@ -106,10 +107,62 @@ $language_name = $language["short_code"];
                                             <th><?php echo $this->lang->line('submission_date'); ?></th>
                                             <th><?php echo $this->lang->line('evaluation_date'); ?></th>
                                             <th><?php echo $this->lang->line('created_by'); ?></th>
-                                            <th class="text-right noExport "><?php echo $this->lang->line('action') ?></th>
+                                            <th class="text-right"><?php echo $this->lang->line('action') ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
+
+                                        <?php 
+
+                                        foreach ($homeworklist as $key => $homework) {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $homework["class"] ?></td>
+
+                                                <td><?php echo $homework["section"] ?></td>
+                                                <td><?php echo $homework['name'] ?></td>
+                                                <td><?php echo $homework["subject_name"] ?></td>
+                                                <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($homework['homework_date'])); ?></td>
+                                                <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($homework['submit_date'])); ?></td>
+                                                <td><?php
+                                                     
+                                                    $evl_date = "";
+                                                    if ($homework['evaluation_date'] != "0000-00-00") {
+                                                        echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($homework['evaluation_date']));
+                                                    }
+                                                    ?></td>
+                                                <td><?php
+                                                  
+                                                        echo $homework["created_by"];
+                                                    
+                                                    ?></td>
+                                                <td class="mailbox-date pull-right">
+
+                                                    <?php if ($this->rbac->hasPrivilege('homework_evaluation', 'can_view')){ ?>
+                                                        <a data-placement="left" class="btn btn-default btn-xs" onclick="evaluation(<?php echo $homework['id']; ?>);" title=""  data-toggle="tooltip"  data-original-title="<?php echo $this->lang->line('evaluation'); ?>">
+                                                            <i class="fa fa-reorder"></i></a>
+                                                        <?php
+                                                    }
+                                                    if ($homework["assignments"] > 0) {
+                                                        ?>
+                                                        <a data-placement="left" class="btn btn-default btn-xs" onclick="homework_docs(<?php echo $homework['id']; ?>);" data-toggle="tooltip"  data-original-title="<?php echo $this->lang->line('assignments'); ?>">
+                                                            <i class="fa fa-download"></i></a>
+
+                                                    <?php }
+                                                    if ($this->rbac->hasPrivilege('homework', 'can_edit')) { ?>
+
+                                                        <a data-placement="left" class="btn btn-default btn-xs modal_form" data-toggle="tooltip"  data-original-title="<?php echo $this->lang->line('edit'); ?>" data-method_call="edit" data-record_id="<?php echo $homework['id']; ?>"><i class="fa fa-pencil"></i></a>
+
+                                                    <?php } 
+                                                    if ($this->rbac->hasPrivilege('homework', 'can_delete')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>homework/delete/<?php echo $homework['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+
                                     </tbody>
                                 </table>
 
@@ -139,11 +192,11 @@ $language_name = $language["short_code"];
                                         <label for="pwd"><?php echo $this->lang->line('class') ?></label><small class="req"> *</small>
                                         <select class="form-control modal_class_id" name="modal_class_id" id="modal_class_id">
                                             <option value=""><?php echo $this->lang->line('select') ?></option>
-<?php foreach ($classlist as $key => $value) {
-    ?>
+                                            <?php foreach ($classlist as $key => $value) {
+                                                ?>
                                                 <option value="<?php echo $value["id"] ?>"><?php echo $value["class"] ?></option>
 
-<?php } ?>
+                                            <?php } ?>
 
                                         </select>
                                         <span id="name_add_error" class="text-danger"></span>
@@ -187,14 +240,14 @@ $language_name = $language["short_code"];
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="pwd"><?php echo $this->lang->line('homework_date'); ?></label><small class="req"> *</small>
-                                        <input type="text"  name="homework_date" class="form-control" id="homework_date" value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="">
+                                        <input type="text"  name="homework_date" class="form-control date" id="homework_date" value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="">
                                         <span id="date_add_error" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="pwd"><?php echo $this->lang->line('submission_date'); ?></label><small class="req"> *</small>
-                                        <input type="text" id="submit_date" name="submit_date" class="form-control" value="<?php echo set_value('follow_up_date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="">
+                                        <input type="text" id="submit_date" name="submit_date" class="form-control date" value="<?php echo set_value('follow_up_date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -264,7 +317,7 @@ $language_name = $language["short_code"];
                         <div class="">
                             <div class="box-body table-responsive">
                                 <div >
-                                    <table class="table table-hover table-striped table-bordered all-list" >
+                                    <table class="table table-hover table-striped table-bordered example">
                                         <thead>
                                             <tr>
                                                 <th><?php echo $this->lang->line('name') ?></th>
@@ -272,7 +325,7 @@ $language_name = $language["short_code"];
 
                                                 <th class="text-right"><?php echo $this->lang->line('action') ?></th>
                                             </tr>
-
+                                            
                                         </thead>
                                         <tbody id="homework_docs_result">
                                         </tbody>
@@ -284,62 +337,39 @@ $language_name = $language["short_code"];
                     </div>
                 </div>
             </div>
-
+         
         </div>
     </div>
 </div>
 <!-- -->
 <script type="text/javascript">
-        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm','mmm' => 'M', 'Y' => 'yyyy']) ?>';
-
-        $(document).ready(function(){ 
-   $("#homework_date").datepicker({
-        format: date_format,
-            autoclose: true,
-              weekStart : start_week,
-            language: '<?php echo $language_name ?>',
-   }).on('changeDate', function (selected) {
-       var minDate = new Date(selected.date.valueOf());
-       $('#submit_date').datepicker('setStartDate', minDate);
-   });
-
-   $("#submit_date").datepicker({
-        format: date_format,
-            autoclose: true,
-              weekStart : start_week,
-            language: '<?php echo $language_name ?>',
-   }).on('changeDate', function (selected) {
-           var minDate = new Date(selected.date.valueOf());
-           $('#homework_date').datepicker('setEndDate', minDate);
-   });
-});
-
- 
     $(document).ready(function () {
 
-        $('#homeworkdate,#submitdate').datepicker({
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy']) ?>';
+        $('#homework_date,#submit_date,#homeworkdate,#submitdate').datepicker({
             format: date_format,
             autoclose: true,
             language: '<?php echo $language_name ?>'
         });
-
 
         $("#btnreset").click(function () {
             $("#form1")[0].reset();
         });
 
     });
- 
-    function homework_docs(id) {
 
+    function homework_docs(id) {
         $('#homework_docs').modal('show');
-            (function ($) {
-        'use strict';
-        $(document).ready(function () {
-            initDatatable('all-list', 'homework/homework_docs/'+id, [], 100);
+        $.ajax({
+            url: '<?php echo base_url(); ?>homework/homework_docs/' + id,
+            success: function (data) {
+                $('#homework_docs_result').html(data);
+
+            },
+            error: function () {
+                alert("Fail")
+            }
         });
-    }(jQuery))
-      
     }
 
 </script>
@@ -352,15 +382,25 @@ $language_name = $language["short_code"];
     });
 </script>
 <script type="text/javascript">
+
+    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'MM', 'Y' => 'yyyy']) ?>';
+
+
     $(document).ready(function (e) {
+
         getSectionByClass("<?php echo $class_id ?>", "<?php echo $section_id ?>", 'secid');
+       
         getSubjectGroup("<?php echo $class_id ?>", "<?php echo $section_id ?>", "<?php echo $subject_group_id ?>", 'subject_group_id')
         getsubjectBySubjectGroup("<?php echo $class_id ?>", "<?php echo $section_id ?>", "<?php echo $subject_group_id ?>", "<?php echo $subject_id ?>", 'subid');
 
     });
 
     $(document).ready(function (e) {
+
+
+
         $("#formedit").on('submit', (function (e) {
+
             e.preventDefault();
             $.ajax({
                 url: "<?php echo site_url("homework/edit") ?>",
@@ -395,6 +435,109 @@ $language_name = $language["short_code"];
     });
 
 
+    // function getRecord(id) {
+
+
+    //     var random = Math.random();
+    //     $('#classid').val(null).trigger('change');
+    //     $.ajax({
+    //         url: "<?php echo site_url("homework/getRecord/") ?>" + id + "?r=" + random,
+    //         type: "POST",
+    //         dataType: 'json',
+
+    //         success: function (res)
+    //         {
+
+    //             getSelectClass(res.class_id);
+    //             getSectionByClass(res.class_id, res.section_id, 'sectionid');
+    //             getSubjectByClassandSection(res.class_id, res.section_id, res.subject_id, 'subjectid');
+    //             $("#homeworkdate").val(new Date(res.homework_date).toString(date_format));
+    //             $("#submitdate").val(new Date(res.submit_date).toString(date_format));
+    //             $("#desc-textarea").text(res.description);
+    //             $('iframe').contents().find('.wysihtml5-editor').html(res.description);
+    //             // $('select[id="classid"] option[value="' + res.class_id + '"]').attr("selected", true);
+    //             $("#homeworkid").val(res.id);
+    //             $("#document").val(res.document);
+    //         }
+    //     });
+
+    // }
+
+    // function getSelectClass(class_id) {
+    //     $('#classid').html("");
+    //     var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+    //     $.ajax({
+    //         type: "POST",
+    //         url: base_url + "homework/getClass",
+    //         //data: {'class_id': class_id},
+    //         dataType: "json",
+    //         success: function (data) {
+    //             $.each(data, function (i, obj)
+    //             {
+
+    //                 var sel = "";
+    //                 if (class_id == obj.id) {
+    //                     sel = "selected";
+    //                 }
+    //                 div_data += "<option value=" + obj.id + " " + sel + ">" + obj.class + "</option>";
+    //             });
+    //             $('#classid').append(div_data);
+
+    //         }});
+    // }
+
+
+    // function getSubjectByClassandSection(class_id, section_id, subject_id, htmlid) {
+
+    //     if (class_id != "" && section_id != "" && subject_id != "") {
+    //         $('#' + htmlid).html("");
+    //         //  var class_id = $('#class_id').val();
+    //         var base_url = '<?php echo base_url() ?>';
+    //         var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+    //         $.ajax({
+    //             type: "POST",
+    //             url: base_url + "admin/teacher/getSubjctByClassandSection",
+    //             data: {'class_id': class_id, 'section_id': section_id},
+    //             dataType: "json",
+    //             success: function (data) {
+    //                 $.each(data, function (i, obj)
+    //                 {
+    //                     var sel = "";
+    //                     if (subject_id == obj.subject_id) {
+    //                         sel = "selected";
+    //                     }
+    //                     div_data += "<option value=" + obj.subject_id + " " + sel + ">" + obj.name + " (" + obj.type + ")" + "</option>";
+    //                 });
+
+    //                 $('#' + htmlid).append(div_data);
+    //             }
+    //         });
+    //     }
+    // }
+
+    // function getSubjectGroupByClassSection(class_id, section_id) {
+
+    //     if (class_id != "" && section_id != "") {
+    //         $('#' + htmlid).html("");
+    //         var base_url = '<?php echo base_url() ?>';
+    //         var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+    //         $.ajax({
+    //             type: "POST",
+    //             url: base_url + "/subjectgroup/getGroupByClassandSection",
+    //             data: {'class_id': class_id, 'section_id': section_id},
+    //             dataType: "json",
+    //             success: function (data) {
+    //                 $.each(data, function (i, obj)
+    //                 {
+
+    //                 });
+
+
+    //             }
+    //         });
+    //     }
+    // }
+
     function evaluation(id) {
         $('#evaluation').modal('show');
         $('#evaluation_details').html("");
@@ -402,7 +545,15 @@ $language_name = $language["short_code"];
             url: '<?php echo base_url(); ?>homework/evaluation/' + id,
             success: function (data) {
                 $('#evaluation_details').html(data);
-         
+                // $.ajax({
+                //     url: '<?php echo base_url(); ?>homework/getRecord/' + id,
+                //     success: function (data) {
+                //         $('#timeline').html(data);
+                //     },
+                //     error: function () {
+                //         alert("Fail")
+                //     }
+                // });
             },
             error: function () {
                 alert("Fail")
@@ -411,6 +562,7 @@ $language_name = $language["short_code"];
     }
 
     function addhomework() {
+
         $('iframe').contents().find('.wysihtml5-editor').html("");
     }
 
@@ -421,7 +573,7 @@ $language_name = $language["short_code"];
 
     var save_method; //for save method string
     var update_id; //for save method string
-
+ 
     function getSectionByClass(class_id, section_id, select_control) {
         if (class_id != "") {
             $('#' + select_control).html("");
@@ -470,7 +622,6 @@ $language_name = $language["short_code"];
             $('#myModal').modal('show');
             $('#myModal .box-title').text('<?php echo $this->lang->line('edit_homework'); ?>');
         } else if (save_method == "add") {
-            $('iframe').contents().find('.wysihtml5-editor').html("");
             $('#modal_record_id').val(0);
             $('#myModal .box-title').text('<?php echo $this->lang->line('add_homework'); ?>');
             $('#myModal').modal('show');
@@ -528,7 +679,7 @@ $language_name = $language["short_code"];
             },
             success: function (res)
             {
- 
+
                 if (res.status == "fail") {
 
                     var message = "";
@@ -659,12 +810,14 @@ $language_name = $language["short_code"];
                 {
                     console.log(res);
                     $('#modal_record_id').val(res.id);
-                    $("#submit_date").datepicker("update", new Date(res.submit_date));
-                    $("#homework_date").datepicker("update", new Date(res.homework_date));
+
+                    $('#submit_date').val(new Date(res.submit_date).toString(date_format));
+                    $('#homework_date').val(new Date(res.homework_date).toString(date_format));
                     $('.modal_class_id').val(res.class_id);
                     $('.wysihtml5-sandbox').contents().find('.wysihtml5-editor').html(res.description);
                     $('.modal_class_id option[value=' + res.class_id + ']').attr('selected', 'selected');
                     getSectionByClass(res.class_id, res.section_id, 'modal_section_id');
+
                     getSubjectGroup(res.class_id, res.section_id, res.subject_groups_id, 'modal_subject_group_id');
                     getsubjectBySubjectGroup(res.class_id, res.section_id, res.subject_groups_id, res.subject_group_subject_id, 'modal_subject_id');
                     $('#myModal').removeClass('modal_loading');
@@ -682,59 +835,4 @@ $language_name = $language["short_code"];
             });
         }
     })
-</script>
-<script>
-$(document).ready(function() {
-     emptyDatatable('homework-list','fees_data');
-});
-</script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-$(document).on('submit','.assign_teacher_form',function(e){
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-    var $this = $(this).find("button[type=submit]:focus");  
-    var form = $(this);
-    var url = form.attr('action');
-    var form_data = form.serializeArray();
-    $.ajax({
-           url: url,
-           type: "POST",
-           dataType:'JSON',
-           data: form_data, // serializes the form's elements.
-              beforeSend: function () {
-                $('[id^=error]').html("");
-                $this.button('loading');
-                resetFields($this.attr('name'));
-               },
-              success: function(response) { // your success handler
-                
-                if(!response.status){
-                    $.each(response.error, function(key, value) {
-                    $('#error_' + key).html(value);
-                    });
-                }else{
-                 
-                   initDatatable('homework-list','homework/dthomeworklist',response.params,[],100);
-                }
-              },
-             error: function() { // your error handler
-                 $this.button('reset');
-             },
-             complete: function() {
-             $this.button('reset');
-             }
-         });
-
-});
-
-    });
-    function resetFields(search_type){
-        if(search_type == "keyword_search"){
-            $('#class_id').prop('selectedIndex',0);
-            $('#section_id').find('option').not(':first').remove();
-        }else if (search_type == "class_search") {
-            
-             $('#search_text').val("");
-        }
-    }
 </script>

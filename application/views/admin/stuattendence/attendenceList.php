@@ -100,6 +100,8 @@
                         <div class="box-body">
                             <?php
                             if ($this->session->flashdata('msg')) {
+
+
                                 echo $this->session->flashdata('msg');
                             }
                             ?>
@@ -154,7 +156,9 @@
                                 </div>   
                             </div>
                         </div>
+
                     </form>
+
                     <?php
                     if (isset($resultlist)) {
                         ?>
@@ -168,17 +172,18 @@
                             <div class="box-body">
                                 <?php
                                 if (!empty($resultlist)) {
-                                    $can_edit = 1;
+                                    $can_edit=1;
                                     $checked = "";
                                     if (!isset($msg)) {
                                         if ($resultlist[0]['attendence_type_id'] != "") {
                                             if ($resultlist[0]['attendence_type_id'] != 5) {
                                                 if ($this->rbac->hasPrivilege('student_attendance', 'can_edit')) {
 
-                                                    $can_edit = 1;
-                                                } else {
-                                                    $can_edit = 0;
+                                                    $can_edit=1;
+                                                }else{
+                                                    $can_edit=0;
                                                 }
+
                                                 ?>
                                                 <div class="alert alert-success"><?php echo $this->lang->line('attendance_already_submitted_you_can_edit_record'); ?></div>
                                                 <?php
@@ -206,13 +211,11 @@
                                                 <div class="pull-right">
                                                     <?php
                                                 }
-                                                if ($can_edit == 1) {
-                                                    if ($this->rbac->hasPrivilege('student_attendance', 'can_add')) {
-                                                        ?>
-                                                        <button type="submit" name="search" value="saveattendence" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-save"></i> <?php echo $this->lang->line('save_attendance'); ?> </button>
-                                                    <?php }
-                                                }
-                                                ?>
+                                                if($can_edit==1){
+                                                if ($this->rbac->hasPrivilege('student_attendance', 'can_add')) {
+                                                    ?>
+                                                    <button type="submit" name="search" value="saveattendence" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-save"></i> <?php echo $this->lang->line('save_attendance'); ?> </button>
+                                                <?php } } ?>
                                             </div>
                                         </div>
                                         <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
@@ -227,30 +230,29 @@
                                                         <?php
                                                         if ($sch_setting->biometric) {
                                                             ?>
-                                                            <th><?php echo $this->lang->line('date'); ?></th>
+                                                            <th><?php echo $this->lang->line('date');?></th>
                                                             <?php
-                                                        } 
+                                                        }
                                                         ?>
                                                         <th><?php echo $this->lang->line('roll_no'); ?></th>
                                                         <th><?php echo $this->lang->line('name'); ?></th>
                                                         <th class=""><?php echo $this->lang->line('attendance'); ?></th>
-                                                        <th class="noteinput"><?php echo $this->lang->line('note'); ?></th>
+                                                        <th><?php echo $this->lang->line('note'); ?></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php
                                                     $row_count = 1;
                                                     foreach ($resultlist as $key => $value) {
-
                                                         ?>
                                                         <tr>
                                                             <td>
                                                                 <input type="hidden" name="student_session[]" value="<?php echo $value['student_session_id']; ?>">
                                                                 <input  type="hidden" value="<?php echo $value['attendence_id']; ?>"  name="attendendence_id<?php echo $value['student_session_id']; ?>">
-            <?php echo $row_count; ?>
+                                                                <?php echo $row_count; ?>
                                                             </td>
                                                             <td>
-                                                            <?php echo $value['admission_no']; ?>
+                                                                <?php echo $value['admission_no']; ?>
                                                             </td>
                                                             <?php
                                                             if ($sch_setting->biometric) {
@@ -265,35 +267,34 @@
                                                                 </td>
                                                                 <?php
                                                             }
-                                                             ?>
+                                                            ?>
                                                             <td>
-            <?php echo $value['roll_no']; ?>
+                                                                <?php echo $value['roll_no']; ?>
                                                             </td>
 
                                                             <td>
-
-            <?php 
-            echo $this->customlib->getFullName($value['firstname'],$value['middlename'],$value['lastname'],$sch_setting->middlename,$sch_setting->lastname);  ?>
+                                                                <?php echo $value['firstname'] . " " . $value['lastname']; ?>
                                                             </td>
                                                             <td>
                                                                 <?php
                                                                 $c = 1;
                                                                 $count = 0;
-                                                                foreach ($attendencetypeslist as $key => $type) {
+                                                                foreach ($attendencetypeslist as $key => $type) { 
                                                                     if ($type['key_value'] != "H") {
                                                                         $att_type = str_replace(" ", "_", strtolower($type['type']));
                                                                         if ($value['date'] != "xxx") {
                                                                             ?>
                                                                             <div class="radio radio-info radio-inline">
                                                                                 <input <?php if ($value['attendence_type_id'] == $type['id']) echo "checked"; ?> type="radio" id="attendencetype<?php echo $value['student_session_id'] . "-" . $count; ?>" value="<?php echo $type['id'] ?>" name="attendencetype<?php echo $value['student_session_id']; ?>" >
-
+																				
                                                                                 <label for="attendencetype<?php echo $value['student_session_id'] . "-" . $count; ?>">
-                        <?php echo $this->lang->line($att_type); ?> 
+                                                                                    <?php echo $this->lang->line($att_type); ?> 
                                                                                 </label>
-
+																				
                                                                             </div>
                                                                             <?php
                                                                         }else {
+                                                                            
                                                                             ?>
                                                                             <div class="radio radio-info radio-inline">
                                                                                 <?php
@@ -310,7 +311,7 @@
 
 
                                                                                 <label for="attendencetype<?php echo $value['student_session_id'] . "-" . $count; ?>"> 
-                        <?php echo $this->lang->line($att_type); ?> 
+                                                                                    <?php echo $this->lang->line($att_type); ?> 
                                                                                 </label>
                                                                             </div>
                                                                             <?php
@@ -323,11 +324,11 @@
 
                                                             </td>
                                                             <?php if ($date == 'xxx') { ?> 
-                                                                <td class="text-right"><input type="text" class="noteinput" name="remark<?php echo $value["student_session_id"] ?>" ></td>
-            <?php } else { ?>
+                                                                <td><input type="text" name="remark<?php echo $value["student_session_id"] ?>" ></td>
+                                                            <?php } else { ?>
 
-                                                                <td class="text-right"><input type="text" class="noteinput" name="remark<?php echo $value["student_session_id"] ?>" value="<?php echo $value["remark"]; ?>" ></td>
-                                                        <?php } ?>
+                                                                <td><input type="text" name="remark<?php echo $value["student_session_id"] ?>" value="<?php echo $value["remark"]; ?>" ></td>
+                                                            <?php } ?>
                                                         </tr>
                                                         <?php
                                                         $row_count++;
@@ -340,7 +341,7 @@
                                     <?php
                                 } else {
                                     ?>
-                                    <div class="alert alert-info"><?php echo $this->lang->line('admited_alert'); ?></div>
+                                    <div class="alert alert-info">No student admitted in this Class-Section</div>
                                     <?php
                                 }
                                 ?>
@@ -360,9 +361,9 @@
                         ordering: true,
                         paging: false,
                         retrieve: true,
-                        destroy: true,
+                        destroy: true, 
                         info: false
-                    });
+                    }); 
                     var table = $('.example').DataTable();
                     table.buttons('.export').remove();
                     var section_id_post = '<?php echo $section_id; ?>';
@@ -375,7 +376,7 @@
                         $.ajax({
                             type: "GET",
                             url: base_url + "sections/getByClass",
-                            data: {'class_id': class_id_post, 'day_wise': 'yes'},
+                            data: {'class_id': class_id_post,'day_wise':'yes'},
                             dataType: "json",
                             success: function (data) {
                                 $.each(data, function (i, obj)
@@ -407,7 +408,7 @@
                         $.ajax({
                             type: "GET",
                             url: base_url + "sections/getByClass",
-                            data: {'class_id': class_id, 'day_wise': 'yes'},
+                            data: {'class_id': class_id,'day_wise':'yes'},
                             dataType: "json",
                             success: function (data) {
                                 $.each(data, function (i, obj)
@@ -471,11 +472,11 @@
                         init();
                     });
                 });
- 
+
                 $('#checkbox1').change(function () {
 
                     if (this.checked) {
-                        var returnVal = confirm("<?php echo $this->lang->line('are_you_sure'); ?>");
+                        var returnVal = confirm("Are you sure?");
                         $(this).prop("checked", returnVal);
 
                         $("input[type=radio]").attr('disabled', true);
@@ -490,9 +491,9 @@
                 });
 
 
-                $('form.form_attendence').on('submit', function (e) {
+                $('form.form_attendence').on('submit',function(e){
 
-                    $(this).submit(function () {
+                  $(this).submit(function() {
                         return false;
                     });
                     return true;

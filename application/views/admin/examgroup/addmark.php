@@ -40,16 +40,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </select>
                                     <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
+     <div class="col-sm-4">
+      <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?></label><small class="req"> *</small> 
                                         <select  id="section_id" name="section_id" class="form-control" >
                                             <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         </select>
                                         <span class="text-danger"><?php echo form_error('section_id'); ?></span>
                                     </div>
-                                </div>
-                                <div class="col-sm-4">
+</div>
+                                   <div class="col-sm-4">
                                     <label>Session --r</label>
                                     <select  id="session_id" name="session_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
@@ -99,7 +99,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         ?>
                                         <input type="hidden" id="max_mark" value="<?php echo $subject_detail->max_marks; ?>">
                                         <ul class="list-group">
-                                            <li class="list-group-item">Subject --r : <?php echo $subject_detail->subject_name . " (" . $subject_detail->code . ")"; ?></li>
+                                            <li class="list-group-item">Subject --r : <?php echo $subject_detail->subject_name." (".$subject_detail->code.")"; ?></li>
                                             <li class="list-group-item">Date From --r : <?php echo $subject_detail->date_from; ?></li>
                                             <li class="list-group-item">Date To --r : <?php echo $subject_detail->date_to; ?></li>
                                             <li class="list-group-item">Room No --r : <?php echo $subject_detail->room_no; ?></li>
@@ -198,7 +198,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
     </section>
 </div>
- 
+
 
 
 
@@ -209,7 +209,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy']) ?>';
 
 
-    var class_id = '<?php echo set_value('class_id', 0) ?>';
+  var class_id = '<?php echo set_value('class_id', 0) ?>';
     var section_id = '<?php echo set_value('section_id', 0) ?>';
     getSectionByClass(class_id, section_id);
     $(document).on('change', '#class_id', function (e) {

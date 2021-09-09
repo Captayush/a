@@ -2,9 +2,11 @@
 
 namespace Midtrans;
 
-class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
+class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function testStatus() {
+    public function testStatus()
+    {
         Config::$serverKey = 'My Very Secret Key';
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
@@ -30,7 +32,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($status->approval_code, "1416550071152");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/Order-111/status"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/Order-111/status"
         );
 
         $fields = VT_Tests::lastReqOptions();
@@ -38,7 +41,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse(array_key_exists("POSTFIELDS", $fields));
     }
 
-    public function testFailureStatus() {
+    public function testFailureStatus()
+    {
         Config::$serverKey = 'My Very Secret Key';
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
@@ -51,7 +55,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         } catch (\Exception $error) {
             $errorHappen = true;
             $this->assertEquals(
-                    $error->getMessage(), "Midtrans Error (404): The requested resource is not found"
+                $error->getMessage(),
+                "Midtrans Error (404): The requested resource is not found"
             );
         }
 
@@ -59,20 +64,23 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         VT_Tests::reset();
     }
 
-    public function testRealStatus() {
+    public function testRealStatus()
+    {
         try {
             $status = Transaction::status("Order-111");
         } catch (\Exception $error) {
             $errorHappen = true;
             $this->assertContains(
-                    "authorized", $error->getMessage()
+                "authorized",
+                $error->getMessage()
             );
         }
 
         $this->assertTrue($errorHappen);
     }
 
-    public function testApprove() {
+    public function testApprove()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": "200",
@@ -94,7 +102,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($approve, "200");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/Order-111/approve"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/Order-111/approve"
         );
 
         $fields = VT_Tests::lastReqOptions();
@@ -102,7 +111,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($fields["POSTFIELDS"], null);
     }
 
-    public function testCancel() {
+    public function testCancel()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": "200",
@@ -124,7 +134,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($cancel, "200");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/Order-111/cancel"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/Order-111/cancel"
         );
 
         $fields = VT_Tests::lastReqOptions();
@@ -132,7 +143,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($fields["POSTFIELDS"], null);
     }
 
-    public function testExpire() {
+    public function testExpire()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": "407",
@@ -151,7 +163,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expire->status_message, "Success, transaction has expired");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/Order-111/expire"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/Order-111/expire"
         );
 
         $fields = VT_Tests::lastReqOptions();
@@ -159,7 +172,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($fields["POSTFIELDS"], null);
     }
 
-    public function testRefund() {
+    public function testRefund()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": "200",
@@ -180,21 +194,24 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
             'amount' => 10000,
             'reason' => 'Item out of stock'
         );
-        $refund = Transaction::refund("Order-111", $params);
+        $refund = Transaction::refund("Order-111",$params);
 
         $this->assertEquals($refund->status_code, "200");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/Order-111/refund"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/Order-111/refund"
         );
 
         $fields = VT_Tests::lastReqOptions();
         $this->assertEquals($fields["POST"], 1);
         $this->assertEquals(
-                $fields["POSTFIELDS"], '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}');
+            $fields["POSTFIELDS"],
+            '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}');
     }
 
-    public function testRefundDirect() {
+    public function testRefundDirect()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": "200",
@@ -209,7 +226,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
             "refund_amount": "10000.00",
             "refund_key": "reference1"
         }';
-
+        
         $params = array(
             'refund_key' => 'reference1',
             'amount' => 10000,
@@ -219,15 +236,18 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($refund->status_code, "200");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/Order-111/refund/online/direct"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/Order-111/refund/online/direct"
         );
-        $fields = VT_Tests::lastReqOptions();
+        $fields = VT_Tests::lastReqOptions();     
         $this->assertEquals($fields["POST"], 1);
         $this->assertEquals(
-                $fields["POSTFIELDS"], '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}');
+            $fields["POSTFIELDS"],
+            '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}');
     }
 
-    public function testDeny() {
+    public function testDeny()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code" : "200",
@@ -248,7 +268,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($deny->status_code, "200");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/Order-111/deny"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/Order-111/deny"
         );
 
         $fields = VT_Tests::lastReqOptions();
@@ -256,8 +277,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($fields["POSTFIELDS"], null);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         VT_Tests::reset();
     }
-
 }

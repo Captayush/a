@@ -1,8 +1,8 @@
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <nav class="navbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <nav class="navbar">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-3">
                         <span class="sr-only">Toggle navigation</span>
@@ -82,7 +82,7 @@
                         ?>
                     </ul>
                 </div><!-- /.navbar-collapse -->
-            </nav><!-- /.navbar -->
-        </div><!--./col-md-12-->
-    </div><!--./row-->
-</div><!--./container-->
+             </nav><!-- /.navbar -->
+            </div><!--./col-md-12-->
+        </div><!--./row-->
+    </div><!--./container-->

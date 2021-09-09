@@ -4,7 +4,7 @@
 
     <section class="content-header">
         <h1>
-            <i class="fa fa-credit-card"></i><?php echo $this->lang->line('exam'); ?></h1>
+            <i class="fa fa-credit-card"></i> Exam --r</h1>
     </section>
 
     <!-- Main content -->
@@ -18,27 +18,28 @@
                     <div class="box box-primary">
                         <input type="hidden" name="session_id" id="current_session_id"  value="<?php echo $current_session; ?>">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('exam_subject_list'); ?> </h3>
+                            <h3 class="box-title">Exam Subject List --r</h3>
                         </div><!-- /.box-header -->
 
                         <div class="box-body">
                             <dl class="dl-horizontal">
-                                <dt><?php echo $this->lang->line('exam'); ?></dt>
+                                <dt>Exam --r</dt>
                                 <dd><?php echo $examgroupDetail->exam; ?></dd>
-                                <dt><?php echo $this->lang->line('exam_group'); ?></dt>
+                                <dt>Exam Group --r</dt>
                                 <dd><?php echo $examgroupDetail->exam_group_name; ?></dd>
+
 
                             </dl>
                             <table class="table table-bordered" id="subjects_table">
                                 <thead>
                                     <tr>
-                                        <th class="col-sm-3"><?php echo $this->lang->line('subject'); ?> </th>
-                                        <th class="col-sm-2"><?php echo $this->lang->line('date_from'); ?></th>
-                                        <th class="col-sm-2"><?php echo $this->lang->line('date_to'); ?></th>
-                                        <th class="col-sm-2"><?php echo $this->lang->line('room_no'); ?> </th>
-                                        <th class="col-sm-1"><?php echo $this->lang->line('marks_max'); ?></th>
-                                        <th class="col-sm-1"><?php echo $this->lang->line('marks_min'); ?></th>
-                                        <th class="col-sm-1 text-center"><?php echo $this->lang->line('action'); ?></th>
+                                        <th class="col-sm-3">Subject --r</th>
+                                        <th class="col-sm-2">Date From --r</th>
+                                        <th class="col-sm-2">Date To --r</th>
+                                        <th class="col-sm-2">Room No --r</th>
+                                        <th class="col-sm-1">Marks(Max.) --r</th>
+                                        <th class="col-sm-1">Marks(Min.) --r</th>
+                                        <th class="col-sm-1 text-center">Action --r</th>
 
                                     </tr>
                                 </thead>
@@ -56,7 +57,11 @@
                                                 <td><?php echo $exam_subject_value->max_marks; ?></td>
                                                 <td><?php echo $exam_subject_value->min_marks; ?></td>
                                                 <td class="col-sm-1 text-center">
-                                              
+                                              <!--       <a href="<?php echo site_url('admin/examgroup/addmark/' . $exam_subject_value->id); ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="Marks Entry--r" target="_blank">
+                                                        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                                                    </a>
+
+                                                    -->
                                                     <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#subjectModal" data-subject_name="<?php echo $exam_subject_value->subject_name; ?>" data-subject_id="<?php echo $exam_subject_value->id; ?>"><i class="fa fa-newspaper-o" aria-hidden="true"></i></button>
 
 
@@ -131,7 +136,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <label><?php echo $this->lang->line('session'); ?></label>
+                            <label>Session --r</label>
                             <select  id="session_id" name="session_id" class="form-control" >
                                 <option value=""><?php echo $this->lang->line('select'); ?></option>
                                 <?php
@@ -185,7 +190,7 @@
 
 
     $('#subjectModal').on('hidden.bs.modal', function () {
-        var current_session = $('#current_session_id').val();
+             var current_session=$('#current_session_id').val();
         $('.subjectmodal_header').html("");
         $('.marksEntryForm').html("");
         $('.subject_id').val("");

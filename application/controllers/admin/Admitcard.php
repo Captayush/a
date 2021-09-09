@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -10,6 +9,7 @@ class Admitcard extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+
     }
 
     public function index()
@@ -129,6 +129,7 @@ class Admitcard extends Admin_Controller
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["left_logo"]["tmp_name"], "./uploads/admit_card/" . $img_name);
                 $insert_data['left_logo'] = $img_name;
+
             }
             if (isset($_FILES["right_logo"]) && !empty($_FILES["right_logo"]['name'])) {
                 $time     = md5($_FILES["right_logo"]['name'] . microtime());
@@ -136,6 +137,7 @@ class Admitcard extends Admin_Controller
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_logo"]["tmp_name"], "./uploads/admit_card/" . $img_name);
                 $insert_data['right_logo'] = $img_name;
+
             }
             if (isset($_FILES["sign"]) && !empty($_FILES["sign"]['name'])) {
                 $time     = md5($_FILES["sign"]['name'] . microtime());
@@ -143,6 +145,7 @@ class Admitcard extends Admin_Controller
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["sign"]["tmp_name"], "./uploads/admit_card/" . $img_name);
                 $insert_data['sign'] = $img_name;
+
             }
             if (isset($_FILES["background_img"]) && !empty($_FILES["background_img"]['name'])) {
                 $time     = md5($_FILES["background_img"]['name'] . microtime());
@@ -150,6 +153,7 @@ class Admitcard extends Admin_Controller
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["background_img"]["tmp_name"], "./uploads/admit_card/" . $img_name);
                 $insert_data['background_img'] = $img_name;
+
             }
 
             $this->admitcard_model->add($insert_data);
@@ -167,17 +171,15 @@ class Admitcard extends Admin_Controller
     {
 
         $image_validate = $this->config->item('image_validate');
-        $result         = $this->filetype_model->get();
+
         if (isset($_FILES[$var]) && !empty($_FILES[$var]['name'])) {
 
-            $file_type = $_FILES[$var]['type'];
-            $file_size = $_FILES[$var]["size"];
-            $file_name = $_FILES[$var]["name"];
-
-            $allowed_extension = array_map('trim', array_map('strtolower', explode(',', $result->image_extension)));
-            $allowed_mime_type = array_map('trim', array_map('strtolower', explode(',', $result->image_mime)));
-            $ext               = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
+            $file_type         = $_FILES[$var]['type'];
+            $file_size         = $_FILES[$var]["size"];
+            $file_name         = $_FILES[$var]["name"];
+            $allowed_extension = $image_validate['allowed_extension'];
+            $ext               = pathinfo($file_name, PATHINFO_EXTENSION);
+            $allowed_mime_type = $image_validate['allowed_mime_type'];
             if ($files = @getimagesize($_FILES[$var]['tmp_name'])) {
 
                 if (!in_array($files['mime'], $allowed_mime_type)) {
@@ -189,11 +191,11 @@ class Admitcard extends Admin_Controller
                     $this->form_validation->set_message('handle_upload', $this->lang->line('extension_not_allowed'));
                     return false;
                 }
-
-                if ($file_size > $result->image_size) {
+                if ($file_size > $image_validate['upload_size']) {
                     $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than') . number_format($image_validate['upload_size'] / 1048576, 2) . " MB");
                     return false;
                 }
+
             } else {
                 $this->form_validation->set_message('handle_upload', $this->lang->line('file_type_not_allowed') . " " . $this->lang->line('or') . " " . $this->lang->line('extension_not_allowed'));
                 return false;
@@ -202,11 +204,12 @@ class Admitcard extends Admin_Controller
             return true;
         }
         return true;
+
     }
 
     public function edit($id)
     {
-
+        //print_r($_POST);die;
         if (!$this->rbac->hasPrivilege('design_admit_card', 'can_view')) {
             access_denied();
         }
@@ -309,8 +312,9 @@ class Admitcard extends Admin_Controller
                 'is_photo'        => $is_photo,
                 'is_class'        => $is_class,
                 'is_section'      => $is_section,
-                'content_footer'  => htmlentities($this->input->post('content_footer')),
+                'content_footer'  => htmlentities($this->input->post('content_footer'))
             );
+           
 
             if (isset($_FILES["left_logo"]) && !empty($_FILES["left_logo"]['name']) && $_FILES['left_logo']['error'] == 0) {
 
@@ -319,6 +323,7 @@ class Admitcard extends Admin_Controller
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["left_logo"]["tmp_name"], "./uploads/admit_card/" . $img_name);
                 $insert_data['left_logo'] = $img_name;
+
             }
             if (isset($_FILES["right_logo"]) && !empty($_FILES["right_logo"]['name']) && $_FILES['right_logo']['error'] == 0) {
 
@@ -327,6 +332,7 @@ class Admitcard extends Admin_Controller
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_logo"]["tmp_name"], "./uploads/admit_card/" . $img_name);
                 $insert_data['right_logo'] = $img_name;
+
             }
             if (isset($_FILES["sign"]) && !empty($_FILES["sign"]['name']) && $_FILES['sign']['error'] == 0) {
 
@@ -335,6 +341,7 @@ class Admitcard extends Admin_Controller
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["sign"]["tmp_name"], "./uploads/admit_card/" . $img_name);
                 $insert_data['sign'] = $img_name;
+
             }
             if (isset($_FILES["background_img"]) && !empty($_FILES["background_img"]['name']) && $_FILES['background_img']['error'] == 0) {
 
@@ -343,6 +350,7 @@ class Admitcard extends Admin_Controller
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["background_img"]["tmp_name"], "./uploads/admit_card/" . $img_name);
                 $insert_data['background_img'] = $img_name;
+
             }
 
             $this->admitcard_model->add($insert_data);
@@ -375,7 +383,7 @@ class Admitcard extends Admin_Controller
         $output            = '';
         $data              = array();
         $data['admitcard'] = $this->admitcard_model->get($id);
-        $page              = $this->load->view('admin/admitcard/_view', $data, true);
+        $page = $this->load->view('admin/admitcard/_view', $data, true);
         echo json_encode(array('status' => 1, 'page' => $page));
     }
 

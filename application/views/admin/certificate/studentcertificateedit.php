@@ -55,7 +55,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <label><?php echo $this->lang->line('body_text'); ?></label><small class="req"> *</small>
                                     <textarea class="form-control" id="certificate_text" name="certificate_text" placeholder="" rows="3" placeholder=""><?php echo set_value('certificate_name', $editcertificate[0]->certificate_text); ?></textarea>
                                     <span class="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]
-                                        <?php
+ <?php
+                                        
                                         if (!empty($custom_fields)) {
                                             foreach ($custom_fields as $field_key => $field_value) {
                                                 echo " [" . $field_value->name . "]";
@@ -170,62 +171,62 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div>
                         <div class="mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('certificate'); ?> <?php echo $this->lang->line('list'); ?></div>
-                            <div class="table-responsive">  
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('certificate'); ?> <?php echo $this->lang->line('name'); ?></th>
-                                            <!-- <th>Certificate Text</th> -->
-                                            <th><?php echo $this->lang->line('background_image'); ?></th>
-                                            <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (empty($certificateList)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            foreach ($certificateList as $certificate) {
-                                                ?>
-                                                <tr>
-                                                    <td class="mailbox-name">
-                                                        <a href="#" data-toggle="popover" class="detail_popover" ><?php echo $certificate->certificate_name; ?></a>
-                                                    </td>
-                                                    <td class="mailbox-name">
-                                                        <?php if ($certificate->background_image != '' && !is_null($certificate->background_image)) { ?>
-                                                            <img src="<?php echo base_url('uploads/certificate/') ?><?php echo $certificate->background_image ?>" width="40">
-                                                        <?php } else { ?>
-                                                            <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
-                                                        <?php } ?>
-                                                    </td>
-                                                    <td class="mailbox-date pull-right no-print">
-                                                        <a data-placement="left" id="<?php echo $certificate->id ?>" class="btn btn-default btn-xs view_data" data-toggle="tooltip" title="<?php echo $this->lang->line('view'); ?>">
-                                                            <i class="fa fa-reorder"></i>
-                                                        </a>
-                                                        <?php if ($this->rbac->hasPrivilege('student_certificate', 'can_edit')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/certificate/edit/<?php echo $certificate->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                            <?php
-                                                        }
-                                                        if ($this->rbac->hasPrivilege('student_certificate', 'can_delete')) {
-                                                            ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/certificate/delete/<?php echo $certificate->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            $count++;
-                                        }
+                          <div class="table-responsive">  
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('certificate'); ?> <?php echo $this->lang->line('name'); ?></th>
+                                        <!-- <th>Certificate Text</th> -->
+                                        <th><?php echo $this->lang->line('background_image'); ?></th>
+                                        <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($certificateList)) {
                                         ?>
-                                    </tbody>
-                                </table>
-                            </div>  
+
+                                        <?php
+                                    } else {
+                                        $count = 1;
+                                        foreach ($certificateList as $certificate) {
+                                            ?>
+                                            <tr>
+                                                <td class="mailbox-name">
+                                                    <a href="#" data-toggle="popover" class="detail_popover" ><?php echo $certificate->certificate_name; ?></a>
+                                                </td>
+                                                <td class="mailbox-name">
+                                                    <?php if ($certificate->background_image != '' && !is_null($certificate->background_image)) { ?>
+                                                        <img src="<?php echo base_url('uploads/certificate/') ?><?php echo $certificate->background_image ?>" width="40">
+                                                    <?php } else { ?>
+                                                        <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
+                                                    <?php } ?>
+                                                </td>
+                                                <td class="mailbox-date pull-right no-print">
+                                                    <a data-placement="left" id="<?php echo $certificate->id ?>" class="btn btn-default btn-xs view_data" data-toggle="tooltip" title="<?php echo $this->lang->line('view'); ?>">
+                                                        <i class="fa fa-reorder"></i>
+                                                    </a>
+                                                    <?php if ($this->rbac->hasPrivilege('student_certificate', 'can_edit')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/certificate/edit/<?php echo $certificate->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <?php
+                                                    }
+                                                    if ($this->rbac->hasPrivilege('student_certificate', 'can_delete')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/certificate/delete/<?php echo $certificate->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                          </div>  
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>
@@ -252,7 +253,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('.detail_popover').popover({

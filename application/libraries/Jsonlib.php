@@ -9,13 +9,14 @@ class Jsonlib {
 
     function __construct() {
         $this->CI = & get_instance();
+        
     }
 
-    public function output($status = 200, $array = array()) {
-        return $this->CI->output
-                        ->set_content_type('application/json')
-                        ->set_status_header($status)
-                        ->set_output(json_encode($array));
+    public function output($status= 200, $array=array()) {
+            return $this->CI->output
+            ->set_content_type('application/json')
+            ->set_status_header($status)
+            ->set_output(json_encode($array));
     }
 
 }

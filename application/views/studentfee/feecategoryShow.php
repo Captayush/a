@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<div class="content-wrapper" style="min-height: 946px;">
     <section class="content-header">
         <h1>
             <?php echo $this->lang->line('general_form_elements'); ?>

@@ -51,10 +51,8 @@
                                                     ?>
                                                 </div>
                                             </td>
-                                            <td class="mailbox-name"><?php
-                                                $type = $data['type'];
-                                                echo $this->lang->line($type);
-                                                ?></td>
+                                            <td class="mailbox-name"><?php  $type = $data['type'];
+											echo $this->lang->line($type); ?></td>
                                             <td class="mailbox-name"><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($data['date'])) ?></td>
                                             <td class="mailbox-date text-right">
                                                 <a data-placement="left" href="<?php echo base_url(); ?>user/content/download/<?php echo $data['file'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('download'); ?>">
@@ -79,7 +77,18 @@
         </div>
     </section>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#upload_date').datepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true
+        });
 
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('.detail_popover').popover({

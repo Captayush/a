@@ -30,7 +30,7 @@
         </style>
     </head>
     <body class="body">
-        <?php
+          <?php
         if ($marksheet->background_img != "") {
             ?> 
             <img src="<?php echo base_url('uploads/marksheet/' . $marksheet->background_img); ?>" class="tcmybg" width="100%" height="100%" />
@@ -81,17 +81,17 @@
                     <td valign="top">
                         <table cellpadding="0" cellspacing="0" width="100%">
                             <tr>
-                                <td width="100" valign="top" align="center" style="padding-left: 0px;">
-                                    <?php
-                                    if ($marksheet->left_logo != "") {
-                                        ?>
+                                    <td width="100" valign="top" align="center" style="padding-left: 0px;">
+                                <?php
+                                if ($marksheet->left_logo != "") {
+                                    ?>
                                         <img src="<?php echo base_url('uploads/marksheet/' . $marksheet->left_logo); ?>" width="100" height="100"> 
 
 
-                                        <?php
-                                    }
-                                    ?>
-                                </td>
+                                    <?php
+                                }
+                                ?>
+                                    </td>
 
                                 <td valign="top">
                                     <table cellpadding="0" cellspacing="0" width="100%">
@@ -126,16 +126,16 @@
                                     </table>
                                 </td>
 
-                                <td width="100" valign="top" align="right" style="padding-right: 0px;">
-                                    <?php
-                                    if ($marksheet->right_logo != "") {
-                                        ?>
-                                        <img src="<?php echo base_url('uploads/marksheet/' . $marksheet->right_logo); ?>" width="100" height="100">
-                                        <?php
-                                    }
+                                    <td width="100" valign="top" align="right" style="padding-right: 0px;">
+                                <?php
+                                if ($marksheet->right_logo != "") {
                                     ?>
+                                        <img src="<?php echo base_url('uploads/marksheet/' . $marksheet->right_logo); ?>" width="100" height="100">
+                                    <?php
+                                }
+                                ?>
 
-                                </td>
+                                    </td>
 
 
                             </tr>
@@ -278,13 +278,13 @@
                                 <?php
                             }
                             ?>
-                            <?php
+                             <?php
                             if ($marksheet->exam_center != "") {
                                 ?>
-                                <tr>
-                                    <td valign="top" style="text-transform: uppercase; padding-bottom: 15px;"><?php echo $this->lang->line('exam') . " " . $this->lang->line('center') ?><span style="text-transform: uppercase; padding-top: 15px; font-weight: bold; padding-bottom: 20px; padding-left: 30px;"><?php echo $marksheet->exam_center; ?></span></td>
-                                </tr>
-                                <?php
+                            <tr>
+                                <td valign="top" style="text-transform: uppercase; padding-bottom: 15px;"><?php echo $this->lang->line('exam') . " " . $this->lang->line('center') ?><span style="text-transform: uppercase; padding-top: 15px; font-weight: bold; padding-bottom: 20px; padding-left: 30px;"><?php echo $marksheet->exam_center; ?></span></td>
+                            </tr>
+                               <?php
                             }
                             ?>
                             <?php
@@ -371,13 +371,14 @@
                     </td>
                 </tr>
                 <tr><td valign="top" height="10"></td></tr>
-                <?php
+               <?php
+
                 if ($marksheet->date != "") {
                     ?>
 
-                    <tr>
-                        <td valign="top" style="font-weight: bold; padding-left: 30px; padding-top: 10px;"><?php echo $marksheet->date; ?></td>
-                    </tr>
+                <tr>
+                    <td valign="top" style="font-weight: bold; padding-left: 30px; padding-top: 10px;"><?php echo $marksheet->date; ?></td>
+                </tr>
                     <?php
                 }
                 ?>

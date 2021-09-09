@@ -34,55 +34,57 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $upload_docsButton = 0;
-                                    foreach ($homeworklist as $key => $homework) {
+$upload_docsButton = 0;
+foreach ($homeworklist as $key => $homework) {
 
-                                        $subject_group_id = $homework['subject_groups_id'];
-                                        if (date('Y-m-d') <= date('Y-m-d', strtotime($homework['submit_date']))) {
-                                            $upload_docsButton = 1;
-                                        }
-                                        ?>
+    $subject_group_id = $homework['subject_groups_id'];
+    if (date('Y-m-d') <= date('Y-m-d', strtotime($homework['submit_date']))) {
+        $upload_docsButton = 1;
+    }
+    ?>
                                         <tr>
-                                            <td><?php echo $homework["class"] ?></td>
+                                            <td><?php
+
+    echo $homework["class"] ?></td>
                                             <td><?php echo $homework["section"] ?></td>
                                             <td><?php echo $homework['subject_name']; ?></td>
                                             <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($homework['homework_date'])); ?></td>
                                             <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($homework['submit_date'])); ?></td>
                                             <td><?php
-                                                $evl_date = "";
-                                                if ($homework['evaluation_date'] != "0000-00-00") {
-                                                    echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($homework['evaluation_date']));
-                                                }
-                                                ?></td>
+$evl_date = "";
+    if ($homework['evaluation_date'] != "0000-00-00") {
+        echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($homework['evaluation_date']));
+    }
+    ?></td>
                                             <td>
                                                 <?php
-                                                $status_class = "class= 'label label-danger'";
-                                                $status_homework = $this->lang->line("incomplete");
-                                                $h_status = 0;
-                                                if ($homework["homework_evaluation_id"] != 0) {
-                                                    $h_status = 1;
-                                                    $status_class = "class= 'label label-success'";
+$status_class    = "class= 'label label-danger'";
+    $status_homework = $this->lang->line("incomplete");
+    $h_status        = 0;
+    if ($homework["homework_evaluation_id"] != 0) {
+        $h_status     = 1;
+        $status_class = "class= 'label label-success'";
 
-                                                    $status_homework = $this->lang->line("complete");
-                                                }
-                                                ?>
-                                                <label <?php echo $status_class; ?>><?php echo $status_homework; ?></label>
+        $status_homework = $this->lang->line("complete");
+    }
 
-                                            </td>
+    ?>
+      <label <?php echo $status_class; ?>><?php echo $status_homework; ?></label>
+
+    </td>
                                             <td class="mailbox-date pull-right">
-                                                <?php 
-                                              $submit_date_string=strtotime($homework['submit_date']);
-                                              $cur_date_string=strtotime(date('Y-m-d'));
-                                                if($h_status==0 && $submit_date_string >= $cur_date_string){ ?>
-                                                    <a onclick="upload_docs('<?php echo $homework['id']; ?>', '<?php echo $upload_docsButton; ?>');" class="btn btn-default btn-xs"    data-toggle="tooltip"  data-original-title="<?php echo $this->lang->line('homework') . " " . $this->lang->line('assignments'); ?>">
+
+                                                <a onclick="upload_docs('<?php echo $homework['id']; ?>', '<?php echo $upload_docsButton; ?>');" class="btn btn-default btn-xs"    data-toggle="tooltip"  data-original-title="<?php echo $this->lang->line('homework') . " " . $this->lang->line('assignments'); ?>">
                                                     <i class="fa fa-upload"></i></a>
-                                                <?php }
-                                                 ?>
-<a class="btn btn-default btn-xs" onclick="evaluation(<?php echo $homework['id']; ?>,<?php echo $h_status; ?>);" title="" data-target="#evaluation" data-toggle="modal"  data-original-title="Evaluation">
+
+
+
+
+                                                <a class="btn btn-default btn-xs" onclick="evaluation(<?php echo $homework['id']; ?>,<?php echo $h_status; ?>);" title="" data-target="#evaluation" data-toggle="modal"  data-original-title="Evaluation">
                                                     <i class="fa fa-reorder"></i></a>
                                             </td>
                                         </tr>
-                                    <?php } ?>
+                                    <?php }?>
 
                                 </tbody>
                             </table>
@@ -120,32 +122,32 @@
                 <div class="modal-body pt0 pb0">
                     <div class="row">
 
-                        <input type="hidden" id="homework_id"  name="homework_id">
-                        <input type="hidden" id="assigment_id" name="assigment_id">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="pwd"><?php echo $this->lang->line('message'); ?></label><small class="req"> *</small>
-                                <textarea type="text" id="assigment_message" name="message" class="form-control "></textarea>
+                                <input type="hidden" id="homework_id"  name="homework_id">
+                                <input type="hidden" id="assigment_id" name="assigment_id">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="pwd"><?php echo $this->lang->line('message'); ?></label><small class="req"> *</small>
+                                        <textarea type="text" id="assigment_message" name="message" class="form-control "></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="pwd"><?php echo $this->lang->line('attach_document'); ?></label>
+                                        <input type="file"  id="file" name="file" class="form-control filestyle">
+                                    </div>
+                                </div>
+                                <p id="uploaded_docs"></p>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="pwd"><?php echo $this->lang->line('attach_document'); ?></label>
-                                <input type="file"  id="file" name="file" class="form-control filestyle">
-                            </div>
-                        </div>
-                        <p id="uploaded_docs"></p>
-                    </div>
 
 
                 </div>
                 <div class="box-footer">
                     <div class="col-sm-12">
-                        <div class="pull-right" id="footer_area">
-                            <button type="submit" class="btn btn-info" id="submit" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please wait"><?php echo $this->lang->line('save'); ?></button>
+                    <div class="pull-right" id="footer_area">
+                        <button type="submit" class="btn btn-info" id="submit" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please wait"><?php echo $this->lang->line('save'); ?></button>
 
-                        </div>
                     </div>
+                  </div>
                 </div>
             </form>
         </div>
@@ -254,11 +256,11 @@
         }
     }
 
-    function evaluation(id, status) {
+    function evaluation(id,status) {
 
         $('#evaluation_details').html("");
         $.ajax({
-            url: '<?php echo base_url(); ?>user/homework/homework_detail/' + id + '/' + status,
+            url: '<?php echo base_url(); ?>user/homework/homework_detail/' + id+'/'+status,
             success: function (data) {
                 $('#evaluation_details').html(data);
 
@@ -292,15 +294,15 @@
             success: function (res)
             {
 
-                if (res.status == 0) {
+                if(res.status == 0){
 
-                } else if (res.status == 1) {
+                }else if(res.status == 1){
                     console.log()
-                    if (res.result.file_name != null) {
-                        $('#uploaded_docs').html('<div class=""><div class="col-sm-12"><div class="form-group"><label for="pwd"><?php echo $this->lang->line('uploaded') . " " . $this->lang->line('documents'); ?></label><p>' + res.result.file_name + ' <a href="<?php echo base_url(); ?>/user/homework/assigmnetDownload/' + id + '/' + res.result.docs + '" class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('assignments') . " " . $this->lang->line('download'); ?>"><i class="fa fa-download"></i></a></p></div></div></div>');
-                    }
-                    $('#assigment_id').val(res.result.id);
-                    $('#assigment_message').val(res.result.message);
+                if(res.result.file_name != null){
+                        $('#uploaded_docs').html('<div class=""><div class="col-sm-12"><div class="form-group"><label for="pwd"><?php echo $this->lang->line('uploaded') . " " . $this->lang->line('documents'); ?></label><p>'+res.result.file_name+' <a href="<?php echo base_url(); ?>/user/homework/assigmnetDownload/' + id + '/' + res.result.docs + '" class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('assignments') . " " . $this->lang->line('download'); ?>"><i class="fa fa-download"></i></a></p></div></div></div>');
+                }
+                $('#assigment_id').val(res.result.id);
+                $('#assigment_message').val(res.result.message);
                 }
 
             }
@@ -345,7 +347,7 @@
 
                         successMsg(res.message);
 
-                        window.location.reload(true);
+                       window.location.reload(true);
                     }
                 }
             });

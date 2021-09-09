@@ -52,38 +52,38 @@ if ($page_form) {
                 ?>
                 <div class="row">
                     <?php
-                    if (!empty($page['category_content'][$page_content_key])) {
+                if(!empty($page['category_content'][$page_content_key])){
+                    
+                    foreach ($page['category_content'][$page_content_key] as $key => $value) {
+                        ?>  
+                        <div class="col-md-<?php echo $bootstrapColWidth; ?> col-sm-<?php echo $bootstrapColWidth; ?>">
+                            <div class="cuadro_intro_hover" style="background-color:#cccccc;">
+                                <a href="<?php echo site_url($value['url']); ?>">
+                                    <?php
+                                    if ($value['feature_image'] == "") {
+                                        $feature_image = base_url('uploads/gallery/gallery_default.png');
+                                    } else {
+                                        $feature_image = $value['feature_image'];
+                                    }
+                                    ?>
+                                    <div align="center"><img src="<?php echo $feature_image; ?>" alt="" title=""></div>
+                                    <div class="eventcaption">
+                                        <div class="blur"></div>
+                                        <div class="event20">  
+                                            <h3 style="margin-top: 10px;"><?php echo $value['title']; ?></h3>
+                                            <?php echo (strlen($value['description']) > 85 ) ? substr(html_entity_decode($value['description']), 0, 85) . '....' : $value['description']; ?>
 
-                        foreach ($page['category_content'][$page_content_key] as $key => $value) {
-                            ?>  
-                            <div class="col-md-<?php echo $bootstrapColWidth; ?> col-sm-<?php echo $bootstrapColWidth; ?>">
-                                <div class="cuadro_intro_hover" style="background-color:#cccccc;">
-                                    <a href="<?php echo site_url($value['url']); ?>">
-                                        <?php
-                                        if ($value['feature_image'] == "") {
-                                            $feature_image = base_url('uploads/gallery/gallery_default.png');
-                                        } else {
-                                            $feature_image = $value['feature_image'];
-                                        }
-                                        ?>
-                                        <div align="center"><img src="<?php echo $feature_image; ?>" alt="" title=""></div>
-                                        <div class="eventcaption">
-                                            <div class="blur"></div>
-                                            <div class="event20">  
-                                                <h3 style="margin-top: 10px;"><?php echo $value['title']; ?></h3>
-                                                <?php echo (strlen($value['description']) > 85 ) ? substr(html_entity_decode($value['description']), 0, 85) . '....' : $value['description']; ?>
-
-                                            </div>
-                                        </div><!--./around20-->
-                                    </a> 
-                                </div><!--./eventbox-->
-                            </div>
-                            <?php
-                            $rowCount++;
-                            if ($rowCount % $numOfCols == 0)
-                                echo '</div><div class="row">';
-                        }
+                                        </div>
+                                    </div><!--./around20-->
+                                </a> 
+                            </div><!--./eventbox-->
+                        </div>
+                        <?php
+                        $rowCount++;
+                        if ($rowCount % $numOfCols == 0)
+                            echo '</div><div class="row">';
                     }
+                }
                     ?>
                 </div>
 
@@ -169,14 +169,4 @@ if ($page_form) {
             }
         });
     }
-       function refreshCaptcha(){
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url('site/refreshCaptcha'); ?>",
-            data: {},
-            success: function(captcha){
-                $("#captcha_image").html(captcha);
-            }
-        });
-    } 
 </script>

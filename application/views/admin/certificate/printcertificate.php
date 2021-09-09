@@ -27,13 +27,16 @@
 </style>
 
 <?php
-$certificate[0]->certificate_text = str_replace('[name]', '[name]', $certificate[0]->certificate_text);
+$certificate[0]->certificate_text = str_replace('[name]', '[firstname] [lastname]', $certificate[0]->certificate_text);
+// $certificate[0]->certificate_text = str_replace('[cast]', '[category]', $certificate[0]->certificate_text);
+// $certificate[0]->certificate_text = str_replace('[cast]', '[category]', $certificate[0]->certificate_text);
 $certificate[0]->certificate_text = str_replace('[present_address]', '[current_address]', $certificate[0]->certificate_text);
 $certificate[0]->certificate_text = str_replace('[guardian]', '[guardian_name]', $certificate[0]->certificate_text);
 $certificate[0]->certificate_text = str_replace('[phone]', '[mobileno]', $certificate[0]->certificate_text);
 
 
 foreach ($students as $student) {
+	// print_r($student); die;
     $certificate_body = "";
     $certificate_body = $certificate[0]->certificate_text;
 
@@ -41,38 +44,43 @@ foreach ($students as $student) {
 
         if ($std_key == "dob") {
 
-            if ($std_value != "0000-00-00" && $std_value != "") {
+            if ($std_value != "0000-00-00") {
                 $std_value = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($std_value));
             }
-        }
-        if ($std_key == "admission_date") {
 
-            if ($std_value != "0000-00-00" && $std_value != "") {
-                $std_value = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($std_value));
-            }
         }
-        if ($std_key == "created_at") {
+		if ($std_key == "admission_date") {
 
-            if ($std_value != "0000-00-00" && $std_value != "") {
+            if ($std_value != "0000-00-00") {
                 $std_value = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($std_value));
             }
+
         }
-        $certificate_body = str_replace('[' . $std_key . ']', $std_value, $certificate_body);
+		if ($std_key == "created_at") {
+
+            if ($std_value != "0000-00-00") {
+                $std_value = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($std_value));
+            }
+
+        }
+        $certificate_body = str_replace('[' . $std_key . ']', $std_value , $certificate_body);
+
     }
+
     ?>
 
 
     <div class="" style="position: relative; text-align: center; font-family: 'arial';">
-        <?php if (!empty($certificate[0]->background_image)) { ?>
+        <?php if (!empty($certificate[0]->background_image)) {?>
             <img src="<?php echo base_url('uploads/certificate/' . $certificate[0]->background_image); ?>" style="width: 100%; height: 100vh" />
-        <?php } ?>
+        <?php }?>
 
         <table width="100%" cellspacing="0" cellpadding="0" style="position: absolute;top: 0; margin-left: auto;margin-right: auto;left: 0;right: 0;<?php echo "width:" . $certificate[0]->content_width . "px" ?>">
             <tr>
                 <td style="position: absolute;right:0;">
-                    <?php if ($certificate[0]->enable_student_image == 1) { ?>
+                    <?php if ($certificate[0]->enable_student_image == 1) {?>
                         <img style="position: relative; <?php echo "top:" . $certificate[0]->enable_image_height . "px" ?>;" src="<?php echo base_url($student->image); ?>" width="100" height="auto">
-                    <?php } ?>
+                    <?php }?>
                 </td></tr>
             <tr>
                 <td valign="top" style="text-align:left; position: relative; <?php echo "top:" . $certificate[0]->header_height . "px" ?>"><?php echo $certificate[0]->left_header ?></td>
@@ -82,7 +90,8 @@ foreach ($students as $student) {
             <tr>
                 <td colspan="3" valign="top" style="position: relative; <?php echo "top:" . $certificate[0]->content_height . "px" ?>">
                     <p style="font-size: 14px; line-height: 24px; text-align:center;"><?php echo $certificate_body;
-                    ?></p></td>
+
+    ?></p></td>
             </tr>
             <tr>
                 <td valign="top" style="text-align:left;position: relative; <?php echo "top:" . $certificate[0]->footer_height . "px" ?>"><?php echo $certificate[0]->left_footer ?></td>

@@ -41,7 +41,7 @@ class Vehicle extends Admin_Controller {
 
             ($manufacture_year != "") ? $data['manufacture_year'] = $manufacture_year : '';
             $this->vehicle_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/vehicle/index');
         }
     }
@@ -78,7 +78,7 @@ class Vehicle extends Admin_Controller {
             );
             ($manufacture_year != "") ? $data['manufacture_year'] = $manufacture_year : '';
             $this->vehicle_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('update_message').'</div>');
             redirect('admin/vehicle/index');
         }
     }

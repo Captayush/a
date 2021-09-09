@@ -111,42 +111,42 @@
                                             ?>
                                             <?php
                                             if ($idcardlist[0]->enable_student_name == 1) {
-                                                echo "<li>" . $this->lang->line('student') . " " . $this->lang->line('name') . "<span>" . $resultlist[0]['firstname'] . ' ' . $resultlist[0]['lastname'] . "</span></li>";
+                                                echo "<li>".$this->lang->line('student')." ".$this->lang->line('name')."<span>" . $resultlist[0]['firstname'] . ' ' . $resultlist[0]['lastname'] . "</span></li>";
                                             }
                                             ?>
                                             <?php
                                             if ($idcardlist[0]->enable_class == 1) {
-                                                echo "<li>" . $this->lang->line('class') . "<span>" . $resultlist[0]['class'] . " - " . $resultlist[0]['section'] . "</span></li>";
+                                                echo "<li>".$this->lang->line('class')."<span>" . $resultlist[0]['class'] . " - " . $resultlist[0]['section'] . "</span></li>";
                                             }
                                             ?>
                                             <?php
                                             if ($idcardlist[0]->enable_fathers_name == 1) {
-                                                echo "<li>" . $this->lang->line('fathers') . " " . $this->lang->line('name') . "<span>" . $resultlist[0]['father_name'] . " </span></li>";
+                                                echo "<li>".$this->lang->line('fathers')." ".$this->lang->line('name')."<span>" . $resultlist[0]['father_name'] . " </span></li>";
                                             }
                                             ?>
                                             <?php
                                             if ($idcardlist[0]->enable_mothers_name == 1) {
-                                                echo "<li>" . $this->lang->line('mothers') . " " . $this->lang->line('name') . "<span>" . $resultlist[0]['mother_name'] . " </span></li>";
+                                                echo "<li>".$this->lang->line('mothers')." ".$this->lang->line('name')."<span>" . $resultlist[0]['mother_name'] . " </span></li>";
                                             }
                                             ?>
                                             <?php
                                             if ($idcardlist[0]->enable_address == 1) {
-                                                echo "<li>" . $this->lang->line('address') . "<span>" . $resultlist[0]['permanent_address'] . " </span></li>";
+                                                echo "<li>".$this->lang->line('address')."<span>" . $resultlist[0]['permanent_address'] . " </span></li>";
                                             }
                                             ?>
                                             <?php
                                             if ($idcardlist[0]->enable_phone == 1) {
-                                                echo "<li>" . $this->lang->line('phone') . "<span>" . $resultlist[0]['father_phone'] . " </span></li>";
+                                                echo "<li>".$this->lang->line('phone')."<span>" . $resultlist[0]['father_phone'] . " </span></li>";
                                             }
                                             ?>
                                             <?php
                                             if ($idcardlist[0]->enable_dob == 1) {
-                                                echo "<li>" . $this->lang->line('d_o_b') . "<span>" . date('d-m-Y', strtotime($resultlist[0]['dob'])) . " </span></li>";
+                                                echo "<li>".$this->lang->line('d_o_b')."<span>" . date('d-m-Y', strtotime($resultlist[0]['dob'])) . " </span></li>";
                                             }
                                             ?>
                                             <?php
                                             if ($idcardlist[0]->enable_blood_group == 1) {
-                                                echo "<li class='stred'>" . $this->lang->line('blood') . " " . $this->lang->line('group') . "<span> A+</span></li>";
+                                                echo "<li class='stred'>".$this->lang->line('blood')." ".$this->lang->line('group')."<span> A+</span></li>";
                                             }
                                             ?>
                                         </ul>

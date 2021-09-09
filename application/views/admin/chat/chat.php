@@ -3,12 +3,12 @@
     overflow: hidden;
 }
 </style> -->
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-map-o"></i> <?php echo $this->lang->line('chat') ?>
+            <i class="fa fa-map-o"></i> <?php echo $this->lang->line('chat')?>
         </h1>
     </section>
 
@@ -18,30 +18,32 @@
             <div class="col-md-12">
                 <!-- general form elements -->
                 <div id="frame">
-                    <div class="chatloader"></div>
-
+                    <div class="chatloader"></div>  
+                    
                     <div id="sidepanel">
                         <input type="hidden" name="chat_connection_id" value="0">
                         <input type="hidden" name="chat_to_user" value="0">
                         <input type="hidden" name="last_chat_id" value="0">
 
                         <div id="search">
-                            <label for=""><?php echo $this->lang->line('chat') . " " . $this->lang->line('system') ?></label>  
+                            <label for=""><?php echo $this->lang->line('chat')." ".$this->lang->line('system')?></label>
+                            <!-- <input type="text" placeholder="Search contacts..." /> -->
                             <div id="bottom-bar">
-                                <button id="addcontact" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i></button>
-
+                              <button id="addcontact" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i></button>
+                              
                             </div>
                         </div>
                         <div id="contacts">
-
+                            
                             <ul>
                             </ul>
                         </div>
+
                     </div>
                     <div class="chatcontent">
                         <div class="contact-profile">
                             <img src="<?php echo base_url('uploads/student_images/no_image.png'); ?>" alt="" />
-                            <p><?php echo $this->lang->line('select_any_user_to_start_your_chat') ?></p>
+                            <p><?php echo $this->lang->line('select_any_user_to_start_your_chat')?></p>
 
                         </div>
                         <div class="messages">
@@ -51,32 +53,42 @@
                         </div>
                         <div class="message-input ">
                             <div class="wrap relative">
-                                <input type="text" placeholder="<?php echo $this->lang->line('write_your_message'); ?>..." class="chat_input" />
-                                <button class="submit input_submit" disabled="disabled"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                <input type="text" placeholder="Write your message..." class="chat_input" />
+                                <!-- <i class="fa fa-paperclip attachment" aria-hidden="true"></i> -->
+                                <button class="submit input_submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
+              
             </div><!-- /.box-header -->
         </div><!-- /.box-header -->
+
     </section>
+
 </div><!-- /.box-body -->
 </div>
 </div><!--/.col (left) -->
 <!-- right column -->
+
 </div>
+
 </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+
+
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
+
         <!-- Modal content-->
         <form id="addUser" action="<?php echo site_url('admin/chat/adduser') ?>" method="POST">
+
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><?php echo $this->lang->line('add') . " " . $this->lang->line('contact'); ?><small style="color:red;"> *</small></h4>
+                    <h4 class="modal-title"><?php echo $this->lang->line('add')." ".$this->lang->line('contact');?></h4>
                 </div>
                 <div class="modal-body">
                     <div id="custom-search-input">
@@ -89,12 +101,16 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-sm"  data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please wait"><i class="fa fa-plus"></i> <?php echo $this->lang->line('add'); ?></button>
+                    <button type="submit" class="btn btn-success btn-sm"  data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please wait"><i class="fa fa-plus"></i> <?php echo $this->lang->line('add');?></button>
                 </div>
             </div>
         </form>
+
     </div>
 </div>
+
+
+
 
 <script>
     var timestamp = '<?php echo time(); ?>';
@@ -104,32 +120,21 @@
         timestamp++;
     }
 
-$(document).on('input','.chat_input',function(){
-  
-     if ($.trim($(this).val()) == '') {
-      
-        $('.input_submit').prop('disabled', true);
-    }else{
-       
-        $('.input_submit').prop('disabled', false);
+$(document).on('click','.input_submit',function(e) {
 
+
+    message = $(".message-input input").val();
+    if($.trim(message) == '') {
+        return false;
     }
+    newChatMessage();
+     e.preventDefault(); // To prevent the default
 });
-
-    $(document).on('click', '.input_submit', function (e) {
-      
-        message = $(".message-input input").val();
-        if ($.trim(message) == '') {
-            return false;
-        }
-        newChatMessage();
-        e.preventDefault(); // To prevent the default
-    });
 
     $(function () {
         setInterval(updateTime, 1000);
     });
-    $(".messages").animate(
+       $(".messages").animate(
             {
                 scrollTop: $(document).height()
             },
@@ -202,20 +207,25 @@ $(document).on('input','.chat_input',function(){
         } else if (keyword.length >= 0) {
             $('.usersearchlist').html("")
         }
+
     });
 
+
     $(document).ready(function () {
+
         $.ajax({
             type: "POST",
             url: base_url + 'admin/chat/myuser',
             data: {},
             dataType: "JSON",
             beforeSend: function () {
-                $('.chatloader').css({display: 'block'});
+            $('.chatloader').css({display: 'block'});
             },
             success: function (data) {
                 $("#contacts ul").html(data.page);
+
                 if (data.status === "1") {
+
                     clearInterval(intervalchat);
                     intervalchat = setInterval(getChatNotification, 15000);
 
@@ -225,10 +235,10 @@ $(document).on('input','.chat_input',function(){
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $('.chatloader').css({display: 'none'});
+  $('.chatloader').css({display: 'none'});
             },
             complete: function (data) {
-                $('.chatloader').css({display: 'none'});
+  $('.chatloader').css({display: 'none'});
             }
         });
     });
@@ -241,15 +251,19 @@ $(document).on('input','.chat_input',function(){
             data: {'chat_connection_id': chat_connection_id},
             dataType: "JSON",
             beforeSend: function () {
-                $('.chatloader').css({display: 'block'});
+  $('.chatloader').css({display: 'block'});
                 $(".chat_input").val("");
                 $('.contact-profile').find('p').html($this.find('.name').text());
                 $('.contact-profile').find('img').attr("src", $this.find('img').attr('src'));
                 $this.addClass('active').siblings().removeClass('active');
             },
             success: function (data) {
+
                 $this.find('span.notification_count').css("display", "none");
+
+
                 $(".messages ul").html(data.page);
+
                 $("input[name='chat_connection_id']").val(data.chat_connection_id);
                 $("input[name='chat_to_user']").val(data.chat_to_user);
                 $("input[name='last_chat_id']").val(data.user_last_chat.id);
@@ -262,68 +276,70 @@ $(document).on('input','.chat_input',function(){
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $('.chatloader').css({display: 'none'});
+  $('.chatloader').css({display: 'none'});
             },
             complete: function (data) {
-                $('.chatloader').css({display: 'none'});
+  $('.chatloader').css({display: 'none'});
             }
         })
 
     });
 
-    $(document).on('keydown', '.chat_input', function (e) {
-        switch (e.which) {
-            case 13:
-                newChatMessage();
-                break;
-        }
+
+
+    $(document).on('keydown', '.chat_input', function (e) {      
+
+          switch (e.which) {
+           case 13:
+            newChatMessage();
+            break;
+           }   
+
+
     });
 
-    function htmlEncode(str) {
-        return String(str).replace(/[^\w. ]/gi, function (c) {
-            return '&#' + c.charCodeAt(0) + ';';
-        });
-    }
 
     function newChatMessage() {
-        message = htmlEncode($(".message-input input").val());
-        $('.input_submit').prop('disabled', true);
+        message = $(".message-input input").val();
         if ($.trim(message) == '') {
             return false;
         }
 
         var chat_connection_id = $("input[name='chat_connection_id']").val();
         var chat_to_user = $("input[name='chat_to_user']").val();
-        if (chat_connection_id > 0 && chat_to_user > 0) {
+if(chat_connection_id > 0 && chat_to_user > 0){
 
-            $.ajax({
-                type: "POST",
-                url: base_url + 'admin/chat/newMessage',
-                data: {'chat_connection_id': chat_connection_id, 'message': message, 'chat_to_user': chat_to_user, 'time': date_time_temp},
-                dataType: "JSON",
-                beforeSend: function () {
+        $.ajax({
+            type: "POST",
+            url: base_url + 'admin/chat/newMessage',
+            data: {'chat_connection_id': chat_connection_id, 'message': message, 'chat_to_user': chat_to_user, 'time': date_time_temp},
+            dataType: "JSON",
+            beforeSend: function () {
 
-                },
-                success: function (data) {
-                    var last_chat_id = $("input[name='last_chat_id']").val(data.last_insert_id);
-                    $('<li class="replies"><p>' + message + '</p> <span class="time_date_send"> ' + date_time_temp + '</span></li>').appendTo($('.messages ul'));
-                    $('.chat_input').val(null);
-                    $('.contact.active .preview').html('<span>You: </span>' + message);
-                    $('.messages').animate({
-                        scrollTop: $('.messages')[0].scrollHeight}, "slow");
+            },
+            success: function (data) {
+                var last_chat_id = $("input[name='last_chat_id']").val(data.last_insert_id);
+                $('<li class="replies"><p>' + message + '</p> <span class="time_date_send"> ' + date_time_temp + '</span></li>').appendTo($('.messages ul'));
+                $('.chat_input').val(null);
+                $('.contact.active .preview').html('<span>You: </span>' + message);
+                // $(".messages").animate({scrollTop: $(document).height()}, "fast");
 
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
+                $('.messages').animate({
+                    scrollTop: $('.messages')[0].scrollHeight}, "slow");
 
-                },
-                complete: function (data) {
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
 
-                }
-            })
-        }
+            },
+            complete: function (data) {
+
+            }
+        })
+}
 
     }
     ;
+
 
     function getChatsUpdates() {
         var end_reach = false;
@@ -358,6 +374,8 @@ $(document).on('input','.chat_input',function(){
 
             }
         })
+
+
     }
 
     $(document).on('click', '.usersearchlist ul li', function () {
@@ -374,6 +392,8 @@ $(document).on('input','.chat_input',function(){
         var userType = userrecord.data('userType');
         var $form = $(this),
                 url = $form.attr('action');
+        // var $this = $('.submit_class');
+        // $this.button('loading');
         var $button = $form.find("button[type=submit]:focus");
         $.ajax({
             type: "POST",
@@ -396,11 +416,15 @@ $(document).on('input','.chat_input',function(){
                 } else {
 
                     $("#contacts ul").prepend(newUserLi(data.new_user, data.chat_connection_id)).find('li').addClass('active').siblings().not('li:first').removeClass('active');
+
                     $(".messages ul").html(data.chat_records);
+
                     $("input[name='chat_connection_id']").val(data.chat_connection_id);
                     $("input[name='chat_to_user']").val(data.new_user.chat_user_id);
                     $("input[name='last_chat_id']").val(data.user_last_chat.id);
                     $(".chat_input").val("");
+                    console.log(data.new_user);
+
 
                     if (data.new_user.user_type == "student") {
                         new_user_type = "Student";
@@ -417,6 +441,8 @@ $(document).on('input','.chat_input',function(){
                     clearInterval(interval);
                     interval = setInterval(getChatsUpdates, 2000);
 
+
+
                     $('#myModal').modal('hide');
                     successMsg(data.message);
                 }
@@ -432,11 +458,15 @@ $(document).on('input','.chat_input',function(){
 
     });
     $('#myModal').on('hidden.bs.modal', function (e) {
+
         $('.usersearchlist').html("");
         $('#addUser').trigger("reset");
     });
 
+
+
     function newUserLi(user_array, chat_connection_id) {
+
         var new_user_type = "Staff";
         var img = "";
         if (user_array.user_type == "student") {
@@ -455,11 +485,13 @@ $(document).on('input','.chat_input',function(){
         newli += "<p class='preview'></p>";
         newli += "</div>";
         newli += "</div>";
-        newli += "<span class='chatbadge notification_count' style='display: none;'>0</span>";
+         newli += "<span class='chatbadge notification_count' style='display: none;'>0</span>";
         newli += "</li>";
         return newli;
 
     }
+
+
 
     function getChatNotification() {
         $.ajax({
@@ -472,12 +504,15 @@ $(document).on('input','.chat_input',function(){
             },
             success: function (data) {
                 var active_user = $('#contacts').find("ul li.active");
+
                 if (data.notifications.length > 0) {
+
                     $.each(data.notifications, function (index, value) {
                         if (active_user.data('chatConnectionId') != value.chat_connection_id) {
 
                             $('#contacts').find("ul li[data-chat-connection-id='" + value.chat_connection_id + "']").find('span.notification_count').text(value.no_of_notification).css("display", "block");
                         }
+
                     });
                 }
 
@@ -491,15 +526,18 @@ $(document).on('input','.chat_input',function(){
         })
     }
 
-    function js_yyyy_mm_dd_hh_mm_ss(now) {
 
-        var date_format = '<?php echo$this->customlib->getSchoolDateFormat() ?>';
-        var new_str = date_format;
-        var month_String = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+    function js_yyyy_mm_dd_hh_mm_ss(now) {
+        var month = [
+            "Jan", "Feb", "Marh", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Octr", "Nov", "Dec"
+        ];
         now = new Date();
-        var day = String(now.getDate()).padStart(2, '0');
-        var month = String(now.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var year = now.getFullYear();
+        year = "" + now.getFullYear();
+        month = "" + month[now.getMonth()];
+        day = "" + now.getDate();
+        if (day.length == 1) {
+            day = "0" + day;
+        }
         hour = "" + now.getHours();
         if (hour.length == 1) {
             hour = "0" + hour;
@@ -512,20 +550,12 @@ $(document).on('input','.chat_input',function(){
         if (second.length == 1) {
             second = "0" + second;
         }
-        var inputAttr = {};
-        inputAttr["m"] = month;
-        inputAttr["M"] = month_String[now.getMonth()];
-        inputAttr["d"] = day;
-        inputAttr["Y"] = year;
-        for (var key in inputAttr) {
-            if (!inputAttr.hasOwnProperty(key)) {
-                continue;
-            }
+         var ampm = hour >= 12 ? 'PM' : 'AM';
+           hour = hour % 12;
+           hour = hour ? hour : 12; // the hour '0' should be '12'
+        // return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 
-            new_str = new_str.replace(key, inputAttr[key]);
-        }
-
-        return new_str + " " + hour + ":" + minute + ":" + second;
+        return day + " " + month + " " + year + ", " + hour + ":" + minute + ":" + ampm;
     }
 
     function mynewUser() {

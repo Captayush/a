@@ -1,3 +1,12 @@
+<style type="text/css">
+    @media print
+    {
+        .no-print, .no-print *
+        {
+            display: none !important;
+        }
+    }
+</style>
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>     
@@ -10,7 +19,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     <section class="content">
         <div class="row">
 
-
+ 
             <?php
             if ($this->rbac->hasPrivilege('design_marksheet', 'can_add')) {
                 ?>
@@ -21,10 +30,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div><!-- /.box-header -->
 
                         <form id="form1" enctype="multipart/form-data" action="<?php echo site_url('admin/marksheet') ?>"  id="certificateform" name="certificateform" method="post" accept-charset="utf-8">
-                            <div class="box-body">                               
+                            <div class="box-body">
+                                <?php //echo validation_errors(); ?>
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
-                                <?php } ?>                                                         
+                                <?php } ?>
+                                <?php
+                                // if (isset($error_message)) {
+                                    // echo "<div class='alert alert-danger'>" . $error_message . "</div>";
+                                // }
+                                ?>                           
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('template'); ?></label><small class="req"> *</small>
                                     <input autofocus="" id="template" value="<?php echo set_value('template'); ?>" name="template" placeholder="" type="text" class="form-control" />
@@ -41,77 +56,77 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <span class="text-danger"><?php echo form_error('title'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('exam') . " " . $this->lang->line('name'); ?></label>
+                                    <label><?php echo $this->lang->line('exam')." ".$this->lang->line('name'); ?></label>
                                     <input autofocus="" id="exam_name" value="<?php echo set_value('exam_name'); ?>" name="exam_name" placeholder="" type="text" class="form-control" />
                                     <span class="text-danger"><?php echo form_error('exam_name'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('school_name') ?></label>
+                                    <label><?php echo $this->lang->line('school_name')?></label>
                                     <input autofocus="" id="school_name" value="<?php echo set_value('school_name'); ?>" name="school_name" placeholder="" type="text" class="form-control" />
                                     <span class="text-danger"><?php echo form_error('school_name'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('exam') . " " . $this->lang->line('center'); ?></label>
+                                    <label><?php echo $this->lang->line('exam')." ".$this->lang->line('center'); ?></label>
                                     <input autofocus="" id="exam_center" value="<?php echo set_value('exam_center'); ?>" name="exam_center" placeholder="" type="text" class="form-control" />
                                     <span class="text-danger"><?php echo form_error('exam_center'); ?></span>
                                 </div>
-                                <div class="form-group">
-                                    <label><?php echo $this->lang->line('body_text'); ?></label>
+                                   <div class="form-group">
+                                    <label><?php echo $this->lang->line('body_text');?></label>
                                     <textarea name="content" type="text" class="form-control"><?php echo set_value('content'); ?></textarea>
-
+                                 
                                     <span class="text-danger"><?php echo form_error('content'); ?></span>
                                 </div>
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('footer_text'); ?></label>
                                     <textarea name="content_footer" type="text" class="form-control"><?php echo set_value('content_footer'); ?></textarea>
-
+                                 
                                     <span class="text-danger"><?php echo form_error('content_footer'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('printing') . " " . $this->lang->line('date'); ?></label>
+                                    <label><?php echo $this->lang->line('printing')." ".$this->lang->line('date');?></label>
                                     <input autofocus="" id="date" name="date" value="<?php echo set_value('date'); ?>" placeholder="" type="text" class="form-control date" />
                                     <span class="text-danger"><?php echo form_error('date'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('left') . " " . $this->lang->line('logo'); ?></label>
+                                    <label><?php echo $this->lang->line('left')." ".$this->lang->line('logo'); ?></label>
                                     <input id="documents" name="left_logo" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
                                     <span class="text-danger"><?php echo form_error('left_logo'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('right') . " " . $this->lang->line('logo'); ?></label>
+                                    <label><?php echo $this->lang->line('right')." ".$this->lang->line('logo'); ?></label>
                                     <input id="documents" name="right_logo" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
                                     <span class="text-danger"><?php echo form_error('right_logo'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('left') . " " . $this->lang->line('sign'); ?></label>
+                                    <label><?php echo $this->lang->line('left')." ".$this->lang->line('sign'); ?></label>
                                     <input id="documents" name="left_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="left_sign">
                                     <span class="text-danger"><?php echo form_error('left_sign'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('middle') . " " . $this->lang->line('sign') ?></label>
+                                    <label><?php echo $this->lang->line('middle')." ".$this->lang->line('sign')?></label>
                                     <input id="documents" name="middle_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="middle_sign">
                                     <span class="text-danger"><?php echo form_error('middle_sign'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('right') . " " . $this->lang->line('sign'); ?></label>
+                                    <label><?php echo $this->lang->line('right')." ".$this->lang->line('sign');?></label>
                                     <input id="documents" name="right_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="right_sign">
                                     <span class="text-danger"><?php echo form_error('right_sign'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('background') . " " . $this->lang->line('image') ?></label>
+                                    <label><?php echo $this->lang->line('background')." ".$this->lang->line('image')?></label>
                                     <input id="documents" name="background_img" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
                                     <span class="text-danger"><?php echo form_error('background_img'); ?></span>
                                 </div>
 
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('name') ?></label>
+                                    <label><?php echo $this->lang->line('name')?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_name" name="is_name" type="checkbox" class="chk" value="1">
                                         <label for="is_name" class="label-success"></label>
                                     </div>
                                 </div>
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('father') . " " . $this->lang->line('name') ?></label>
+                                    <label><?php echo $this->lang->line('father')." ".$this->lang->line('name')?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_father_name" name="is_father_name" type="checkbox" class="chk" value="1">
                                         <label for="is_father_name" class="label-success"></label>
@@ -119,7 +134,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
 
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('mother') . " " . $this->lang->line('name') ?></label>
+                                    <label><?php echo $this->lang->line('mother')." ".$this->lang->line('name')?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_mother_name" name="is_mother_name" type="checkbox" class="chk" value="1">
                                         <label for="is_mother_name" class="label-success"></label>
@@ -127,14 +142,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
 
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('exam') . " " . $this->lang->line('session') ?></label>
+                                    <label><?php  echo $this->lang->line('exam')." ".$this->lang->line('session')?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="exam_session" name="exam_session" type="checkbox" class="chk" value="1">
                                         <label for="exam_session" class="label-success"></label>
                                     </div>
                                 </div> 
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('admission') . " " . $this->lang->line('no') ?></label>
+                                    <label><?php echo $this->lang->line('admission')." ".$this->lang->line('no')?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_admission_no" name="is_admission_no" type="checkbox" class="chk" value="1">
                                         <label for="is_admission_no" class="label-success"></label>
@@ -142,7 +157,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
 
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('division'); ?></label>
+                                    <label><?php echo $this->lang->line('division');?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_division" name="is_division" type="checkbox" class="chk" value="1">
                                         <label for="is_division" class="label-success"></label>
@@ -150,7 +165,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
 
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('roll') . " " . $this->lang->line('no'); ?></label>
+                                    <label><?php echo $this->lang->line('roll')." ".$this->lang->line('no'); ?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_roll_no" name="is_roll_no" type="checkbox" class="chk" value="1">
                                         <label for="is_roll_no" class="label-success"></label>
@@ -159,42 +174,27 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('photo') ?></label>
+                                    <label><?php echo $this->lang->line('photo')?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_photo" name="is_photo" type="checkbox" class="chk" value="1">
                                         <label for="is_photo" class="label-success"></label>
                                     </div>
                                 </div>
-                                <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('class') ?></label>
+                                      <div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('class')?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_class" name="is_class" type="checkbox" class="chk" value="1">
                                         <label for="is_class" class="label-success"></label>
                                     </div>
                                 </div>
-                                <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('section') ?></label>
+                                      <div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('section')?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_section" name="is_section" type="checkbox" class="chk" value="1">
                                         <label for="is_section" class="label-success"></label>
                                     </div>
                                 </div>
-
-                                <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('date_of_birth') ?></label>
-                                    <div class="material-switch switchcheck">
-                                        <input id="is_dob" name="is_dob" type="checkbox" class="chk" value="1">
-                                        <label for="is_dob" class="label-success"></label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('remark'); ?></label>
-                                    <div class="material-switch switchcheck">
-                                        <input id="is_teacher_remark" name="is_teacher_remark" type="checkbox" class="chk" value="1">
-                                        <label for="is_teacher_remark" class="label-success"></label>
-                                    </div>
-                                </div>
+                          
 
                             </div><!-- /.box-body -->
                             <div class="box-footer">
@@ -251,7 +251,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <?php } ?>
 
                                                 </td>
-                                                <td class="mailbox-date text-right no-print white-space-nowrap">
+                                                <td class="mailbox-date text-right no-print">
                                                     <a  id="<?php echo $certificate->id ?>" class="btn btn-default btn-xs view_data" title="<?php echo $this->lang->line('view'); ?>">
                                                         <i class="fa fa-reorder"></i>
                                                     </a>
@@ -306,7 +306,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-
+        
         $("#btnreset").click(function () {
             $("#form1")[0].reset();
         });
@@ -380,9 +380,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 url: "<?php echo base_url('admin/marksheet/view') ?>",
                 method: "post",
                 data: {certificateid: certificateid},
-                dataType: 'JSON',
+                dataType:'JSON',
                 success: function (data) {
-                    $('#certificate_detail').html(data.page);
+                   $('#certificate_detail').html(data.page);
                     $('#myModal').modal("show");
                 }
             });
@@ -394,7 +394,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     {
         if ($('#enable_student_img').is(":checked"))
             $("#enableImageDiv").show();
+        // alert("Hii")
         else
             $("#enableImageDiv").hide();
+        //alert("Bye")
     }
 </script>

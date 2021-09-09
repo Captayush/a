@@ -14,7 +14,7 @@
             <i class="fa fa-calendar-check-o"></i> <?php echo $this->lang->line('attendance'); ?> <small> <?php echo $this->lang->line('by_date1'); ?></small>        </h1>
     </section>
     <section class="content">
-        <div class="row">
+        <div class="row">   
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
@@ -30,17 +30,17 @@
                                         <select autofocus="" id="class_id" name="class_id" class="form-control" >
                                             <option value=""><?php echo $this->lang->line('select'); ?></option>
                                             <?php
-foreach ($classlist as $class) {
-    ?>
+                                            foreach ($classlist as $class) {
+                                                ?>
                                                 <option value="<?php echo $class['id'] ?>" <?php
-if ($class_id == $class['id']) {
-        echo "selected =selected";
-    }
-    ?>><?php echo $class['class'] ?></option>
+                                                if ($class_id == $class['id']) {
+                                                    echo "selected =selected";
+                                                }
+                                                ?>><?php echo $class['class'] ?></option>
                                                         <?php
-$count++;
-}
-?>
+                                                        $count++;
+                                                    }
+                                                    ?>
                                         </select>
                                         <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                     </div>
@@ -60,17 +60,17 @@ $count++;
                                         <select  id="month" name="month" class="form-control" >
                                             <option value=""><?php echo $this->lang->line('select'); ?></option>
                                             <?php
-foreach ($monthlist as $m_key => $month) {
-    ?>
+                                            foreach ($monthlist as $m_key => $month) {
+                                                ?>
                                                 <option value="<?php echo $m_key ?>" <?php
-if ($month_selected == $m_key) {
-        echo "selected =selected";
-    }
-    ?>><?php echo $month; ?></option>
+                                                if ($month_selected == $m_key) {
+                                                    echo "selected =selected";
+                                                }
+                                                ?>><?php echo $month; ?></option>
                                                         <?php
-$count++;
-}
-?>
+                                                        $count++;
+                                                    }
+                                                    ?>
                                         </select>
                                         <span class="text-danger"><?php echo form_error('month'); ?></span>
                                     </div>
@@ -81,17 +81,17 @@ $count++;
                                         <select  id="year" name="year" class="form-control" >
 
                                             <?php
-// $yearlist  = array('2018' => '2018' );
-foreach ($yearlist as $y_key => $year) {
-    ?>
+                                            // $yearlist  = array('2018' => '2018' );
+                                            foreach ($yearlist as $y_key => $year) {
+                                                ?>
                                                 <option value="<?php echo $year["year"] ?>" <?php
-if ($year_selected == $year["year"]) {
-        echo "selected =selected";
-    }
-    ?>><?php echo $year["year"]; ?></option>
+                                                if ($year_selected == $year["year"]) {
+                                                    echo "selected =selected";
+                                                }
+                                                ?>><?php echo $year["year"]; ?></option>
                                                         <?php
-}
-?>
+                                                    }
+                                                    ?>
                                         </select>
                                         <span class="text-danger"><?php echo form_error('year'); ?></span>
                                     </div>
@@ -104,10 +104,10 @@ if ($year_selected == $year["year"]) {
                     </form>
                 </div>
                 <?php
-if ($this->module_lib->hasActive('student_attendance')) {
+                if ($this->module_lib->hasActive('student_attendance')) {
 
-    if (isset($resultlist)) {
-        ?>
+                    if (isset($resultlist)) {
+                        ?>
                         <div class="box box-info" id="attendencelist">
                             <div class="box-header with-border" >
                                 <div class="row">
@@ -117,21 +117,21 @@ if ($this->module_lib->hasActive('student_attendance')) {
                                     <div class="col-md-8 col-sm-8">
                                         <div class="lateday">
                                             <?php
-foreach ($attendencetypeslist as $key_type => $value_type) {
-            ?>
+                                            foreach ($attendencetypeslist as $key_type => $value_type) {
+                                                ?>
                                                 &nbsp;&nbsp;
                                                 <b>
                                                     <?php
-$att_type = str_replace(" ", "_", strtolower($value_type['type']));
-            if (strip_tags($value_type["key_value"]) != "E") {
+                                                    $att_type = str_replace(" ", "_", strtolower($value_type['type']));
+                                                    if (strip_tags($value_type["key_value"]) != "E") {
 
-                echo $this->lang->line($att_type) . ": " . $value_type['key_value'] . "";
-            }
-            ?>
+                                                        echo $this->lang->line($att_type) . ": " . $value_type['key_value'] . "";
+                                                    }
+                                                    ?>
                                                 </b>
                                                 <?php
-}
-        ?>
+                                            }
+                                            ?>
                                         </div>
 
                                     </div>
@@ -140,8 +140,8 @@ $att_type = str_replace(" ", "_", strtolower($value_type['type']));
 
 
                                 <?php
-if (!empty($resultlist)) {
-            ?>
+                                if (!empty($resultlist)) {
+                                    ?>
                                     <div class="mailbox-controls">
                                         <div class="pull-right">
                                         </div>
@@ -154,149 +154,160 @@ if (!empty($resultlist)) {
                                                     <?php echo $this->lang->line('student'); ?> / <?php echo $this->lang->line('date'); ?>
                                                 </th>
                                                 <th><br/><span data-toggle="tooltip" title="<?php echo "Gross Present Percentage(%)"; ?>">%</span></th>
-
+                                                
                                                 <?php
-foreach ($attendencetypeslist as $key => $value) {
-                //   echo "<pre>";
-                // print_r($value);
-                if (strip_tags($value["key_value"]) != "E") {
-                    ?>
+                                                foreach ($attendencetypeslist as $key => $value) {
+                                                 //   echo "<pre>";
+                                                   // print_r($value);
+                                                    if (strip_tags($value["key_value"]) != "E") {
+                                                        ?>
                                                         <th colspan="" ><br/><span data-toggle="tooltip" title="<?php echo "Total " . $value["type"]; ?>"><?php echo strip_tags($value["key_value"]); ?>
 
                                                             </span></th>
 
-                                                        <?php
-}
-            }
-            ?>
+                                                    <?php }
+                                                }
+                                                ?>
                                                 <?php
-foreach ($attendence_array as $at_key => $at_value) {
-                if (date('D', $this->customlib->dateyyyymmddTodateformat($at_value)) == "Sun") {
-                    ?>
+                                                foreach ($attendence_array as $at_key => $at_value) {
+                                                    if (date('D', $this->customlib->dateyyyymmddTodateformat($at_value)) == "Sun") {
+                                                        ?>
                                                         <th class="tdcls text text-center bg-danger">
                                                             <?php
-echo date('d', $this->customlib->dateyyyymmddTodateformat($at_value)) . "<br/>" .
-                    date('D', $this->customlib->dateyyyymmddTodateformat($at_value))
-                    ;
-                    ?>
+                                                            echo date('d', $this->customlib->dateyyyymmddTodateformat($at_value)) . "<br/>" .
+                                                            date('D', $this->customlib->dateyyyymmddTodateformat($at_value))
+                                                            ;
+                                                            ?>
                                                         </th>
                                                         <?php
-} else {
-                    ?>
+                                                    } else {
+                                                        ?>
                                                         <th class="tdcls text text-center">
                                                             <?php
-echo date('d', $this->customlib->dateyyyymmddTodateformat($at_value)) . "<br/>" .
-                    date('D', $this->customlib->dateyyyymmddTodateformat($at_value))
-                    ;
-                    ?>
+                                                            echo date('d', $this->customlib->dateyyyymmddTodateformat($at_value)) . "<br/>" .
+                                                            date('D', $this->customlib->dateyyyymmddTodateformat($at_value))
+                                                            ;
+                                                            ?>
                                                         </th>
                                                         <?php
-}
-            }
-            ?>
+                                                    }
+                                                }
+                                                ?>
 
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php if (empty($student_array)) {
-                ?>
+                                                ?>
                                                 <tr>
                                                     <td colspan="32" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
                                                 </tr>
                                                 <?php
-} else {
-                $row_count = 1;
-                $i         = 0;
+                                            } else {
+                                                $row_count = 1;
+                                                $i = 0;
+                                                //echo "<pre>";
 
-                foreach ($student_array as $student_key => $student_value) {
-                    ?>
+
+                                                foreach ($student_array as $student_key => $student_value) {
+                                                    //echo $i;
+                                                    ?>
                                                     <tr>
                                                         <th class="tdclsname">
                                                             <span data-toggle="popover" class="detail_popover" data-original-title="" title=""><a href="#" style="color:#333"><?php echo $student_value['firstname'] . " " . $student_value['lastname']; ?></a></span>
-                                                            <div class="fee_detail_popover" style="display: none"><?php echo "Admission No: " . $student_value['admission_no']; ?></div>
+                                                            <div class="fee_detail_popover" style="display: none"><?php echo "Admission No: " . $student_value['admission_no']; ?></div> 
                                                         </th>
                                                         <th><?php
-$total_present     = ($monthAttendance[$i][$student_value['student_session_id']]['present'] + $monthAttendance[$i][$student_value['student_session_id']]['late_with_excuse'] + $monthAttendance[$i][$student_value['student_session_id']]['half_day'] + $monthAttendance[$i][$student_value['student_session_id']]['late']);
-                    $month_number      = date("m", strtotime($month_selected));
-                    $num_of_days       = cal_days_in_month(CAL_GREGORIAN, $month_number, date("Y"));
-                    $total_school_days = $monthAttendance[$i][$student_value['student_session_id']]['present'] + $monthAttendance[$i][$student_value['student_session_id']]['late_with_excuse'] + $monthAttendance[$i][$student_value['student_session_id']]['late'] + $monthAttendance[$i][$student_value['student_session_id']]['half_day'] + $monthAttendance[$i][$student_value['student_session_id']]['absent'];
-                    if ($total_school_days == 0) {
-                        $percentage       = -1;
-                        $print_percentage = "-";
-                    } else {
+                                                            $total_present = ($monthAttendance[$i][$student_value['student_session_id']]['present'] + $monthAttendance[$i][$student_value['student_session_id']]['late_with_excuse'] + $monthAttendance[$i][$student_value['student_session_id']]['half_day'] + $monthAttendance[$i][$student_value['student_session_id']]['late']);
+                                                            $month_number = date("m", strtotime($month_selected));
+                                                            $num_of_days = cal_days_in_month(CAL_GREGORIAN, $month_number, date("Y"));
+                                                            $total_school_days = $monthAttendance[$i][$student_value['student_session_id']]['present'] + $monthAttendance[$i][$student_value['student_session_id']]['late_with_excuse'] + $monthAttendance[$i][$student_value['student_session_id']]['late'] + $monthAttendance[$i][$student_value['student_session_id']]['half_day'] + $monthAttendance[$i][$student_value['student_session_id']]['absent'];
+                                                            if ($total_school_days == 0) {
+                                                                $percentage = -1;
+                                                                $print_percentage = "-";
+                                                            } else {
 
-                        $percentage       = ($total_present / $total_school_days) * 100;
-                        $print_percentage = round($percentage, 0);
-                    }
+                                                                $percentage = ($total_present / $total_school_days) * 100;
+                                                                $print_percentage = round($percentage, 0);
+                                                            }
 
-                    if (($percentage < 75) && ($percentage >= 0)) {
-                        $label = "class='label label-danger'";
-                    } else if ($percentage > 75) {
+                                                            if (($percentage < 75) && ($percentage >= 0)) {
+                                                                $label = "class='label label-danger'";
+                                                            } else if ($percentage > 75) {
 
-                        $label = "class='label label-success'";
-                    } else {
+                                                                $label = "class='label label-success'";
+                                                            } else {
 
-                        $label = "class='label label-default'";
-                    }
-                    echo "<label $label>" . $print_percentage . "</label>";
-                    ?></th>
+                                                                $label = "class='label label-default'";
+                                                            }
+                                                            echo "<label $label>" . $print_percentage . "</label>";
+                                                            ?></th>
 
-                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['present']);?></th>
-                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['late'] + $monthAttendance[$i][$student_value['student_session_id']]['late_with_excuse']);?></th>
-                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['absent']);?></th>
-                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['holiday']);?></th>
-                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['half_day']);?></th>
+                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['present']); ?></th>
+                                                        <!--th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['late_with_excuse']); ?></th-->
+                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['late'] + $monthAttendance[$i][$student_value['student_session_id']]['late_with_excuse']); ?></th>
+                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['absent']); ?></th>
+                                                        <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['holiday']); ?></th>
+                                                       <th><?php print_r($monthAttendance[$i][$student_value['student_session_id']]['half_day']); ?></th>
 
                                                         <?php
-foreach ($attendence_array as $at_key => $at_value) {
-                        ?>
+                                                        foreach ($attendence_array as $at_key => $at_value) {
+                                                            ?>
                                                             <th class="tdcls text text-center">
 
                                                                 <span data-toggle="popover" class="detail_popover" data-original-title="" title=""><a href="#" style="color:#333"><?php
-if (strip_tags($resultlist[$at_value][$student_value['student_session_id']]['key']) == "E") {
+                                                                        if (strip_tags($resultlist[$at_value][$student_value['student_session_id']]['key']) == "E") {
 
-                            $attendence_key = "L";
-                            $remark         = "Late With Excuse";
-                        } else {
+                                                                            $attendence_key = "L";
+                                                                            $remark = "Late With Excuse";
+                                                                        } else {
 
-                            $attendence_key = $resultlist[$at_value][$student_value['student_session_id']]['key'];
-                            $remark         = $resultlist[$at_value][$student_value['student_session_id']]['remark'];
-                        }
+                                                                            $attendence_key = $resultlist[$at_value][$student_value['student_session_id']]['key'];
+                                                                            $remark = $resultlist[$at_value][$student_value['student_session_id']]['remark'];
+                                                                        }
 
-                        print_r($attendence_key);
-                        ?></a></span>
+                                                                        print_r($attendence_key);
+                                                                        ?></a></span>
                                                                 <div class="fee_detail_popover" style="display: none"><?php echo $remark; ?></div>
+
                                                             </th>
+
+
+
                                                         <?php }
-                    ?>
+                                                        ?>
+
+
                                                         <?php
-$i++;
-                    ?>
+                                                        $i++;
+                                                        ?>
+
+
                                                     </tr>
                                                     <?php
-}
-            }
-            ?>
+                                                }
+                                            }
+                                            ?>
                                         </tbody>
                                     </table>
                                     <?php
-} else {
-            ?>
+                                } else {
+                                    ?>
                                     <div class="alert alert-info">
-                                        <?php echo $this->lang->line('no_attendance_prepare'); ?>
+                                    <?php echo $this->lang->line('no_attendance_prepare'); ?>
                                     </div>
                                     <?php
-}
-        ?>
+                                }
+                                ?>
                             </div>
                         </div>
                         <?php
-}
-}
-?>
+                    }
+                }
+                ?>
                 </section>
             </div>
-
+           
             <script type="text/javascript">
                 $(document).ready(function () {
 
@@ -355,7 +366,11 @@ $i++;
                             }
                         });
                     });
-
+                    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+                    $('#date').datepicker({
+                        format: date_format,
+                        autoclose: true
+                    });
                 });
             </script>
             <script type="text/javascript">
@@ -383,6 +398,8 @@ $i++;
                     frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/skins/_all-skins.min.css">');
                     frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/iCheck/flat/blue.css">');
                     frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/morris/morris.css">');
+
+
                     frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">');
                     frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/datepicker/datepicker3.css">');
                     frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/daterangepicker/daterangepicker-bs3.css">');

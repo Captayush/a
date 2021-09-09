@@ -8,8 +8,9 @@ class Visitorspurpose extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
-
+        
         $this->load->model("visitors_purpose_model");
+       
     }
 
     function index() {
@@ -23,18 +24,18 @@ class Visitorspurpose extends Admin_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             $data['visitors_purpose_list'] = $this->visitors_purpose_model->visitors_purpose_list();
-
+           
             $this->load->view('layout/header');
             $this->load->view('admin/frontoffice/visitorspurposeview', $data);
             $this->load->view('layout/footer');
         } else {
-
+           
             $visitors_purpose = array(
                 'visitors_purpose' => $this->input->post('visitors_purpose'),
                 'description' => $this->input->post('description')
             );
             $this->visitors_purpose_model->add($visitors_purpose);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('success_message').'</div>');
             redirect('admin/visitorspurpose');
         }
     }
@@ -52,13 +53,13 @@ class Visitorspurpose extends Admin_Controller {
             $this->load->view('admin/frontoffice/visitorspurposeeditview', $data);
             $this->load->view('layout/footer');
         } else {
-
+            
             $visitors_purpose = array(
                 'visitors_purpose' => $this->input->post('visitors_purpose'),
                 'description' => $this->input->post('description')
             );
             $this->visitors_purpose_model->update($visitors_purpose_id, $visitors_purpose);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('update_message').'</div>');
             redirect('admin/visitorspurpose');
         }
     }
@@ -68,7 +69,7 @@ class Visitorspurpose extends Admin_Controller {
             access_denied();
         }
         $this->visitors_purpose_model->delete($id);
-        $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('delete_message') . '</div>');
+        $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('delete_message').'</div>');
         redirect('admin/visitorspurpose');
     }
 

@@ -48,17 +48,17 @@
                                 <br/>
                                 <label class="radio-inline">
                                      <input type="radio" checked value="yes" <?php
-                                if ((isset($result)) && ($result["is_active"] == "yes")) {
-                                    echo "checked";
-                                }
-                                ?> name="status"><?php echo $this->lang->line('yes'); ?>
+                            if ((isset($result)) && ($result["is_active"] == "yes")) {
+                                echo "checked";
+                            }
+                                    ?> name="status"><?php echo $this->lang->line('yes'); ?>
                                  </label>
                                 <label class="radio-inline">
                                 <input type="radio" value="no" <?php
-                                if ((isset($result)) && ($result["is_active"] == "no")) {
-                                    echo "checked";
-                                }
-                                ?> name="status"><?php echo $this->lang->line('no'); ?>
+                            if ((isset($result)) && ($result["is_active"] == "no")) {
+                                echo "checked";
+                            }
+                            ?> name="status"><?php echo $this->lang->line('no'); ?>
                             </label>
                               </div-->
 
@@ -69,14 +69,14 @@
                         </form>
                     </div>   
                 </div>  
-            <?php } ?>
+<?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('leave_types', 'can_add')) {
-                echo "8";
-            } else {
-                echo "12";
-            }
-            ?>">              
+if ($this->rbac->hasPrivilege('leave_types', 'can_add')) {
+    echo "8";
+} else {
+    echo "12";
+}
+?>">              
                 <div class="box box-primary" id="tachelist">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('leave_type'); ?> <?php echo $this->lang->line('list'); ?></h3>
@@ -85,7 +85,7 @@
                         <div class="mailbox-controls">
                         </div>
                         <div class="table-responsive mailbox-messages">
-                            <div class="download_label"><?php echo $this->lang->line('leave_type') . " " . $this->lang->line('list'); ?></div>
+                            <div class="download_label"><?php echo $this->lang->line('leave_type')." ".$this->lang->line('list'); ?></div>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
@@ -114,21 +114,21 @@
                                             <td class="mailbox-name"> <?php echo $value['type'] ?></td>
                                      <!--        <td><?php echo $this->lang->line($value['is_active']) ?></td>
                                             -->       <td class="mailbox-date pull-right no-print">
-                                                <?php if ($this->rbac->hasPrivilege('leave_types', 'can_edit')) { ?>
+                                        <?php if ($this->rbac->hasPrivilege('leave_types', 'can_edit')) { ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/leavetypes/leaveedit/<?php echo $value['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
-                                                <?php } if ($this->rbac->hasPrivilege('leave_types', 'can_delete')) { ?>
+                                        <?php } if ($this->rbac->hasPrivilege('leave_types', 'can_delete')) { ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/leavetypes/leavedelete/<?php echo $value['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>')";>
                                                         <i class="fa fa-remove"></i>
                                                     </a>
-                                                <?php } ?>
+    <?php } ?>
                                             </td>
                                         </tr>
-                                        <?php
-                                    }
-                                    $count++;
-                                    ?>
+    <?php
+}
+$count++;
+?>
                                 </tbody>
                             </table>
                         </div>

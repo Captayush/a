@@ -90,73 +90,73 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div>
                         <div class="mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('vehicle_list'); ?></div>
-                            <div class="table-responsive"> 
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('vehicle_no'); ?>
-                                            </th>
-                                            <th><?php echo $this->lang->line('vehicle_model'); ?>
-                                            </th>
-                                            <th><?php echo $this->lang->line('year_made'); ?></th>
-                                            <th><?php echo $this->lang->line('driver_name'); ?></th>
-                                            <th><?php echo $this->lang->line('driver_license'); ?></th>
-                                            <th><?php echo $this->lang->line('driver_contact'); ?></th>
-                                            <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (empty($listVehicle)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            foreach ($listVehicle as $data) {
-                                                ?>
-                                                <tr>
-                                                    <td class="mailbox-name">
-                                                        <a href="#" data-toggle="popover" class="detail_popover" ><?php echo $data['vehicle_no'] ?></a>
-
-                                                        <div class="vehicle_detail_popover" style="display: none">
-                                                            <?php
-                                                            if ($data['note'] == "") {
-                                                                ?>
-                                                                <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                                <?php
-                                                            } else {
-                                                                ?>
-                                                                <p class="text text-info"><?php echo $data['note']; ?></p>
-                                                                <?php
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    </td>
-                                                    <td class="mailbox-name"> <?php echo $data['vehicle_model'] ?></td>
-                                                    <td class="mailbox-name"> <?php echo $data['manufacture_year'] ?></td>      <td class="mailbox-name"> <?php echo $data['driver_name'] ?></td>
-                                                    <td class="mailbox-name"> <?php echo $data['driver_licence'] ?></td>
-                                                    <td class="mailbox-name"> <?php echo $data['driver_contact'] ?></td>
-
-                                                    <td class="mailbox-date pull-right no-print">
-                                                        <?php if ($this->rbac->hasPrivilege('vehicle', 'can_edit')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/vehicle/edit/<?php echo $data['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                        <?php }if ($this->rbac->hasPrivilege('vehicle', 'can_delete')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/vehicle/delete/<?php echo $data['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            $count++;
-                                        }
+                           <div class="table-responsive"> 
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('vehicle_no'); ?>
+                                        </th>
+                                        <th><?php echo $this->lang->line('vehicle_model'); ?>
+                                        </th>
+                                        <th><?php echo $this->lang->line('year_made'); ?></th>
+                                        <th><?php echo $this->lang->line('driver_name'); ?></th>
+                                        <th><?php echo $this->lang->line('driver_license'); ?></th>
+                                        <th><?php echo $this->lang->line('driver_contact'); ?></th>
+                                        <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($listVehicle)) {
                                         ?>
-                                    </tbody>
-                                </table>
-                            </div>  
+
+                                        <?php
+                                    } else {
+                                        $count = 1;
+                                        foreach ($listVehicle as $data) {
+                                            ?>
+                                            <tr>
+                                                <td class="mailbox-name">
+                                                    <a href="#" data-toggle="popover" class="detail_popover" ><?php echo $data['vehicle_no'] ?></a>
+
+                                                    <div class="vehicle_detail_popover" style="display: none">
+                                                        <?php
+                                                        if ($data['note'] == "") {
+                                                            ?>
+                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <p class="text text-info"><?php echo $data['note']; ?></p>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                                <td class="mailbox-name"> <?php echo $data['vehicle_model'] ?></td>
+                                                <td class="mailbox-name"> <?php echo $data['manufacture_year'] ?></td>      <td class="mailbox-name"> <?php echo $data['driver_name'] ?></td>
+                                                <td class="mailbox-name"> <?php echo $data['driver_licence'] ?></td>
+                                                <td class="mailbox-name"> <?php echo $data['driver_contact'] ?></td>
+
+                                                <td class="mailbox-date pull-right no-print">
+        <?php if ($this->rbac->hasPrivilege('vehicle', 'can_edit')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/vehicle/edit/<?php echo $data['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+        <?php }if ($this->rbac->hasPrivilege('vehicle', 'can_delete')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/vehicle/delete/<?php echo $data['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                            <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                          </div>  
                         </div>
                     </div>
                 </div>
@@ -172,7 +172,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-       
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
         $("#btnreset").click(function () {
             $("#form1")[0].reset();
         });

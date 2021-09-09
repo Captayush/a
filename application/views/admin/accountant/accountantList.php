@@ -8,24 +8,24 @@
     }
 </style>
 
-<div class="content-wrapper" style="min-height: 946px;">
+<div class="content-wrapper" style="min-height: 946px;">  
     <section class="content-header">
         <h1>
             <i class="fa fa-money"></i> <?php echo $this->lang->line('fees_collection'); ?></h1>
     </section>
     <!-- Main content -->
     <section class="content">
-        <div class="row">
-            <div class="col-md-4">
+        <div class="row">       
+            <div class="col-md-4">           
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?php echo $this->lang->line('add_accountant'); ?></h3>
-                    </div>
+                    </div> 
                     <form id="form1" action="<?php echo site_url('admin/accountant/index') ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8"  enctype="multipart/form-data">
                         <div class="box-body">
-                            <?php if ($this->session->flashdata('msg')) {?>
+                            <?php if ($this->session->flashdata('msg')) { ?>
                                 <?php echo $this->session->flashdata('msg') ?>
-                            <?php }?>
+                            <?php } ?>        
                             <?php echo $this->customlib->getCSRF(); ?>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?></label>
@@ -42,15 +42,12 @@
                                 <select class="form-control" name="gender">
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     <?php
-foreach ($genderList as $key => $value) {
-    ?>
-                                        <option value="<?php echo $key; ?>" <?php if (set_value('gender') == $key) {
-        echo "selected";
-    }
-    ?>><?php echo $value; ?></option>
+                                    foreach ($genderList as $key => $value) {
+                                        ?>
+                                        <option value="<?php echo $key; ?>" <?php if (set_value('gender') == $key) echo "selected"; ?>><?php echo $value; ?></option>
                                         <?php
-}
-?>
+                                    }
+                                    ?>
                                 </select>
                                 <span class="text-danger"><?php echo form_error('gender'); ?></span>
                             </div>
@@ -79,9 +76,9 @@ foreach ($genderList as $key => $value) {
                             <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
                         </div>
                     </form>
-                </div>
-            </div>
-            <div class="col-md-8">
+                </div>   
+            </div>  
+            <div class="col-md-8">              
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('accountant_list'); ?></h3>
@@ -105,13 +102,13 @@ foreach ($genderList as $key => $value) {
                                 </thead>
                                 <tbody>
                                     <?php if (empty($librarianlist)) {
-    ?>
+                                        ?>
 
                                         <?php
-} else {
-    $count = 1;
-    foreach ($librarianlist as $librarian) {
-        ?>
+                                    } else {
+                                        $count = 1;
+                                        foreach ($librarianlist as $librarian) {
+                                            ?>
                                             <tr>
 
                                                 <td class="mailbox-name"> <?php echo $librarian['name'] ?></td>
@@ -131,23 +128,23 @@ foreach ($genderList as $key => $value) {
                                                 </td>
                                             </tr>
                                             <?php
-}
-    $count++;
-}
-?>
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </section>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy']) ?>';
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
         $('#dob,#admission_date').datepicker({
             format: date_format,
             autoclose: true
@@ -184,6 +181,8 @@ foreach ($genderList as $key => $value) {
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/skins/_all-skins.min.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/iCheck/flat/blue.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/morris/morris.css">');
+
+
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/datepicker/datepicker3.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/daterangepicker/daterangepicker-bs3.css">');

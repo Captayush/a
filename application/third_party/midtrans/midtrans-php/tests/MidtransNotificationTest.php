@@ -5,7 +5,7 @@ namespace Midtrans;
 require_once dirname(__FILE__) . '/../Midtrans.php';
 
 define(
-        'TEST_CAPTURE_JSON', '{
+    'TEST_CAPTURE_JSON', '{
         "status_code" : "200",
         "status_message" : "Midtrans payment notification",
         "transaction_id" : "826acc53-14e0-4ae7-95e2-845bf0311579",
@@ -19,9 +19,11 @@ define(
     }'
 );
 
-class MidtransNotificationTest extends \PHPUnit_Framework_TestCase {
+class MidtransNotificationTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function testCanWorkWithJSON() {
+    public function testCanWorkWithJSON()
+    {
         $tmpfname = tempnam(sys_get_temp_dir(), "midtrans_test");
         file_put_contents($tmpfname, TEST_CAPTURE_JSON);
 
@@ -38,8 +40,8 @@ class MidtransNotificationTest extends \PHPUnit_Framework_TestCase {
         unlink($tmpfname);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         VT_Tests::reset();
     }
-
 }

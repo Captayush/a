@@ -14,7 +14,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <div class="alert alert-success alert-dismissible">
 
                 <h4><i class="fa fa-check"></i> Success</h4>
-                Thank you for your payment. <a style='color: #3c8dbc;  display: inline-table;' href="<?php echo site_url('user/user/getfees') ?>">click here</a> to fees payment page.
+                Thank you for your payment.
             </div>
 
         </div>      

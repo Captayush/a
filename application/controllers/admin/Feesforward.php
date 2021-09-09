@@ -14,8 +14,8 @@ class Feesforward extends Admin_Controller {
         $this->load->config('ci-blog');
         $this->balance_group = $this->config->item('ci_balance_group');
         $this->balance_type = $this->config->item('ci_balance_type');
-
-        $this->sch_setting_detail = $this->setting_model->getSetting();
+        
+		$this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
     function index() {
@@ -28,8 +28,8 @@ class Feesforward extends Admin_Controller {
         $data['title'] = 'Add Feesforward';
         $data['title_list'] = 'Recent FeeType';
         $class = $this->class_model->get();
-        $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
-        $data['sch_setting'] = $this->sch_setting_detail;
+		$data['adm_auto_insert']    = $this->sch_setting_detail->adm_auto_insert;
+		$data['sch_setting']        = $this->sch_setting_detail;
         $data['classlist'] = $class;
         $action = $this->input->post('action');
         $class_id = $this->input->post('class_id');
@@ -41,29 +41,28 @@ class Feesforward extends Admin_Controller {
             $pre_session = $this->session_model->getPreSession($current_session);
             $data['pre_session'] = $pre_session;
             //=========date==============
-            $fees_due_days = $setting_result[0]['fee_due_days'];
+            $fees_due_days = $this->setting_result[0]['fee_due_days'];
             if ($fees_due_days > 0 && $fees_due_days != "") {
 
                 $due_date = date('Y-m-d', strtotime('+' . $fees_due_days . ' day'));
-                $data['due_date_formated'] = date($setting_result[0]['date_format'], $this->customlib->dateYYYYMMDDtoStrtotime($due_date));
+                $data['due_date_formated'] = date($this->setting_result[0]['date_format'], $this->customlib->dateYYYYMMDDtoStrtotime($due_date));
             } else {
 
                 $due_date = date('Y-m-d');
-                $data['due_date_formated'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($due_date));
-                ;
+                $data['due_date_formated'] =  date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($due_date));;
             }
-
+           
             //========================
             if ($action == 'search') {
                 $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'required');
                 $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'required');
                 if ($this->form_validation->run() == TRUE) {
-                    $data['student_due_fee'] = array();
-                    if (!empty($pre_session)) {
-                        $student_Array = json_decode($this->findPreviousBalanceFees($pre_session->id, $class_id, $section_id, $current_session));
+                 $data['student_due_fee']=array();
+                    if(!empty($pre_session)){
+                    $student_Array = json_decode($this->findPreviousBalanceFees($pre_session->id, $class_id, $section_id, $current_session));
 
-                        $data['student_due_fee'] = $student_Array->student_Array;
-                        $data['is_update'] = $student_Array->is_update;
+                    $data['student_due_fee'] = $student_Array->student_Array;
+                    $data['is_update'] = $student_Array->is_update;
                     }
                 }
             } else if ($action == 'fee_submit') {
@@ -88,7 +87,7 @@ class Feesforward extends Admin_Controller {
 
                     $student_due_fee = $this->studentfeemaster_model->addPreviousBal($student_data, $due_date);
 
-                    $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+                    $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
                     redirect('admin/feesforward');
                 }
             }
@@ -108,17 +107,22 @@ class Feesforward extends Admin_Controller {
         $student_Array = array();
         if (!empty($studentlist)) {
             $student_comma_seprate = array();
-
+          
             foreach ($studentlist as $student_list_key => $student_list_value) {
-               
                 $obj = new stdClass();
-                $obj->name = $this->customlib->getFullName($student_list_value->firstname,$student_list_value->middlename,$student_list_value->lastname,$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname);
+                $obj->name = $student_list_value->firstname . " " . $student_list_value->lastname;
                 $obj->admission_no = $student_list_value->admission_no;
                 $obj->roll_no = $student_list_value->roll_no;
                 $obj->father_name = $student_list_value->father_name;
                 $obj->student_session_id = $student_list_value->current_student_session_id;
                 $obj->student_previous_session_id = $student_list_value->previous_student_session_id;
-                $obj->admission_date = $this->customlib->dateformat($student_list_value->admission_date);
+           if (strtotime($student_list_value->admission_date) == 0) {
+          $obj->admission_date="";
+        }else{
+                    $obj->admission_date = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($student_list_value->admission_date));
+        }
+        
+
                 $student_Array[] = $obj;
                 $student_comma_seprate[] = $student_list_value->current_student_session_id;
             }

@@ -83,10 +83,8 @@
                                                 </div>
 
                                             </td>
-                                            <td class="mailbox-name"><?php
-                                                $type = $data['type'];
-                                                echo $this->lang->line($type);
-                                                ?></td>
+                                            <td class="mailbox-name"><?php  $type = $data['type'];
+											echo $this->lang->line($type); ?></td>
                                             <td class="mailbox-name"><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($data['date'])) ?></td>
 
                                             <td class="mailbox-name"><?php
@@ -102,13 +100,13 @@
                                                 <a data-placement="left" href="<?php echo base_url(); ?>admin/content/download/<?php echo $data['file'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('download'); ?>">
                                                     <i class="fa fa-download"></i>
                                                 </a>
-                                                <?php
+                                                 <?php
                                                 if ($this->rbac->hasPrivilege('upload_content', 'can_delete')) {
                                                     ?>
-                                                    <a data-placement="left" href="<?php echo base_url(); ?>admin/content/deleteassignment/<?php echo $data['id'] ?>/other" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                        <i class="fa fa-remove"></i>
-                                                    </a>
-    <?php } ?>
+                                                <a data-placement="left" href="<?php echo base_url(); ?>admin/content/deleteassignment/<?php echo $data['id'] ?>/other" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                    <i class="fa fa-remove"></i>
+                                                </a>
+                                            <?php } ?>
 
 
 
@@ -144,6 +142,23 @@
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+        $('#upload_date').datepicker({
+            //   format: "dd-mm-yyyy"
+            format: date_format,
+            autoclose: true
+        });
+
+        $("#btnreset").click(function () {
+
+            $("#form1")[0].reset();
+        });
+    });
+
+</script>
+
 
 <script>
     $(document).ready(function () {

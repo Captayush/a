@@ -21,17 +21,17 @@ if (!empty($exam_groups_attempt)) {
                         <thead>
                             <tr>
 
-                                <th class="text-left"><?php echo $this->lang->line('subject'); ?></th>
+                                <th class="text-left"><?php echo $this->lang->line('subject');?></th>
                                 <?php
                                 if ($exam_group_value->exam_type != "gpa") {
                                     ?>
-                                    <th class="text-center"><?php echo $this->lang->line('max') . " " . $this->lang->line('marks'); ?></th>
-                                    <th class="text-center"><?php echo $this->lang->line('min') . " " . $this->lang->line('marks'); ?></th>
-                                    <th class="text-center"><?php echo $this->lang->line('obtain') . " " . $this->lang->line('marks'); ?></th>
+                                    <th class="text-center"><?php echo $this->lang->line('max')." ".$this->lang->line('marks');?></th>
+                                    <th class="text-center"><?php echo $this->lang->line('min')." ".$this->lang->line('marks');?></th>
+                                    <th class="text-center"><?php echo $this->lang->line('obtain')." ".$this->lang->line('marks');?></th>
                                     <?php
                                     if ($exam_group_value->exam_type == "basic_system") {
                                         ?>
-                                        <th class="text-center"><?php echo $this->lang->line('result') ?></th>
+                                        <th class="text-center"><?php echo $this->lang->line('result')?></th>
                                         <?php
                                     }
 
@@ -43,21 +43,21 @@ if (!empty($exam_groups_attempt)) {
                                 }
                                 if ($exam_group_value->exam_type != "fail_pass") {
                                     ?>
-                                    <th class="text-center"><?php echo $this->lang->line('grade'); ?></th>
+                                    <th class="text-center"><?php echo $this->lang->line('grade');?></th>
                                     <?php
                                 }
 
                                 if ($exam_group_value->exam_type == "gpa") {
                                     ?>
-                                    <th class="text-center"><?php echo $this->lang->line('grade') . " " . $this->lang->line('point'); ?></th>
-                                    <th class="text-center"><?php echo $this->lang->line('credit') . " " . $this->lang->line('hours'); ?></th>
-                                    <th class="text-center"><?php echo $this->lang->line('quality') . " " . $this->lang->line('points'); ?></th>
+                                    <th class="text-center"><?php echo $this->lang->line('grade')." ".$this->lang->line('point'); ?></th>
+                                    <th class="text-center"><?php echo $this->lang->line('credit')." ".$this->lang->line('hours');?></th>
+                                    <th class="text-center"><?php echo $this->lang->line('quality')." ".$this->lang->line('points');?></th>
                                     <?php
                                 }
                                 ?>
 
 
-                                <th class="text-center"><?php echo $this->lang->line('note'); ?></th>
+                                <th class="text-center"><?php echo $this->lang->line('note');?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -313,10 +313,10 @@ if (!empty($exam_groups_attempt)) {
                 }
                 ?>
                 <?php
-            } 
+            }
         }
         if (!empty($exam_group_value->exam_group_connection)) {
-            echo $this->lang->line("consolidated_results");
+            echo "Consolidated results";
             if (!empty($exam_group_value->exam_group_connection['exam_connections'])) {
 //                echo "<pre>";
 //                print_r($exam_group_value->exam_group_connection);
@@ -329,7 +329,7 @@ if (!empty($exam_groups_attempt)) {
                     ?>
                     <table class="table table-stripped table-hover">
                         <thead>
-                        <th><?php echo $this->lang->line('quality_points'); ?></th>
+                        <th>Quality Points --r</th>
                         <?php
                         if (!empty($exam_group_value->exam_group_connection['exam_connections'])) {
 
@@ -397,7 +397,7 @@ if (!empty($exam_groups_attempt)) {
                             }
                         }
                         ?>
-                        <th><?php echo $this->lang->line('combined'); ?></th>
+                        <th><?php echo $this->lang->line('combined'); ?>Combined --r</th>
                     </thead>
                     <tbody>
                         <tr>
@@ -456,7 +456,7 @@ if (!empty($exam_groups_attempt)) {
                             }
                         }
                         ?>
-                        <th><?php echo $this->lang->line('combined'); ?></th>
+                        <th>Combined --r</th>
                     </thead>
                     <tbody>
 
@@ -532,7 +532,7 @@ if (!empty($exam_groups_attempt)) {
 
                     <table class="table table-stripped table-hover">
                         <thead>
-                        <th><?php echo $this->lang->line('subject') ?></th>
+                        <th><?php echo $this->lang->line('subject')?></th>
                         <?php
                         if (!empty($exam_group_value->exam_group_connection['exam_connections'])) {
 
@@ -625,7 +625,7 @@ if (!empty($exam_groups_attempt)) {
 } else {
     ?>
     <div class="alert alert-info">
-        <?php echo $this->lang->line('no_exam_found'); ?>
+       <?php  echo $this->lang->line('no_exam_found'); ?>
     </div>
     <?php
 }

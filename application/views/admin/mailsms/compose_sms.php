@@ -1,3 +1,26 @@
+<style type="text/css">
+    .scrollit {
+        height:210px;
+        overflow-y:scroll;
+        list-style-type: none;
+    }
+    .dual-list .list-group {
+        margin-top: 8px;
+    }
+
+    .list-left li, .list-right li {
+        cursor: pointer;
+    }
+
+    .list-arrows {
+        padding-top: 100px;
+    }
+
+    .list-arrows button {
+        margin-bottom: 20px;
+    }
+</style>
+
 <link rel="stylesheet" href="<?php echo base_url(); ?>backend/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 <script src="<?php echo base_url(); ?>backend/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <div class="content-wrapper">
@@ -13,7 +36,7 @@
                 <!-- Custom Tabs (Pulled to the right) -->
                 <div class="nav-tabs-custom theme-shadow">
                     <ul class="nav nav-tabs pull-right">
-                        <li><a href="#tab_birthday" data-toggle="tab"><?php echo $this->lang->line('todays_birtday'); ?></a></li>
+                  <li><a href="#tab_birthday" data-toggle="tab"><?php echo $this->lang->line('todays_birtday'); ?></a></li>
                         <li><a href="#tab_class" data-toggle="tab"><?php echo $this->lang->line('class'); ?></a></li>
                         <li><a href="#tab_perticular" data-toggle="tab"><?php echo $this->lang->line('individual'); ?></a></li>
                         <li class="active"><a href="#tab_group" data-toggle="tab"><?php echo $this->lang->line('group'); ?></a></li>
@@ -32,7 +55,7 @@
                                                 <label><?php echo $this->lang->line('title'); ?></label> <small class="req">*</small>
                                                 <input autofocus="" class="form-control" name="group_title">
                                             </div>
-                                            <div class="form-group">
+                                               <div class="form-group">
                                                 <label class="pr20"><?php echo $this->lang->line('send_through'); ?><small class="req"> *</small></label>
 
                                                 <label class="checkbox-inline">
@@ -43,10 +66,6 @@
                                                 </label>
 
                                                 <span class="text-danger"><?php echo form_error('message'); ?></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <label><?php echo $this->lang->line('template_id'); ?>  </label> (<?php echo $this->lang->line('this_field_is_reqiured_only_for_indian_sms_gateway');?>) 
-                                                <input type="text" name="group_template_id" id="group_template_id" class="form-control" autocomplete="off">
                                             </div>
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('message'); ?></label><small class="req"> *</small>
@@ -63,17 +82,12 @@
                                                     <div class="checkbox mt0">
                                                         <label><input type="checkbox" name="user[]" value="student"> <b><?php echo $this->lang->line('students'); ?></b> </label>
                                                     </div>
-                                                    <?php if($sch_setting->guardian_name){
-                                                        ?>
-                                                         <div class="checkbox">
+                                                    <div class="checkbox">
                                                         <label><input type="checkbox" name="user[]" value="parent"> <b><?php echo $this->lang->line('guardians'); ?></b></label>
                                                     </div>
-                                                        <?php
-                                                    }?>
-                                                   
                                                     <?php
-                                                    foreach ($roles as $role_key => $role_value) {
-                                                        ?>
+foreach ($roles as $role_key => $role_value) {
+    ?>
 
                                                         <div class="checkbox">
                                                             <label><input type="checkbox" name="user[]" value="<?php echo $role_value['id']; ?>"> <b><?php echo $role_value['name']; ?></b></label>
@@ -81,8 +95,8 @@
 
 
                                                         <?php
-                                                    }
-                                                    ?>
+}
+?>
 
                                                 </div>
 
@@ -116,7 +130,7 @@
 
                                                 <input class="form-control" name="individual_title">
                                             </div>
-                                            <div class="form-group">
+  <div class="form-group">
                                                 <label class="pr20"><?php echo $this->lang->line('send_through'); ?><small class="req"> *</small></label>
 
                                                 <label class="checkbox-inline">
@@ -130,14 +144,9 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label><?php echo $this->lang->line('template_id'); ?> </label> (<?php echo $this->lang->line('this_field_is_reqiured_only_for_indian_sms_gateway');?>)
-                                                <input type="text" name="individual_template_id" id="individual_template_id" class="form-control" autocomplete="off">
-                                            </div>
-
-                                            <div class="form-group">
                                                 <label><?php echo $this->lang->line('message'); ?></label><small class="req"> *</small>
                                                 <textarea id="individual_msg_text" name="individual_message" class="form-control compose-textarea" rows="12"><?php echo set_value('message'); ?></textarea>
-                                                <span class="text-muted tot_count_individual_msg_text pull-right word_counter"><?php echo $this->lang->line('character') . " " . $this->lang->line('count') ?>: 0</span>
+                                                <span class="text-muted tot_count_individual_msg_text pull-right word_counter">Character Count: 0</span>
                                             </div>
 
                                         </div>
@@ -156,27 +165,22 @@
                                                         <ul class="dropdown-menu" role="menu" style="">
 
                                                             <li data-value="student"><a href="#" ><?php echo $this->lang->line('students'); ?></a></li>
-                                                            <?php if($sch_setting->guardian_name){
-                                                                ?>
-                                                                 <li data-value="parent"><a href="#"><?php echo $this->lang->line('guardians'); ?></a></li>
+                                                            <li data-value="parent"><a href="#"><?php echo $this->lang->line('guardians'); ?></a></li>
                                                             <li data-value="student_guardian"><a href="#" ><?php echo $this->lang->line('students') . " - " . $this->lang->line('guardians'); ?></a></li>
-                                                                <?php
-                                                            }?>
-                                                           
                                                             <?php
-                                                            foreach ($roles as $role_key => $role_value) {
-                                                                ?>
+foreach ($roles as $role_key => $role_value) {
+    ?>
                                                                 <li data-value="staff"><a href="#"><?php echo $role_value['name']; ?></a></li>
                                                                 <?php
-                                                            }
-                                                            ?>
+}
+?>
                                                         </ul>
                                                     </div>
                                                     <input type="text" value="" data-record="" data-email="" data-mobileno="" class="form-control" autocomplete="off" name="text" id="search-query">
 
                                                     <div id="suggesstion-box"></div>
                                                     <span class="input-group-btn">
-                                                        <button  class="btn btn-primary btn-searchsm add-btn" type="button"><?php echo $this->lang->line('add'); ?></button>
+                                                        <button  class="btn btn-primary btn-searchsm add-btn" type="button">Add</button>
                                                     </span>
                                                 </div>
                                             </div>
@@ -221,7 +225,7 @@
                                                 <input class="form-control" name="class_title">
                                             </div>
 
-                                            <div class="form-group">
+  <div class="form-group">
                                                 <label class="pr20"><?php echo $this->lang->line('send_through'); ?><small class="req"> *</small></label>
 
                                                 <label class="checkbox-inline">
@@ -233,15 +237,10 @@
 
                                                 <span class="text-danger"><?php echo form_error('message'); ?></span>
                                             </div>
-
-                                            <div class="form-group">
-                                                <label><?php echo $this->lang->line('template_id'); ?></label> (<?php echo $this->lang->line('this_field_is_reqiured_only_for_indian_sms_gateway');?>)
-                                                <input type="text" name="class_template_id" id="class_template_id" class="form-control" autocomplete="off">
-                                            </div>
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('message'); ?></label><small class="req"> *</small>
                                                 <textarea id="class_msg_text" name="class_message" class="form-control compose-textarea" rows="12"><?php echo set_value('message'); ?></textarea>
-                                                <span class="text-muted tot_count_class_msg_text pull-right word_counter"><?php echo $this->lang->line('character') . " " . $this->lang->line('count') ?>: 0</span>
+                                                <span class="text-muted tot_count_class_msg_text pull-right word_counter">Character Count: 0</span>
                                             </div>
 
                                         </div>
@@ -252,16 +251,16 @@
                                                     <select  id="class_id" name="class_id" class="form-control"  >
                                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                                         <?php
-                                                        foreach ($classlist as $class) {
-                                                            ?>
+foreach ($classlist as $class) {
+    ?>
                                                             <option value="<?php echo $class['id'] ?>"<?php
-                                                            if (set_value('class_id') == $class['id']) {
-                                                                echo "selected=selected";
-                                                            }
-                                                            ?>><?php echo $class['class'] ?></option>
+if (set_value('class_id') == $class['id']) {
+        echo "selected=selected";
+    }
+    ?>><?php echo $class['class'] ?></option>
                                                                     <?php
-                                                                }
-                                                                ?>
+}
+?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -286,7 +285,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="tab-pane" id="tab_birthday">
+                         <div class="tab-pane" id="tab_birthday">
                             <form action="<?php echo site_url('admin/mailsms/send_birthday_sms') ?>" method="post" id="birthday_form">
 
                                 <!-- /.box-header -->
@@ -297,7 +296,7 @@
                                                 <label><?php echo $this->lang->line('title'); ?></label><small class="req"> *</small>
                                                 <input autofocus="" class="form-control" name="birthday_title">
                                             </div>
-                                            <div class="form-group">
+                                          <div class="form-group">
                                                 <label class="pr20"><?php echo $this->lang->line('send_through'); ?><small class="req"> *</small></label>
 
                                                 <label class="checkbox-inline">
@@ -309,10 +308,7 @@
 
                                                 <span class="text-danger"><?php echo form_error('message'); ?></span>
                                             </div>
-                                             <div class="form-group">
-                                                <label><?php echo $this->lang->line('template_id'); ?></label> (<?php echo $this->lang->line('this_field_is_reqiured_only_for_indian_sms_gateway');?>)
-                                                <input type="text" name="birthday_template_id" id="birthday_template_id" class="form-control" autocomplete="off">
-                                            </div>
+
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('message'); ?></label><small class="req"> *</small>
 
@@ -330,49 +326,52 @@
                                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('message_to'); ?></label><small class="req"> *</small>
                                                 <div class="well minheight303">
 
-                                                    <?php
-                                                    if (!empty($birthDaysList)) {
-                                                        
+                                            <?php
+if (!empty($birthDaysList)) {
+    // print_r($birthDaysList['students']);
 
-                                                        if (isset($birthDaysList['students'])) {
-                                                            ?>
+    if (isset($birthDaysList['students'])) {
+
+        ?>
 
 
-                                                            <h4><?php echo $this->lang->line('students'); ?></h4>
-                                                            <hr>
-                                                            <div class="wellscroll">
-                                                                <?php
-                                                                foreach ($birthDaysList['students'] as $student_key => $student_value) {
-                                                                    ?>
-                                                                    <div class="checkbox">
-                                                                        <label><input type="checkbox" name="user[]" app-key="<?php echo $student_value['app_key']; ?>" value="<?php echo $student_value['contact_no'] ?>" checked> <b><?php echo $student_value['name']; ?></b></label>
-                                                                    </div>
-                                                                    <?php
-                                                                }
-                                                                ?>
-                                                            </div>
-                                                            <?php
-                                                        }
+<h4><?php echo $this->lang->line('students'); ?></h4>
+<hr>
+        <div class="wellscroll">
+        <?php
+foreach ($birthDaysList['students'] as $student_key => $student_value) {
 
-                                                        if (isset($birthDaysList['staff'])) {
-                                                            ?>
-                                                            <h4><?php echo $this->lang->line('staff'); ?></h4>
-                                                            <hr>
-                                                            <div class="wellscroll">
-                                                                <?php
-                                                                foreach ($birthDaysList['staff'] as $staff_key => $staff_value) {
-                                                                    ?>
-                                                                    <div class="checkbox">
-                                                                        <label><input type="checkbox" name="user[]" app-key="" value="<?php echo $staff_value['contact_no'] ?>" checked> <b><?php echo $staff_value['name']; ?></b></label>
-                                                                    </div>
-                                                                    <?php
-                                                                }
-                                                                ?>
-                                                            </div>
-                                                            <?php
-                                                        }
-                                                    }
-                                                    ?>
+            ?>
+            <div class="checkbox">
+            <label><input type="checkbox" name="user[]" app-key="<?php echo $student_value['app_key']; ?>" value="<?php echo $student_value['contact_no'] ?>" checked> <b><?php echo $student_value['name']; ?></b></label>
+            </div>
+          <?php
+}
+        ?>
+</div>
+        <?php
+}
+
+    if (isset($birthDaysList['staff'])) {
+        ?>
+<h4><?php echo $this->lang->line('staff'); ?></h4>
+<hr>
+ <div class="wellscroll">
+        <?php
+foreach ($birthDaysList['staff'] as $staff_key => $staff_value) {
+
+            ?>
+            <div class="checkbox">
+            <label><input type="checkbox" name="user[]" app-key="" value="<?php echo $staff_value['contact_no'] ?>" checked> <b><?php echo $staff_value['name']; ?></b></label>
+            </div>
+          <?php
+}
+        ?>
+</div>
+        <?php
+}
+}
+?>
 
                                                 </div>
 
@@ -448,22 +447,22 @@
                             {
                                 if (category_selected == "student") {
                                     console.log(obj);
-                                    if (obj.app_key == null) {
-                                        obj.app_key = "";
+                                    if (obj.app_key == null){
+obj.app_key="";
                                     }
                                     var app_key = obj.app_key;
                                     var email = obj.email;
                                     var contact = obj.mobileno;
-                                    var name = obj.fullname +  "(" + obj.admission_no + ")";
-                                } else if (category_selected == "student_guardian") {
+                                    var name = obj.firstname + " " + obj.lastname + "(" + obj.admission_no + ")";
+                                }  else if (category_selected == "student_guardian") {
                                     var app_key = '';
                                     var email = obj.email;
                                     var guardian_email = obj.guardian_email;
                                     var contact = obj.mobileno;
-                                    var name = obj.fullname  + "(" + obj.admission_no + ")";
+                                    var name = obj.firstname + " " + obj.lastname + "(" + obj.admission_no + ")";
                                 } else if (category_selected == "parent") {
-                                    if (obj.parent_app_key == null) {
-                                        obj.app_key = "";
+                                     if (obj.parent_app_key == null){
+obj.app_key="";
                                     }
                                     var app_key = obj.parent_app_key;
                                     var email = obj.guardian_email;
@@ -485,10 +484,10 @@
                                         .attr('app_key', app_key)
                                         .text(name);
 
-                                if (category_selected == "student_guardian") {
-                                    li.attr('data-guardian-email', guardian_email);
-                                }
-                                li.appendTo(cList);
+                                    if (category_selected == "student_guardian") {
+                                        li.attr('data-guardian-email', guardian_email);
+                                       }
+                                       li.appendTo(cList);
                             });
                             $("#suggesstion-box").html(cList);
 
@@ -519,8 +518,8 @@
         $("#search-query").attr('value', val).val(val);
         $("#search-query").attr('data-record', record_id);
         $("#search-query").attr('data-email', email);
-        if ($(this).data('guardianEmail') != undefined) {
-            $("#search-query").attr('data-guardian-email', $(this).data('guardianEmail'));
+        if ($(this).data('guardianEmail') !=undefined) {
+        $("#search-query").attr('data-guardian-email',$(this).data('guardianEmail'));
 
         }
         $("#search-query").attr('data-mobileno', mobileno);
@@ -531,46 +530,46 @@
 
     $(document).on('click', '.add-btn', function () {
 
-        var guardianEmail = "";
+        var guardianEmail="";
         var value = $("#search-query").val();
-        if ($.trim(value) != "") {
-            var record_id = $("#search-query").attr('data-record');
-            var app_key = $("#search-query").attr('data-app_key');
+       if($.trim(value) != ""){
+        var record_id = $("#search-query").attr('data-record');
+        var app_key = $("#search-query").attr('data-app_key');
 
-            var email = $("#search-query").attr('data-email');
-            var mobileno = $("#search-query").attr('data-mobileno');
-            if ($("#search-query").data('guardianEmail') != undefined) {
-                var guardianEmail = $("#search-query").data('guardianEmail');
+        var email = $("#search-query").attr('data-email');
+        var mobileno = $("#search-query").attr('data-mobileno');
+        if ($("#search-query").data('guardianEmail') !=undefined) {
+        var guardianEmail = $("#search-query").data('guardianEmail');
 
-            }
+        }
 
-            var category_selected = $("input[name='selected_value']").val();
-            if (record_id != "" || category_selected != "") {
-                var chkexists = checkRecordExists(category_selected + "-" + record_id);
-                if (chkexists) {
-                    var arr = [];
-                    arr.push({
-                        'category': category_selected,
-                        'record_id': record_id,
-                        'email': email,
-                        'guardianEmail': guardianEmail,
-                        'mobileno': mobileno,
-                        'app_key': app_key
-                    });
+        var category_selected = $("input[name='selected_value']").val();
+        if (record_id != "" || category_selected != "") {
+            var chkexists = checkRecordExists(category_selected + "-" + record_id);
+            if (chkexists) {
+                var arr = [];
+                arr.push({
+                    'category': category_selected,
+                    'record_id': record_id,
+                    'email': email,
+                    'guardianEmail': guardianEmail,
+                    'mobileno': mobileno,
+                    'app_key': app_key
+                });
 
-                    attr[category_selected + "-" + record_id] = arr;
-                    $("#search-query").attr('value', "").val("");
-                    $("#search-query").attr('data-record', "");
-                    $(".send_list").append('<li class="list-group-item" id="' + category_selected + '-' + record_id + '"><i class="fa fa-user"></i> ' + value + ' (' + category_selected.charAt(0).toUpperCase() + category_selected.slice(1).toLowerCase() + ') <i class="fa fa-trash pull-right text-danger" onclick="delete_record(' + "'" + category_selected + '-' + record_id + "'" + ')"></i></li>');
-                } else {
-                    errorMsg("Record already exists");
-                }
+                attr[category_selected + "-" + record_id] = arr;
+                $("#search-query").attr('value', "").val("");
+                $("#search-query").attr('data-record', "");
+                $(".send_list").append('<li class="list-group-item" id="' + category_selected + '-' + record_id + '"><i class="fa fa-user"></i> ' + value + ' (' + category_selected.charAt(0).toUpperCase() + category_selected.slice(1).toLowerCase() + ') <i class="fa fa-trash pull-right text-danger" onclick="delete_record(' + "'" + category_selected + '-' + record_id + "'" + ')"></i></li>');
             } else {
-                errorMsg("Incorrect record");
+                errorMsg("Record already exists");
             }
         } else {
-            errorMsg("<?php echo $this->lang->line('please_select_record'); ?>");
+            errorMsg("Incorrect record");
         }
+       }else{
+        errorMsg("<?php echo $this->lang->line('please_select_record');?>");
+       }
 
         getTotalRecord();
     });
@@ -631,7 +630,7 @@
         var user_list = (!jQuery.isEmptyObject(attr)) ? JSON.stringify(attr) : "";
         formData.append('user_list', user_list);
         var $form = $(this),
-                url = $form.attr('action');
+        url = $form.attr('action');
         var $this = $('.submit_individual');
         $this.button('loading');
         $.ajax({
@@ -673,11 +672,11 @@
 
 
     $("#birthday_form").submit(function (event) {
-        var user_list = [];
-        $.each($("input[name='user[]']:checked"), function () {
+            var user_list = [];
+            $.each($("input[name='user[]']:checked"), function(){
 
-            user_list.push($(this).attr("app-key"));
-        });
+                user_list.push($(this).attr("app-key"));
+            });
 
 
         event.preventDefault();
@@ -686,23 +685,23 @@
         var formData = new FormData();
         var other_data = $(this).serializeArray();
         $.each(other_data, function (key, input) {
-            if (input.value != "") {
+            if(input.value != ""){
 
-                formData.append(input.name, input.value);
-            } else {
-                formData.append(input.name, 0);
+            formData.append(input.name, input.value);
+        }else{
+            formData.append(input.name,0);
 
-            }
+        }
         });
-        $.each(user_list, function (index, value) {
-            formData.append('app-key[]', value);
-        });
+                 $.each(user_list, function( index, value ) {
+                  formData.append('app-key[]', value);
+                });
 
 
 
 
         var $form = $(this),
-                url = $form.attr('action');
+        url = $form.attr('action');
         var $this = $('.submit_birthday');
         $this.button('loading');
 
@@ -801,13 +800,13 @@
         var class_id = $(this).val();
         var base_url = '<?php echo base_url() ?>';
         var url = "<?php
-                                                    $userdata = $this->customlib->getUserData();
-                                                    if (($userdata["role_id"] == 2)) {
-                                                        echo "getClassTeacherSection";
-                                                    } else {
-                                                        echo "getByClass";
-                                                    }
-                                                    ?>";
+$userdata = $this->customlib->getUserData();
+if (($userdata["role_id"] == 2)) {
+    echo "getClassTeacherSection";
+} else {
+    echo "getByClass";
+}
+?>";
         var div_data = '';
         $.ajax({
             type: "GET",
@@ -873,14 +872,14 @@
     });
 
 
-    $(document).on('keypress keyup keydown paste change focus blur', '.compose-textarea', function (event) {
+ $(document).on('keypress keyup keydown paste change focus blur','.compose-textarea',function(event){
 
-        var total_length = checkTextAreaMaxLength(this, event);
-        $(this).next('span.word_counter').html("<?php echo $this->lang->line('character') . " " . $this->lang->line('count') ?>: " + total_length)
+var total_length=checkTextAreaMaxLength(this,event);
+$(this).next('span.word_counter').html("Character Count: " + total_length)
 
 
-    });
-    function checkTextAreaMaxLength(textBox, e) {
-        return textBox.value.length;
-    }
+ });
+function checkTextAreaMaxLength(textBox, e) {
+    return textBox.value.length;
+}
 </script>

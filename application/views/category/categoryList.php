@@ -47,14 +47,14 @@
                     <div class="box-body">
                         <div class="download_label"><?php echo $this->lang->line('category_list'); ?></div>
                         <div class="table-responsive mailbox-messages">
-                            <?php if ($this->session->flashdata('msgdelete')) { ?>
-                                <?php echo $this->session->flashdata('msgdelete') ?>
-                            <?php } ?>
+						<?php if ($this->session->flashdata('msgdelete')) { ?>
+                                    <?php echo $this->session->flashdata('msgdelete') ?>
+                                <?php } ?>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('category'); ?></th>
-                                        <th><?php echo $this->lang->line('category') . " " . $this->lang->line('id'); ?></th>
+                                         <th><?php echo $this->lang->line('category')." ".$this->lang->line('id'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>

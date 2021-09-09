@@ -2,7 +2,7 @@
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
-} 
+}
 
 class Admin extends Admin_Controller
 {
@@ -13,6 +13,7 @@ class Admin extends Admin_Controller
         $this->load->model("classteacher_model");
         $this->load->model("Staff_model");
         $this->load->library('Enc_lib');
+
         $this->sch_setting_detail = $this->setting_model->getSetting();
 
     }
@@ -23,13 +24,158 @@ class Admin extends Admin_Controller
         $this->load->view('layout/header', $data);
         $this->load->view('unauthorized', $data);
         $this->load->view('layout/footer', $data);
-    } 
+    }
 
+    public function dashboard2()
+    {
+        $role          = $this->customlib->getStaffRole();
+        $role_id       = json_decode($role)->id;
+        $staffid       = $this->customlib->getStaffID();
+        $notifications = $this->notification_model->getUnreadStaffNotification($staffid, $role_id);
 
- 
+        $data['notifications'] = $notifications;
+        $input                 = $this->setting_model->getCurrentSessionName();
+
+        list($a, $b)  = explode('-', $input);
+        $Current_year = $a;
+        if (strlen($b) == 2) {
+            $Next_year = substr($a, 0, 2) . $b;
+        } else {
+            $Next_year = $b;
+        }
+
+        //========================== Current Attendence ==========================
+        $current_date       = date('Y-m-d');
+        $data['title']      = 'Dashboard2';
+        $Current_start_date = date('01');
+        $Current_date       = date('d');
+        $Current_month      = date('m');
+        $month_collection   = 0;
+        $month_expense      = 0;
+        $total_students     = 0;
+        $total_teachers     = 0;
+        $ar                 = $this->startmonthandend();
+        $year_str_month     = $Current_year . '-' . $ar[0] . '-01';
+        $year_end_month     = date("Y-m-t", strtotime($Next_year . '-' . $ar[1] . '-01'));
+        $getDepositeAmount  = $this->studentfeemaster_model->getDepositAmountBetweenDate($year_str_month, $year_end_month);
+
+        //======================Current Month Collection ==============================
+        $first_day_this_month = date('Y-m-01');
+
+        $month_collection = $this->whatever($getDepositeAmount, $first_day_this_month, $current_date);
+        $expense          = $this->expense_model->getTotalExpenseBwdate($first_day_this_month, $current_date);
+        if (!empty($expense)) {
+            $month_expense = $month_expense + $expense->amount;
+        }
+
+        $data['month_collection'] = $month_collection;
+        $data['month_expense']    = $month_expense;
+
+        $tot_students = $this->studentsession_model->getTotalStudentBySession();
+        if (!empty($tot_students)) {
+            $total_students = $tot_students->total_student;
+        }
+
+        $data['total_students'] = $total_students;
+
+        $tot_roles = $this->role_model->get();
+        foreach ($tot_roles as $key => $value) {
+            if ($value["id"] != 1) {
+                $count_roles[$value["name"]] = $this->role_model->count_roles($value["id"]);
+            }
+        }
+        $data["roles"] = $count_roles;
+
+        // ======================== get collection by month ==========================
+        $start_month = strtotime($year_str_month);
+        $start       = strtotime($year_str_month);
+        $end         = strtotime($year_end_month);
+        $coll_month  = array();
+        $s           = array();
+        $total_month = array();
+        while ($start_month <= $end) {
+            $total_month[] = date('M', $start_month);
+            $month_start   = date('Y-m-d', $start_month);
+            $month_end     = date("Y-m-t", $start_month);
+            $return        = $this->whatever($getDepositeAmount, $month_start, $month_end);
+            if ($return) {
+                $s[] = $return;
+            } else {
+                $s[] = "0.00";
+            }
+
+            $start_month = strtotime("+1 month", $start_month);
+        }
+        //======================== getexpense by month ==============================
+        $ex                  = array();
+        $start_session_month = strtotime($year_str_month);
+        while ($start_session_month <= $end) {
+
+            $month_start = date('Y-m-d', $start_session_month);
+            $month_end   = date("Y-m-t", $start_session_month);
+
+            $expense_monthly = $this->expense_model->getTotalExpenseBwdate($month_start, $month_end);
+
+            if (!empty($expense_monthly)) {
+                $amt  = 0;
+                $ex[] = $amt + $expense_monthly->amount;
+            }
+
+            $start_session_month = strtotime("+1 month", $start_session_month);
+        }
+
+        $data['yearly_collection'] = $s;
+        $data['yearly_expense']    = $ex;
+        $data['total_month']       = $total_month;
+        //======================= current month collection /expense ===================
+        // hardcoded '01' for first day
+        $startdate       = date('m/01/Y');
+        $enddate         = date('m/t/Y');
+        $start           = strtotime($startdate);
+        $end             = strtotime($enddate);
+        $currentdate     = $start;
+        $month_days      = array();
+        $days_collection = array();
+        while ($currentdate <= $end) {
+            $cur_date          = date('Y-m-d', $currentdate);
+            $month_days[]      = date('d', $currentdate);
+            $coll_amt          = $this->whatever($getDepositeAmount, $cur_date, $cur_date);
+            $days_collection[] = $coll_amt;
+            $currentdate       = strtotime('+1 day', $currentdate);
+        }
+        $data['current_month_days'] = $month_days;
+        $data['days_collection']    = $days_collection;
+        //======================= current month /expense ==============================
+        // hardcoded '01' for first day
+        $startdate    = date('m/01/Y');
+        $enddate      = date('m/t/Y');
+        $start        = strtotime($startdate);
+        $end          = strtotime($enddate);
+        $currentdate  = $start;
+        $days_expense = array();
+        while ($currentdate <= $end) {
+            $cur_date       = date('Y-m-d', $currentdate);
+            $month_days[]   = date('d', $currentdate);
+            $currentdate    = strtotime('+1 day', $currentdate);
+            $ct             = $this->getExpensebyday($cur_date);
+            $days_expense[] = $ct;
+        }
+
+        $data['days_expense']        = $days_expense;
+        $student_fee_history         = $this->studentfee_model->getTodayStudentFees();
+        $data['student_fee_history'] = $student_fee_history;
+
+        $event_colors         = array("#03a9f4", "#c53da9", "#757575", "#8e24aa", "#d81b60", "#7cb342", "#fb8c00", "#fb3b3b");
+        $data["event_colors"] = $event_colors;
+        $userdata             = $this->customlib->getUserData();
+        $data["role"]         = $userdata["user_type"];
+        $this->load->view('layout/header', $data);
+        $this->load->view('admin/dashboard2', $data);
+        $this->load->view('layout/footer', $data);
+    }
+
     public function dashboard()
     {
-
         $role            = $this->customlib->getStaffRole();
         $role_id         = json_decode($role)->id;
         $data['role_id'] = $role_id;
@@ -62,12 +208,13 @@ class Admin extends Admin_Controller
         $ar                 = $this->startmonthandend();
         $year_str_month     = $Current_year . '-' . $ar[0] . '-01';
         $year_end_month     = date("Y-m-t", strtotime($Next_year . '-' . $ar[1] . '-01'));
+      //  print_r($year_str_month." to ".$year_end_month);die;
         $getDepositeAmount  = $this->studentfeemaster_model->getDepositAmountBetweenDate($year_str_month, $year_end_month);
         //======================Current Month Collection ==============================
-        $first_day_this_month     = date('Y-m-01');
-        $current_month_collection = $this->studentfeemaster_model->getDepositAmountBetweenDate($first_day_this_month, $current_date);
-        $month_collection         = $this->whatever($current_month_collection, $first_day_this_month, $current_date);
-        $expense                  = $this->expense_model->getTotalExpenseBwdate($first_day_this_month, $current_date);
+        $first_day_this_month = date('Y-m-01');
+        $current_month_collection=$this->studentfeemaster_model->getDepositAmountBetweenDate($first_day_this_month, $current_date);
+        $month_collection = $this->whatever($current_month_collection, $first_day_this_month, $current_date);
+        $expense          = $this->expense_model->getTotalExpenseBwdate($first_day_this_month, $current_date);
         if (!empty($expense)) {
             $month_expense = $month_expense + $expense->amount;
         }
@@ -180,7 +327,7 @@ class Admin extends Admin_Controller
         $start_date           = date('Y-m-01');
         $end_date             = date('Y-m-t');
         $student_due_fee      = $this->studentfeemaster_model->getFeesAwaiting($start_date, $end_date);
-
+        //   echo "<pre>"; print_r($student_due_fee); echo "<pre>";die;
         $data['fees_awaiting'] = $student_due_fee;
 
         $total_fess    = 0;
@@ -191,7 +338,7 @@ class Admin extends Admin_Controller
         if (!empty($data['fees_awaiting'])) {
 
             foreach ($data['fees_awaiting'] as $awaiting_key => $awaiting_value) {
-
+                // print_r($awaiting_value);
                 $amount_to_be_taken = 0;
                 if ($awaiting_value->is_system) {
                     if ($awaiting_value->amount > 0) {
@@ -212,11 +359,10 @@ class Admin extends Admin_Controller
                         foreach ($amount_paid_details as $amount_paid_detail_key => $amount_paid_detail_value) {
                             $amt_ = $amt_ + $amount_paid_detail_value->amount;
                         }
-
-                        if (($amt_ + $amount_paid_detail_value->amount_discount) >= $amount_to_be_taken) {
-                            $total_paid++;
-                        } elseif (($amt_ + $amount_paid_detail_value->amount_discount) < $amount_to_be_taken) {
+                        if ($amt_ < $amount_to_be_taken) {
                             $total_partial++;
+                        } elseif ($amt_ >= $amount_to_be_taken) {
+                            $total_paid++;
                         }
                     } else {
                         $total_unpaid++;
@@ -227,17 +373,19 @@ class Admin extends Admin_Controller
         }
 
         $data['incomegraph'] = $this->income_model->getIncomeHeadsData($start_date, $end_date);
+
         $data['expensegraph'] = $this->expense_model->getExpenseHeadData($start_date, $end_date);
+
         $enquiry       = $this->admin_model->getAllEnquiryCount($start_date, $end_date);
         $total_counter = $total_paid + $total_unpaid + $total_partial;
 
         $data['fees_overview'] = array(
             'total_unpaid'     => $total_unpaid,
-            'unpaid_progress'  => ($total_counter > 0) ? (($total_unpaid * 100) / $total_counter) : 0,
+            'unpaid_progress'  => ($total_counter > 0) ?(($total_unpaid * 100) / $total_counter) :0,
             'total_paid'       => $total_paid,
-            'paid_progress'    => ($total_counter > 0) ? (($total_paid * 100) / $total_counter) : 0,
+            'paid_progress'    => ($total_counter > 0) ?(($total_paid * 100) / $total_counter) :0,
             'total_partial'    => $total_partial,
-            'partial_progress' => ($total_counter > 0) ? (($total_partial * 100) / $total_counter) : 0,
+            'partial_progress' => ($total_counter > 0) ?(($total_partial * 100) / $total_counter) :0,
         );
 
         $total_enquiry = $enquiry['total'];
@@ -290,9 +438,10 @@ class Admin extends Admin_Controller
             $data['fenquiryprogressbar'] = 0;
         }
 
-        $bookoverview      = $this->book_model->bookoverview($start_date, $end_date);
-        $bookduereport     = $this->bookissue_model->dueforreturn($start_date, $end_date);
-        $forreturndata     = $this->bookissue_model->forreturn($start_date, $end_date);
+        $bookoverview  = $this->book_model->bookoverview($start_date, $end_date);
+        $bookduereport = $this->bookissue_model->dueforreturn($start_date, $end_date);
+        $forreturndata = $this->bookissue_model->forreturn($start_date, $end_date);
+        //  echo $this->db->last_query();die;
         $dueforreturn      = $bookduereport[0]['total'];
         $forreturn         = $forreturndata[0]['total'];
         $total_qty         = $bookoverview[0]['qty'];
@@ -309,29 +458,27 @@ class Admin extends Admin_Controller
             'total'             => $total_qty,
             'total_progress'    => 100,
             'availble'          => $availble,
-            'availble_progress' => round($availble_progress, 2),
+            'availble_progress' => $availble_progress,
             'total_issued'      => $total_issued,
-            'issued_progress'   => round($issued_progress, 2),
+            'issued_progress'   => $issued_progress,
             'dueforreturn'      => $dueforreturn,
             'forreturn'         => $forreturn,
         );
+ 
+        $Attendence = $this->stuattendence_model->getTodayDayAttendance($total_students);
 
-        $Attendence                   = $this->stuattendence_model->getTodayDayAttendance($total_students);
-        $data['attendence_data']      = $Attendence;
+        $data['attendence_data'] = $Attendence;
+
         $Staffattendence              = $this->Staff_model->getTodayDayAttendance();
         $data['Staffattendence_data'] = $Staffattendence;
-        $getTotalStaff                = $this->Staff_model->getTotalStaff();
-        $data['getTotalStaff_data']   = $getTotalStaff;
-        if ($getTotalStaff > 0) {$percentTotalStaff_data = ($Staffattendence * 100) / ($getTotalStaff);} else { $percentTotalStaff_data = '0';}
-        $data['percentTotalStaff_data'] = $percentTotalStaff_data;
-        $data['sch_setting']            = $this->sch_setting_detail;
 
-        if ($data['sch_setting']->attendence_type == 0) {
-            $data['std_graphclass'] = "col-lg-3 col-md-6 col-sm-6";
-        } else {
-            $data['std_graphclass'] = "col-lg-4 col-md-6 col-sm-6";
-        }
-       
+        $getTotalStaff = $this->Staff_model->getTotalStaff();
+
+        $data['getTotalStaff_data'] = $getTotalStaff;
+
+        if ($getTotalStaff > 0) {$percentTotalStaff_data = ($Staffattendence * 100) / ($getTotalStaff);} else { $percentTotalStaff_data = '0';}
+
+        $data['percentTotalStaff_data'] = $percentTotalStaff_data;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/dashboard', $data);
         $this->load->view('layout/footer', $data);
@@ -339,25 +486,31 @@ class Admin extends Admin_Controller
 
     public function getUserImage()
     {
+
         $id     = $this->session->userdata["admin"]["id"];
         $result = $this->staff_model->get($id);
     }
 
     public function getSession()
     {
+
         if (!$this->rbac->hasPrivilege('quick_session_change', 'can_view')) {
             access_denied();
         }
+
         $session             = $this->session_model->getAllSession();
         $data                = array();
         $session_array       = $this->session->has_userdata('session_array');
         $data['sessionData'] = array('session_id' => 0);
+
         if ($session_array) {
             $data['sessionData'] = $this->session->userdata('session_array');
         } else {
-            $setting             = $this->setting_model->get();
+            $setting = $this->setting_model->get();
+
             $data['sessionData'] = array('session_id' => $setting[0]['session_id']);
         }
+
         $data['sessionList'] = $session;
         $this->load->view('admin/partial/_session', $data);
     }
@@ -368,17 +521,20 @@ class Admin extends Admin_Controller
         $session_array = $this->session->has_userdata('session_array');
         if ($session_array) {
             $this->session->unset_userdata('session_array');
-        } 
+        }
         $session       = $this->session_model->get($session);
         $session_array = array('session_id' => $session['id'], 'session' => $session['session']);
         $this->session->set_userdata('session_array', $session_array);
-        echo json_encode(array('status' => 1, 'message' => $this->lang->line('session_changed_successfully')));
+
+        echo json_encode(array('status' => 1, 'message' => 'Session changed successfully'));
     }
 
     public function updatePurchaseCode()
     {
+
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim|xss_clean');
         $this->form_validation->set_rules('envato_market_purchase_code', 'Purchase Code', 'required|trim|xss_clean');
+
         if ($this->form_validation->run() == false) {
             $data = array(
                 'email'                       => form_error('email'),
@@ -508,8 +664,10 @@ class Admin extends Admin_Controller
                     $error     = true;
                 }
                 if ($error) {
+
                     $this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">' . $msg . '</div>');
                 } else {
+
                     $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $msg . '</div>');
                 }
 
@@ -566,6 +724,7 @@ class Admin extends Admin_Controller
                 'password' => $this->enc_lib->passHashEnc($this->input->post('new_pass')),
             );
             $check = $this->enc_lib->passHashDyc($this->input->post('current_pass'), $userdata["password"]);
+
             $query1 = $this->admin_model->checkOldPass($data_array);
 
             if ($query1) {
@@ -645,7 +804,7 @@ class Admin extends Admin_Controller
             }
         }
 
-        $resultlist = $this->student_model->searchusersbyFullText($search_text, $carray);
+        $resultlist = $this->student_model->searchFullText($search_text, $carray);
 
         $data['resultlist'] = $resultlist;
         $this->load->view('layout/header', $data);
@@ -741,9 +900,9 @@ class Admin extends Admin_Controller
                 $this->form_validation->set_message('handle_upload', 'Extension not allowed');
                 return false;
             }
-            if ($_FILES["file"]["size"] > 102400000) {
+            if ($_FILES["file"]["size"] > 10240000) {
 
-                $this->form_validation->set_message('handle_upload', 'File size shoud be less than 100 MB');
+                $this->form_validation->set_message('handle_upload', 'File size shoud be less than 100 kB');
                 return false;
             }
             return true;
@@ -755,6 +914,7 @@ class Admin extends Admin_Controller
 
     public function generate_key($length = 12)
     {
+
         $str        = "";
         $characters = array_merge(range('A', 'Z'), range('a', 'z'), range('0', '9'));
         $max        = count($characters) - 1;
@@ -767,220 +927,14 @@ class Admin extends Admin_Controller
 
     public function addCronsecretkey($id)
     {
+
         $key = $this->generate_key(25);
+
         $data = array('cron_secret_key' => $key);
+
         $this->setting_model->add_cronsecretkey($data, $id);
+
         redirect('admin/admin/backup');
-    }
-
-    public function updateandappCode()
-    {
-        $this->form_validation->set_rules('app-email', 'Email', 'required|valid_email|trim|xss_clean');
-        $this->form_validation->set_rules('app-envato_market_purchase_code', 'Purchase Code', 'required|trim|xss_clean');
-
-        if ($this->form_validation->run() == false) {
-            $data = array(
-                'app-email'                       => form_error('app-email'),
-                'app-envato_market_purchase_code' => form_error('app-envato_market_purchase_code'),
-            );
-            $array = array('status' => '2', 'error' => $data);
-
-            return $this->output
-                ->set_content_type('application/json')
-                ->set_status_header(200)
-                ->set_output(json_encode($array));
-        } else {
-            //==================
-            $response = $this->auth->andapp_update();
-        }
-    }
-
-    public function filetype()
-    {
-    
-        $data          = array();
-        $data['title'] = 'File Type List';
-        $this->session->set_userdata('top_menu', 'System Settings');
-        $this->session->set_userdata('sub_menu', 'System Settings/filetype');
-        $data['filetype'] = $this->filetype_model->get();
-        $this->load->view('layout/header', $data);
-        $this->load->view('admin/filetype', $data);
-        $this->load->view('layout/footer', $data);
-    }
-
-    public function addfiletype()
-    {
-        $this->form_validation->set_rules('file_extension', $this->lang->line('allowed_extension'), 'required|trim|xss_clean|callback_validate_extension');
-        $this->form_validation->set_rules('image_extension', $this->lang->line('allowed_extension'), 'required|trim|xss_clean|callback_validate_extension');
-        $this->form_validation->set_rules('file_mime', $this->lang->line('allowed_mime_type'), 'required|trim|xss_clean|callback_validate_mime');
-        $this->form_validation->set_rules('image_mime', $this->lang->line('allowed_mime_type'), 'required|trim|xss_clean|callback_validate_mime');
-        $this->form_validation->set_rules('image_size', $this->lang->line('upload_size_in_bytes'), 'required|trim|xss_clean');
-        $this->form_validation->set_rules('file_size', $this->lang->line('upload_size_in_bytes'), 'required|trim|xss_clean');
-
-        if ($this->form_validation->run() == false) {
-            $data = array(
-                'file_extension'  => form_error('file_extension'),
-                'file_mime'       => form_error('file_mime'),
-                'image_extension' => form_error('image_extension'),
-                'image_mime'      => form_error('image_mime'),
-                'image_size'      => form_error('image_size'),
-                'file_size'       => form_error('file_size'),
-            );
-            $array = array('status' => 'fail', 'error' => $data);
-            echo json_encode($array);
-        } else {
-            $insert_array = array(
-                'file_extension'  => $this->input->post('file_extension'),
-                'file_mime'       => $this->input->post('file_mime'),
-                'image_extension' => $this->input->post('image_extension'),
-                'image_mime'      => $this->input->post('image_mime'),
-                'file_size'       => $this->input->post('file_size'),
-                'image_size'      => $this->input->post('image_size'),
-            );
-
-            $inserted_id = $this->filetype_model->add($insert_array);
-
-            $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
-            echo json_encode($array);
-        }
-    }
-
-    public function validate_extension($extension)
-    {
-        if (preg_match('/^([A-Za-z0-9]+)(,\s[A-Za-z0-9]+)*$/', $extension)) {
-            return true;
-        } else {
-            $this->form_validation->set_message('validate_extension', 'The %s field must be like jpg, jpeg');
-            return false;
-        }
-    }
-
-    public function validate_mime($mime)
-    {
-        if (preg_match('/^([A-Za-z0-9-.+\/]+)(,\s[A-Za-z0-9-.+\/]+)*$/', $mime)) {
-            return true;
-        } else {
-            $this->form_validation->set_message('validate_mime', 'The %s field must be like audio/mp4, video/mp4');
-            return false;
-        }
-    }
-
-      public function updateaddon()
-    {
-        $this->form_validation->set_rules('app-email', 'Email', 'required|valid_email|trim|xss_clean');
-        $this->form_validation->set_rules('app-envato_market_purchase_code', 'Purchase Code', 'required|trim|xss_clean');
-
-        if ($this->form_validation->run() == false) {
-
-            $data = array(
-                'app-email'                       => form_error('app-email'),
-                'app-envato_market_purchase_code' => form_error('app-envato_market_purchase_code'),
-            );
-            
-            $array = array('status' => '2', 'error' => $data);
-
-            return $this->output
-                ->set_content_type('application/json')
-                ->set_status_header(200)
-                ->set_output(json_encode($array));
-        } else {
-            //==================
-            $response = $this->auth->addon_update();
-        }
-    }
-
-    public function searchvalidation()
-    {
-        $search_text1       = $this->input->post('search_text1');
-        $params      = array('search_text1'=> $search_text1);
-        $array       = array('status' => 1, 'error' => '', 'params' => $params);
-        echo json_encode($array);
-    }
-
-
-     public function dtstudentlist($search_text)
-    {
-       if($search_text==="0"){           
-            $search_text="";
-        }
-       $sch_setting    = $this->sch_setting_detail;
-       $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
-        $classlist                   = $this->class_model->get();
-                $classlist      = $classlist;
-                $carray   = array();
-                if (!empty($classlist)) {
-                    foreach ($classlist as $ckey => $cvalue) {
-
-                        $carray[] = $cvalue["id"];
-                    }
-                }
-        
-      
-        $resultlist = $this->student_model->searchFullText($search_text, $carray);
-        $fields = $this->customfield_model->get_custom_fields('students', 1);
-        $students = json_decode($resultlist);
-         $dt_data=array();
-        if (!empty($students->data)) {
-            foreach ($students->data as $student_key => $student) {
-
-                $editbtn='';
-                $deletebtn = '';
-                $viewbtn='';
-
-                 $viewbtn = "<a href='".base_url()."student/view/".$student->id."'   class='btn btn-default btn-xs'  data-toggle='tooltip' data-placement='left' title='" . $this->lang->line('show') . "'><i class='fa fa-reorder'></i></a>";
-
-                 if ($this->rbac->hasPrivilege('student', 'can_edit')) {
-                    $editbtn = "<a href='".base_url()."student/edit/".$student->id."'   class='btn btn-default btn-xs'  data-toggle='tooltip' data-placement='left' title='" . $this->lang->line('edit') . "'><i class='fa fa-pencil'></i></a>";
-                }
-                if ($this->rbac->hasPrivilege('collect_fees', 'can_add')) {
-                    
-                    $collectbtn = "<a href='".base_url()."studentfee/addfee/".$student->student_session_id."'   class='btn btn-default btn-xs'  data-toggle='tooltip' data-placement='left' title='" . $this->lang->line('add_fees') . "'><span >".$currency_symbol."</a>";
-                }
-             
-                $row   = array();
-                $row[] = $student->admission_no;
-                $row[] =  "<a href='".base_url()."student/view/".$student->id."'>".$this->customlib->getFullName($student->firstname,$student->middlename,$student->lastname,$sch_setting->middlename,$sch_setting->lastname)."</a>";              
-                  $row[] = $student->class . "(" . $student->section . ")";
-                if ($sch_setting->father_name) {
-                    $row[]= $student->father_name ;
-                }
-                
-                   $row[]=  $this->customlib->dateformat($student->dob);
-              
-
-                $row[] = $student->gender;
-                if ($sch_setting->category) {
-                    $row[] = $student->category ;
-                }
-                if ($sch_setting->mobile_no) {
-                    $row[] = $student->mobileno ;
-                }
-
-                foreach ($fields as $fields_key => $fields_value) {
-                   
-                    $custom_name = $fields_value->name ;
-                   $display_field=$student->$custom_name;
-                 if($fields_value->type == "link"){
-                     $display_field= "<a href=".$student->$custom_name." target='_blank'>".$student->$custom_name."</a>";
-
-                 }
-                 $row[] = $display_field ;  
-
-                }
-                $row[] = $viewbtn.''.$editbtn.''.$collectbtn;
-
-                $dt_data[] = $row;
-            }
-
-        }
-        $json_data = array(
-            "draw"            => intval($students->draw),
-            "recordsTotal"    => intval($students->recordsTotal),
-            "recordsFiltered" => intval($students->recordsFiltered),
-            "data"            => $dt_data,
-        );
-        echo json_encode($json_data); 
-
     }
 
 }

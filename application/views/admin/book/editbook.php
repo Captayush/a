@@ -33,7 +33,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <?php echo $this->customlib->getCSRF(); ?>                         
                             <input  type="hidden" name="id" value="<?php echo set_value('id', $editbook['id']); ?>" >
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('book_title'); ?> <small class="req"> *</small></label>
+                                <label for="exampleInputEmail1"><?php echo $this->lang->line('book_title'); ?></label>
                                 <input autofocus="" id="book_title" name="book_title" placeholder="" type="text" class="form-control"  value="<?php echo set_value('book_title', $editbook['book_title']); ?>" />
                                 <span class="text-danger"><?php echo form_error('book_title'); ?></span>
                             </div>
@@ -52,7 +52,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('publisher'); ?></label>
-
                                 <input id="amount" name="publish" placeholder="" type="text" class="form-control"  value="<?php echo set_value('publish', $editbook['publish']); ?>" />
                                 <span class="text-danger"><?php echo form_error('publish'); ?></span>
                             </div>
@@ -88,7 +87,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('postdate'); ?></label>
 
 
-                                <input id="postdate" name="postdate"  placeholder="" type="text" class="form-control date"  value="<?php echo set_value('postdate', $this->customlib->dateformat($editbook['postdate'])); ?>" />
+                                <input id="postdate" name="postdate"  placeholder="" type="text" class="form-control date"  value="<?php echo set_value('postdate', date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($editbook['postdate']))); ?>" />
                                 <span class="text-danger"><?php echo form_error('postdate'); ?></span>
                             </div>
                             <div class="clearfix"></div>

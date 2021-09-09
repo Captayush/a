@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class Aes {
-public $ENCRYPTION_ALGORITHM = 'AES-256-CBC';
+
     function __construct() {
         $this->CI = & get_instance();
     }
@@ -77,41 +77,24 @@ public $ENCRYPTION_ALGORITHM = 'AES-256-CBC';
         return $binString;
     }
 
-    function validchk($action, $string) {
-        $output = false;
-        $encrypt_method = "AES-256-CBC";
-        $secret_key = '4D617279206861642061206C6974746C65206C616D';
-        $secret_iv = '4F505A5B5C5D5E5F60616A6B6C6D6E6F7A7D7';
-        // hash
-        $key = hash('sha256', $secret_key);
-
-        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash('sha256', $secret_iv), 0, 16);
-        if ($action == 'encrypt') {
-            $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-            $output = base64_encode($output);
-        } else if ($action == 'decrypt') {
-            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-        }
-        return $output;
-    }
-
-      public function encode($string,$key)
-    {
+        function validchk($action, $string) {
+    $output = false;
+    $encrypt_method = "AES-256-CBC";
+    $secret_key = '4D617279206861642061206C6974746C65206C616D';
+    $secret_iv = '4F505A5B5C5D5E5F60616A6B6C6D6E6F7A7D7';
+    // hash
+    $key = hash('sha256', $secret_key);
     
-        $EncryptionKey        = base64_decode($key);
-        $InitializationVector = openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->ENCRYPTION_ALGORITHM));
-        $EncryptedText        = openssl_encrypt($string, $this->ENCRYPTION_ALGORITHM, $EncryptionKey, 0, $InitializationVector);
-        return base64_encode($EncryptedText . '::' . $InitializationVector);
+    // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+    $iv = substr(hash('sha256', $secret_iv), 0, 16);
+    if ( $action == 'encrypt' ) {
+        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($output);
+    } else if( $action == 'decrypt' ) {
+        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
     }
+    return $output;
 
-    public function decode($string,$key)
-    {
-     
-        $EncryptionKey                               = base64_decode($key);
-        list($Encrypted_Data, $InitializationVector) = array_pad(explode('::', base64_decode($string), 2), 2, null);
-        return openssl_decrypt($Encrypted_Data, $this->ENCRYPTION_ALGORITHM, $EncryptionKey, 0, $InitializationVector);
-    }
-
+}
 
 }

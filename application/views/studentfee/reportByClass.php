@@ -41,12 +41,12 @@
                                         <span class="text-danger"><?php echo form_error('section_id'); ?></span>
                                     </div>
                                 </div>
-                                <div class="col-md-12">    
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button> 
-                                    </div>   
-                                </div>
-                            </div> 
+                            <div class="col-md-12">    
+                             <div class="form-group">
+                                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button> 
+                             </div>   
+                            </div>
+                           </div> 
                         </div>
 
                     </form>
@@ -90,7 +90,7 @@
 
                                 <div class="row">
                                     <div class="col-xs-12 table-responsive">
-                                        <div class="download_label"> <?php echo $this->lang->line('student') . " " . $this->lang->line('profile'); ?></div>
+                                        <div class="download_label"> <?php echo $this->lang->line('student')." ".$this->lang->line('profile'); ?></div>
                                         <table class="table table-striped">
                                             <thead>
                                                 <tr>

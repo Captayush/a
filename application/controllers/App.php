@@ -11,7 +11,7 @@ class App extends CI_Controller
     {
         parent::__construct();
         $this->load->model('setting_model');
-		$this->load->library('customlib');
+
     }
 
     public function index()
@@ -30,7 +30,6 @@ class App extends CI_Controller
                     'app_primary_color_code'   => $setting_result->app_primary_color_code,
                     'app_secondary_color_code' => $setting_result->app_secondary_color_code,
                     'lang_code'                => $setting_result->language_code,
-					'app_ver'                  => $this->customlib->getAppVersion(),	
                 )));
         } else {
             return $this->output
@@ -40,6 +39,7 @@ class App extends CI_Controller
                     'error' => "Method Not Allowed",
                 )));
         }
+
     }
 
     public function zoom()
@@ -71,6 +71,7 @@ class App extends CI_Controller
         } else {
             echo $response;
         }
+
     }
 
 }

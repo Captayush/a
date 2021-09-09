@@ -1,3 +1,26 @@
+<style type="text/css">
+    .scrollit {
+        height:210px;
+        overflow-y:scroll;
+        list-style-type: none;
+    }
+    .dual-list .list-group {
+        margin-top: 8px;
+    }
+
+    .list-left li, .list-right li {
+        cursor: pointer;
+    }
+
+    .list-arrows {
+        padding-top: 100px;
+    }
+
+    .list-arrows button {
+        margin-bottom: 20px;
+    }
+</style>
+
 <script src="<?php echo base_url(); ?>backend/plugins/ckeditor/ckeditor.js"></script>
 <div class="content-wrapper">
     <section class="content-header">
@@ -16,7 +39,9 @@
                         <li><a href="#tab_class" data-toggle="tab"><?php echo $this->lang->line('class'); ?></a></li>
                         <li><a href="#tab_perticular" data-toggle="tab"><?php echo $this->lang->line('individual'); ?></a></li>
                         <li class="active"><a href="#tab_group" data-toggle="tab"><?php echo $this->lang->line('group'); ?></a></li>
-                        <li class="pull-left header"> <?php echo $this->lang->line('send') . " " . $this->lang->line('email') ?></li>
+
+
+                        <li class="pull-left header"> <?php echo $this->lang->line('send')." ".$this->lang->line('email')?></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_group">
@@ -45,7 +70,9 @@
                                                     <?php echo set_value('message'); ?>
                                                 </textarea>
 
+
                                             </div>
+
 
                                         </div>
                                         <div class="col-md-4">
@@ -56,14 +83,9 @@
                                                     <div class="checkbox mt0">
                                                         <label><input type="checkbox" name="user[]" value="student"> <b><?php echo $this->lang->line('students'); ?></b> </label>
                                                     </div>
-                                                    <?php 
-                                                    if($sch_setting->guardian_name){ ?>
                                                     <div class="checkbox">
                                                         <label><input type="checkbox" name="user[]" value="parent"> <b><?php echo $this->lang->line('guardians'); ?></b></label>
                                                     </div>
-                                                    <?php }
-                                                    ?>
-                                                    
                                                     <?php
                                                     foreach ($roles as $role_key => $role_value) {
                                                         ?>
@@ -139,15 +161,8 @@
                                                         <ul class="dropdown-menu" role="menu" style="">
 
                                                             <li data-value="student"><a href="#" ><?php echo $this->lang->line('students'); ?></a></li>
-                                                            <?php 
-                                                            if($sch_setting->guardian_name){
-                                                                ?>
-                                                                <li data-value="parent"><a href="#"><?php echo $this->lang->line('guardians'); ?></a></li>
+                                                            <li data-value="parent"><a href="#"><?php echo $this->lang->line('guardians'); ?></a></li>
                                                             <li data-value="student_guardian"><a href="#" ><?php echo $this->lang->line('students') . " - " . $this->lang->line('guardians'); ?></a></li>
-                                                                <?php
-                                                            }
-                                                            ?>
-                                                            
                                                             <?php
                                                             foreach ($roles as $role_key => $role_value) {
                                                                 ?>
@@ -161,7 +176,7 @@
 
                                                     <div id="suggesstion-box"></div>
                                                     <span class="input-group-btn">
-                                                        <button  class="btn btn-primary btn-searchsm add-btn" type="button"><?php echo $this->lang->line('add') ?></button>
+                                                        <button  class="btn btn-primary btn-searchsm add-btn" type="button"><?php echo $this->lang->line('add')?></button>
                                                     </span>
                                                 </div>
                                             </div>
@@ -207,7 +222,7 @@
                                             </div>
                                             <input type="hidden" name="class_send_by" value="email">
                                             <div class="form-group">
-                                                <label class="pr20"><?php echo $this->lang->line('attachment') ?></label>
+                                                <label class="pr20"><?php echo $this->lang->line('attachment')?></label>
                                                 <input type="file" id="class_file" class="filestyle form-control" name="class_attachment" multiple="multiple">
                                                 <span class="text-danger"><?php echo form_error('message'); ?></span>
                                             </div>
@@ -268,6 +283,9 @@
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-8">
+
+
+
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('title'); ?></label><small class="req"> *</small>
                                                 <input autofocus="" class="form-control" name="birthday_title">
@@ -275,7 +293,7 @@
                                             <input type="hidden" name="birthday_send_by" value="email">
 
                                             <div class="form-group">
-                                                <label class="pr20"><?php echo $this->lang->line('attachment'); ?></label>
+                                                <label class="pr20">Attachment</label>
                                                 <input type="file" id="birthday_file" class="filestyle form-control" name="birthday_attachment[]" multiple="multiple">
                                                 <span class="text-danger"><?php echo form_error('message'); ?></span>
                                             </div>
@@ -290,7 +308,7 @@
 
                                             </div>
 
- 
+
                                         </div>
                                         <div class="col-md-4">
 
@@ -300,10 +318,11 @@
 
                                                     <?php
                                                     if (!empty($birthDaysList)) {
+                                                        // print_r($birthDaysList);
 
                                                         if (isset($birthDaysList['students'])) {
                                                             ?>
-                                                            <h4><?php echo $this->lang->line('students'); ?></h4>
+ <h4><?php echo $this->lang->line('students'); ?></h4>
                                                             <div class="wellscroll">   
                                                                 <?php
                                                                 foreach ($birthDaysList['students'] as $student_key => $student_value) {
@@ -314,13 +333,13 @@
                                                                     <?php
                                                                 }
                                                                 ?>
-                                                            </div>
-                                                            <?php
-                                                        }
+                                                                </div>
+                                                           <?php
+                                                            }
 
-                                                        if (isset($birthDaysList['staff'])) {
-                                                            ?>
-
+                                                            if (isset($birthDaysList['staff'])) {
+                                                                ?>
+                                                         
 
 
                                                             <h4><?php echo $this->lang->line('staff'); ?> </h4>
@@ -334,20 +353,20 @@
                                                                     <?php
                                                                 }
                                                                 ?>
-                                                            </div><?php
+                                                                      </div><?php
+                                                            }
                                                         }
-                                                    }
-                                                    ?>
+                                                        ?>
+                                                  
+                                           
 
-
-
-                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
-                                </div>
 
+                                </div>
+                                </div>
+                               
                                 <!-- /.box-body -->
                                 <div class="box-footer">
                                     <div class="pull-right">
@@ -413,16 +432,16 @@
                             var cList = $('<ul/>').addClass('selector-list');
                             $.each(data, function (i, obj)
                             {
-
+                              
                                 if (category_selected == "student") {
                                     var email = obj.email;
                                     var contact = obj.mobileno;
-                                    var name = obj.fullname +  "(" + obj.admission_no + ")";
+                                    var name = obj.firstname + " " + obj.lastname + "(" + obj.admission_no + ")";
                                 } else if (category_selected == "student_guardian") {
                                     var email = obj.email;
                                     var guardian_email = obj.guardian_email;
                                     var contact = obj.mobileno;
-                                    var name =  obj.fullname + "(" + obj.admission_no + ")";
+                                    var name = obj.firstname + " " + obj.lastname + "(" + obj.admission_no + ")";
                                 } else if (category_selected == "parent") {
                                     var email = obj.guardian_email;
                                     var contact = obj.guardian_phone;
@@ -514,10 +533,10 @@
                 $("#search-query").attr('data-record', "");
                 $(".send_list").append('<li class="list-group-item" id="' + category_selected + '-' + record_id + '"><i class="fa fa-user"></i> ' + value + ' (' + category_selected.charAt(0).toUpperCase() + category_selected.slice(1).toLowerCase() + ') <i class="glyphicon glyphicon-trash pull-right text-danger" onclick="delete_record(' + "'" + category_selected + '-' + record_id + "'" + ')"></i></li>');
             } else {
-                errorMsg('<?php echo $this->lang->line('record_already_exists') ?>');
+                errorMsg('<?php echo $this->lang->line('record_already_exists')?>');
             }
         } else {
-            errorMsg("<?php echo $this->lang->line('message_to') . " field is required" ?>");
+            errorMsg("<?php echo $this->lang->line('message_to')." field is required"?>");
         }
         getTotalRecord();
     });
@@ -778,13 +797,13 @@
         var class_id = $(this).val();
         var base_url = '<?php echo base_url() ?>';
         var url = "<?php
-                                                    $userdata = $this->customlib->getUserData();
-                                                    if (($userdata["role_id"] == 2)) {
-                                                        echo "getClassTeacherSection";
-                                                    } else {
-                                                        echo "getByClass";
-                                                    }
-                                                    ?>";
+                                                        $userdata = $this->customlib->getUserData();
+                                                        if (($userdata["role_id"] == 2)) {
+                                                            echo "getClassTeacherSection";
+                                                        } else {
+                                                            echo "getByClass";
+                                                        }
+                                                        ?>";
         var div_data = '';
         $.ajax({
             type: "GET",

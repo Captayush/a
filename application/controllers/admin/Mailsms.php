@@ -15,13 +15,13 @@ class Mailsms extends Admin_Controller
         $this->load->library('mailsmsconf');
         $this->load->model("classteacher_model");
         $this->mailer;
-        $this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
     public function index()
     {
         if (!$this->rbac->hasPrivilege('email_sms_log', 'can_view')) {
             access_denied();
+
         }
 
         $this->session->set_userdata('top_menu', 'Communicate');
@@ -36,21 +36,14 @@ class Mailsms extends Admin_Controller
 
     public function search()
     {
-        $keyword     = $this->input->post('keyword');
-        $category    = $this->input->post('category');
-        $result      = array();
-        $sch_setting = $this->setting_model->getSetting();
+        $keyword  = $this->input->post('keyword');
+        $category = $this->input->post('category');
+        $result   = array();
         if ($keyword != "" and $category != "") {
             if ($category == "student") {
                 $result = $this->student_model->searchNameLike($keyword);
-                foreach ($result as $key => $value) {
-                    $result[$key]['fullname'] = $this->customlib->getFullName($value['firstname'], $value['middlename'], $value['lastname'], $sch_setting->middlename, $sch_setting->lastname);
-                }
             } elseif ($category == "student_guardian") {
                 $result = $this->student_model->searchNameLike($keyword);
-                foreach ($result as $key => $value) {
-                    $result[$key]['fullname'] = $this->customlib->getFullName($value['firstname'], $value['middlename'], $value['lastname'], $sch_setting->middlename, $sch_setting->lastname);
-                }
             } elseif ($category == "parent") {
 
                 $result = $this->student_model->searchGuardianNameLike($keyword);
@@ -60,7 +53,6 @@ class Mailsms extends Admin_Controller
 
             }
         }
-
         echo json_encode($result);
     }
 
@@ -92,7 +84,7 @@ class Mailsms extends Admin_Controller
             $array = array();
             foreach ($birthStudents as $student_key => $student_value) {
 
-                $array[] = array('name' => $this->customlib->getFullName($student_value['firstname'], $student_value['middlename'], $student_value['lastname'], $this->sch_setting_detail->middlename, $this->sch_setting_detail->lastname), 'email' => $student_value['email']);
+                $array[] = array('name' => $student_value['firstname'] . " " . $student_value['lastname'], 'email' => $student_value['email']);
             }
             $birthDaysList['students'] = $array;
         }
@@ -107,7 +99,7 @@ class Mailsms extends Admin_Controller
 
         $data['roles']         = $this->role_model->get();
         $data['birthDaysList'] = $birthDaysList;
-        $data['sch_setting']   = $this->sch_setting_detail;
+
         $this->load->view('layout/header');
         $this->load->view('admin/mailsms/compose', $data);
         $this->load->view('layout/footer');
@@ -134,10 +126,10 @@ class Mailsms extends Admin_Controller
             $array = array();
             foreach ($birthStudents as $student_key => $student_value) {
 
-                $array[] = array('name' => $this->customlib->getFullName($student_value['firstname'], $student_value['middlename'], $student_value['lastname'], $this->sch_setting_detail->middlename, $this->sch_setting_detail->lastname),
-                    'contact_no'            => $student_value['mobileno'],
-                    'app_key'               => $student_value['app_key'],
-                );
+                $array[] = array('name' => $student_value['firstname'] . " " . $student_value['lastname'], 
+                    'contact_no' => $student_value['mobileno'],
+                    'app_key' => $student_value['app_key'],
+            );
             }
             $birthDaysList['students'] = $array;
         }
@@ -156,10 +148,10 @@ class Mailsms extends Admin_Controller
                 $carray[] = $cvalue["id"];
             }
         }
-        
+        // }
         $data['roles']         = $this->role_model->get();
         $data['birthDaysList'] = $birthDaysList;
-        $data['sch_setting']   = $this->sch_setting_detail;
+
         $this->load->view('layout/header');
         $this->load->view('admin/mailsms/compose_sms', $data);
         $this->load->view('layout/footer');
@@ -167,13 +159,15 @@ class Mailsms extends Admin_Controller
 
     public function edit($id)
     {
-        $data['title']       = 'Add Vehicle';
-        $data['id']          = $id;
-        $editvehicle         = $this->vehicle_model->get($id);
+        $data['title'] = 'Add Vehicle';
+        $data['id']    = $id;
+        $editvehicle   = $this->vehicle_model->get($id);
+
         $data['editvehicle'] = $editvehicle;
         $listVehicle         = $this->vehicle_model->get();
         $data['listVehicle'] = $listVehicle;
         $this->form_validation->set_rules('vehicle_no', $this->lang->line('vehicle_no'), 'trim|required|xss_clean');
+
         if ($this->form_validation->run() == false) {
 
             $this->load->view('layout/header');
@@ -244,7 +238,6 @@ class Mailsms extends Admin_Controller
                 'send_mail'     => $send_mail,
                 'send_sms'      => $send_sms,
                 'user_list'     => json_encode($user_array),
-                'created_at'    => date('Y-m-d H:i:s'),
             );
 
             $this->messages_model->add($data);
@@ -257,6 +250,7 @@ class Mailsms extends Admin_Controller
 
                                 $this->mailer->send_mail($user_mail_value['email'], $message_title, $message, $_FILES, $user_mail_value['guardianEmail']);
                             }
+
                         }
                     }
                 }
@@ -285,7 +279,6 @@ class Mailsms extends Admin_Controller
 
     public function send_birthday()
     {
-
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('user[]', $this->lang->line('recipient'), 'required');
         $this->form_validation->set_rules('birthday_title', $this->lang->line('title'), 'required');
@@ -312,13 +305,16 @@ class Mailsms extends Admin_Controller
                 'send_sms'   => $send_sms,
                 'group_list' => json_encode(array()),
             );
+            // $this->messages_model->add($data);
 
             $userlisting = $this->input->post('user[]');
 
             foreach ($userlisting as $users_key => $users_value) {
                 $array = array(
+
                     'email'    => $users_value,
                     'mobileno' => $users_value,
+
                 );
                 $user_array[] = $array;
             }
@@ -383,7 +379,6 @@ class Mailsms extends Admin_Controller
                 'send_mail'  => $send_mail,
                 'send_sms'   => $send_sms,
                 'group_list' => json_encode(array()),
-                'created_at' => date('Y-m-d H:i:s'),
             );
             $this->messages_model->add($data);
 
@@ -462,16 +457,14 @@ class Mailsms extends Admin_Controller
             echo json_encode(array('status' => 1, 'msg' => $data));
         }
     }
-
+ 
     public function send_group_sms()
     {
-
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('group_title', $this->lang->line('title'), 'required');
         $this->form_validation->set_rules('group_message', $this->lang->line('message'), 'required');
         $this->form_validation->set_rules('user[]', $this->lang->line('message') . " " . $this->lang->line('to'), 'required');
         $this->form_validation->set_rules('group_send_by[]', $this->lang->line('send_through'), 'required');
-        $template_id = $this->input->post('group_template_id');
         if ($this->form_validation->run()) {
             $user_array = array();
 
@@ -480,14 +473,12 @@ class Mailsms extends Admin_Controller
             $message       = $this->input->post('group_message');
             $message_title = $this->input->post('group_title');
             $data          = array(
-                'is_group'    => 1,
-                'title'       => $message_title,
-                'message'     => $message,
-                'send_mail'   => 0,
-                'send_sms'    => 1,
-                'group_list'  => json_encode(array()),
-                'created_at'  => date('Y-m-d H:i:s'),
-                'template_id' => $template_id,
+                'is_group'   => 1,
+                'title'      => $message_title,
+                'message'    => $message,
+                'send_mail'  => 0,
+                'send_sms'   => 1,
+                'group_list' => json_encode(array()),
             );
             $this->messages_model->add($data);
 
@@ -542,19 +533,21 @@ class Mailsms extends Admin_Controller
                 foreach ($user_array as $user_mail_key => $user_mail_value) {
                     if (in_array("sms", $sms_mail)) {
                         if ($user_mail_value['mobileno'] != "") {
-                            $this->smsgateway->sendSMS($user_mail_value['mobileno'],$message, $template_id,"" );
+                            $this->smsgateway->sendSMS($user_mail_value['mobileno'], "", ($message));
                         }
                     }
                     if (in_array("push", $sms_mail)) {
                         $push_array = array(
                             'title' => $message_title,
-                            'body'  => $message,
+                            'body'  => $message
                         );
                         if ($user_mail_value['app_key'] != "") {
                             $this->pushnotification->send($user_mail_value['app_key'], $push_array, "mail_sms");
                         }
                     }
+
                 }
+
             }
 
             echo json_encode(array('status' => 0, 'msg' => $this->lang->line('message_sent_successfully')));
@@ -562,6 +555,7 @@ class Mailsms extends Admin_Controller
 
             $data = array(
                 'group_title'     => form_error('group_title'),
+                
                 'group_send_by[]' => form_error('group_send_by[]'),
                 'group_message'   => form_error('group_message'),
                 'user[]'          => form_error('user[]'),
@@ -573,14 +567,11 @@ class Mailsms extends Admin_Controller
 
     public function send_birthday_sms()
     {
-     
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('user[]', $this->lang->line('recipient'), 'required');
         $this->form_validation->set_rules('birthday_title', $this->lang->line('title'), 'required');
         $this->form_validation->set_rules('birthday_message', $this->lang->line('message'), 'required');
         $this->form_validation->set_rules('birthday_send_by[]', $this->lang->line('send_through'), 'required');
-        $template_id = $this->input->post('birthday_template_id');
-
         if ($this->form_validation->run()) {
             $user_array      = array();
             $user_push_array = array();
@@ -597,34 +588,37 @@ class Mailsms extends Admin_Controller
                 'send_sms'   => 1,
                 'group_list' => json_encode(array()),
             );
-           
-            $userlisting     = $this->input->post('user[]');
+            // $this->messages_model->add($data);
 
+            $userlisting     = $this->input->post('user[]');
             $userpushlisting = $this->input->post('app-key');
 
             foreach ($userlisting as $users_key => $users_value) {
                 $array = array(
-                    
+                    'email'    => $users_value,
                     'mobileno' => $users_value,
                 );
                 $user_array[] = $array;
             }
             foreach ($userpushlisting as $user_push_key => $user_push_value) {
                 $array = array(
+
                     'app-key' => $user_push_value,
                 );
                 $user_push_array[] = $array;
             }
-      
+
             if (!empty($user_array)) {
 
                 foreach ($user_array as $user_mail_key => $user_mail_value) {
                     if (in_array("sms", $sms_mail)) {
                         if ($user_mail_value['mobileno'] != "" && $user_mail_value['mobileno'] != 0) {
-                            $this->smsgateway->sendSMS($user_mail_value['mobileno'],($message), $template_id, "");
+                            $this->smsgateway->sendSMS($user_mail_value['mobileno'], "", ($message));
                         }
                     }
+
                 }
+
             }
 
             if (!empty($user_push_array)) {
@@ -633,13 +627,15 @@ class Mailsms extends Admin_Controller
                     if (in_array("push", $sms_mail)) {
                         $push_array = array(
                             'title' => $message_title,
-                            'body'  => $message,
+                            'body'  => $message
                         );
                         if ($user_push_sms_value['app-key'] != "") {
                             $this->pushnotification->send($user_push_sms_value['app-key'], $push_array, "mail_sms");
                         }
                     }
+
                 }
+
             }
 
             echo json_encode(array('status' => 0, 'msg' => $this->lang->line('message_sent_successfully')));
@@ -649,6 +645,7 @@ class Mailsms extends Admin_Controller
                 'birthday_title'     => form_error('birthday_title'),
                 'birthday_send_by[]' => form_error('birthday_send_by[]'),
                 'birthday_message'   => form_error('birthday_message'),
+                
                 'user[]'             => form_error('user[]'),
             );
 
@@ -664,8 +661,6 @@ class Mailsms extends Admin_Controller
         $this->form_validation->set_rules('individual_message', $this->lang->line('message'), 'required');
         $this->form_validation->set_rules('user_list', $this->lang->line('recipient'), 'required');
         $this->form_validation->set_rules('individual_send_by[]', $this->lang->line('send_through'), 'required');
-        $template_id = $this->input->post('individual_template_id');
-
         if ($this->form_validation->run()) {
 
             $userlisting = json_decode($this->input->post('user_list'));
@@ -693,7 +688,6 @@ class Mailsms extends Admin_Controller
                 'send_mail'     => 0,
                 'send_sms'      => 1,
                 'user_list'     => json_encode($user_array),
-                'created_at'    => date('Y-m-d H:i:s'),
             );
 
             $this->messages_model->add($data);
@@ -704,19 +698,20 @@ class Mailsms extends Admin_Controller
 
                         if ($user_mail_value['mobileno'] != "") {
 
-                            $this->smsgateway->sendSMS($user_mail_value['mobileno'], $message,$template_id,"");
+                            $this->smsgateway->sendSMS($user_mail_value['mobileno'], "", ($message));
                         }
                     }
                     if (in_array("push", $sms_mail)) {
                         $push_array = array(
                             'title' => $message_title,
-                            'body'  => $message,
+                            'body'  => $message
                         );
                         if ($user_mail_value['app_key'] != "") {
                             $this->pushnotification->send($user_mail_value['app_key'], $push_array, "mail_sms");
                         }
                     }
                 }
+
             }
             echo json_encode(array('status' => 0, 'msg' => $this->lang->line('message_sent_successfully')));
         } else {
@@ -725,6 +720,7 @@ class Mailsms extends Admin_Controller
                 'individual_title'     => form_error('individual_title'),
                 'individual_send_by[]' => form_error('individual_send_by[]'),
                 'individual_message'   => form_error('individual_message'),
+                
                 'user_list'            => form_error('user_list'),
             );
 
@@ -742,7 +738,6 @@ class Mailsms extends Admin_Controller
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'required');
         $this->form_validation->set_rules('user[]', $this->lang->line('recipient'), 'required');
         $this->form_validation->set_rules('class_send_by[]', $this->lang->line('send_through'), 'required');
-        $template_id = $this->input->post('class_template_id');
         if ($this->form_validation->run()) {
 
             $sms_mail = $this->input->post('class_send_by');
@@ -769,13 +764,12 @@ class Mailsms extends Admin_Controller
             }
 
             $data = array(
-                'is_class'   => 1,
-                'title'      => $message_title,
-                'message'    => $message,
-                'send_mail'  => 0,
-                'send_sms'   => 1,
-                'user_list'  => json_encode($user_array),
-                'created_at' => date('Y-m-d H:i:s'),
+                'is_class'  => 1,
+                'title'     => $message_title,
+                'message'   => $message,
+                'send_mail' => 0,
+                'send_sms'  => 1,
+                'user_list' => json_encode($user_array),
             );
             $this->messages_model->add($data);
             if (!empty($user_array)) {
@@ -784,19 +778,20 @@ class Mailsms extends Admin_Controller
                     if (in_array("sms", $sms_mail)) {
                         if ($user_mail_value['mobileno'] != "") {
 
-                            $this->smsgateway->sendSMS($user_mail_value['mobileno'],$message,$template_id,"");
+                            $this->smsgateway->sendSMS($user_mail_value['mobileno'], "", ($message));
                         }
                     }
                     if (in_array("push", $sms_mail)) {
                         $push_array = array(
                             'title' => $message_title,
-                            'body'  => $message,
+                            'body'  => $message
                         );
                         if ($user_mail_value['app_key'] != "") {
                             $this->pushnotification->send($user_mail_value['app_key'], $push_array, "mail_sms");
                         }
                     }
                 }
+
             }
 
             echo json_encode(array('status' => 0, 'msg' => $this->lang->line('message_sent_successfully')));
@@ -807,6 +802,7 @@ class Mailsms extends Admin_Controller
                 'class_send_by[]' => form_error('class_send_by[]'),
                 'class_message'   => form_error('class_message'),
                 'class_id'        => form_error('class_id'),
+                
                 'user[]'          => form_error('user[]'),
             );
 
@@ -855,13 +851,12 @@ class Mailsms extends Admin_Controller
             }
 
             $data = array(
-                'is_class'   => 1,
-                'title'      => $message_title,
-                'message'    => $message,
-                'send_mail'  => $send_mail,
-                'send_sms'   => $send_sms,
-                'user_list'  => json_encode($user_array),
-                'created_at' => date('Y-m-d H:i:s'),
+                'is_class'  => 1,
+                'title'     => $message_title,
+                'message'   => $message,
+                'send_mail' => $send_mail,
+                'send_sms'  => $send_sms,
+                'user_list' => json_encode($user_array),
             );
             $this->messages_model->add($data);
             if (!empty($user_array)) {
@@ -905,7 +900,9 @@ class Mailsms extends Admin_Controller
 
         if ($this->form_validation->run() == false) {
             $msg = array(
+
                 'mobile' => form_error('mobile'),
+
             );
             $array = array('status' => 'fail', 'error' => $msg, 'message' => '');
         } else {

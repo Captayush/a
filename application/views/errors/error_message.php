@@ -76,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <header class="main-header">
             <div class="container">
                 <div class="row">
-                    <div class=""><img src="<?php echo base_url(); ?>/uploads/school_content/admin_logo/<?php $this->setting_model->getAdminlogo(); ?>" class="margin-auto" width="162" height="29"  /></div>
+                    <div class=""><img src="<?php echo base_url(); ?>/uploads/school_content/admin_logo/<?php $this->setting_model->getAdminlogo();?>" class="margin-auto" width="162" height="29"  /></div>
                 </div>
             </div>
         </header>

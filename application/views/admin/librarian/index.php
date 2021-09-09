@@ -40,7 +40,7 @@
                                         <th><?php echo $this->lang->line('phone'); ?></th>
 
 
-                                        <th class="text-right noExport"><?php echo $this->lang->line('action'); ?>
+                                        <th class="text-right no-print"><?php echo $this->lang->line('action'); ?>
                                         </th>
                                     </tr>
                                 </thead>
@@ -48,11 +48,10 @@
                                     <?php
                                     if (!empty($memberList)) {
                                         $count = 1;
-                                     
                                         foreach ($memberList as $member) {
 
                                             if ($member['member_type'] == "student") {
-                                                $name = $this->customlib->getFullName($member['firstname'],$member['middlename'],$member['lastname'],$sch_setting->middlename,$sch_setting->lastname);
+                                                $name = $member['firstname'] . " " . $member['lastname'];
                                                 $phone = $member['guardian_phone'];
                                             } else {
                                                 $email = $member['teacher_email'];

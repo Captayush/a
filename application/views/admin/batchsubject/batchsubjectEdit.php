@@ -1,4 +1,4 @@
-<?php $currency_symbol = $this->customlib->getSchoolCurrencyFormat();?>
+<?php $currency_symbol = $this->customlib->getSchoolCurrencyFormat(); ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
@@ -11,43 +11,43 @@
     <section class="content">
         <div class="row">
             <?php
-if ($this->rbac->hasPrivilege('expense', 'can_add')) {
-    ?>
+            if ($this->rbac->hasPrivilege('expense', 'can_add')) {
+                ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title">Add Batch Subject--r</h3>
                         </div><!-- /.box-header -->
-                        <form id="form1" action="<?php echo site_url('admin/batchsubject/edit/' . $batch->id) ?>"  id="batchform" name="batchform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                        <form id="form1" action="<?php echo site_url('admin/batchsubject/edit/'.$batch->id) ?>"  id="batchform" name="batchform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                             <div class="box-body">
-                                <?php if ($this->session->flashdata('msg')) {?>
+                                <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
-                                <?php }?>
+                                <?php } ?>
                                 <?php
-if (isset($error_message)) {
-        echo "<div class='alert alert-danger'>" . $error_message . "</div>";
-    }
-    ?>
+                                if (isset($error_message)) {
+                                    echo "<div class='alert alert-danger'>" . $error_message . "</div>";
+                                }
+                                ?>
                                 <?php echo $this->customlib->getCSRF(); ?>
 
-                                <input type="hidden" name="id" value="<?php echo set_value('id', $batch->id) ?>">
+<input type="hidden" name="id" value="<?php echo set_value('id',$batch->id)?>">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
 
                                     <select  id="class_id" name="class_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
-foreach ($classlist as $class) {
-        ?>
+                                        foreach ($classlist as $class) {
+                                            ?>
                                             <option value="<?php echo $class['id'] ?>"<?php
-if (set_value('class_id', $batch->class_id) == $class['id']) {
-            echo "selected=selected";
-        }
-        ?>><?php echo $class['class'] ?></option>
+                                            if (set_value('class_id',$batch->class_id) == $class['id']) {
+                                                echo "selected=selected";
+                                            }
+                                            ?>><?php echo $class['class'] ?></option>
                                                     <?php
-}
-    ?>
+                                                }
+                                                ?>
                                     </select>
                                     <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                 </div>
@@ -63,6 +63,7 @@ if (set_value('class_id', $batch->class_id) == $class['id']) {
 
                                     <select  id="batch_id" name="batch_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
+
                                     </select>
                                     <span class="text-danger"><?php echo form_error('batch_id'); ?></span>
                                 </div>
@@ -72,40 +73,42 @@ if (set_value('class_id', $batch->class_id) == $class['id']) {
                                     <select  id="subject_id" name="subject_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
-foreach ($subjectlist as $subject) {
-        ?>
+                                        foreach ($subjectlist as $subject) {
+                                            ?>
                                             <option value="<?php echo $subject['id'] ?>"<?php
-if (set_value('subject_id', $batch->subject_id) == $subject['id']) {
-            echo "selected=selected";
-        }
-        ?>><?php echo $subject['name'] ?></option>
+                                            if (set_value('subject_id',$batch->subject_id) == $subject['id']) {
+                                                echo "selected=selected";
+                                            }
+                                            ?>><?php echo $subject['name'] ?></option>
                                                     <?php
-}
-    ?>
+                                                }
+                                                ?>
                                     </select>
                                     <span class="text-danger"><?php echo form_error('subject_id'); ?></span>
                                 </div>
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="1" name="is_exam" <?php echo set_checkbox('is_exam', '1', (set_value('is_exam', $batch->is_exam) == 1) ? true : false); ?>> No Exam --r
-                                    </label>
-                                </div>
+    <label>
+      <input type="checkbox" value="1" name="is_exam" <?php echo set_checkbox('is_exam', '1', (set_value('is_exam', $batch->is_exam) == 1) ? TRUE : FALSE); ?>> No Exam --r
+    </label>
+  </div>
                             </div><!-- /.box-body -->
+
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
                             </div>
                         </form>
                     </div>
+
                 </div><!--/.col (right) -->
                 <!-- left column -->
-            <?php }?>
+            <?php } ?>
             <div class="col-md-<?php
-if ($this->rbac->hasPrivilege('expense', 'can_add')) {
-    echo "8";
-} else {
-    echo "12";
-}
-?>">
+            if ($this->rbac->hasPrivilege('expense', 'can_add')) {
+                echo "8";
+            } else {
+                echo "12";
+            }
+            ?>">
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
@@ -123,81 +126,112 @@ if ($this->rbac->hasPrivilege('expense', 'can_add')) {
                                         <th><?php echo $this->lang->line('section'); ?></th>
                                         <th>Batch --r</th>
                                         <th><?php echo $this->lang->line('subject'); ?></th>
+
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-foreach ($batchlist as $eachbatch) {
-    ?>
+                                    foreach ($batchlist as $eachbatch) {
+                                        ?>
                                         <tr>
                                             <td class="mailbox-name">
                                                 <a href="#" data-toggle="popover" class="detail_popover"><?php echo $eachbatch->class; ?></a>
+
+
                                             </td>
                                             <td class="mailbox-name">
                                                 <?php echo $eachbatch->section; ?>
+
+
                                             </td>
                                             <td class="mailbox-name">
                                                 <?php echo $eachbatch->name; ?>
+
+
                                             </td>
+
+
                                             <td class="mailbox-name">
+
                                                 <ul class="liststyle1">
                                                     <?php
-foreach ($eachbatch->batch_subjects as $batchsubject_key => $batchsubject_value) {
-        ?>
+                                                    foreach ($eachbatch->batch_subjects as $batchsubject_key => $batchsubject_value) {
+                                                        ?>
                                                         <li> <i class="fa fa-file"></i>
                                                             <?php echo $batchsubject_value->subject_name; ?> &nbsp;&nbsp;
-                                                            <?php if ($this->rbac->hasPrivilege('fees_master', 'can_edit')) {?>
+                                                            <?php if ($this->rbac->hasPrivilege('fees_master', 'can_edit')) { ?>
                                                                 <a href="<?php echo base_url(); ?>admin/batchsubject/edit/<?php echo $batchsubject_value->id ?>"   data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                                     <i class="fa fa-pencil"></i>
                                                                 </a>&nbsp;
                                                                 <?php
-}
-        if ($this->rbac->hasPrivilege('fees_master', 'can_delete')) {
-            ?>
+                                                            }
+                                                            if ($this->rbac->hasPrivilege('fees_master', 'can_delete')) {
+                                                                ?>
                                                                 <a href="<?php echo base_url(); ?>admin/batchsubject/delete/<?php echo $batchsubject_value->id ?>" data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                                     <i class="fa fa-remove"></i>
                                                                 </a>
-                                                            <?php }?>
+                                                            <?php } ?>
+
                                                         </li>
+
                                                         <?php
-}
-    ?>
+                                                    }
+                                                    ?>
                                                 </ul>
                                             </td>
+
                                             <td class="mailbox-date pull-right">
-                                                <?php if ($this->rbac->hasPrivilege('fees_master', 'can_delete')) {?>
+
+                                                <?php if ($this->rbac->hasPrivilege('fees_master', 'can_delete')) { ?>
                                                     <a href="<?php echo base_url(); ?>admin/batchsubject/deletegrp/<?php echo $eachbatch->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>
                                                     </a>
-                                                <?php }?>
+                                                <?php } ?>
+
                                             </td>
                                         </tr>
                                         <?php
-}
-?>
+                                    }
+                                    ?>
 
                                 </tbody>
                             </table><!-- /.table -->
+
+
+
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>
             </div><!--/.col (left) -->
+
         </div>
         <div class="row">
+            <!-- left column -->
+
+            <!-- right column -->
             <div class="col-md-12">
 
             </div><!--/.col (right) -->
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+
+
+
+
 <script type="text/javascript">
+
+
     $(document).ready(function () {
-        var class_id = '<?php echo set_value('class_id', $batch->class_id) ?>';
+
+        var class_id = '<?php echo set_value('class_id',$batch->class_id) ?>';
         var section_id = '<?php echo set_value('section_id', $batch->section_id) ?>';
         var batch_id = '<?php echo set_value('batch_id', $batch->batch_id) ?>';
+
         getSectionByClass(class_id, section_id);
-        getBatchStudents(section_id, batch_id);
+        getBatchStudents(section_id,batch_id);
+
         $(document).on('change', '#class_id', function (e) {
             $('#section_id').html("");
             var class_id = $(this).val();
@@ -208,12 +242,15 @@ foreach ($eachbatch->batch_subjects as $batchsubject_key => $batchsubject_value)
             getBatchStudents($(this).val(), 0);
         });
 
+
+
         function getSectionByClass(class_id, section_id) {
+
             if (class_id != "") {
                 $('#section_id').html("");
                 var base_url = '<?php echo base_url() ?>';
                 var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
-                $.ajax({
+                 $.ajax({
                     type: "GET",
                     url: base_url + "sections/getByClass",
                     data: {'class_id': class_id},
@@ -239,11 +276,16 @@ foreach ($eachbatch->batch_subjects as $batchsubject_key => $batchsubject_value)
             }
         }
 
+
+
         function getBatchStudents(section_id, batch_id) {
+
             if (section_id != "") {
                 $('#batch_id').html("");
                 var base_url = '<?php echo base_url() ?>';
                 var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+
+
                 $.ajax({
                     type: "POST",
                     url: base_url + "admin/batch/getByClassSection",
@@ -269,5 +311,11 @@ foreach ($eachbatch->batch_subjects as $batchsubject_key => $batchsubject_value)
                 });
             }
         }
+
+
+
+
     });
+
+
 </script>

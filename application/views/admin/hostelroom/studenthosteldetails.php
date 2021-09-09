@@ -87,7 +87,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                     </div>
 
-                    <form role="form" action="<?php echo site_url('admin/hostelroom/searchvalidation') ?>" method="post" class="" id="class_search_form" >
+                    <form role="form" action="<?php echo site_url('admin/hostelroom/studenthosteldetails') ?>" method="post" class="">
                         <div class="box-body row">
 
                             <?php echo $this->customlib->getCSRF(); ?>
@@ -106,7 +106,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         }
                                         ?>
                                     </select>
-                                   <span class="text-danger" id="error_class_id"></span>
+                                    <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                 </div>
                             </div> 
                             <div class="col-sm-4 col-md-4">
@@ -115,7 +115,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <select  id="section_id" name="section_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     </select>
-                                   <span class="text-danger" id="error_section_id"></span>
+                                    <span class="text-danger"><?php echo form_error('section_id'); ?></span>
                                 </div>  
                             </div>
                             <div class="col-sm-4 col-md-4">
@@ -138,42 +138,70 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </div>
                         </div> 
                     </form>
+              
 
+            <div class="">
+             <div class="box-header ptbnull"></div>   
+                <div class="box-header ptbnull">
+                    <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo form_error('student'); ?> <?php echo $this->lang->line('student') . " " . $this->lang->line('hostel') . " " . $this->lang->line('report'); ?></h3>
+                </div>
+                <div class="box-body table-responsive">
+                    <div class="download_label"><?php echo $this->lang->line('student') . " " . $this->lang->line('hostel') . " " . $this->lang->line('report')."<br>";$this->customlib->get_postmessage(); ?></div>
+                    <table class="table table-striped table-bordered table-hover example">
+                        <thead>
+                            <tr>
+                                <th><?php echo $this->lang->line('class') . " - " . $this->lang->line('section'); ?></th>
+                                <th><?php echo $this->lang->line('admission_no'); ?></th>
+                                <th><?php echo $this->lang->line('student_name'); ?></th>
+                                <th><?php echo $this->lang->line('mobile_no'); ?></th>
+                                <th><?php echo $this->lang->line('guardian_phone'); ?></th>
 
-                    <div class="">
-                        <div class="box-header ptbnull"></div>   
-                        <div class="box-header ptbnull">
-                            <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo form_error('student'); ?> <?php echo $this->lang->line('student') . " " . $this->lang->line('hostel') . " " . $this->lang->line('report'); ?></h3>
-                        </div>
-                        <div class="box-body table-responsive">
-                            <div class="download_label"><?php echo $this->lang->line('student') . " " . $this->lang->line('hostel') . " " . $this->lang->line('report') . "<br>";
-                                        $this->customlib->get_postmessage();
-                                        ?></div>
+                                <th><?php echo $this->lang->line('hostel_name'); ?></th>
+                                <th><?php echo $this->lang->line('room_no_name'); ?></th>
+                                <th><?php echo $this->lang->line('room_type'); ?></th>
+                                <th class="text-right"><?php echo $this->lang->line('cost_per_bed') . " (" . $currency_symbol . ")"; ?></th>
 
-                                    <table class="table table-striped table-bordered table-hover hostel-list" data-export-title="<?php echo $this->lang->line('student') . " " . $this->lang->line('hostel') . " " . $this->lang->line('report') . "<br>";
-                                        $this->customlib->get_postmessage();
-                                        ?>" data-target="parent-list">
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if (empty($resultlist)) {
+                                ?>
 
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('class') . " - " . $this->lang->line('section'); ?></th>
-                                            <th><?php echo $this->lang->line('admission_no'); ?></th>
-                                            <th><?php echo $this->lang->line('student_name'); ?></th>
-                                            <th><?php echo $this->lang->line('mobile_no'); ?></th>
-                                            <th><?php echo $this->lang->line('guardian_phone'); ?></th>
-                                            <th><?php echo $this->lang->line('hostel_name'); ?></th>
-                                            <th><?php echo $this->lang->line('room_no_name'); ?></th>
-                                            <th><?php echo $this->lang->line('room_type'); ?></th>
-                                            <th class="text-right"><?php echo $this->lang->line('cost_per_bed') . " (" . $currency_symbol . ")"; ?></th>
-                                        </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div><!--./box box-primary-->
-            </div><!--./col-md-12-->  
+                                <?php
+                            } else {
+                                $count = 1;
+                                foreach ($resultlist as $student) {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $student['class'] . " - " . $student["section"]; ?></td>
+                                        <td><?php echo $student['admission_no']; ?></td>
+                                        <td>
+                                            <a href="<?php echo base_url(); ?>student/view/<?php echo $student['sid']; ?>"><?php echo $student['firstname'] . " " . $student['lastname']; ?>
+                                            </a>
+                                        </td>
+                                        <td><?php echo $student['mobileno']; ?></td>
+                                        <td><?php echo $student['guardian_phone']; ?></td>
+                                        <td><?php echo $student['hostel_name']; ?></td>
+
+                                        <td><?php echo $student['room_no']; ?></td>
+
+                                        <td><?php echo $student['room_type']; ?></td>
+
+                                        <td class="text-right"><?php echo $student['cost_per_bed']; ?></td>
+
+                                    </tr>
+                                    <?php
+                                    $count++;
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          </div><!--./box box-primary-->
+         </div><!--./col-md-12-->  
         </div>   
 </div>  
 </section>
@@ -230,52 +258,4 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             });
         });
     });
-</script>
-<script>
-$(document).ready(function() {
-     emptyDatatable('hostel-list','data');
-
-});
-</script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-$(document).on('submit','#class_search_form',function(e){
-   e.preventDefault(); // avoid to execute the actual submit of the form.
-    var $this = $(this).find("button[type=submit]:focus");  
-   
-    var form = $(this);
-    var url = form.attr('action');
-    var form_data = form.serializeArray();
-    $.ajax({
-           url: url,
-           type: "POST",
-           dataType:'JSON',
-           data: form_data, // serializes the form's elements.
-              beforeSend: function () {
-                $('[id^=error]').html("");
-                $this.button('loading');
-               },
-              success: function(response) { // your success handler
-              
-                if(!response.status){
-                    $.each(response.error, function(key, value) {
-                    $('#error_' + key).html(value);
-                    });
-                }else{
-                 
-                   initDatatable('hostel-list','admin/hostelroom/dthostellist',response.params);
-                }
-              },
-             error: function() { // your error handler
-                 $this.button('reset');
-             },
-             complete: function() {
-             $this.button('reset');
-             }
-         });
-
-        });
-
-    });
-  
 </script>

@@ -19,7 +19,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('edit_expense'); ?></h3>
+                            <h3 class="box-title"><?php //echo $title;      ?><?php echo $this->lang->line('edit_expense'); ?></h3>
                         </div><!-- /.box-header -->
                         <!-- form start -->
 
@@ -112,13 +112,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     <div class="box-body">
                         <div class="mailbox-messages table-responsive">
                             <div class="download_label"><?php echo $this->lang->line('expense_list'); ?></div>
-                            <table class="table table-striped table-bordered table-hover expense-list" data-export-title="<?php echo $this->lang->line('expense_list'); ?>">
+                            <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('name'); ?>
                                         </th>
-                                          <th><?php echo $this->lang->line('description'); ?>
-                                            </th>
                                         <th><?php echo $this->lang->line('invoice_no'); ?>
                                         </th>
                                         <th><?php echo $this->lang->line('date'); ?>
@@ -131,6 +129,70 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                    if (empty($expenselist)) {
+                                        ?>
+
+                                        <?php
+                                    } else {
+                                        foreach ($expenselist as $expense) {
+                                            ?>
+                                            <tr>
+                                                <td class="mailbox-name">
+                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $expense['name'] ?></a>
+
+                                                    <div class="fee_detail_popover" style="display: none">
+                                                        <?php
+                                                        if ($expense['note'] == "") {
+                                                            ?>
+                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <p class="text text-info"><?php echo $expense['note']; ?></p>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                                <td class="mailbox-name"><?php echo $expense["invoice_no"]; ?></td>
+                                                <td class="mailbox-name">
+                                                    <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($expense['date'])) ?></td>
+
+                                                <td class="mailbox-name">
+                                                    <?php echo $expense['exp_category'] ?>
+
+                                                </td>
+                                                <td class="mailbox-name"><?php echo ($currency_symbol . $expense['amount']); ?></td>
+                                                <td class="mailbox-date pull-right">
+                                                    <?php if ($expense['documents']) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/expense/download/<?php echo $expense['documents'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('download'); ?>">
+                                                            <i class="fa fa-download"></i>
+                                                        </a>
+                                                    <?php }
+                                                    ?>
+                                                    <?php
+                                                    if ($this->rbac->hasPrivilege('expense', 'can_edit')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/expense/edit/<?php echo $expense['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <?php
+                                                    }
+                                                    if ($this->rbac->hasPrivilege('expense', 'can_delete')) {
+                                                        ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/expense/delete/<?php echo $expense['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
                                 </tbody>
                             </table><!-- /.table -->
 
@@ -151,13 +213,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 </div><!-- /.content-wrapper -->
 
 <script type="text/javascript">
-
+  
 </script>
 <script>
-    ( function ( $ ) {
-    'use strict';
     $(document).ready(function () {
-        initDatatable('expense-list','admin/expense/getexpenselist',[],[],100);
+        $('.detail_popover').popover({
+            placement: 'right',
+            trigger: 'hover',
+            container: 'body',
+            html: true,
+            content: function () {
+                return $(this).closest('td').find('.fee_detail_popover').html();
+            }
+        });
+
     });
-} ( jQuery ) )
-</script>n
+</script>

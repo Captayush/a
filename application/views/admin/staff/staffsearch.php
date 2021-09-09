@@ -163,30 +163,31 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     }
                                                     ?>
                                                     <td class="pull-right">
-            <?php  
-             $userdata = $this->customlib->getUserData();
-             if (($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view')) || ($userdata["id"] == $staff["id"])) { ?>
+            <?php if ($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view')) { ?>
                                                             <a data-placement="left" href="<?php echo base_url(); ?>admin/staff/profile/<?php echo $staff['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
                                                                 <i class="fa fa-reorder"></i>
                                                             </a>
-            <?php }  
+            <?php } if ($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view')) {
 
                   $a = 0 ;
           $sessionData = $this->session->userdata('admin');
+            $userdata = $this->customlib->getUserData();
         
          $staff["user_type"];
-          if(($staff["user_type"] == "Super Admin") && $userdata["id"] == $staff["id"]){
+          if(($staff["user_type"] == "Super Admin") && $userdata["email"] == $staff["email"]){
             $a = 1 ;  
-            }elseif(($this->rbac->hasPrivilege('staff', 'can_edit')) && ($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view'))){
-                $a = 1;
+            }elseif(($staff["user_type"] != "Super Admin")){
+                $a = 1 ;
+            }else{
+                $a = 0;
             }
             if($a == 1){
-             
+               if ($this->rbac->hasPrivilege('staff', 'can_edit')) {
              ?>
                                                             <a data-placement="left" href="<?php echo base_url(); ?>admin/staff/edit/<?php echo $staff['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                                 <i class="fa fa-pencil"></i>
                                                             </a>
-                                                <?php  } ?>
+                                                <?php } } }?>
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -207,7 +208,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         } else {
                                             $count = 1;
                                             foreach ($resultlist as $staff) {
-												
                                                 ?>
                                                 <div class="col-lg-3 col-md-4 col-sm-6 img_div_modal">
                                                     <div class="staffinfo-box">
@@ -216,12 +216,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             if (!empty($staff["image"])) {
                                                                 $image = $staff["image"];
                                                             } else {
-																if($staff['gender']=='Male'){
-																	$image = "default_male.jpg";
-																}else{
-																	$image = "default_female.jpg";
-																}
-                                                                
+                                                                $image = "no_image.png";
                                                             }
                                                             ?>
                                                             <img  src="<?php echo base_url() . "uploads/staff_images/" . $image ?>" />
@@ -240,25 +235,27 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <div class="overlay3">
                                                             <div class="stafficons">
            
-             <?php 
-             $userdata = $this->customlib->getUserData();
-             if (($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view')) || ($userdata["id"] == $staff["id"])) { ?>
+            <?php if ($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view')) { ?>
                                                                     <a title="<?php echo $this->lang->line('show'); ?>"  href="<?php echo base_url() . "admin/staff/profile/" . $staff["id"] ?>"><i class="fa fa-navicon"></i></a>
-            <?php } 
-                                                 $a = 0 ;
-          $sessionData = $this->session->userdata('admin');
+            <?php } ?>
+                                                <?php if ($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view')) {
+            $a = 0 ;
+            $sessionData = $this->session->userdata('admin');
+            $userdata = $this->customlib->getUserData();
         
          $staff["user_type"];
-          if(($staff["user_type"] == "Super Admin") && $userdata["id"] == $staff["id"]){
+          if(($staff["user_type"] == "Super Admin") && $userdata["email"] == $staff["email"]){
             $a = 1 ;  
-            }elseif(($this->rbac->hasPrivilege('staff', 'can_edit')) && ($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view'))){
-                $a = 1;
+            }elseif(($staff["user_type"] != "Super Admin")){
+                $a = 1 ;
+            }else{
+                $a = 0;
             }
-            if($a == 1){
-             
-             ?>
+                            if($a == 1){                                
+                if ($this->rbac->hasPrivilege('staff', 'can_edit')) {
+                                                 ?>
                                                        <a title="<?php echo $this->lang->line('edit'); ?>"  href="<?php echo base_url() . "admin/staff/edit/" . $staff["id"] ?>"><i class=" fa fa-pencil"></i></a>
-                                                <?php } ?>
+                                                <?php } } }?>
                                                             </div>
                                                         </div>
                                                     </div>

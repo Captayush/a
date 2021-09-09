@@ -34,7 +34,7 @@ class Feetype extends Admin_Controller {
                 'description' => $this->input->post('description'),
             );
             $this->feetype_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/feetype/index');
         }
         $feegroup_result = $this->feetype_model->get();
@@ -84,7 +84,7 @@ class Feetype extends Admin_Controller {
                 'description' => $this->input->post('description'),
             );
             $this->feetype_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('update_message').'</div>');
             redirect('admin/feetype/index');
         }
     }

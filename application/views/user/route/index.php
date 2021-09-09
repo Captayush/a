@@ -34,7 +34,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <tbody>
                                     <?php if (empty($listroute)) {
                                         ?>
-                                       
+                                        <tr>
+                                            <td colspan="12" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
+                                        </tr>
                                         <?php
                                     } else {
                                         $count = 1;
@@ -44,29 +46,34 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <tr>
                                                 <td class="mailbox-name"> <?php echo $data['route_title'] ?></td>
 
-                                                <td class="mailbox-date pull-right"> 
+                                                <td class=""> 
                                                     <?php
                                                     if (empty($data['vehicles'])) {
                                                         ?>
                                                         <span class="text text-danger"><?php echo $this->lang->line('no_vehicle_allotted_to_this_route'); ?></span>
                                                         <?php
                                                     } else {
-                                                        echo "<ul class='routelist'>";
+                                                        echo "<ul class='nav nav-list'>";
                                                         foreach ($data['vehicles'] as $vec_key => $vec_value) {
                                                             ?>
                                                 <li>
                                                     <a href="#">
-                                                        <i class="fa fa-bus"></i><?php
+                                                        <i class="fa fa-bus"></i>&nbsp;&nbsp;
+
+                                                        <?php
                                                         echo $vec_value->vehicle_no;
                                                         if ($vec_value->vec_route_id == $student_route) {
-                                                            echo " <span class='label label-info bolds'>".$this->lang->line('assigned')."</span>";
-                                                            ?> <span class="label label-info bolds" id="bus_allot" data-vehrouteid="<?php
+                                                            echo " <span class='label label-info'>".$this->lang->line('assigned')."</span>";
+                                                            ?>
+                                                            <span class="label label-info" id="bus_allot" data-vehrouteid="<?php
                                                             echo
                                                             $vec_value->vec_route_id;
                                                             ?>"><i class="fa fa-eye"></i> <?php echo $this->lang->line('click')." ".$this->lang->line('to')." ".$this->lang->line('view');?></span>
                                                                   <?php
                                                               }
                                                               ?>
+
+                                                        <br>
                                                     </a>
                                                 </li>
                                                 <?php
@@ -130,11 +137,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             dataType: "json",
             success: function (response) {
                 console.log(response);
-                var route="<?php echo $this->lang->line('route')?>";
                 var data = "";
                 data += '<div class="row">';
                 data += '<div class="col-md-12">';
-                data += '<div class="lead text text-center"><b>'+route+': ' + response.route_title + '</b></div>';
+                data += '<div class="lead text text-center"><b>Route: ' + response.route_title + '</b></div>';
                 data += '<table class="table table-striped table-hover">';
                 data += '<tbody>';
                 data += '<tr>';

@@ -8,8 +8,8 @@
     <!-- Main content -->
     <section class="content"> 
         <?php $this->load->view('reports/_inventory'); ?>
-
-</div>   
+      
+    </div>   
 </div>  
 </section>
 </div>

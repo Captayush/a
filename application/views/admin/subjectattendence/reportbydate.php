@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<div class="content-wrapper" style="min-height: 946px;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -59,123 +59,123 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">
 
-                                            <?php echo $this->lang->line('date'); ?>
+                                            <?php echo $this->lang->line('date');?>
                                         </label><small class="req"> *</small>
                                         <input  name="date" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('date'); ?>" readonly="readonly"/>
                                         <span class="text-danger"><?php echo form_error('date'); ?></span>
                                     </div>
                                 </div>
-                                <div class="col-md-12">   
-                                    <div class="form-group">
-                                        <button type="submit" name="search" value="search" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
-                                    </div>   
-                                </div>  
+                             <div class="col-md-12">   
+                                <div class="form-group">
+                                    <button type="submit" name="search" value="search" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                                </div>   
+                              </div>  
                             </div>
                         </div>
-
+                        
                     </form>
-
-                    <?php
-                    if (isset($resultlist)) {
-                        ?>
-                        <div class="">
-                            <div class="box-header ptbnull"></div>
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list'); ?></h3>
-                                <div class="box-tools pull-right">
-                                </div>
+               
+                <?php
+                if (isset($resultlist)) {
+                    ?>
+                    <div class="">
+                        <div class="box-header ptbnull"></div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list'); ?></h3>
+                            <div class="box-tools pull-right">
                             </div>
-                            <div class="box-body">
-                              <div class="table-responsive">   
-                                <?php
-                                if (!empty($resultlist)) {
+                        </div>
+                        <div class="box-body">
+                            <?php
+                            if (!empty($resultlist)) {
 
-                                    $student_result = (json_decode($resultlist));
-                                    ?>
-                                    <table class="table table-hover table stripped">
-                                        <thead>
-                                            <tr>
-                                                <th>Student</th>
-                                                <?php
-                                                foreach ($student_result->subjects as $subject_key => $subject_value) {
-                                                    ?>
-                                                    <th class="text text-center">
-                                                        <?php
-                                                        $sub_code = ($subject_value->code != "") ? " (" . $subject_value->code . ")" : "";
-                                                        echo $subject_value->name . $sub_code;
-                                                        echo "<br/>";
-                                                        echo $subject_value->time_from . " - " . $subject_value->time_to;
-                                                        ?>
-
-                                                    </th>
-                                                    <?php
-                                                }
-                                                ?>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                $student_result = (json_decode($resultlist));
+                                ?>
+                                <table class="table table-hover table stripped">
+                                    <thead>
+                                        <tr>
+                                            <th>Student</th>
                                             <?php
-                                            foreach ($student_result->student_record as $students_key => $students_value) {
+                                            foreach ($student_result->subjects as $subject_key => $subject_value) {
+                                                
                                                 ?>
-                                                <tr>
-                                                    <td><?php echo $this->customlib->getFullName($students_value->firstname,$students_value->middlename,$students_value->lastname,$sch_setting->middlename,$sch_setting->lastname) . " (" . $students_value->admission_no . ")"; ?></td>
+                                                <th class="text text-center">
                                                     <?php
-                                                    for ($i = 1; $i <= count($student_result->subjects); $i++) {
-                                                        ?>
-                                                        <td class="text text-center"><?php
-                                                            if ($students_value->{"attendence_type_id_" . $i} == "") {
-                                                                ?>
-                                                                <span class="label label-danger">N/A</span>
-                                                                <?php
-                                                            } else {
-                                                                echo getattendencetype($attendencetypeslist, $students_value->{"attendence_type_id_" . $i});
-                                                            }
-                                                            ?></td>
-                                                        <?php
-                                                    }
+                            $sub_code=($subject_value->code != "") ? " (" . $subject_value->code . ")":"";
+                echo $subject_value->name . $sub_code;
+                                                    echo "<br/>";
+                                                    echo $subject_value->time_from . " - " . $subject_value->time_to;
                                                     ?>
-                                                </tr>
+
+                                                </th>
                                                 <?php
                                             }
                                             ?>
-                                        </tbody>
-                                    </table>
-                                    <?php
-                                } else {
-                                    ?>
-                                    <div class="alert alert-info"><?php echo $this->lang->line('admited_alert') ?></div>
-                                    <?php
-                                }
-                                ?>
-                            </div>
-                         </div>    
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($student_result->student_record as $students_key => $students_value) {
+
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $students_value->firstname." ".$students_value->lastname." (".$students_value->admission_no.")"; ?></td>
+                                                <?php
+                                                for ($i = 1; $i <= count($student_result->subjects); $i++) {
+                                                    ?>
+                                                    <td class="text text-center"><?php
+                                                    if ($students_value->{"attendence_type_id_" . $i} == "") {
+                                                        ?>
+                                                            <span class="label label-danger">N/A</span>
+                                                            <?php
+                                                        } else {
+                                                            echo getattendencetype($attendencetypeslist, $students_value->{"attendence_type_id_" . $i});
+                                                        }
+                                                        ?></td>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                            </tr>
+                                                    <?php
+                                                }
+                                                ?>
+                                    </tbody>
+                                </table>
+                                        <?php
+                                    } else {
+                                        ?>
+                                <div class="alert alert-info"><?php echo $this->lang->line('admited_alert')?></div>
+        <?php
+    }
+    ?>
                         </div>
-                    </div>  
-                    <?php
-                }
-                ?>
+                    </div>
+                   </div>  
+                            <?php
+                        }
+                        ?>
                 </section>
             </div>
 
-            <?php
+                <?php
 
-            function getattendencetype($attendencetype, $find) {
+                function getattendencetype($attendencetype, $find) {
 
-                foreach ($attendencetype as $attendencetype_key => $attendencetype_value) {
-                    if ($attendencetype_value['id'] == $find) {
-                        return $attendencetype_value['key_value'];
+                    foreach ($attendencetype as $attendencetype_key => $attendencetype_value) {
+                        if ($attendencetype_value['id'] == $find) {
+                            return $attendencetype_value['key_value'];
+                        }
                     }
+                    return false;
                 }
-                return false;
-            }
-            ?>
+                ?>
 
             <script type="text/javascript">
 
                 $(document).ready(function () {
 
-
+                  
 
 
                     var section_id_post = "<?php echo set_value('section_id'); ?>";

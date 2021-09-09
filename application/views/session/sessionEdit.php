@@ -44,8 +44,8 @@
                     </div>
                     <div class="box-body">
                         <?php if ($this->session->flashdata('list_msg')) { ?>
-                            <?php echo $this->session->flashdata('list_msg') ?>
-                        <?php } ?>
+    <?php echo $this->session->flashdata('list_msg') ?>
+<?php } ?>
                         <div class="mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('session_list'); ?></div>
                             <table class="table table-striped table-bordered table-hover example">
@@ -64,8 +64,8 @@
                                         <tr>
                                             <td class="mailbox-name"><?php echo $session['session'] ?></td>
                                             <td class="mailbox-name"><?php
-                                                if ($session['active'] != 0) {
-                                                    ?>
+                                            if ($session['active'] != 0) {
+                                            ?>
                                                     <span class="label bg-green"><?php echo $this->lang->line('active'); ?></span>
                                                     <?php
                                                 } else {
@@ -73,7 +73,7 @@
                                                 }
                                                 ?></td>
                                             <td class="mailbox-date pull-right">
-                                                <?php if ($this->rbac->hasPrivilege('session_setting', 'can_edit')) { ?>
+    <?php if ($this->rbac->hasPrivilege('session_setting', 'can_edit')) { ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>sessions/edit/<?php echo $session['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
@@ -85,7 +85,7 @@
                                                     ?>"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>
                                                     </a>
-                                                <?php } ?>
+                                        <?php } ?>
                                             </td>
                                         </tr>
                                         <?php

@@ -6,7 +6,11 @@
         <meta http-equiv="X-UA-Compatible" content="" />
         <title>Smart School : School Management System by QDOCS</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-        <meta name="theme-color" content="#424242" />       
+        <meta name="theme-color" content="#424242" />
+        <!-- <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" /> -->
+        <!-- <link href="css/ss-main.css" rel="stylesheet"/> -->
+        <!-- <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/idcard.css"> -->
     </head>
     <body>
         <table cellpadding="0" cellspacing="0" width="100%">
@@ -15,9 +19,11 @@
                 $i = 0;
                 ?>
                 <tr> 
-                    <?php                    
+                    <?php
+                    // echo "<pre>"; print_r($resultlist); echo "</pre>";
                     foreach ($resultlist as $list) {
-                        $i++;                         
+                        $i++;
+                        //echo "<pre>"; print_r($list); echo "</pre>"; 
                         ?>
                         <td valign="top" width="32%" style="padding: 3px;">
                             <table cellpadding="0" cellspacing="0" width="100%" class="tc-container" style="background: #efefef;">
@@ -29,7 +35,7 @@
                                     <td valign="top">
                                         <div class="studenttop" style="background: <?php echo $idcardlist[0]->header_color; ?>">
                                             <div class="sttext1"><img src="<?php echo base_url('uploads/student_id_card/logo/') ?><?php echo $idcardlist[0]->logo; ?>" width="30" height="30" />
-                                                <?php echo $idcardlist[0]->school_name; ?></div>
+        <?php echo $idcardlist[0]->school_name; ?></div>
                                         </div>
                                     </td>
                                 </tr>
@@ -55,47 +61,47 @@
                                                 <ul class="stlist">
                                                     <?php
                                                     if ($idcardlist[0]->enable_admission_no == 1) {
-                                                        echo "<li>" . $this->lang->line('admission_no') . "<span>" . $list[0]['admission_no'] . " </span></li>";
+                                                        echo "<li>".$this->lang->line('admission_no')."<span>" . $list[0]['admission_no'] . " </span></li>";
                                                     }
                                                     ?>
                                                     <?php
                                                     if ($idcardlist[0]->enable_student_name == 1) {
-                                                        echo "<li>" . $this->lang->line('student') . " " . $this->lang->line('name') . "<span>" . $list[0]['firstname'] . ' ' . $list[0]['lastname'] . "</span></li>";
+                                                        echo "<li>".$this->lang->line('student')." ".$this->lang->line('name')."<span>" . $list[0]['firstname'] . ' ' . $list[0]['lastname'] . "</span></li>";
                                                     }
                                                     ?>
                                                     <?php
                                                     if ($idcardlist[0]->enable_class == 1) {
-                                                        echo "<li>" . $this->lang->line('class') . "<span>" . $list[0]['class'] . " - " . $list[0]['section'] . "</span></li>";
+                                                        echo "<li>".$this->lang->line('class')."<span>" . $list[0]['class'] . " - " . $list[0]['section'] . "</span></li>";
                                                     }
                                                     ?>
                                                     <?php
                                                     if ($idcardlist[0]->enable_fathers_name == 1) {
-                                                        echo "<li>" . $this->lang->line('fathers') . " " . $this->lang->line('name') . "<span>" . $list[0]['father_name'] . " </span></li>";
+                                                        echo "<li>".$this->lang->line('fathers')." ".$this->lang->line('name')."<span>" . $list[0]['father_name'] . " </span></li>";
                                                     }
                                                     ?>
                                                     <?php
                                                     if ($idcardlist[0]->enable_mothers_name == 1) {
-                                                        echo "<li>" . $this->lang->line('mothers') . " " . $this->lang->line('name') . "<span>" . $list[0]['mother_name'] . " </span></li>";
+                                                        echo "<li>".$this->lang->line('mothers')." ".$this->lang->line('name')."<span>" . $list[0]['mother_name'] . " </span></li>";
                                                     }
                                                     ?>
                                                     <?php
                                                     if ($idcardlist[0]->enable_address == 1) {
-                                                        echo "<li>" . $this->lang->line('address') . "<span>" . $list[0]['permanent_address'] . " </span></li>";
+                                                        echo "<li>".$this->lang->line('address')."<span>" . $list[0]['permanent_address'] . " </span></li>";
                                                     }
                                                     ?>
                                                     <?php
                                                     if ($idcardlist[0]->enable_phone == 1) {
-                                                        echo "<li>" . $this->lang->line('phone') . "<span>" . $list[0]['father_phone'] . " </span></li>";
+                                                        echo "<li>".$this->lang->line('phone')."<span>" . $list[0]['father_phone'] . " </span></li>";
                                                     }
                                                     ?>
                                                     <?php
                                                     if ($idcardlist[0]->enable_dob == 1) {
-                                                        echo "<li>" . $this->lang->line('d_o_b') . "<span>" . date('d-m-Y', strtotime($list[0]['dob'])) . " </span></li>";
+                                                        echo "<li>".$this->lang->line('d_o_b')."<span>" . date('d-m-Y', strtotime($list[0]['dob'])) . " </span></li>";
                                                     }
                                                     ?>
                                                     <?php
                                                     if ($idcardlist[0]->enable_blood_group == 1) {
-                                                        echo "<li class='stred'>" . $this->lang->line('blood') . " " . $this->lang->line('group') . "<span> A+ </span></li>";
+                                                        echo "<li class='stred'>".$this->lang->line('blood')." ".$this->lang->line('group')."<span> A+ </span></li>";
                                                     }
                                                     ?>
                                                 </ul>
@@ -108,16 +114,15 @@
                                 </tr>
                             </table>
                         </td>
-                        <?php if ($i == 3) { ?>
+        <?php if ($i == 3) { ?>
                         </tr>
                         <tr> 
-                            <?php
-                            $i = 0;
+                            <?php $i = 0;
                         }
                         ?> 
-                    <?php } ?>
+                <?php } ?>
                 </tr>
-            <?php } ?>
+<?php } ?>
         </table>
     </body>  
 </html>

@@ -38,25 +38,27 @@
     </section>
 </div>
 <script type="application/javascript">
-<?php
+     <?php
 $language1 = $this->customlib->getLanguage();
-$language_name1 = $language1["short_code"];
+ $language_name1 = $language1["short_code"];
+ 
 
 
-
-$langcode = array('ar', 'de', 'en', 'es', 'fr', 'it', 'nl', 'pl', 'pt', 'ru', 'se', 'tr');
-
-if (in_array($language_name1, $langcode)) {
-    ?>
-        $(document).ready(function () {
-        $("#my-calendar").zabuto_calendar({language: "<?php echo $language_name1; ?>"});
-        });
-<?php }
+$langcode = array('ar','de','en','es','fr','it','nl','pl','pt','ru','se','tr'); 
+  
+if (in_array($language_name1, $langcode)) 
+  { 
+ ?>
+$(document).ready(function () {
+        $("#my-calendar").zabuto_calendar({language: "<?php echo $language_name1;?>"});
+    });
+ <?php } 
+ 
 ?> 
  
      
 
-</script> 
+    </script> 
 <script type="application/javascript">
     $(document).ready(function () {
     var  base_url = '<?php echo base_url() ?>';
