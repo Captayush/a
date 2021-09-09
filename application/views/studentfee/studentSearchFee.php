@@ -161,9 +161,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                     <td><?php echo $student['admission_no']; ?></td>
                                                     <td><?php echo $student['roll_no']; ?></td>
-                                                    <td><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname);?></td>
+                                                    <td><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname);?></td>										
 													<td>
                                                         <?php if(!empty($student['dob'])){ echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob']));  } ?></td>
+														
                                                         <td>
                                                             <?php 
                                                             echo  $this->customlib->dateformat($student['due_date']); ?></td>

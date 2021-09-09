@@ -1,3 +1,23 @@
+<div id="myModal" class="modal fade in" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header modal-header-small">
+        <button type="button" class="close closebtnmodal" data-dismiss="modal">&times;</button>
+        <h4 ><?php echo $this->lang->line('online_admission').' '.$this->lang->line('terms_conditions') ?></h4> 
+      </div>
+       <form action="<?php echo base_url().'welcome/checkadmissionstatus' ?>" method="post" class="onlineform" id="checkstatusform">
+          <div class="modal-body">            
+			<?php echo $online_admission_conditions; ?>
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="modalclosebtn btn  mdbtn" data-dismiss="modal"><?php echo $this->lang->line('close');  ?></button>            
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencysymbolwithalignment();
 if ($this->session->flashdata('msg')) {
@@ -551,7 +571,7 @@ if ($online_admission_payment == 'yes' && $paid_status == 0 && $status == "") {?
                         <div class="row btnprint" >
                             <div class="col-md-12">
                                 <div class="form-group pull-right">
-                                <input type="checkbox" id="checkterm" name="checkterm" > <a href="<?php echo base_url() . 'page/online-admission-terms-conditions'; ?>" target="_blank" ><?php echo $this->lang->line('i_agree_to_the_terms_and_conditions'); ?></a>
+                                <input type="checkbox" id="checkterm" name="checkterm" > <a href="#myModal" data-toggle="modal" data-target="#myModal"><?php echo $this->lang->line('i_agree_to_the_terms_and_conditions'); ?></a>
                                 <span class="text-danger" id="termerror"></span>
                                    <button type="submit" id="paybtn" class="btn btn-danger" > <?php echo $this->lang->line('pay') ?>  <?php echo $currency_symbol . $online_admission_amount ?></button>
                                 </div>
@@ -561,7 +581,7 @@ if ($online_admission_payment == 'yes' && $paid_status == 0 && $status == "") {?
                         <div class="row btnprint">
                             <div class="col-md-12">
                                 <div class="form-group pull-right">
-                                <input type="checkbox" id="checkterm" name="checkterm"> <a href="<?php echo base_url() . 'page/online-admission-terms-conditions'; ?>" target="_blank" ><?php echo $this->lang->line('i_agree_to_the_terms_and_conditions'); ?></a>
+                                <input type="checkbox" id="checkterm" name="checkterm"> <a href="#myModal" data-toggle="modal" data-target="#myModal"><?php echo $this->lang->line('i_agree_to_the_terms_and_conditions'); ?></a>
                                     <span class="text-danger" id="termerror"></span>
                                     <button type="submit" class="btn btn-danger" id="submitbtn"><?php echo $this->lang->line('submit'); ?></button>
                                 </div>
