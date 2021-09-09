@@ -27,30 +27,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <i class="fa fa-arrow-left"></i> <?php echo $this->lang->line('back'); ?></a>
                                 </div>
                             </div>
-
                         </div>
-
                     </div><!--./box-header-->
-
                     <div class="box-body" style="padding-top:0;">
                         <div class="row">
-                            <?php echo $this->session->flashdata('error') ?>
                             <div class="col-md-12">
                                 <div class="sfborder">
                                     <div class="col-md-2">
-                                        <?php if($sch_setting->student_photo){
-                                            ?>
-                                            <img class="profile-user-img img-responsive img-circle" src="<?php
-if (!empty($student['image'])) {
-        echo base_url() . $student['image'];
-    } else {
-        echo base_url() . "uploads/student_images/no_image.png";
-    }
-    ?>" alt="User profile picture">
-                                            <?php
-                                        }?>
-                                        
-                                    </div> 
+                                        <img class="profile-user-img img-responsive img-circle" src="<?php echo base_url() . $student['image'] ?>" alt="User profile picture">
+                                    </div>
 
                                     <div class="col-md-10">
                                         <div class="row">
@@ -59,7 +44,7 @@ if (!empty($student['image'])) {
                                                 <tbody>
                                                     <tr>
                                                         <th class="bozero"><?php echo $this->lang->line('name'); ?></th>
-                                                        <td class="bozero"><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname); ?></td>
+                                                        <td class="bozero"><?php echo $student['firstname'] . " " . $student['lastname'] ?></td>
 
                                                         <th class="bozero"><?php echo $this->lang->line('class_section'); ?></th>
                                                         <td class="bozero"><?php echo $student['class'] . " (" . $student['section'] . ")" ?> </td>
@@ -68,12 +53,12 @@ if (!empty($student['image'])) {
                                                         <?php if ($sch_setting->father_name) { ?>
                                                             <th><?php echo $this->lang->line('father_name'); ?></th>
                                                             <td><?php echo $student['father_name']; ?></td>
-                                                        <?php }
+                                                        <?php } 
                                                         ?>
-
-                                                        <th><?php echo $this->lang->line('admission_no'); ?></th>
-                                                        <td><?php echo $student['admission_no']; ?></td>
-
+                                                        
+                                                            <th><?php echo $this->lang->line('admission_no'); ?></th>
+                                                            <td><?php echo $student['admission_no']; ?></td>
+                                                    
                                                     </tr>
                                                     <tr>
                                                         <?php if ($sch_setting->mobile_no) { ?>
@@ -116,18 +101,6 @@ if (!empty($student['image'])) {
                             </div>
                         </div>
 
-                                   <div class="row no-print">
-                            <div class="col-md-12 mb10">
-                                <a href="javascript:void(0)" class="btn btn-sm btn-info printSelected" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.."><i class="fa fa-print"></i> <?php echo $this->lang->line('print_selected'); ?> </a>
-								
-								<?php  if ($payment_method) { ?>
-                                <button type="button" class="btn btn-sm btn-warning collectSelected" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('please_wait')?>"><i class="fa fa-money"></i> <?php echo $this->lang->line('pay') . " " . $this->lang->line('selected') ?></button>
-								<?php } ?>
-								
-                                <span class="pull-right"><?php echo $this->lang->line('date'); ?>: <?php echo date($this->customlib->getSchoolDateFormat()); ?></span>
-                            </div>
-                        </div>
-
                         <div class="table-responsive">
                             <div class="download_label"><?php echo $this->lang->line('student_fees') . ": " . $student['firstname'] . " " . $student['lastname'] ?> </div>
                             <?php
@@ -142,7 +115,6 @@ if (!empty($student['image'])) {
                                 <table class="table table-striped table-bordered table-hover  table-fixed-header">
                                     <thead>
                                         <tr>
-                                             <th style="width: 10px"><input type="checkbox" id="select_all"/></th>
                                             <th align="left"><?php echo $this->lang->line('fees_group'); ?></th>
                                             <th align="left"><?php echo $this->lang->line('fees_code'); ?></th>
                                             <th align="left" class="text text-center"><?php echo $this->lang->line('due_date'); ?></th>
@@ -166,7 +138,6 @@ if (!empty($student['image'])) {
                                         $total_fine_amount = "0";
                                         $total_discount_amount = "0";
                                         $total_balance_amount = "0";
-										$total_fees_fine_amount = 0;
 
                                         foreach ($student_due_fee as $key => $fee) {
 
@@ -188,10 +159,6 @@ if (!empty($student['image'])) {
                                                         $fee_fine = $fee_fine + $fee_deposits_value->amount_fine;
                                                     }
                                                 }
-												if (($fee_value->due_date != "0000-00-00" && $fee_value->due_date != NULL) && (strtotime($fee_value->due_date) < strtotime(date('Y-m-d')))) {
-                                           
-                                                $total_fees_fine_amount=$total_fees_fine_amount+$fee_value->fine_amount;
-                                           }
                                                 $total_amount = $total_amount + $fee_value->amount;
                                                 $total_discount_amount = $total_discount_amount + $fee_discount;
                                                 $total_deposite_amount = $total_deposite_amount + $fee_paid;
@@ -210,9 +177,8 @@ if (!empty($student['image'])) {
                                                         <?php
                                                     }
                                                     ?>
-                                                        <td><input class="checkbox" type="checkbox" name="fee_checkbox" data-fee_master_id="<?php echo $fee_value->id ?>" data-fee_session_group_id="<?php echo $fee_value->fee_session_group_id ?>" data-fee_groups_feetype_id="<?php echo $fee_value->fee_groups_feetype_id ?>"> </td>
                                                     <td align="left"><?php
-                                                        echo $fee_value->name . " (" . $fee_value->type . ")";
+                                                        echo $fee_value->name;
                                                         ?></td>
                                                     <td align="left"><?php echo $fee_value->code; ?></td>
                                                     <td align="left" class="text text-center">
@@ -229,6 +195,7 @@ if (!empty($student['image'])) {
                                                     <td align="left" class="text text-left">
                                                         <?php
                                                         if ($feetype_balance == 0) {
+                                                            
                                                             ?><span class="label label-success"><?php echo $this->lang->line('paid'); ?></span><?php
                                                         } else if (!empty($fee_value->amount_detail)) {
                                                             ?><span class="label label-warning"><?php echo $this->lang->line('partial'); ?></span><?php
@@ -238,18 +205,9 @@ if (!empty($student['image'])) {
                                                             ?>
 
                                                     </td>
-                                                    <td class="text text-right"><?php echo $fee_value->amount;
- if (($fee_value->due_date != "0000-00-00" && $fee_value->due_date != NULL) && (strtotime($fee_value->due_date) < strtotime(date('Y-m-d')))) {
-    ?>
-<span class="text text-danger"><?php echo " + ".($fee_value->fine_amount); ?></span>
-    <?php
-          
-            }
-
-                                                     ?></td>
+                                                    <td class="text text-right"><?php echo $fee_value->amount; ?></td>
 
                                                     <td class="text text-left"></td>
-
                                                     <td class="text text-left"></td>
                                                     <td class="text text-left"></td>
                                                     <td class="text text-right"><?php
@@ -279,7 +237,7 @@ if (!empty($student['image'])) {
 
                                                                 if ($feetype_balance > 0) {
                                                                     ?>
-                                                                    <a href="<?php echo base_url() . 'students/payment/pay/' . $fee->id . "/" . $fee_value->fee_groups_feetype_id . "/" . $student['id'] ?>" class="btn btn-xs btn-primary pull-right myCollectFeeBtn"><i class="fa fa-money"></i>  <?php echo $this->lang->line('pay'); ?></a>
+                                                                    <a href="<?php echo base_url() . 'students/payment/pay/' . $fee->id . "/" . $fee_value->fee_groups_feetype_id . "/" . $student['id'] ?>" class="btn btn-xs btn-primary pull-right myCollectFeeBtn"><i class="fa fa-money"></i> Pay</a>
                                                                     <?php
                                                                 }
                                                             }
@@ -306,7 +264,6 @@ if (!empty($student['image'])) {
                                                             <td align="left"></td>
                                                             <td align="left"></td>
                                                             <td align="left"></td>
-                                                            <td align="left"></td>
                                                             <td class="text-right"><img src="<?php echo base_url(); ?>backend/images/table-arrow.png" alt="" /></td>
                                                             <td class="text text-left">
 
@@ -328,7 +285,8 @@ if (!empty($student['image'])) {
 
 
                                                             </td>
-                                                            <td class="text text-left"><?php echo $this->lang->line(strtolower($fee_deposits_value->payment_mode)); ?></td>
+                                                            <td class="text text-left"><?php 
+                                                        echo $this->lang->line(strtolower($fee_deposits_value->payment_mode)); ?></td>
                                                             <td class="text text-left">
 
                                                                 <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($fee_deposits_value->date)); ?>
@@ -340,7 +298,6 @@ if (!empty($student['image'])) {
 
 
                                                             <td class="text text-right">
- <button  class="btn btn-xs btn-default printDoc" data-main_invoice="<?php echo $fee_value->student_fees_deposite_id ?>" data-sub_invoice="<?php echo $fee_deposits_value->inv_no ?>"  title="<?php echo $this->lang->line('print'); ?>"><i class="fa fa-print"></i> </button>
 
                                                             </td>
                                                         </tr>
@@ -397,7 +354,6 @@ if (!empty($student['image'])) {
                                                     <td class="text text-left"></td>
                                                     <td class="text text-left"></td>
                                                     <td class="text text-left"></td>
-                                                    <td class="text text-left"></td>
                                                     <td  class="text text-right">
                                                         <?php
                                                         $alot_fee_discount = $alot_fee_discount;
@@ -415,12 +371,11 @@ if (!empty($student['image'])) {
                                         <tr class="box box-solid total-bg">
                                             <td align="left"></td>
                                             <td align="left"></td>
-                                            <td align="left"></td>
                                             <td align="left"></td>   
                                             <td align="left" class="text text-left" ><?php echo $this->lang->line('grand_total'); ?></td>
                                             <td class="text text-right"><?php
-                                            echo $currency_symbol . number_format($total_amount, 2, '.', '')."<span class='text text-danger'>+".  number_format($total_fees_fine_amount, 2, '.', '')."</span>";
-                                            ?></td>
+                                                echo ($currency_symbol . number_format($total_amount, 2, '.', ''));
+                                                ?></td>
                                             <td class="text text-left"></td>
                                             <td class="text text-left"></td>
                                             <td class="text text-left"></td>
@@ -456,184 +411,3 @@ if (!empty($student['image'])) {
     </section>
 
 </div>
-
-
-<div id="listCollectionModal" class="modal fade">
-    <div class="modal-dialog">
-        <form action="<?php echo site_url('students/payment/grouppay'); ?>" method="POST" id="collect_fee_group">
-            <div class="modal-content">
-<!-- //================ -->
- <input  type="hidden" class="form-control" id="group_std_id" name="student_session_id" value="<?php echo $student["student_session_id"]; ?>" readonly="readonly"/>
-<input  type="hidden" class="form-control" id="group_parent_app_key" name="parent_app_key" value="<?php echo $student['parent_app_key'] ?>" readonly="readonly"/>
-<input  type="hidden" class="form-control" id="group_guardian_phone" name="guardian_phone" value="<?php echo $student['guardian_phone'] ?>" readonly="readonly"/>
-<input  type="hidden" class="form-control" id="group_guardian_email" name="guardian_email" value="<?php echo $student['guardian_email'] ?>" readonly="readonly"/>
-<!-- //================ -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><?php echo $this->lang->line('pay') . " " . $this->lang->line('fees'); ?></h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-            
-            </div>
-        </form>
-    </div>
-</div>
-
-
-
-<script type="text/javascript">
-     $(document).on('click', '.printDoc', function () {
-            var main_invoice = $(this).data('main_invoice');
-            var sub_invoice = $(this).data('sub_invoice');
-            var student_session_id = '<?php echo $student['student_session_id'] ?>';
-            $.ajax({
-                url: base_url+'user/user/printFeesByName',
-                type: 'post',
-                data: {'student_session_id': student_session_id, 'main_invoice': main_invoice, 'sub_invoice': sub_invoice},
-                success: function (response) {
-                    Popup(response);
-                }
-            });
-        });
-
-       $("#select_all").change(function () {  //"select all" change 
-        $('input:checkbox').not(this).prop('checked', this.checked);
-        
-    });
-
-         $(document).ready(function () {
-         $('#listCollectionModal').modal({
-            backdrop: 'static',
-            keyboard: false,
-            show: false
-        });
-
-        $(document).on('click', '.printSelected', function () {
-            var print_btn=$(this);
-            var array_to_print = [];
-            $.each($("input[name='fee_checkbox']:checked"), function () {
-                var fee_session_group_id = $(this).data('fee_session_group_id');
-                var fee_master_id = $(this).data('fee_master_id');
-                var fee_groups_feetype_id = $(this).data('fee_groups_feetype_id');
-                item = {};
-                item ["fee_session_group_id"] = fee_session_group_id;
-                item ["fee_master_id"] = fee_master_id;
-                item ["fee_groups_feetype_id"] = fee_groups_feetype_id;
-
-                array_to_print.push(item);
-            });
-            if (array_to_print.length === 0) {
-                errorMsg("<?php echo $this->lang->line('please_select_record'); ?>");
-            } else {
-                $.ajax({
-                    url: '<?php echo site_url("user/user/printFeesByGroupArray") ?>',
-                    type: 'post',
-                    data: {'data': JSON.stringify(array_to_print)},
-                     beforeSend: function () {
-                print_btn.button('loading');
-            },
-                    success: function (response) {
-                        Popup(response);
-                    },
-                    error: function (xhr) { // if error occured
-                print_btn.button('reset');
-                errorMsg("<?php echo $this->lang->line('error_occured').", ".$this->lang->line('please_try_again')?>");
-
-            },
-            complete: function () {
-                print_btn.button('reset');
-            }
-                });
-            }
-        });
-  $(document).on('click', '.collectSelected', function () {
-            var $this = $(this);
-            var array_to_collect_fees = [];
-            var select_count=0;
-            $.each($("input[name='fee_checkbox']:checked"), function () {
-                var fee_session_group_id = $(this).data('fee_session_group_id');
-                var fee_master_id = $(this).data('fee_master_id');
-                var fee_groups_feetype_id = $(this).data('fee_groups_feetype_id');
-                item = {};
-                item ["fee_session_group_id"] = fee_session_group_id;
-                item ["fee_master_id"] = fee_master_id;
-                item ["fee_groups_feetype_id"] = fee_groups_feetype_id;
-
-                array_to_collect_fees.push(item);
-                select_count++;
-            });
-           
-            if(select_count > 0){
-                $.ajax({
-                type: 'POST',
-                url: base_url + "user/user/getcollectfee",
-                data: {'data': JSON.stringify(array_to_collect_fees)},
-                dataType: "JSON",
-                beforeSend: function () { 
-                    $this.button('loading');
-                },
-                success: function (data) {
-
-                    $("#listCollectionModal .modal-body").html(data.view);
-                 
-                    $("#listCollectionModal").modal('show');
-                    $this.button('reset');
-                },
-                error: function (xhr) { // if error occured
-                    alert("Error occured.please try again");
-
-                },
-                complete: function () {
-                    $this.button('reset');
-                }
-            }); 
-            }else{
-                errorMsg('<?php echo $this->lang->line('please_select_record')?>');
-               
-            }
-            
-
-        });
-
-        });
-
-
-
-
-    var base_url = '<?php echo base_url() ?>';
-
-    function Popup(data, winload = false)
-    {
-        var frame1 = $('<iframe />').attr("id", "printDiv");
-        frame1[0].name = "frame1";
-        frame1.css({"position": "absolute", "top": "-1000000px"});
-        $("body").append(frame1);
-        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
-        frameDoc.document.open();
-        //Create a new HTML document.
-        frameDoc.document.write('<html>');
-        frameDoc.document.write('<head>');
-        frameDoc.document.write('<title></title>');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/bootstrap/css/bootstrap.min.css">');
-        frameDoc.document.write('</head>');
-        frameDoc.document.write('<body>');
-        frameDoc.document.write(data);
-        frameDoc.document.write('</body>');
-        frameDoc.document.write('</html>');
-        frameDoc.document.close();
-        setTimeout(function () {
-        document.getElementById('printDiv').contentWindow.focus();
-        document.getElementById('printDiv').contentWindow.print();
-        $("#printDiv", top.document).remove();
-            if (winload) {
-                window.location.reload(true);
-            }
-        }, 500);
-
-
-        return true;
-    }
-
-</script>

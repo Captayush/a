@@ -4,31 +4,38 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Pushnotification {
+class Pushnotification
+{
 
     public $CI;
-    //com.qdocs.smartschool
-    public $API_ACCESS_KEY = "AAAAkGeJt3E:APA91bEITzLONxgN9bFDgpvZTgXdqCe23JVcC_96cfHiLJzMiN-oOO1lc15OULp1pUxH0uHljFnTX72b2ELQazuFNTjt3dK-flPO_iDUXnSEFjFlHJQW2r2mF4SuzkaL0wJPE-6UealO";
-    public $fcmUrl = "https://fcm.googleapis.com/fcm/send";
 
-    public function __construct() {
+	//com.qdocs.smartschool
+    public $API_ACCESS_KEY = "AAAAkGeJt3E:APA91bEITzLONxgN9bFDgpvZTgXdqCe23JVcC_96cfHiLJzMiN-oOO1lc15OULp1pUxH0uHljFnTX72b2ELQazuFNTjt3dK-flPO_iDUXnSEFjFlHJQW2r2mF4SuzkaL0wJPE-6UealO";
+    public $fcmUrl         = "https://fcm.googleapis.com/fcm/send";
+
+    public function __construct()
+    {
         $this->CI = &get_instance();
+
     }
 
-    public function send($tokens, $msg, $action = "") {
+    public function send($tokens, $msg, $action = "")
+    {
 
-
+        
         $notificationData = [
-            'title' => $msg['title'],
-            'body' => $msg['body'],
+            'title'  => $msg['title'],
+            'body'   => $msg['body'],
             'action' => $action,
-            'sound' => 'mySound',
+            'sound'  => 'mySound',
         ];
 
         $fcmNotification = [
-            'to' => $tokens, //single token
+
+            'to'          => $tokens, //single token
             'collapseKey' => "{$tokens}",
-            'data' => $notificationData,
+            'data'        => $notificationData,
+
         ];
         $headers = [
             'Authorization: key=' . $this->API_ACCESS_KEY,
@@ -46,6 +53,7 @@ class Pushnotification {
         curl_close($ch);
 
         return true;
+
     }
 
 }

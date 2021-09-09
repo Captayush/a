@@ -145,7 +145,9 @@
                                                 }
                                                 if ($this->rbac->hasPrivilege('class', 'can_delete')) {
                                                     ?>  
-                                               <a data-placement="left" href="<?php echo base_url(); ?>classes/delete/<?php echo $vehroute->id; ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('deleting_class'); ?>');">
+                                                    <a data-placement="left" href="<?php echo base_url(); ?>classes/delete/<?php echo $vehroute->id; ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
                                                 <?php } ?>
                                             </td>
                                         </tr>

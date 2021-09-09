@@ -3,7 +3,7 @@
         display: none;
     }
 </style>
-
+ 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -44,7 +44,7 @@
                                             ?>
 
 
-                         <!--input autofocus="" name="account_type" class="ac_type" id="input-type-student" value="<?php echo $role_value['id']; ?>" type="radio" /-->
+                 <!--input autofocus="" name="account_type" class="ac_type" id="input-type-student" value="<?php echo $role_value['id']; ?>" type="radio" /-->
                                             <option value="<?php echo $role_value['id']; ?>"><?php echo $role_value['name'] ?></option>
 
                                             <?php echo $role_value['name']; ?>
@@ -67,22 +67,22 @@
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     </select>
                                     <span class="text-danger"><?php echo form_error('Items'); ?></span>
-
+ 
                                 </div>
                                 <!-- <div class="clearfix"></div> -->
                                 <div class="form-group col-md-4 col-sm-4">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('issue_by'); ?></label><small class="req"> *</small>
-
-                                    <select class="form-control " name="issue_by">
-                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                        <?php
-                                        foreach ($staff as $key => $value) {
-                                            ?>
-                                            <option value="<?php echo $value['name'] . ' (' . $value['employee_id'] . ')'; ?>"><?php echo $value['name'] . ' (' . $value['employee_id'] . ')'; ?></option> 
-                                            <?php
-                                        }
+                                  
+                                   <select class="form-control " name="issue_by">
+                                       <option value=""><?php echo $this->lang->line('select');?></option>
+                                       <?php 
+                                       foreach ($staff as $key => $value) {
+                                           ?>
+                                              <option value="<?php echo $value['name'].' ('.$value['employee_id'].')';?>"><?php echo $value['name'].' ('.$value['employee_id'].')';?></option> 
+                                           <?php 
+                                       }
                                         ?>
-                                    </select>
+                                   </select>
                                     <span class="text-danger"><?php echo form_error('issue_by'); ?></span>
 
                                 </div>
@@ -182,7 +182,7 @@
 
 <script type="text/javascript">
 
-
+    
     var base_url = '<?php echo base_url() ?>';
     function populateItem(item_id_post, item_category_id_post) {
         if (item_category_id_post != "") {
@@ -263,7 +263,7 @@
                     if (data.usertype == "admin") {
                         name = obj.username;
                     } else {
-                        name = obj.name + " " + obj.surname + " (" + obj.employee_id + ")";
+                        name = obj.name+" "+obj.surname+" ("+obj.employee_id+")";
 
                     }
                     div_data += "<option value=" + obj.id + ">" + name + "</option>";

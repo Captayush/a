@@ -8,7 +8,6 @@ class Route extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model("classteacher_model");
-         $this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
     public function index() {
@@ -43,7 +42,7 @@ class Route extends Admin_Controller {
                 'fare' => $this->input->post('fare')
             );
             $this->route_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/route/index');
         }
     }
@@ -71,7 +70,7 @@ class Route extends Admin_Controller {
                 'fare' => $this->input->post('fare')
             );
             $this->route_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('update_message').'</div>');
             redirect('admin/route/index');
         }
     }
@@ -94,7 +93,7 @@ class Route extends Admin_Controller {
         $data['classlist'] = $class;
         $userdata = $this->customlib->getUserData();
         $carray = array();
-
+        
         if (!empty($data["classlist"])) {
             foreach ($data["classlist"] as $ckey => $cvalue) {
 
@@ -102,7 +101,7 @@ class Route extends Admin_Controller {
             }
         }
 
-
+       
         $listroute = $this->route_model->listroute();
         $data['listroute'] = $listroute;
 
@@ -118,19 +117,19 @@ class Route extends Admin_Controller {
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == false) {
-            $data["resultlist"] = array();
-        } else {
-            if (isset($_POST["search"])) {
+        $data["resultlist"] = array();  
+        }else{
+        if (isset($_POST["search"])) {
 
-                $details = $this->route_model->searchTransportDetails($section_id, $class_id, $route_title, $vehicle_no);
-            } else {
+            $details = $this->route_model->searchTransportDetails($section_id, $class_id, $route_title, $vehicle_no);        
+        }else{
 
-                $details = $this->route_model->studentTransportDetails($carray);
-            }
-            $data["resultlist"] = $details;
+            $details = $this->route_model->studentTransportDetails($carray);
         }
-
-        $data['sch_setting'] = $this->sch_setting_detail;
+         $data["resultlist"] = $details;  
+        }
+       
+              
         $this->load->view("layout/header", $data);
         $this->load->view("admin/route/studentroutedetails", $data);
         $this->load->view("layout/footer", $data);

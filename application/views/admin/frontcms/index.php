@@ -1,4 +1,59 @@
+<style type="text/css">
+    .material-switch > input[type="checkbox"] {
+        display: none;   
+    }
+
+    .material-switch > label {
+        cursor: pointer;
+        height: 0px;
+        position: relative; 
+        width: 40px;  
+    }
+
+    .material-switch > label::before {
+        background: rgb(0, 0, 0);
+        box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        content: '';
+        height: 16px;
+        margin-top: -8px;
+        position:absolute;
+        opacity: 0.3;
+        transition: all 0.4s ease-in-out;
+        width: 40px;
+    }
+    .material-switch > label::after {
+        background: rgb(255, 255, 255);
+        border-radius: 16px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        content: '';
+        height: 24px;
+        left: -4px;
+        margin-top: -8px;
+        position: absolute;
+        top: -4px;
+        transition: all 0.3s ease-in-out;
+        width: 24px;
+    }
+    .material-switch > input[type="checkbox"]:checked + label::before {
+        background: inherit;
+        opacity: 0.5;
+    }
+    .material-switch > input[type="checkbox"]:checked + label::after {
+        background: inherit;
+        left: 20px;
+    }
+
+ .form-horizontal2 .control-label {
+    padding-top: 7px;
+    margin-bottom: 0;
+    text-align: left;
+}
+</style>
+
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+
     <section class="content-header">
         <h1><i class="fa fa-gears"></i> <?php echo $this->lang->line('system_settings'); ?></h1>
     </section>
@@ -6,6 +61,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
+
             <!-- left column -->
             <div class="col-md-12">
                 <!-- general form elements -->
@@ -63,6 +119,7 @@
                                             </div>
 
 
+
                                             <div class="form-group hide">
                                                 <label class="col-sm-5 control-label">Contact us Page Email --r </label>
                                                 <div class="col-sm-7">
@@ -103,13 +160,7 @@
                                                 </div>
 
                                             </div>
-											<div class="form-group">
-                                                <label class="col-sm-5 control-label"><?php echo $this->lang->line('cookie_consent'); ?></label>
-                                                <div class="col-sm-7">
-                                                    <textarea class="form-control" name="cookie_consent" rows="5"><?php echo set_value('cookie_consent', $frontcmslist->cookie_consent) ?></textarea>
-                                                    <span class="text text-danger"></span>
-                                                </div>
-                                            </div>
+
                                             <div class="form-group">
                                                 <label class="col-sm-5 control-label"><?php echo $this->lang->line('google_analytics'); ?> </label>
                                                 <div class="col-sm-7">
@@ -117,20 +168,16 @@
 
                                                     <span class="text text-danger"></span>
                                                 </div>
+
                                             </div>
-											
-											
+
 
                                         </div><!--./col-md-7-->
                                         <div class="col-md-5 col-md-offset-1 col-sm-12">
 
-                                            <div class="form-group">
-                                                <label class="col-sm-5 control-label"><?php echo $this->lang->line('whatsapp_url'); ?> </label>
-                                                <div class="col-sm-7">
-                                                    <input type="text" class="form-control" name="whatsapp_url" value="<?php echo set_value('whatsapp_url', $frontcmslist->whatsapp_url) ?>">
-                                                    <span class="text text-danger"></span>
-                                                </div>
-                                            </div>
+
+<!-- <label for="input-type"><?php //echo $this->lang->line('social_media');   ?></label>
+<hr/> -->
                                             <div class="form-group">
                                                 <label class="col-sm-5 control-label"><?php echo $this->lang->line('facebook_url'); ?> </label>
                                                 <div class="col-sm-7">
@@ -207,7 +254,6 @@
                                                             <input name="theme"  value="<?php echo $theme_key; ?>" type="radio" <?php echo set_radio('theme', $theme_key, (set_value('theme', $frontcmslist->theme) == $theme_key) ? TRUE : FALSE); ?> />
 
                                                             <img src="<?php echo base_url('backend/images/front_theme/' . $theme_value); ?>">
-                                                            <span class="radiotext"><?php echo $theme_key;?></span>
                                                         </label>
                                                     </div>
                                                     <?php
@@ -222,12 +268,12 @@
                             </div><!-- /.box-body -->
 
                             <div class="box-footer">
-                                <?php if ($this->rbac->hasPrivilege('front_cms_setting', 'can_edit')) {
+                                <?php  if($this->rbac->hasPrivilege('front_cms_setting', 'can_edit')){
                                     ?>
-                                    <button type="submit" class="btn btn-primary pull-right"> <?php echo $this->lang->line('save') ?></button>&nbsp;&nbsp;<span class="custom_loader"></span>
-                                <?php }
-                                ?>
-
+                                      <button type="submit" class="btn btn-primary pull-right"> <?php echo $this->lang->line('save')?></button>&nbsp;&nbsp;<span class="custom_loader"></span>
+                                    <?php
+                                }?>
+                              
                             </div>
                         </form>
                     </div><!-- /.box-body -->

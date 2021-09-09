@@ -1,16 +1,14 @@
-
-<?php $cookie_consent	=	$this->customlib->cookie_consent();
-if(!empty($cookie_consent)){ ?>
-<div id="cookieConsent" class="cookieConsent"> 
-    <?php echo $cookie_consent; ?> <a href="<?php echo base_url() . "page/cookie-policy" ?>" target="_blank" ></a> <a onclick="setsitecookies()" class="cookieConsentOK"><?php echo $this->lang->line('accept') ?></a>
-</div>
-<?php } ?>
-
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-sm-4">
                 <h3 class="fo-title"><?php echo $this->lang->line('follow_us'); ?></h3>
+               <!--  <p class="heading-text">Qolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibham
+                  liber tempor cum soluta nobis eleifend option congue nihil uarta decima et quinta.
+                  Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl
+                  ut aliquip ex ea commodo consequat eleifend option nihil. Investigationes demonstraverunt
+                  lectores legere me lius quod ii legunt saepius parum claram.
+                </p> -->
                 <ul class="company-social">
                     <?php $this->view('/themes/default/social_media'); ?> 
                 </ul>
@@ -114,29 +112,3 @@ if(!empty($cookie_consent)){ ?>
     </div><!--./copy-right-->
     <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
 </footer>
-<script>
-    function setsitecookies() {
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url(); ?>welcome/setsitecookies",
-            data: {},
-            success: function (data) {
-                $('.cookieConsent').hide();
-
-            }
-        });
-    }
-	
-	function check_cookie_name(name)
-    {
-        var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        if (match) {
-            console.log(match[2]);
-            $('.cookieConsent').hide();
-        }
-        else{
-           $('.cookieConsent').show();
-        }
-    }
-    check_cookie_name('sitecookies');
-</script>

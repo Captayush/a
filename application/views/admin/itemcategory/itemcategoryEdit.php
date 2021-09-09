@@ -54,64 +54,64 @@
                     <div class="box-body  ">
                         <div class="mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('item_category_list'); ?></div>
-                            <div class="table-responsive">  
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('item_category'); ?></th>
-                                            <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (empty($categorylist)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            foreach ($categorylist as $category) {
-                                                ?>
-                                                <tr>                                               
-                                                    <td class="mailbox-name">
-                                                        <a href="#" data-toggle="popover" class="detail_popover" >
-                                                            <?php echo $category['item_category'] ?>
-                                                        </a>
-
-                                                        <div class="fee_detail_popover" style="display: none">
-                                                            <?php
-                                                            if ($category['description'] == "") {
-                                                                ?>
-                                                                <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                                <?php
-                                                            } else {
-                                                                ?>
-                                                                <p class="text text-info"><?php echo $category['description']; ?></p>
-                                                                <?php
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    </td>
-                                                    <td class="mailbox-date pull-right no-print">
-                                                        <?php if ($this->rbac->hasPrivilege('item_category', 'can_edit')) { ?> 
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/itemcategory/edit/<?php echo $category['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                        <?php } if ($this->rbac->hasPrivilege('item_category', 'can_delete')) { ?> 
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/itemcategory/delete/<?php echo $category['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            $count++;
-                                        }
+                          <div class="table-responsive">  
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('item_category'); ?></th>
+                                        <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($categorylist)) {
                                         ?>
 
-                                    </tbody>
-                                </table><!-- /.table -->
-                            </div>  
+                                        <?php
+                                    } else {
+                                        $count = 1;
+                                        foreach ($categorylist as $category) {
+                                            ?>
+                                            <tr>                                               
+                                                <td class="mailbox-name">
+                                                    <a href="#" data-toggle="popover" class="detail_popover" >
+        <?php echo $category['item_category'] ?>
+                                                    </a>
+
+                                                    <div class="fee_detail_popover" style="display: none">
+                                                        <?php
+                                                        if ($category['description'] == "") {
+                                                            ?>
+                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <p class="text text-info"><?php echo $category['description']; ?></p>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </td>
+                                                <td class="mailbox-date pull-right no-print">
+        <?php if ($this->rbac->hasPrivilege('item_category', 'can_edit')) { ?> 
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/itemcategory/edit/<?php echo $category['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+        <?php } if ($this->rbac->hasPrivilege('item_category', 'can_delete')) { ?> 
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/itemcategory/delete/<?php echo $category['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+        <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
+
+                                </tbody>
+                            </table><!-- /.table -->
+                          </div>  
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>

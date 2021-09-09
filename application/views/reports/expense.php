@@ -80,17 +80,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     </section>
     <!-- Main content -->
     <section class="content">
-        <?php $this->load->view('reports/_finance'); ?>
+        <?php $this->load->view('reports/_finance');?>
         <div class="row">
             <div class="col-md-12">
                 <div class="box removeboxmius">
                     <div class="box-header ptbnull"></div>
-                    <div class="box-header with-border">
+                      <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                     </div>
 
-                    <form role="form" action="<?php echo site_url('report/searchreportvalidation') ?>" method="post" class="" id="reportform">
-                        <div class="box-body row" >
+                     <form role="form" action="<?php echo site_url('report/expense') ?>" method="post" class="">
+                        <div class="box-body row">
 
                             <?php echo $this->customlib->getCSRF(); ?>
 
@@ -98,23 +98,24 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('search') . " " . $this->lang->line('type'); ?></label>
                                     <select class="form-control" name="search_type" onchange="showdate(this.value)">
-
+                                       
                                         <?php foreach ($searchlist as $key => $search) {
                                             ?>
                                             <option value="<?php echo $key ?>" <?php
                                             if ((isset($search_type)) && ($search_type == $key)) {
 
                                                 echo "selected";
-                                            }
+
+                                                }
                                             ?>><?php echo $search ?></option>
-                                                <?php } ?>
+                                        <?php } ?>
                                     </select>
-                                    <span class="text-danger" id="error_search_type"></span>
+                                    <span class="text-danger"><?php echo form_error('search_type'); ?></span>
                                 </div>
                             </div>
-
+                               
                             <div id='date_result'>
-
+                                
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-12">
@@ -123,108 +124,98 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </div>
                         </div>
                     </form>
+             
 
-
-                    <div class="">
-                        <div class="box-header ptbnull"></div>
-                        <div class="box-header ptbnull">
-                            <h3 class="box-title titlefix"><i class="fa fa-money"></i> <?php echo $this->lang->line('expense') . " " . $this->lang->line('report'); ?></h3>
-                        </div>
-                        <div class="box-body table-responsive">
-                            <div class="download_label"><?php echo $this->lang->line('expense') . " " . $this->lang->line('report');
-                                                $this->customlib->get_postmessage();
-                                                ?></div>
-                            
-                                <table class="table table-striped table-bordered table-hover expense-list" data-export-title="<?php echo $this->lang->line('expense') . " " . $this->lang->line('report');
-                                                $this->customlib->get_postmessage();   ?>">
+            <div class="">
+                <div class="box-header ptbnull"></div>
+                <div class="box-header ptbnull">
+                    <h3 class="box-title titlefix"><i class="fa fa-money"></i> <?php echo  $this->lang->line('expense')." ".$this->lang->line('report'); ?></h3>
+                </div>
+                <div class="box-body table-responsive">
+                 <div class="download_label"><?php echo  $this->lang->line('expense')." ".$this->lang->line('report')."<br>";$this->customlib->get_postmessage(); ?></div>
+                     <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
-                                      
-                                        <th><?php echo $this->lang->line('date'); ?></th>
-                                        <th><?php echo $this->lang->line('expense_head'); ?></th>
-                                        <th><?php echo $this->lang->line('name'); ?></th>
-                                        <th><?php echo $this->lang->line('invoice_no'); ?></th>
-                                        <th class="text text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
-                                    </tr>
+                                                    <th><?php echo $this->lang->line('expense_id'); ?></th>
+                                                    <th><?php echo $this->lang->line('date'); ?></th>
+                                                    <th><?php echo $this->lang->line('expense_head'); ?></th>
+                                                    <th><?php echo $this->lang->line('name'); ?></th>
+                                                    <th><?php echo $this->lang->line('invoice_no'); ?></th>
+                                                    <th class="text text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
+                                                </tr>
                                 </thead>
-                                <tbody>
-                                </tbody>
+                               <tbody>
+                                 <?php
+                                                $count = 1;
+                                                $grand_total = 0;
+                                                if (empty($expenseList)) {
+                                                    ?>
+                                              
+                                                <?php
+                                            } else {
+                                                foreach ($expenseList as $key => $value) {
+                                                    $grand_total = $grand_total + $value['amount'];
+                                                    ?>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo $value['id']; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($value['date'])); ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $value['exp_category']; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $value['name']; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo $value['invoice_no']; ?>
+                                                        </td>
+                                                        <td class="text text-right">
+                                                            <?php echo ($value['amount']); ?>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                    $count++;
+                                                }
+                                                ?>
+                                                 <tr class="box box-solid total-bg">
+                                                <td align="left"></td>
+                                                <td align="left"></td>
+                                                <td align="left"></td>
+                                                <td align="left"></td>
+                                                <td class="text-right"><?php echo $this->lang->line('grand_total'); ?></td>
+                                                <td class="text text-right">
+                                                    <?php echo ($currency_symbol . number_format($grand_total, 2, '.', '')); ?>
+                                                </td>
+                                            </tr>
+                                                <?php
+                                            }
+                                            ?>
+                               </tbody>
                             </table>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>   
+        </div>
+      </div>
+    </div>   
 </div>  
 </section>
 </div>
 
 
 <script>
-<?php
-if ($search_type == 'period') {
-    ?>
+    <?php 
+    if($search_type=='period'){
+        ?>
 
-        $(document).ready(function () {
+          $(document).ready(function () {
             showdate('period');
-        });
+          });
 
-    <?php
-}
-?>
-
-</script>
-<script>
-$(document).ready(function() {
-     emptyDatatable('expense-list','data');
-});
-</script>  
-<script>
-$(document).ready(function() {
-    initDatatable('expense-list','report/getexpenselistbydt');
-
-});
-</script>
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-$(document).on('submit','#reportform',function(e){
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-    var $this = $(this).find("button[type=submit]:focus");  
-    var form = $(this);
-    var url = form.attr('action');
-    var form_data = form.serializeArray();
-    $.ajax({
-           url: url,
-           type: "POST",
-           dataType:'JSON',
-           data: form_data, // serializes the form's elements.
-              beforeSend: function () {
-                $('[id^=error]').html("");
-                $this.button('loading');
-                
-               },
-              success: function(response) { // your success handler
-                
-                if(!response.status){
-                    $.each(response.error, function(key, value) {
-                    $('#error_' + key).html(value);
-                    });
-                }else{
-                 
-                   initDatatable('expense-list','report/getexpenselistbydt',response.params);
-                }
-              },
-             error: function() { // your error handler
-                 $this.button('reset');
-             },
-             complete: function() {
-             $this.button('reset');
-             }
-         });
-
-});
-
-    });
-    
-</script>
+        <?php
+    }
+    ?>
+   
+    </script>

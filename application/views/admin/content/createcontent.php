@@ -6,7 +6,7 @@
             <i class="fa fa-download"></i> <?php echo $this->lang->line('download_center'); ?></h1>
 
     </section>
-
+ 
     <!-- Main content -->
     <section class="content">
         <div class="row">
@@ -38,7 +38,7 @@
 
                                     <select  id="content_type" name="content_type" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                        <?php
+                                        <?php 
                                         foreach ($ght as $key => $type) {
                                             ?>
                                             <option value="<?php echo $key; ?>" <?php if (set_value('content_type') == $key) echo "selected=selected"; ?>><?php echo $type; ?></option>
@@ -200,15 +200,9 @@
                                                     ?>
                                                 </div>
                                             </td>
-                                            <td class="mailbox-name"><?php
-                                                $type = $data['type'];
-                                                echo $this->lang->line($type);
-                                                ?></td>
-                                            <td class="mailbox-name"><?php
-                                                if ($data['date'] != '0000-00-00') {
-                                                    echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($data['date']));
-                                                }
-                                                ?></td>
+                                            <td class="mailbox-name"><?php  $type = $data['type'];
+											echo $this->lang->line($type); ?></td>
+                                            <td class="mailbox-name"><?php  if($data['date']!='0000-00-00'){ echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($data['date'])); }  ?></td>
                                             <td class="mailbox-name">
                                                 <ul class="list-unstyled">
 
@@ -221,7 +215,7 @@
                                                     }
                                                     ?>
                                                 </ul>
-                                            </td>  
+                                            </td> 
                                             <td class="mailbox-name"><?php
                                                 if ($data['is_public'] == "Yes") {
                                                     echo "ALL Classes";
@@ -258,14 +252,29 @@
 
                 </div>
             </div><!--/.col (left) -->
+
+
             <!-- right column -->
-        </div>     
+
+        </div>
+        <div class="row">
+            <!-- left column -->
+
+            <!-- right column -->
+            <div class="col-md-12">
+
+                <!-- Horizontal Form -->
+
+                <!-- general form elements disabled -->
+
+            </div><!--/.col (right) -->
+        </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 <script type="text/javascript">
     $(document).ready(function () {
-
-
+      
+        
         $("#btnreset").click(function () {
 
             $("#form1")[0].reset();
@@ -276,10 +285,24 @@
         $(document).on('change', '#class_id', function (e) {
             $('#section_id').html("");
             var class_id = $(this).val();
-            getSectionByClass(class_id, 0);
-        });
+            var base_url = '<?php echo base_url() ?>';
+            var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+            $.ajax({
+                type: "GET",
+                url: base_url + "sections/getByClass",
+                data: {'class_id': class_id},
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (i, obj)
+                    {
+                        div_data += "<option value=" + obj.section_id  + ">" + obj.section + "</option>";
+                    });
+                    $('#section_id').append(div_data);
+                }
+            });
+        }); 
         function getSectionByClass(class_id, section_id) {
-            if (class_id != "") {
+            if (class_id != "" && section_id != "") {
                 $('#section_id').html("");
                 var base_url = '<?php echo base_url() ?>';
                 var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
@@ -292,18 +315,22 @@
                         $.each(data, function (i, obj)
                         {
                             var sel = "";
-                            if (section_id == obj.section_id) {
+                            if (section_id == obj.section_id ) {
                                 sel = "selected";
                             }
-                            div_data += "<option value=" + obj.id + " " + sel + ">" + obj.section + "</option>";
+                            div_data += "<option value=" + obj.section_id  + " " + sel + ">" + obj.section + "</option>";
                         });
                         $('#section_id').append(div_data);
                     }
                 });
             }
         }
+
+
+
     });
     $(document).ready(function () {
+
         $(document).on("click", '.content_available', function (e) {
             var avai_value = $(this).val();
             if (avai_value === "student") {
@@ -314,6 +341,7 @@
 
                 } else {
                     $(this).closest("div").parents().find('.upload_content').addClass("content_disable");
+
                 }
             }
         });
@@ -330,8 +358,9 @@
             $("#class_id").prop("disabled", false);
         }
 
-    });
+    });</script>
 
+<script>
     $(document).ready(function () {
         $('.detail_popover').popover({
             placement: 'right',

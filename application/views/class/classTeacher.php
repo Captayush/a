@@ -38,7 +38,7 @@
                                         foreach ($classlist as $class_key => $class_value) {
                                             ?>
 
-                                            <option value="<?php echo $class_value["id"] ?>" <?php echo set_select('class', $class_value["id"], set_value('class')); ?>><?php echo $class_value["class"] ?></option>
+                <option value="<?php echo $class_value["id"] ?>" <?php echo set_select('class', $class_value["id"], set_value('class')); ?>><?php echo $class_value["class"] ?></option>
                                             <?php
                                         }
                                         ?>
@@ -55,7 +55,7 @@
                                         <option value=""><?php echo $this->lang->line('select') ?></option> 
                                     </select>
 
-                                    <span class="text-danger"><?php echo form_error('section'); ?></span>
+                                     <span class="text-danger"><?php echo form_error('section'); ?></span>
                                 </div>
 
                                 <div class="form-group">
@@ -67,7 +67,7 @@
                                         ?>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="teachers[]" value="<?php echo $tvalue['id'] ?>" <?php echo set_checkbox('teachers[]', $tvalue['id']); ?> ><?php echo $tvalue['name'] . " " . $tvalue['surname'] . " (" . $tvalue['employee_id'] . ")"; ?>
+                                                <input type="checkbox" name="teachers[]" value="<?php echo $tvalue['id'] ?>" <?php echo set_checkbox('teachers[]', $tvalue['id']); ?> ><?php echo $tvalue['name']." ".$tvalue['surname']." (".$tvalue['employee_id'].")"; ?>
                                             </label>
                                         </div>
                                         <?php
@@ -141,7 +141,7 @@
                                                 <?php foreach ($tlist[$i] as $key => $tsvalue) {
                                                     ?>
 
-                                                    <?php echo $tsvalue['name'] . " " . $tsvalue['surname'] . " (" . $tsvalue['employee_id'] . ")" . "<br/>"; ?>
+                                                   <?php echo $tsvalue['name']." ".$tsvalue['surname']." (".$tsvalue['employee_id'].")". "<br/>"; ?>
                                                     <input type="hidden"  name="teacherid[]" value="<?php echo $tsvalue["id"] ?>" >
                                                 <?php } ?>
                                             </td>
@@ -192,7 +192,7 @@
 
 <script type="text/javascript">
     function getSectionByClass(class_id, section_id) {
-        if (class_id != "") {
+        if (class_id != "" ) {
             $('#section_id').html("");
             var base_url = '<?php echo base_url() ?>';
             var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
@@ -215,7 +215,7 @@
                 }
             });
         }
-    }
+    } 
     $(document).ready(function () {
         $(document).on('change', '#class_id', function (e) {
             $('#section_id').html("");
@@ -239,8 +239,8 @@
         });
         var class_id = $('#class_id').val();
         var section_id = '<?php echo set_value('section') ?>';
-
-        getSectionByClass(class_id, section_id);
+      
+         getSectionByClass(class_id, section_id);
         $(document).on('change', '#feecategory_id', function (e) {
             $('#feetype_id').html("");
             var feecategory_id = $(this).val();

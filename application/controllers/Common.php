@@ -10,7 +10,6 @@ class Common extends Public_Controller
     public function __construct()
     {
         parent::__construct();
-		$this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
     public function parents()
@@ -65,7 +64,9 @@ class Common extends Public_Controller
             $parent_id              = $this->customlib->getUsersID();
             $data['studentclasses'] = $this->student_model->getParentChilds($parent_id);
         }
-		$data['sch_setting'] = $this->sch_setting_detail;
+
+        // $data['studentclasses'] = $this->studentsession_model->searchMultiClsSectionByStudent($student_detail['student_id']);
+
         $page = $this->load->view('partial/_studentSessionClasses', $data, true);
         echo json_encode(array('page' => $page));
     }

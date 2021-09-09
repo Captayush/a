@@ -9,6 +9,7 @@ Config::$serverKey = "<your server key>";
 
 // Uncomment for production environment
 // Config::$isProduction = true;
+
 // Enable sanitization
 Config::$isSanitized = true;
 
@@ -38,42 +39,42 @@ $item2_details = array(
 );
 
 // Optional
-$item_details = array($item1_details, $item2_details);
+$item_details = array ($item1_details, $item2_details);
 
 // Optional
 $billing_address = array(
-    'first_name' => "Andri",
-    'last_name' => "Litani",
-    'address' => "Mangga 20",
-    'city' => "Jakarta",
-    'postal_code' => "16602",
-    'phone' => "081122334455",
-    'country_code' => 'IDN'
+    'first_name'    => "Andri",
+    'last_name'     => "Litani",
+    'address'       => "Mangga 20",
+    'city'          => "Jakarta",
+    'postal_code'   => "16602",
+    'phone'         => "081122334455",
+    'country_code'  => 'IDN'
 );
 
 // Optional
 $shipping_address = array(
-    'first_name' => "Obet",
-    'last_name' => "Supriadi",
-    'address' => "Manggis 90",
-    'city' => "Jakarta",
-    'postal_code' => "16601",
-    'phone' => "08113366345",
-    'country_code' => 'IDN'
+    'first_name'    => "Obet",
+    'last_name'     => "Supriadi",
+    'address'       => "Manggis 90",
+    'city'          => "Jakarta",
+    'postal_code'   => "16601",
+    'phone'         => "08113366345",
+    'country_code'  => 'IDN'
 );
 
 // Optional
 $customer_details = array(
-    'first_name' => "Andri",
-    'last_name' => "Litani",
-    'email' => "andri@litani.com",
-    'phone' => "081122334455",
-    'billing_address' => $billing_address,
+    'first_name'    => "Andri",
+    'last_name'     => "Litani",
+    'email'         => "andri@litani.com",
+    'phone'         => "081122334455",
+    'billing_address'  => $billing_address,
     'shipping_address' => $shipping_address
 );
 
 // Optional, remove this to display all available payment methods
-$enable_payments = array('credit_card', 'cimb_clicks', 'mandiri_clickpay', 'echannel');
+$enable_payments = array('credit_card','cimb_clicks','mandiri_clickpay','echannel');
 
 // Fill transaction details
 $transaction = array(
@@ -84,7 +85,7 @@ $transaction = array(
 );
 
 $snapToken = Snap::getSnapToken($transaction);
-echo "snapToken = " . $snapToken;
+echo "snapToken = ".$snapToken;
 ?>
 
 <!DOCTYPE html>
@@ -96,19 +97,19 @@ echo "snapToken = " . $snapToken;
         <!-- TODO: Remove ".sandbox" from script src URL for production environment. Also input your client key in "data-client-key" -->
         <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<Set your ClientKey here>"></script>
         <script type="text/javascript">
-            document.getElementById('pay-button').onclick = function () {
+            document.getElementById('pay-button').onclick = function(){
                 // SnapToken acquired from previous step
-                snap.pay('<?php echo $snapToken ?>', {
+                snap.pay('<?php echo $snapToken?>', {
                     // Optional
-                    onSuccess: function (result) {
+                    onSuccess: function(result){
                         /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                     },
                     // Optional
-                    onPending: function (result) {
+                    onPending: function(result){
                         /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                     },
                     // Optional
-                    onError: function (result) {
+                    onError: function(result){
                         /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                     }
                 });

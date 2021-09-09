@@ -81,8 +81,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     <!-- Main content -->
     <section class="content">
         <?php $this->load->view('reports/_feescollection'); ?>
-
-</div>   
+      
+    </div>   
 </div>  
 </section>
 </div>

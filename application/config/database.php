@@ -74,10 +74,19 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
+
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'basic',
+	'database' => 'u158165289_ypsss',
+	
+
+    // 'hostname' => 'localhost',
+    // 'username' => 'makesoft_school',
+    // 'password' => 'makesoft_school@123',
+    // 'database' => 'makesoft_school',
+	
+	
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

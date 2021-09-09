@@ -26,7 +26,11 @@
                                 <a tabindex="-1" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#examconnectModal" href="#" id="examconnectModalButton" data-examGroup_id="<?php echo $examgroup->id; ?>"> <?php echo $this->lang->line('link') . " " . $this->lang->line('exams'); ?></a>
                                 <?php
                             }
-                                ?> 
+                                ?>
+                            
+
+                            
+                            
                             
                         </div>
                     </div><!-- /.box-header -->
@@ -48,18 +52,27 @@
                         <div class="divider2"></div>
                         <div class="row">
                             <div class="col-md-12">
+
+
                                 <input type="hidden" id="examgroup_id" name="examgroup_id" value="<?php echo $examgroup->id; ?>">
+
+
+
                             </div>
                         </div>
 
+
                         <div class="table-responsive mailbox-messages" id="exam_tbl" >
                             <div class="download_label"><?php echo $this->lang->line('expense_list'); ?></div>
+
                             <table class="table table-hover table-striped table-bordered loading1" id="exam_table">
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('name'); ?></th>
+
                                         <th><?php echo $this->lang->line('session') ?></th>
                                         <th><?php echo $this->lang->line('subjects') . " " . $this->lang->line('included'); ?></th>
+
                                         <th class="text text-center"><?php echo $this->lang->line('status'); ?></th>
                                             <th class="text text-center"><?php echo $this->lang->line('publish')." ".$this->lang->line('result'); ?></th>
                                         <th class=""><?php echo $this->lang->line('description') ?></th>
@@ -70,13 +83,21 @@
 
                                 </tbody>
                             </table><!-- /.table -->
+
+
+
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>
             </div><!--/.col (left) -->
+
         </div>
+
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+
+
+
 
 <div class="modal fade" id="examModal">
     <div class="modal-dialog modal-lg">
@@ -94,6 +115,9 @@
                             <input type="text" class="form-control" id="exam" name="exam">
                             <span class="text text-danger" id="exam_error"></span>
                         </div>
+
+
+
                         <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
                             <label for="exam"><?php echo $this->lang->line('session') ?></label>
                             <select  id="session_id" name="session_id" class="form-control" >
@@ -108,37 +132,34 @@ foreach ($sessionlist as $session) {
                             </select>
                             <span class="text text-danger" id="session_id_error"></span>
                         </div>
-                        <div class="clearfix"></div>                   
-                        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                            <div class="checkbox-inline">
+                        <div class="clearfix"></div>
+                   
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="1" name="is_active"> <?php echo $this->lang->line('publish'); ?>
                                 </label>
                             </div>
                         </div>
-                             <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                            <div class="checkbox-inline">
+                             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="1" name="is_publish" autocomplete="off"> <?php echo $this->lang->line('publish')." ".$this->lang->line('result'); ?>
                                 </label>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-							<label class="radio-inline"><input type="radio" value="1" name="use_exam_roll_no" checked="checked"><?php echo $this->lang->line('admit_card_roll_no') ?>  </label>
-
-							<label class="radio-inline"><input type="radio" value="0" name="use_exam_roll_no"><?php echo $this->lang->line('profile_roll_no') ?>  </label>
-
-                        </div>
                         <div class="clearfix"></div>
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label for="description"><?php echo $this->lang->line('description') ?></label>
                             <textarea class="form-control" name="description" id="description"></textarea>
+
                         </div>
                         <div class="clearfix"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Saving..."><?php echo $this->lang->line('save') ?></button>                   
+                    <button type="submit" class="btn btn-primary" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Saving..."><?php echo $this->lang->line('save') ?></button>
+                   <!--  <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('close') ?></button> -->
                 </div>
             </div>
         </form>
@@ -160,6 +181,7 @@ foreach ($sessionlist as $session) {
 
 <div id="examconnectModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
+
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -168,24 +190,32 @@ foreach ($sessionlist as $session) {
             </div>
             <div class="modal-body examconnectModalBody">
 
+
             </div>
+
         </div>
+
     </div>
 </div>
 
 <div class="delmodal modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('confirmation'); ?></h4>
-            </div> 
+            </div>
+ 
             <div class="modal-body">
+
                 <p><?php echo $this->lang->line('are_you_sure_want_to_delete')?> <b class="invoice_no"></b> <?php echo $this->lang->line('record_this_action_is_irreversible'); ?></p>
                 <p><?php echo $this->lang->line('do_you_want_to_proceed')?></p>
                 <p class="debug-url"></p>
                 <input type="hidden" name="del_itemid" class="del_itemid" value="">
+
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cancel'); ?></button>
                 <a class="btn btn-danger btn-ok"><?php echo $this->lang->line('delete'); ?></a>
@@ -196,6 +226,7 @@ foreach ($sessionlist as $session) {
 
 <div id="subjectmarkModal" class="modal fade modalmark" role="dialog">
     <div class="modal-dialog modal-xl">
+
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -206,24 +237,16 @@ foreach ($sessionlist as $session) {
             <div class="modal-body">
 
             </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div> -->
         </div>
+
     </div>
 </div>
-<div id="teacherRemarkModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-xl">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><?php echo $this->lang->line('teacher_remark') ; ?></h4>
-            </div>
 
-            <div class="modal-body">
 
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- Modal -->
 <div id="subjectModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -239,11 +262,12 @@ foreach ($sessionlist as $session) {
 
                     <input type="hidden" name="subject_id" value="0" class="subject_id">
                     <input type="hidden" name="teachersubject_id" value="0" class="teachersubject_id">
+
                     
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label><?php echo $this->lang->line('class'); ?><small class="req"> *</small></label>
+                                <label><?php echo $this->lang->line('class'); ?></label>
                                 <select autofocus="" id="class_id" name="class_id" class="form-control" >
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     <?php
@@ -276,7 +300,7 @@ if (set_value('class_id') == $class['id']) {
 
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label><?php echo $this->lang->line('session'); ?><small class="req"> *</small></label>
+                                <label><?php echo $this->lang->line('session'); ?></label>
                                 <select  id="session_id" name="session_id" class="form-control" >
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     <?php
@@ -289,6 +313,8 @@ foreach ($sessionlist as $session) {
                                 </select>
                             </div><!--./form-group-->
                         </div>
+
+
 
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -307,13 +333,18 @@ foreach ($sessionlist as $session) {
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
 </div>
+
+
 
 <!-- Modal -->
 <div id="allotStudentModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-xl">
+
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -322,6 +353,7 @@ foreach ($sessionlist as $session) {
             </div>
             <div class="modal-body">
                 <form role="form" id="allotStudentForm" action="<?php echo site_url('admin/examgroup/examstudent') ?>" method="post" >
+
                     <input type="hidden" name="exam_id" value="0" class="exam_group_class_batch_exam_id">
                     <div class="row">
                         <div class="col-sm-6">
@@ -360,15 +392,23 @@ if (set_value('class_id') == $class['id']) {
                         </div>
                     </div>
                 </form>
+
                 <div class="studentAllotForm">
 
                 </div>
             </div>
+
         </div>
+
     </div>
 </div>
 
+
+
+
 <script type="text/javascript">
+
+
     $(document).ready(function () {
         $('.delmodal').modal({
             backdrop: 'static',
@@ -377,13 +417,17 @@ if (set_value('class_id') == $class['id']) {
         })
         $('#confirm-delete').on('show.bs.modal', function (e) {
             var data = $(e.relatedTarget).data();
+
             $('.del_itemid', this).val("").val(data.id);
+
             $('.invoice_no', this).html(data.exam);
         });
+
 
         $('#confirm-delete').on('click', '.btn-ok', function (e) {
             var $modalDiv = $(e.delegateTarget);
             var id = $('.del_itemid').val();
+
 
             $.ajax({
                 type: "post",
@@ -408,18 +452,26 @@ if (set_value('class_id') == $class['id']) {
 
                 }
             });
+
+
         });
+
+
     });
+
+
 </script>
+
+
 <script type="text/javascript">
 
     var batch_subjects = "";
     var x = 1;
-    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy','M'=>'MM']) ?>';
+    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy']) ?>';
 
-    var date_format_time = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'DD', 'm' => 'MM', 'Y' => 'YYYY','M'=>'MMM']) ?>';
+    var date_format_time = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'DD', 'm' => 'MM', 'Y' => 'YYYY']) ?>';
     $(document).ready(function () {
-        $('#examconnectModal,#subjectmarkModal,#allotStudentModal,#teacherRemarkModal').modal({
+        $('#examconnectModal,#subjectmarkModal,#allotStudentModal').modal({
             backdrop: 'static',
             keyboard: false,
             show: false
@@ -431,7 +483,11 @@ if (set_value('class_id') == $class['id']) {
         });
 
         $('.datetime').datetimepicker();
+
+
+
         $('#examModalButton').click(function () {
+
             $('#examModal').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -445,6 +501,7 @@ if (set_value('class_id') == $class['id']) {
 
 
         function reset_exm_form() {
+
             var current_session = $('#current_session').val();
             console.log(current_session);
             $('#formadd')[0].reset();
@@ -479,17 +536,13 @@ if (set_value('class_id') == $class['id']) {
 
                         $("#formadd input[name=is_active]").prop('checked', true);
                     }
-                      
-$("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']").prop("checked",true);
-                        // $("#formadd input[name=use_exam_roll_no]").prop('checked', true);
-                    
                     if (data.exam.is_publish == 1) {
 
                         $("#formadd input[name=is_publish]").prop('checked', true);
                     }
 
-                    // getSectionByClass(data.exam.class_id, data.exam.class_section_id);
-                    // getBatchByClassSection(data.exam.class_section_id, data.exam.batch_id);
+                    getSectionByClass(data.exam.class_id, data.exam.class_section_id);
+                    getBatchByClassSection(data.exam.class_section_id, data.exam.batch_id);
                     $('#examModal').modal('show');
                 },
                 complete: function () {
@@ -497,6 +550,8 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                 }
             });
         });
+
+
 
         $(document).on('click', '#subjectModalButton', function (e) {
             batch_subjects = "";
@@ -522,6 +577,7 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                     var s = data.subject_page;
                     $('.subject-body').html("").html(s);
 
+
                     var tmp_row = $('#item_table');
 
                     $('.datepicker_init', tmp_row).datetimepicker({
@@ -546,12 +602,23 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
 
                 }
             });
+
         });
 
+
+
+
+
+
         function getSectionByClass(class_id, section_id) {
+
             if (class_id != 0 && class_id !== "") {
+
                 $('#section_id').html("");
+
                 var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+
+
                 $.ajax({
                     type: "POST",
                     url: base_url + "admin/batchsubject/getSectionByClass",
@@ -578,10 +645,15 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
             }
         }
 
+
+
         function getBatchByClassSection(section_id, batch_id) {
+
             if (section_id != "") {
                 $('#batch_id').html("");
+
                 var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+
 
                 $.ajax({
                     type: "POST",
@@ -609,7 +681,6 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
             }
         }
     });
-
     $('#examconnectModal').on('show.bs.modal', function (e) {
         $('.examconnectModalBody').html("");
         var examgroup_id = $(e.relatedTarget).data('examgroup_id');
@@ -635,9 +706,12 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
 
             }
         });
+
     });
 
+
     $("#formadd").submit(function (e) {
+
         e.preventDefault(); // avoid to execute the actual submit of the form.
         $("span[id$='_error']").html("");
         var form = $(this);
@@ -656,14 +730,12 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
             },
             success: function (data)
             {
-                
                 if (!data.status) {
                     $.each(data.error, function (index, value) {
                         var errorDiv = '#' + index + '_error';
                         $(errorDiv).empty().append(value);
                     });
                 } else if (data.status) {
-                  
                     $('#section_id').find('option').not(':first').remove();
                     $('#batch_id').find('option').not(':first').remove();
                     $('#formadd')[0].reset();
@@ -681,8 +753,12 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                 submit_button.button('reset');
             }
         });
+
+
     });
 </script>
+
+
 
 <script type="text/javascript">
     $('.datepicker_init').datetimepicker({
@@ -695,6 +771,7 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
     });
  
     function all_records() {
+
         $.ajax({
             type: "POST",
             url: base_url + "admin/examgroup/getexam",
@@ -718,10 +795,14 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
 
             }
         });
+
     }
 </script>
+
 <script>
+
     $(document).on('submit', '.ssaddSubject', function (e) {
+
 
         e.preventDefault();
         var form = $(this);
@@ -738,7 +819,9 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
             },
             success: function (response)
             {
-                if (response.status == 0) {
+
+                if (!response.status) {
+
                     var message = "";
                     $.each(response.error, function (index, value) {
 
@@ -750,9 +833,13 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                     all_records();
                     successMsg(response.message);
                     $('#addSubject').modal('hide');
+
+
                 }
+
             },
             error: function (xhr) { // if error occured
+
                 alert("<?php echo $this->lang->line('error_occured').", ".$this->lang->line('please_try_again')?>");
                 subsubmit_button.button('reset');
             },
@@ -760,22 +847,34 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                 subsubmit_button.button('reset');
             }
         });
+
+
     });
+
 </script>
+
+
 <script>
+
+
+
+
+
     $(document).on('click', '.add', function () {
 
         var html = '';
         html += '<tr>';
-        html += '<td width="150"><select name="subject_' + x + '" class="form-control item_unit tddm200">' + batch_subjects + '</select></td>';
-        html += '<td><div class="input-group datepicker_init"><input type="text" name="date_from_' + x + '" class="form-control"/><span class="input-group-addon" id="basic-addon2"><i class="fa fa-calendar"></i></span></div></td>';
-        html += '<td><div class="input-group datepicker_init_time"><input type="text" name="time_from' + x + '" class="form-control"/><span class="input-group-addon" id="basic-addon2"><i class="fa fa-calendar"></i></span></div></td>';
-        html += '<td><input type="text" name="duration' + x + '" class="form-control duration" value="0"/></td>';
-        html += '<td><input type="number" name="credit_hours' + x + '" class="form-control credit_hours" value="0"/></td>';
+
+        html += '<td class="col-sm-3"><select name="subject_' + x + '" class="form-control item_unit">' + batch_subjects + '</select></td>';
+        html += '<td class="col-sm-2"><div class="input-group datepicker_init"><input type="text" name="date_from_' + x + '" class="form-control"/><span class="input-group-addon" id="basic-addon2"><i class="fa fa-calendar"></i></span></div></td>';
+        html += '<td class="col-sm-2"><div class="input-group datepicker_init_time"><input type="text" name="time_from' + x + '" class="form-control"/><span class="input-group-addon" id="basic-addon2"><i class="fa fa-calendar"></i></span></div></td>';
+
+        html += '<td class="col-sm-1"><input type="text" name="duration' + x + '" class="form-control duration" value="0"/></td>';
+        html += '<td class="col-sm-1"><input type="number" name="credit_hours' + x + '" class="form-control credit_hours" value="0"/></td>';
         html += '<td class=""><input type="text" name="room_no_' + x + '" class="form-control room_no" /></td>';
         html += '<td class=""><input type="number" name="max_marks_' + x + '" class="form-control max_marks" /></td>';
         html += '<td class=""><input type="hidden" name="rows[]" value="' + x + '"> <input name="prev_row[' + x + ']" type="hidden" value="0"><input type="number" name="min_marks_' + x + '" class="form-control min_marks" /></td>';
-        html += '<td class="text-center" style="vertical-align: middle; cursor: pointer;"><span class="text text-danger remove fa fa-times mt5"></span></td></tr>';
+        html += '<td class="text-center"><span class="text text-danger remove glyphicon glyphicon-remove"></span></td></tr>';
         var tmp_row = $('#item_table').append(html);
 
         $('.datepicker_init', tmp_row).datetimepicker({
@@ -849,15 +948,27 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
             $('#error').html('<div class="alert alert-danger">' + error + '</div>');
         }
     });
+
+
 </script>
+
+
 <script type="text/javascript">
+
+
+
     $(document).on('submit', 'form#connectExamForm', function (e) {
+
 
         e.preventDefault();
         var form = $(this);
+        // var sub_connect_exam = $(this).find(':submit');
+
          var sub_connect_exam = $("button[type=submit]:focus");
+
         var formdata = form.serializeArray();
             formdata.push({ name: "action", value: sub_connect_exam.attr('name')});
+
         $.ajax({
             type: "POST",
             url: form.attr('action'),
@@ -874,9 +985,11 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                     $('.error_connection').html($('<div>', {class: 'alert alert-info', text: response.message}));
                 } else {
                     successMsg(response.message);
+
                     $('#examconnectModal').modal('hide');
                 }
                 sub_connect_exam.button('reset');
+
             },
             error: function (xhr) { // if error occured
 
@@ -886,41 +999,17 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
             },
             complete: function () {
                 sub_connect_exam.button('reset');
+
             }
         });
+
+
     });
     $(document).on('click', '#ckbCheckAll', function (e) {
+
         $(".checkBoxExam").prop('checked', $(this).prop('checked'));
     });
 
-  $(document).on('click', '.examTeacherReamark', function () {
-        var $this = $(this);
-        console.log("sdfsfs");
-        var recordid = $this.data('recordid');
-        // $('input[name=recordid]').val(recordid);
-        $.ajax({
-            type: 'POST',
-            url: baseurl + "admin/examgroup/getTeacherRemarkByExam",
-            data: {'recordid': recordid},
-            dataType: 'JSON',
-            beforeSend: function () {
-                $this.button('loading');
-            },
-            success: function (data) {
-                $('#teacherRemarkModal .modal-body').html(data.subject_page);
-                $('#teacherRemarkModal').modal('show');
-                $this.button('reset');
-            },
-            error: function (xhr) { // if error occured
-                alert("Error occured.please try again");
-                $this.button('reset');
-            },
-            complete: function () {
-                $this.button('reset');
-            }
-        });
-
-    });
 
     $(document).on('click', '.examMarksSubject', function () {
         var $this = $(this);
@@ -935,6 +1024,7 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                 $this.button('loading');
             },
             success: function (data) {
+
                 $('#subjectmarkModal .modal-body').html(data.subject_page);
                 $('#subjectmarkModal').modal('show');
                 $this.button('reset');
@@ -949,7 +1039,14 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
         });
 
     });
+
+
+
 </script>
+
+
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#subjectModal').modal({
@@ -957,8 +1054,8 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
             keyboard: false,
             show: false
         })
-    });
 
+    });
     $('#subjectModal').on('shown.bs.modal', function (e) {
         var subject_id = $(e.relatedTarget).data('subject_id');
         var subject_name = $(e.relatedTarget).data('subject_name');
@@ -968,22 +1065,20 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
         $('.subject_id').val("").val(subject_id);
         $('.teachersubject_id').val("").val(teachersubject_id);
         $(e.currentTarget).find('input[name="subject_name"]').val(subject_name);
-        var current_session = $('#current_session').val();
-        $('#session_id option[value="'+current_session+'"]').prop("selected", true);
-
     })
 
+
+
     $('#subjectModal').on('hidden.bs.modal', function () {
+        var current_session = $('#current_session_id').val();
         $('.subjectmodal_header').html("");
         $('.marksEntryForm').html("");
         $('.subject_id').val("");
         $("#searchStudentForm").find('input:text,select,textarea').val('');
         $('#section_id').find('option').not(':first').remove();
-        $('#session_id > option[selected="selected"]').removeAttr('selected');
-   
+        $('#session_id').val(current_session);
 
     });
-
     $(document).on('change', '#class_id', function (e) {
         $('#section_id').html("");
         var class_id = $(this).val();
@@ -992,11 +1087,15 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
         getSectionByClass(class_id, section_id, selector);
     });
 
+
     function getSectionByClass(class_id, section_id, selector) {
+
         if (class_id != "") {
             selector.html("");
             var base_url = '<?php echo base_url() ?>';
             var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+
+
             $.ajax({
                 type: "GET",
                 url: base_url + "sections/getByClass",
@@ -1023,7 +1122,9 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
         }
     }
 
+
     $("form#searchStudentForm").on('submit', (function (e) {
+
         e.preventDefault(); // avoid to execute the actual submit of the form.
         var form = $(this);
         var $this = form.find("button[type=submit]:focus");
@@ -1073,11 +1174,16 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
         });
     }
     ));
+
+
 </script>
+
+
 <script type="text/javascript">
     $.validator.addMethod("uniqueUserName", function (value, element, options)
     {
         var max_mark = $('#max_mark').val();
+
         //we need the validation error to appear on the correct element
         return parseFloat(value) <= parseFloat(max_mark);
     },
@@ -1088,20 +1194,11 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
 
         $(document).on('submit', 'form#assign_form1111', function (event) {
             event.preventDefault();
-            $('form#assign_form1111').validate({
-    debug: true,
-    errorClass: 'error text text-danger',
-    validClass: 'success',
-    errorElement: 'span',
-    highlight: function(element, errorClass, validClass) {
-       $(element).parent().addClass(errorClass);
-    },
-    unhighlight: function(element, errorClass, validClass) {
-      $(element).parent().removeClass(errorClass);
-    }
-});
+            $('form#assign_form1111').validate();
+
 
             $('.marksssss').each(function () {
+
                 $(this).rules("add",
                         {
                             required: true,
@@ -1137,8 +1234,11 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                             errorMsg(message);
                         } else {
                             successMsg(data.message);
+
                             $('#subjectModal').modal('hide');
                         }
+
+
                     },
                     complete: function () {
                         $this.button('reset');
@@ -1151,18 +1251,30 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
         })
 
 
-        // // initialize the validator      
+        // // initialize the validator
+        // $('form#assign_form1111').validate();
 
     });
+
+
 </script>
+
 <script type="text/javascript">
+
     $(document).on('click', '.assignStudent', function () {
+
         var examid = $(this).data('examid');
         $('.exam_group_class_batch_exam_id').val(examid);
+
         $('#allotStudentModal').modal('show');
+
     });
 
+
+
     $("form#allotStudentForm").on('submit', (function (e) {
+
+
         e.preventDefault(); // avoid to execute the actual submit of the form.
         var form = $(this);
         var $this = form.find("button[type=submit]:focus");
@@ -1179,10 +1291,14 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
                 $this.button('loading');
             },
             success: function (res)
-            {                
+            {
+
+                
 
             if (res.status == 1) {
-            $('.studentAllotForm').html(res.page);         
+            $('.studentAllotForm').html(res.page);
+
+           
 
 
             } else {
@@ -1210,6 +1326,7 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
     }
     ));
     $(document).on('submit', 'form#allot_exam_student', function (e) {
+
 
         e.preventDefault(); // avoid to execute the actual submit of the form.
         var form = $(this);
@@ -1250,48 +1367,6 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
     }
     );
 
-      $(document).on('submit', 'form#remark_form', function (e) {
-
-        e.preventDefault(); // avoid to execute the actual submit of the form.
-        var form = $(this);
-        var $this = form.find("button[type=submit]:focus");
-        var url = form.attr('action');
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: new FormData(this),
-            dataType: 'json',
-            contentType: false,
-            cache: false,
-            processData: false,
-            beforeSend: function () {
-                $this.button('loading');
-            },
-            success: function (res)
-            {
-                if (res.status == 1) {
-                    successMsg(res.message);
-                    $('#teacherRemarkModal').modal('hide');
-
-                } else {
-                    errorMsg(res.message);
-                }
-
-                $this.button('reset');
-            },
-            error: function (xhr) { // if error occured
-                alert("Error occured.please try again");
-                $this.button('reset');
-            },
-            complete: function () {
-                $this.button('reset');
-            }
-
-        });
-    }
-    );
-
-
     $('#allotStudentModal').on('hidden.bs.modal', function () {
         $('form#allotStudentForm').find('select#class_id').prop("selectedIndex", 0);
         $('form#allotStudentForm').find('select#section_id').find('option:not(:first)').remove();
@@ -1325,9 +1400,12 @@ $("#formadd input[name=use_exam_roll_no][value='"+data.exam.use_exam_roll_no+"']
         }
     });
 </script>
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $(document).on('click', "#btnSubmit", function (event) {
+
 
             //stop submit the form, we will post it manually.
             event.preventDefault();
@@ -1358,7 +1436,10 @@ $('#fileUploadForm')[0].reset();
        } else {
            var arr = [];
                     $.each(data.student_marks, function (index) {
+
                         var s = JSON.parse(data.student_marks[index]);
+
+
                         arr.push({
                             adm_no: s.adm_no,
                             attendence: s.attendence,
@@ -1366,17 +1447,21 @@ $('#fileUploadForm')[0].reset();
                             note: s.note
                         });
 
+
                     });
 //===============
                     $.each(arr, function (index, value) {
                          var row=$('.marksEntryForm').find('table tbody').find('tr.std_adm_' + value.adm_no);
                        row.find("td input.marksssss").val(value.marks);
                        row.find("td input.note").val(value.note);
+
                        if(value.attendence == 1){
                          row.find("td input.attendance_chk").prop( "checked", true );
                      }else{
+
                          row.find("td input.attendance_chk").prop( "checked", false);
                      }
+
                     });
 
 //=================
@@ -1384,6 +1469,7 @@ $('#fileUploadForm')[0].reset();
                 },
             error: function (xhr) { // if error occured
                 alert("Error occured.please try again");
+
                     $('#examfade,#exammodal').css({'display': 'none'});
             },
             complete: function () {
@@ -1392,6 +1478,8 @@ $('#fileUploadForm')[0].reset();
             }
 
             });
+
         });
+
     });
 </script>

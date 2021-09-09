@@ -10,7 +10,7 @@ class Staffattendance extends Admin_Controller {
 
         parent::__construct();
         $this->load->helper('file');
-
+       
         $this->config->load("mailsms");
         $this->config->load("payroll");
         $this->load->library('mailsmsconf');
@@ -26,12 +26,13 @@ class Staffattendance extends Admin_Controller {
         if (!($this->rbac->hasPrivilege('staff_attendance', 'can_view') )) {
             access_denied();
         }
-
+      
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'admin/staffattendance');
         $data['title'] = 'Staff Attendance List';
         $data['title_list'] = 'Staff Attendance List';
         $user_type = $this->staff_model->getStaffRole();
+
         $data['classlist'] = $user_type;
         $data['class_id'] = "";
         $data['section_id'] = "";
@@ -39,6 +40,7 @@ class Staffattendance extends Admin_Controller {
         $user_type_id = $this->input->post('user_id');
         $data["user_type_id"] = $user_type_id;
         if (!(isset($user_type_id))) {
+
             $this->load->view('layout/header', $data);
             $this->load->view('admin/staffattendance/staffattendancelist', $data);
             $this->load->view('layout/footer', $data);
@@ -54,13 +56,19 @@ class Staffattendance extends Admin_Controller {
             $data['date'] = $date;
             $search = $this->input->post('search');
             $holiday = $this->input->post('holiday');
+
             $this->session->set_flashdata('msg', '');
+
             if ($search == "saveattendence") {
+
                 $user_type_ary = $this->input->post('student_session');
                 $absent_student_list = array();
                 foreach ($user_type_ary as $key => $value) {
                     $checkForUpdate = $this->input->post('attendendence_id' . $value);
+
                     if ($checkForUpdate != 0) {
+
+
                         if (isset($holiday)) {
                             $arr = array(
                                 'id' => $checkForUpdate,
@@ -89,6 +97,8 @@ class Staffattendance extends Admin_Controller {
                                 'remark' => ''
                             );
                         } else {
+
+
                             $arr = array(
                                 'staff_id' => $value,
                                 'staff_attendance_type_id' => $this->input->post('attendencetype' . $value),
@@ -96,6 +106,7 @@ class Staffattendance extends Admin_Controller {
                                 'remark' => $this->input->post("remark" . $value),
                             );
                         }
+
                         $insert_id = $this->staffattendancemodel->add($arr);
                         $absent_config = $this->config_attendance['absent'];
                         if ($arr['staff_attendance_type_id'] == $absent_config) {
@@ -104,12 +115,16 @@ class Staffattendance extends Admin_Controller {
                     }
                 }
 
+
+
                 $absent_config = $this->config_attendance['absent'];
                 if (!empty($absent_student_list)) {
 
                     $this->mailsmsconf->mailsms('absent_attendence', $absent_student_list, $date);
                 }
-                $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+
+                $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
+
                 redirect('admin/staffattendance/index');
             }
 
@@ -117,6 +132,8 @@ class Staffattendance extends Admin_Controller {
             $data['attendencetypeslist'] = $attendencetypes;
             $resultlist = $this->staffattendancemodel->searchAttendenceUserType($user_type, date('Y-m-d', $this->customlib->datetostrtotime($date)));
             $data['resultlist'] = $resultlist;
+
+
             $this->load->view('layout/header', $data);
             $this->load->view('admin/staffattendance/staffattendancelist', $data);
             $this->load->view('layout/footer', $data);
@@ -128,7 +145,7 @@ class Staffattendance extends Admin_Controller {
         if (!$this->rbac->hasPrivilege('staff_attendance_report', 'can_view')) {
             access_denied();
         }
-
+        
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendance');
         $this->session->set_userdata('subsub_menu', 'Reports/attendance/staff_attendance_report');
@@ -151,6 +168,7 @@ class Staffattendance extends Admin_Controller {
             $this->load->view('layout/header', $data);
             $this->load->view('admin/staffattendance/attendancereport', $data);
             $this->load->view('layout/footer', $data);
+
         } else {
 
             $resultlist = array();
@@ -171,7 +189,7 @@ class Staffattendance extends Admin_Controller {
             } else {
                 $year = $centenary . $year_second_substring;
             }
-
+            
             $num_of_days = cal_days_in_month(CAL_GREGORIAN, $month_number, $searchyear);
             $attr_result = array();
             $attendence_array = array();
@@ -207,7 +225,7 @@ class Staffattendance extends Admin_Controller {
                 $newdate = date('Y-m-d', strtotime($date));
                 $monthAttendance[] = $this->monthAttendance($newdate, 1, $result_v['id']);
             }
-
+            
             $data['monthAttendance'] = $monthAttendance;
             $data['resultlist'] = $date_result;
             if (!empty($searchyear)) {
@@ -218,7 +236,7 @@ class Staffattendance extends Admin_Controller {
                 $data['attendence_array'] = array();
                 $data['student_array'] = array();
             }
- 
+
             $this->load->view('layout/header', $data);
             $this->load->view('admin/staffattendance/attendancereport', $data);
             $this->load->view('layout/footer', $data);
@@ -267,7 +285,7 @@ class Staffattendance extends Admin_Controller {
                 $datemonth = date("m", strtotime($value));
                 $att_dates = date("Y") . "-" . $datemonth . "-" . sprintf("%02d", $i);
                 $date_array[] = $att_dates;
-                $res[$att_dates] = $this->staffattendancemodel->searchStaffattendance($att_dates, $staff_id = 8);
+                $res[$att_dates] = $this->staffattendancemodel->searchStaffattendance($staff_id = 8, $att_dates);
             }
 
             $j++;

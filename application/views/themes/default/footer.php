@@ -1,11 +1,3 @@
-
-<?php $cookie_consent	=	$this->customlib->cookie_consent();
-if(!empty($cookie_consent)){ ?>
-<div id="cookieConsent" class="cookieConsent"> 
-    <?php echo $cookie_consent; ?> <a href="<?php echo base_url() . "page/cookie-policy" ?>" target="_blank" ></a> <a onclick="setsitecookies()" class="cookieConsentOK"><?php echo $this->lang->line('accept') ?></a>
-</div>
-<?php } ?>
-
 <footer>
     <div class="container">
         <div class="row">
@@ -39,6 +31,8 @@ if(!empty($cookie_consent)){ ?>
 
                             <?php
                             ?>
+
+
                         </li>
                         <?php
                     }
@@ -76,31 +70,5 @@ if(!empty($cookie_consent)){ ?>
             </div><!--./row-->
         </div><!--./container-->
     </div><!--./copy-right-->
-    <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a> 
+      <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a> 
 </footer>
-<script>
-    function setsitecookies() {
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url(); ?>welcome/setsitecookies",
-            data: {},
-            success: function (data) {
-                $('.cookieConsent').hide();
-
-            }
-        });
-    }
-	
-	function check_cookie_name(name)
-    {
-        var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        if (match) {
-            console.log(match[2]);
-            $('.cookieConsent').hide();
-        }
-        else{
-           $('.cookieConsent').show();
-        }
-    }
-    check_cookie_name('sitecookies');
-</script>

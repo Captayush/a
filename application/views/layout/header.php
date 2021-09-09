@@ -1,5 +1,4 @@
-
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html <?php echo $this->customlib->getRTL(); ?>>
     <head>
         <meta charset="utf-8">
@@ -41,9 +40,12 @@
         <!--print table mobile support-->
         <link href="<?php echo base_url(); ?>backend/dist/datatables/css/responsive.dataTables.min.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>backend/dist/datatables/css/rowReorder.dataTables.min.css" rel="stylesheet">
+
         <!--language css-->
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>backend/dist/css/bootstrap-select.min.css">
+
+
         <script src="<?php echo base_url(); ?>backend/custom/jquery.min.js"></script>
         <script src="<?php echo base_url(); ?>backend/dist/js/moment.min.js"></script>
         <script src="<?php echo base_url(); ?>backend/datepicker/js/bootstrap-datetimepicker.js"></script>
@@ -52,15 +54,18 @@
         <script src="<?php echo base_url(); ?>backend/dist/js/jquery-ui.min.js"></script>
         <script src="<?php echo base_url(); ?>backend/js/school-custom.js"></script>
         <script src="<?php echo base_url(); ?>backend/js/school-admin-custom.js"></script>
-        <script src="<?php echo base_url(); ?>backend/js/sstoast.js"></script>         
-        <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>          -->
+        <script src="<?php echo base_url(); ?>backend/js/sstoast.js"></script>
+         
         <!-- fullCalendar -->
         <link rel="stylesheet" href="<?php echo base_url() ?>backend/fullcalendar/dist/fullcalendar.min.css">
-        <link rel="stylesheet" href="<?php echo base_url() ?>backend/fullcalendar/dist/fullcalendar.print.min.css" media="print">	
+        <link rel="stylesheet" href="<?php echo base_url() ?>backend/fullcalendar/dist/fullcalendar.print.min.css" media="print">
+       
+
+
         <script type="text/javascript">
             var baseurl = "<?php echo base_url(); ?>";
-            var start_week=<?php echo $this->customlib->getStartWeek();?>;
             var chk_validate="<?php echo $this->config->item('SSLK')?>";
+
         </script>
      
   <style type="text/css">
@@ -75,7 +80,8 @@ if ($this->config->item('SSLK') == "") {
     ?>
  <div class="topaleart">
     <div class="slidealert">
-    <div class="alert alert-dismissible topaleart-inside"> 
+    <div class="alert alert-dismissible topaleart-inside">
+  <!-- <button type="button" class="close" data-dismiss="alert" aria-label="close">&times;</button> -->
    <p class="palert"><strong>Alert!</strong> You are using unregistered version of Smart School. Please <a  href="#" class="purchasemodal">click here</a> to register your purchase code for Smart School.</p>
 </div></div>
 </div>
@@ -129,19 +135,19 @@ if ($this->config->item('SSLK') == "") {
                         <div class="pull-right">
                             <?php if ($this->rbac->hasPrivilege('student', 'can_view')) {?>
                               
-                                <form id="header_search_form" class="navbar-form navbar-left search-form" role="search"  action="<?php echo site_url('admin/admin/search'); ?>" method="POST">
+                                <form class="navbar-form navbar-left search-form" role="search"  action="<?php echo site_url('admin/admin/search'); ?>" method="POST">
                                     <?php echo $this->customlib->getCSRF(); ?>
                                     <div class="input-group">
-                                        <input type="text" value="<?php echo set_value('search_text1');?>" name="search_text1" id="search_text1" class="form-control search-form search-form3" placeholder="<?php echo $this->lang->line('search_by_student_name'); ?>">
+                                        <input type="text" value="<?php echo set_value('search_text1');?>" name="search_text1" class="form-control search-form search-form3" placeholder="<?php echo $this->lang->line('search_by_student_name'); ?>">
                                         <span class="input-group-btn">
-                                            <button type="submit" name="search" id="search-btn" onclick="getstudentlist()" style="" class="btn btn-flat topsidesearchbtn"><i class="fa fa-search"></i></button>
+                                            <button type="submit" name="search" id="search-btn" style="" class="btn btn-flat topsidesearchbtn"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
  
                                 </form>
                             <?php }?>
                             <div class="navbar-custom-menu">
-                                <?php if($this->rbac->hasPrivilege('language_switcher','can_view')){
+                                <?php //if($this->rbac->hasPrivilege('language_switcher','can_view')){
                                     ?>
                                     <div class="langdiv"><select class="languageselectpicker" onchange="set_languages(this.value)"  type="text" id="languageSwitcher" >
                                           
@@ -149,7 +155,7 @@ if ($this->config->item('SSLK') == "") {
 
                                         </select></div> 
                                     <?php
-                               }?>
+                               // }?>
                                 
                                      
                                 <ul class="nav navbar-nav headertopmenu">
@@ -206,7 +212,7 @@ $tasklist = $this->customlib->getincompleteTask($userdata["id"]);
                                 if ($this->module_lib->hasActive('chat')){
                                     if($this->rbac->hasPrivilege('chat','can_view')){
                                         ?>
-                                         <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="<?php echo base_url()?>admin/chat" data-original-title="<?php echo $this->lang->line('chat')?>" class="todoicon"><i class="fa fa-whatsapp"></i></a></li> 
+                                         <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="<?php echo base_url()?>admin/chat" data-original-title="Chat" class="todoicon"><i class="fa fa-whatsapp"></i></a></li> 
                                         <?php
                                     }
                                 ?>
@@ -223,13 +229,8 @@ if (!empty($image)) {
 
     $file = "uploads/staff_images/" . $image;
 } else {
-    if($result['gender']=='Female'){
-                $file= "uploads/staff_images/default_female.jpg";
-    }else{
-                $file ="uploads/staff_images/default_male.jpg";
-     }
 
-    
+    $file = "uploads/student_images/no_image.png";
 }
 ?>
                                     <li class="dropdown user-menu">
@@ -244,15 +245,15 @@ if (!empty($image)) {
                                                     </div>
 
                                                     <div class="sstopuser-test">
-                                                        <h4 class="text-capitalize"><?php echo $this->customlib->getAdminSessionUserName(); ?></h4>
+                                                        <h4 style="text-transform: capitalize;"><?php echo $this->customlib->getAdminSessionUserName(); ?></h4>
                                                         <h5><?php echo $role; ?></h5>
                                                      
                                                     </div>
 
                                                     <div class="divider"></div>
                                                     <div class="sspass">
-                                                        <a href="<?php echo base_url() . "admin/staff/profile/" . $id ?>" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('my_profile'); ?>"><i class="fa fa-user"></i><?php echo $this->lang->line('profile'); ?> </a> 
-                                                        <a class="pl25" href="<?php echo base_url(); ?>admin/admin/changepass" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('change_password'); ?>"><i class="fa fa-key"></i><?php echo $this->lang->line('password'); ?></a> <a class="pull-right" href="<?php echo base_url(); ?>site/logout"><i class="fa fa-sign-out fa-fw"></i><?php echo $this->lang->line('logout'); ?></a>
+                                                        <a href="<?php echo base_url() . "admin/staff/profile/" . $id ?>" data-toggle="tooltip" title="" data-original-title="My Profile"><i class="fa fa-user"></i>Profile</a>
+                                                        <a class="pl25" href="<?php echo base_url(); ?>admin/admin/changepass" data-toggle="tooltip" title="" data-original-title="Change Password"><i class="fa fa-key"></i><?php echo $this->lang->line('password'); ?></a> <a class="pull-right" href="<?php echo base_url(); ?>site/logout"><i class="fa fa-sign-out fa-fw"></i><?php echo $this->lang->line('logout'); ?></a>
                                                     </div>
                                                 </div><!--./sstopuser--></li>
                                         </ul>
@@ -272,8 +273,9 @@ if (!empty($image)) {
 
         $.ajax({
             type: "POST",
-            url: base_url + "admin/language/default_language/"+id,
+            url: base_url + "admin/language/defoult_language/"+id,
             data: {},
+            //dataType: "json",
             success: function (data) {
                 successMsg("Status Change Successfully");
               $('#languageSwitcher').html(data);
@@ -281,14 +283,17 @@ if (!empty($image)) {
             }
         });
 
-        window.location.reload('true');        
+        window.location.reload('true');
+        //alert(id);
     }
 
-    function set_languages(lang_id){       
+    function set_languages(lang_id){
+       
         $.ajax({
             type: "POST",
             url: base_url + "admin/language/user_language/"+lang_id,
             data: {},
+            //dataType: "json",
             success: function (data) { 
                 successMsg("Status Change Successfully");
                  window.location.reload('true');
@@ -297,6 +302,5 @@ if (!empty($image)) {
         });
 
     }
- </script>
 
- 
+            </script>

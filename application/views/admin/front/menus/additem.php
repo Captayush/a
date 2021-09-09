@@ -116,6 +116,7 @@
                             }
                             ?>
                             <?php echo $this->customlib->getCSRF(); ?>
+                            <?php //echo validation_errors(); ?>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('menu_item'); ?></label><small class="req"> *</small>
                                 <input autofocus="" id="menu" name="menu" placeholder="" type="text" class="form-control"  value="<?php echo set_value('menu'); ?>" />
@@ -303,7 +304,14 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-            $('.ext_url_chk').change(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+
+
+
+        $('.ext_url_chk').change(function () {
             var c = this.checked ? 1 : 0;
             if (c) {
                 $('#ext_url_link').prop("disabled", false);

@@ -77,175 +77,177 @@
                             </div><!-- /.row -->
                         </div><!-- /.box-body -->
                     </form>
+                
+                <?php
+                if (isset($examSchedule)) {
+                    ?>
 
-                    <?php
-                    if (isset($examSchedule)) {
-                        ?>
 
-
-                        <div class="">
-                            <div class="box-header ptbnull"></div>  
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('fill_mark'); ?></h3>
-                            </div>
-                            <div class="box-body">
-                                <?php
-                                if (!empty($examSchedule)) {
-                                    ?>
-                                    <form role="form" id=""  class="addmarks-form"  method="post" action="<?php echo site_url('admin/mark/create') ?>">
-                                        <?php echo $this->customlib->getCSRF(); ?>
-                                        <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
-                                        <input type="hidden" name="section_id" value="<?php echo $section_id; ?>">
-                                        <input type="hidden" name="exam_id" value="<?php echo $exam_id; ?>">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped table-bordered table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>
-                                                            <?php echo $this->lang->line('admission_no'); ?>
-                                                        </th>
-                                                        <th><?php echo $this->lang->line('roll_no'); ?></th>
-                                                        <th>
-                                                            <?php echo $this->lang->line('student'); ?>
-                                                        </th>
-                                                        <?php
-                                                        $s = 0;
-                                                        foreach ($examSchedule as $key => $student) {
-                                                            if (!empty($student['exam_array'])) {
-                                                                if ($s == 0) {
-                                                                    foreach ($student['exam_array'] as $key => $exam_schedule) {
-                                                                        ?>
-                                                                        <th>
-                                                                            <?php
-                                                                            echo $exam_schedule['exam_name'] . " (" . substr($exam_schedule['exam_type'], 0, 2) . ": " . $exam_schedule['passing_marks'] . "/" . $exam_schedule['full_marks'] . ") ";
-                                                                            ?>
-                                                                        </th>
-                                                                        <?php
-                                                                    }
-                                                                }
-                                                            } else {
-                                                                ?>
-
-                                                                <?php
-                                                            }
-                                                            $s++;
-                                                        }
-                                                        ?>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                    <div class="">
+                      <div class="box-header ptbnull"></div>  
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('fill_mark'); ?></h3>
+                        </div>
+                        <div class="box-body">
+                            <?php
+                            if (!empty($examSchedule)) {
+                                ?>
+                                <form role="form" id=""  class="addmarks-form"  method="post" action="<?php echo site_url('admin/mark/create') ?>">
+                                    <?php echo $this->customlib->getCSRF(); ?>
+                                    <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
+                                    <input type="hidden" name="section_id" value="<?php echo $section_id; ?>">
+                                    <input type="hidden" name="exam_id" value="<?php echo $exam_id; ?>">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <?php echo $this->lang->line('admission_no'); ?>
+                                                    </th>
+                                                    <th><?php echo $this->lang->line('roll_no'); ?></th>
+                                                    <th>
+                                                        <?php echo $this->lang->line('student'); ?>
+                                                    </th>
                                                     <?php
                                                     $s = 0;
                                                     foreach ($examSchedule as $key => $student) {
-                                                        ?>
-                                                    <input type="hidden" name="student[]" value="<?php echo $student['student_id'] ?>">
-
-                                                    <?php
-                                                    if (!empty($student['exam_array'])) {
-                                                        if ($s == 0) {
-                                                            foreach ($student['exam_array'] as $key => $exam_schedule) {
-                                                                ?>
-                                                                <input type="hidden" name="exam_schedule[]" value="<?php echo $exam_schedule['exam_schedule_id'] ?>">
-                                                                <?php
-                                                            }
-                                                        }
-                                                    } else {
-                                                        ?>
-
-                                                        <?php
-                                                    }
-                                                    $s++;
-                                                }
-                                                ?>
-
-                                                <?php
-                                                $sarr = array();
-                                                if (!empty($teacher_subjects)) {
-                                                    foreach ($teacher_subjects as $tckey => $tcvalue) {
-                                                        # code...
-                                                        $sid = $tcvalue['subject_id'];
-                                                        $sarr[] = $sid;
-                                                    }
-                                                }
-                                                foreach ($examSchedule as $key => $student) {
-                                                    ?>
-
-                                                    <tr>
-                                                        <td>     <?php echo $student['admission_no'] ?></td>
-                                                        <td>     <?php echo $student['roll_no'] ?></td>
-                                                        <td>        <?php echo $student['firstname'] . " " . $student['lastname']; ?> </td>
-                                                        <?php
                                                         if (!empty($student['exam_array'])) {
-                                                            $n = 0;
-                                                            $class = "";
-                                                            $check = "";
-                                                            foreach ($student['exam_array'] as $key => $exam_schedule) {
-                                                                // print_r($sarr);
-                                                                if (!empty($sarr)) {
-                                                                    if (in_array($exam_schedule['subject_id'], $sarr)) {
-                                                                        //  echo "yes";
-                                                                        $class = "";
-                                                                        $check = "";
-                                                                        //print_r($teacher_subjects);
-                                                                    } else {
-                                                                        $class = "readonly";
-                                                                        $check = "disabled";
-                                                                    }
+                                                            if ($s == 0) {
+                                                                foreach ($student['exam_array'] as $key => $exam_schedule) {
+                                                                    ?>
+                                                                    <th>
+                                                                        <?php
+                                                                        echo $exam_schedule['exam_name'] . " (" . substr($exam_schedule['exam_type'], 0, 2) . ": " . $exam_schedule['passing_marks'] . "/" . $exam_schedule['full_marks'] . ") ";
+                                                                        ?>
+                                                                    </th>
+                                                                    <?php
                                                                 }
-                                                                // if (!empty($teacher_subjects) && (array_key_exists($n, $teacher_subjects))) {
-                                                                //     print_r($exam_schedule["subject_id"]);
-                                                                //     $class = "readonly";
-                                                                //     $check = "disabled";
-                                                                //     if ($teacher_subjects[$n]["subject_id"] == $exam_schedule["subject_id"]) {
-                                                                //         $class = "";
-                                                                //         $check = "";
-                                                                //         $n++;
-                                                                //     }
-                                                                //   }
-                                                                ?>
-                                                                <td>
-                                                                    <div class="form-group">
-                                                                        <div class="checkbox">
-                                                                            <label><input type="checkbox" <?php echo $check; ?> name="student_absent<?php echo $student['student_id'] . "_" . $exam_schedule['exam_schedule_id']; ?>" value="ABS" <?php if ($exam_schedule['attendence'] == "ABS") echo "checked"; ?>>Abs</label>
-                                                                        </div>
-                                                                        <input type="hidden" name="subject_id" value="<?php echo $exam_schedule["subject_id"] ?>">
-                                                                        <input type="text" <?php echo $class; ?> name="student_number<?php echo $student['student_id'] . "_" . $exam_schedule['exam_schedule_id']; ?>" class="form-control input-sm" id="subject_<?php echo $student['student_id'] . "_" . $exam_schedule['exam_schedule_id']; ?>" value="<?php echo $exam_schedule['get_marks'] ?>" placeholder="Enter Marks">
-                                                                    </div>
-                                                                </td>
-                                                                <?php
                                                             }
-                                                        }else {
+                                                        } else {
                                                             ?>
 
                                                             <?php
                                                         }
-                                                        ?>
+                                                        $s++;
+                                                    }
+                                                    ?>
 
-                                                    </tr>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $s = 0;
+                                                foreach ($examSchedule as $key => $student) {
+                                                    ?>
+                                                <input type="hidden" name="student[]" value="<?php echo $student['student_id'] ?>">
+
+                                                <?php
+                                                if (!empty($student['exam_array'])) {
+                                                    if ($s == 0) {
+                                                        foreach ($student['exam_array'] as $key => $exam_schedule) {
+                                                            ?>
+                                                            <input type="hidden" name="exam_schedule[]" value="<?php echo $exam_schedule['exam_schedule_id'] ?>">
+                                                            <?php
+                                                        }
+                                                    }
+                                                } else {
+                                                    ?>
+
                                                     <?php
                                                 }
+                                                $s++;
+                                            }
+                                            ?>
+
+                                            <?php 
+                                            $sarr  = array();
+                                            if(!empty($teacher_subjects)){
+                                                foreach ($teacher_subjects as $tckey => $tcvalue) {
+                                                    # code...
+                                                    $sid = $tcvalue['subject_id'];
+                                                    $sarr[] = $sid ;
+                                                }
+                                            }
+                                            foreach ($examSchedule as $key => $student) {
                                                 ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary pull-right" name="save_exam" value="save_exam"><?php echo $this->lang->line('save'); ?></button>
-                                    </form>
-                                    <?php
-                                } else {
-                                    ?>
 
-                                    <div class="alert alert-info">
-                                        <?php echo $this->lang->line('no_record_found'); ?>
+                                                <tr>
+                                                    <td>     <?php echo $student['admission_no'] ?></td>
+                                                    <td>     <?php echo $student['roll_no'] ?></td>
+                                                    <td>        <?php echo $student['firstname'] . " " . $student['lastname']; ?> </td>
+                                                    <?php
+                                                    if (!empty($student['exam_array'])) {
+                                                        $n = 0;
+                                                        $class = "";
+                                                        $check = "";
+                                                        foreach ($student['exam_array'] as $key => $exam_schedule) {
+                                                            // print_r($sarr);
+                                                            if(!empty($sarr)){
+                                                            if(in_array($exam_schedule['subject_id'], $sarr)){
+                                                              //  echo "yes";
+                                                               $class = "";
+                                                                 $check = "";
+                                                              //print_r($teacher_subjects);
+                                                            }else{
+                                                                  $class = "readonly";
+                                                                $check = "disabled";
+                                                                
+                                                            }
+                                                                }
+                                                            // if (!empty($teacher_subjects) && (array_key_exists($n, $teacher_subjects))) {
+                                                            //     print_r($exam_schedule["subject_id"]);
+                                                            //     $class = "readonly";
+                                                            //     $check = "disabled";
+                                                            //     if ($teacher_subjects[$n]["subject_id"] == $exam_schedule["subject_id"]) {
+
+                                                            //         $class = "";
+                                                            //         $check = "";
+                                                            //         $n++;
+                                                            //     }
+                                                         //   }
+                                                            ?>
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <div class="checkbox">
+                                                                        <label><input type="checkbox" <?php echo $check; ?> name="student_absent<?php echo $student['student_id'] . "_" . $exam_schedule['exam_schedule_id']; ?>" value="ABS" <?php if ($exam_schedule['attendence'] == "ABS") echo "checked"; ?>>Abs</label>
+                                                                    </div>
+                                                                    <input type="hidden" name="subject_id" value="<?php echo $exam_schedule["subject_id"] ?>">
+                                                                    <input type="text" <?php echo $class; ?> name="student_number<?php echo $student['student_id'] . "_" . $exam_schedule['exam_schedule_id']; ?>" class="form-control input-sm" id="subject_<?php echo $student['student_id'] . "_" . $exam_schedule['exam_schedule_id']; ?>" value="<?php echo $exam_schedule['get_marks'] ?>" placeholder="Enter Marks">
+                                                                </div>
+                                                            </td>
+                                                            <?php
+                                                        }
+                                                    }else {
+                                                        ?>
+
+                                                        <?php
+                                                    }
+                                                    ?>
+
+                                                </tr>
+                                                <?php
+                                            }
+                                            ?>
+                                            </tbody>
+                                        </table>
                                     </div>
-
-
-                                    <?php
-                                }
+                                    <button type="submit" class="btn btn-primary pull-right" name="save_exam" value="save_exam"><?php echo $this->lang->line('save'); ?></button>
+                                </form>
+                                <?php
+                            } else {
                                 ?>
-                            </div><!---./end box-body--->
-                        </div>
-                    </div>  
+
+                                <div class="alert alert-info">
+                                    <?php echo $this->lang->line('no_record_found'); ?>
+                                </div>
+
+
+                                <?php
+                            }
+                            ?>
+                        </div><!---./end box-body--->
+                    </div>
+                  </div>  
                 </div>            
 
             </div>   <!-- /.row -->

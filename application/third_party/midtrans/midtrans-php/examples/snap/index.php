@@ -1,5 +1,5 @@
 <?php
-$base = $_SERVER['REQUEST_URI'];
+  $base = $_SERVER['REQUEST_URI'];
 ?>
 
 <h3>Selected Items:</h3>

@@ -1,5 +1,5 @@
 <?php
- 
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -7,7 +7,6 @@ class Feediscount extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
     function delete($id) {
@@ -39,7 +38,7 @@ class Feediscount extends Admin_Controller {
                 'description' => $this->input->post('description'),
             );
             $this->feediscount_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('success_message').'</div>');
             redirect('admin/feediscount');
         }
     }
@@ -65,13 +64,13 @@ class Feediscount extends Admin_Controller {
         } else {
             $data = array(
                 'id' => $id,
-                'name' => $this->input->post('name'),
+                 'name' => $this->input->post('name'),
                 'code' => $this->input->post('code'),
                 'amount' => $this->input->post('amount'),
                 'description' => $this->input->post('description'),
             );
             $this->feediscount_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('update_message').'</div>');
             redirect('admin/feediscount/index');
         }
     }
@@ -103,10 +102,10 @@ class Feediscount extends Admin_Controller {
             $data['rte_status'] = $this->input->post('rte');
             $data['class_id'] = $this->input->post('class_id');
             $data['section_id'] = $this->input->post('section_id');
+
             $resultlist = $this->feediscount_model->searchAssignFeeByClassSection($data['class_id'], $data['section_id'], $id, $data['category_id'], $data['gender'], $data['rte_status']);
             $data['resultlist'] = $resultlist;
         }
-        $data['sch_setting'] = $this->sch_setting_detail;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/feediscount/assign', $data);
         $this->load->view('layout/footer', $data);
@@ -119,11 +118,12 @@ class Feediscount extends Admin_Controller {
         $this->session->set_userdata('top_menu', 'Fees Collection');
         $this->session->set_userdata('sub_menu', 'admin/feediscount');
         $this->form_validation->set_rules('feediscount_id', 'Fee Discount', 'required|trim|xss_clean');
-
+      
 
         if ($this->form_validation->run() == false) {
             $data = array(
                 'feediscount_id' => form_error('feediscount_id'),
+                  
             );
             $array = array('status' => 'fail', 'error' => $data);
             echo json_encode($array);
@@ -157,7 +157,7 @@ class Feediscount extends Admin_Controller {
     }
 
     function applydiscount() {
-        if (!$this->rbac->hasPrivilege('fees_discount_assign', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('fees_discount_assign', 'can_add')) {
             access_denied();
         }
         $this->form_validation->set_rules('discount_payment_id', $this->lang->line('fees_payment_id'), 'required|trim|xss_clean');

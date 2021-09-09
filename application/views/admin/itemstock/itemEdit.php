@@ -115,18 +115,18 @@
 
                                     <span class="text-danger"><?php echo form_error('quantity'); ?></span>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('purchase') . " " . $this->lang->line('price'); ?></label>
+                                 <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('purchase')." ".$this->lang->line('price'); ?></label>
                                     <input id="purchase_price" name="purchase_price" placeholder="" type="text" class="form-control purchase_price"  value="<?php echo set_value('purchase_price', ($item['purchase_price'])); ?>" />
                                     <span class="text-danger"><?php echo form_error('purchase_price'); ?></span>
                                 </div>
 
-                                <div class="form-group">
+                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('date'); ?></label>
-                                    <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php if($item['date']!= '0000-00-00'){ echo set_value('date', date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($item['date']))); } ?>" readonly="readonly" />
+                                    <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($item['date']))); ?>" readonly="readonly" />
                                     <span class="text-danger"><?php echo form_error('date'); ?></span>
                                 </div>
-
+                               
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('attach_document'); ?></label>
                                     <input id="item_photo" name="item_photo" placeholder="" type="file" class="filestyle form-control"  value="<?php echo set_value('item_photo'); ?>" />
@@ -173,7 +173,7 @@
                                         <th><?php echo $this->lang->line('supplier'); ?></th>
                                         <th><?php echo $this->lang->line('store'); ?></th>
                                         <th><?php echo $this->lang->line('quantity'); ?></th>
-                                        <th><?php echo $this->lang->line('purchase') . " " . $this->lang->line('price'); ?></th>
+                                        <th><?php echo $this->lang->line('purchase')." ".$this->lang->line('price'); ?></th>
                                         <th><?php echo $this->lang->line('date'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
@@ -223,12 +223,12 @@
                                                     <?php echo $items['quantity']; ?>
 
                                                 </td>
-                                                <td class="mailbox-name">
+                                                 <td class="mailbox-name">
                                                     <?php echo $items['purchase_price']; ?>
 
                                                 </td>
                                                 <td class="mailbox-name">
-                                                    <?php if($items['date']!= '0000-00-00'){ echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($items['date'])); } ?>
+                                                    <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($items['date'])); ?>
 
                                                 </td>
 
@@ -318,7 +318,7 @@
 
 
 
-
+      
 
         $("#btnreset").click(function () {
             $("#form1")[0].reset();
@@ -341,21 +341,21 @@
             populateItem(0, item_category_id);
         });
 
-        /* $(document).on('change', '#item_id', function (e) {
-         var item_category_id = $(this).val();
-         //  console.log(item_category_id);
-         $.ajax({
-         type: "GET",
-         url: base_url + "admin/itemstock/getItemunit",
-         data: {'id': item_category_id},
-         dataType: "json",
-         success: function (data) {
-         $('#item_unit').html(data.unit); 
-         }
-         
-         });
-         
-         });*/
+       /* $(document).on('change', '#item_id', function (e) {
+            var item_category_id = $(this).val();
+            //  console.log(item_category_id);
+            $.ajax({
+                    type: "GET",
+                    url: base_url + "admin/itemstock/getItemunit",
+                    data: {'id': item_category_id},
+                    dataType: "json",
+                    success: function (data) {
+                       $('#item_unit').html(data.unit); 
+                    }
+
+                });
+          
+        });*/
 
     });
 </script>

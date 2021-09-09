@@ -40,7 +40,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
-
+   
 
     <!-- Main content -->
     <section class="content">
@@ -52,11 +52,11 @@
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('add') . " " . $this->lang->line('custom') . " " . $this->lang->line('field'); ?></h3>
+                            <h3 class="box-title"><?php echo $this->lang->line('add')." ".$this->lang->line('custom')." ".$this->lang->line('field'); ?></h3>
                         </div><!-- /.box-header -->
                         <form id="form1" action="<?php echo site_url('admin/customfield') ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
                             <div class="box-body">
-
+            
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
                                 <?php } ?>
@@ -68,7 +68,7 @@
                                 <?php echo $this->customlib->getCSRF(); ?>
 
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field_belongs_to'); ?></label> <small class="req">*</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field_belongs_to');?></label>
                                     <select autofocus="" id="belong_to" name="belong_to" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
@@ -84,7 +84,7 @@
                                     <span class="text-danger"><?php echo form_error('belong_to'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field') . ' ' . $this->lang->line('type') ?></label> <small class="req">*</small>
+                                    <label for="exampleInputEmail1"><?php  echo $this->lang->line('field').' ' . $this->lang->line('type')?></label>
                                     <select autofocus="" id="type" name="type" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
@@ -100,12 +100,12 @@
                                     <span class="text-danger"><?php echo form_error('type'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field') . ' ' . $this->lang->line('name') ?></label> <small class="req">*</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field').' '.$this->lang->line('name') ?></label> <small class="req">*</small>
                                     <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name'); ?>" />
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('grid_boostrap'); ?></label>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('grid_boostrap');?></label>
                                     <div class="input-group">
                                         <span class="input-group-addon">col-md-</span>
                                         <input type="number" max="12" class="form-control" name="column" id="column" value="12" aria-invalid="false">
@@ -118,11 +118,11 @@
                                     <span class="text-danger"><?php echo form_error('field_values'); ?></span>
                                 </div>
                                 <div class="form-group"> <!-- Radio group !-->
-                                    <label class="control-label"><?php echo $this->lang->line('validation'); ?></label>
+                                    <label class="control-label"><?php echo $this->lang->line('validation');?></label>
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" class="content_available" name="validation" value="1" <?php echo set_checkbox('display_tbl', '1', (set_value('validation') == 1) ? true : false); ?>>
-                                            <?php echo $this->lang->line('required'); ?>
+                                            <?php echo $this->lang->line('required');?>
                                         </label>
                                     </div>
 
@@ -136,7 +136,7 @@
 
                                         <label>
                                             <input type="checkbox" class="content_available" name="display_tbl" value="1" <?php echo set_checkbox('display_tbl', '1', (set_value('display_tbl') == 1) ? true : false); ?>>
-                                            <?php echo $this->lang->line('on') . " " . $this->lang->line('table'); ?>
+                                            <?php echo $this->lang->line('on')." ".$this->lang->line('table'); ?>
                                         </label>
                                     </div>
 
@@ -164,7 +164,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('custom') . " " . $this->lang->line('field') . " " . $this->lang->line('list'); ?></h3>
+                        <h3 class="box-title titlefix"><?php echo $this->lang->line('custom')." ".$this->lang->line('field')." ".$this->lang->line('list'); ?></h3>
 
                         <div class="box-tools pull-right">
                         </div><!-- /.box-tools -->
@@ -216,14 +216,14 @@
 
 
                                                                     <a href="<?php echo site_url('admin/customfield/edit/' . $records_fields_value['id']); ?>" class="btn btn-xs" data-toggle="tooltip"
-                                                                       data-original-title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
+                                                                      data-original-title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
                                                                     <a href="<?php echo site_url('admin/customfield/delete/' . $records_fields_value['id']); ?>" class="btn btn-xs" data-toggle="tooltip"
-                                                                       data-original-title="<?php echo $this->lang->line('delete'); ?>"><i class="fa fa-remove"></i></a>
+                                                                      data-original-title="<?php echo $this->lang->line('delete'); ?>"><i class="fa fa-remove"></i></a>
 
 
                                                                 </span> <i class="fa fa-arrows"></i> <?php
-                                                                echo ($records_fields_value['name']);
-                                                                ?>
+                                            echo ($records_fields_value['name']);
+                                                            ?>
                                                             </li>
                                                             <?php
                                                         }
@@ -234,7 +234,7 @@
                                                     } else {
                                                         ?>
                                                         <div class="alert alert-danger">
-                                                            <?php echo $this->lang->line('no_record_found') ?>
+                                                             <?php echo $this->lang->line('no_record_found')?>
                                                         </div>
                                                         <?php
                                                     }

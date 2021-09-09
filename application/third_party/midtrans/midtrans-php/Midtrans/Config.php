@@ -5,7 +5,8 @@ namespace Midtrans;
 /**
  * Midtrans Configuration
  */
-class Config {
+class Config
+{
 
     /**
      * Your merchant's server key
@@ -13,14 +14,12 @@ class Config {
      * @static
      */
     public static $serverKey;
-
     /**
      * Your merchant's client key
      * 
      * @static
      */
     public static $clientKey;
-
     /**
      * True for production
      * false for sandbox mode
@@ -28,14 +27,12 @@ class Config {
      * @static
      */
     public static $isProduction = false;
-
     /**
      * Set it true to enable 3D Secure by default
      * 
      * @static
      */
     public static $is3ds = false;
-
     /**
      * Enable request params sanitizer (validate and modify charge request params).
      * See Midtrans_Sanitizer for more details
@@ -43,7 +40,6 @@ class Config {
      * @static
      */
     public static $isSanitized = false;
-
     /**
      * Default options for every request
      * 
@@ -61,9 +57,10 @@ class Config {
      * 
      * @return string Midtrans API URL, depends on $isProduction
      */
-    public static function getBaseUrl() {
+    public static function getBaseUrl()
+    {
         return Config::$isProduction ?
-                Config::PRODUCTION_BASE_URL : Config::SANDBOX_BASE_URL;
+        Config::PRODUCTION_BASE_URL : Config::SANDBOX_BASE_URL;
     }
 
     /**
@@ -71,9 +68,9 @@ class Config {
      * 
      * @return string Snap API URL, depends on $isProduction
      */
-    public static function getSnapBaseUrl() {
+    public static function getSnapBaseUrl()
+    {
         return Config::$isProduction ?
-                Config::SNAP_PRODUCTION_BASE_URL : Config::SNAP_SANDBOX_BASE_URL;
+        Config::SNAP_PRODUCTION_BASE_URL : Config::SNAP_SANDBOX_BASE_URL;
     }
-
 }

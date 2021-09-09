@@ -6,7 +6,7 @@
             display: none !important;
         }
     }
-</style> 
+</style>
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
@@ -22,7 +22,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     <div class="box-header with-border">
                         <h3 class="box-title"> <?php echo $this->lang->line('email_/_sms_log'); ?></h3>
                         <div class="box-tools pull-right">
-
+                           
                         </div>
 
                     </div>
@@ -70,7 +70,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 </div>
                                             </td>
                                             <td class="mailbox-name">
-                                                <?php echo $this->customlib->dateyyyymmddToDateTimeformat($message['created_at']); ?>
+                                                <?php
+                                                $date_time = strtotime($message['created_at']);
+                                                $date = date('Y-m-d', $date_time);
+                                                $time = date('H:i:s', $date_time);
+                                                echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($date)) . " " . $time;
+                                                ?>
                                             </td>
                                             <td class="mailbox-name">
                                                 <?php
@@ -116,6 +121,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                 </tbody>
                             </table><!-- /.table -->
+
+
+
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                 </div>
@@ -131,6 +139,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     </section>
 </div>
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+
     var base_url = '<?php echo base_url() ?>';
     function printDiv(elem) {
         Popup(jQuery(elem).html());
@@ -143,7 +162,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         frame1[0].name = "frame1";
         frame1.css({"position": "absolute", "top": "-1000000px"});
         $("body").append(frame1);
-        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;       
+        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+       // alert(frameDoc);
         frameDoc.document.open();
         //Create a new HTML document.
         frameDoc.document.write('<html>');
@@ -156,6 +176,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/skins/_all-skins.min.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/iCheck/flat/blue.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/morris/morris.css">');
+
+
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/datepicker/datepicker3.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/daterangepicker/daterangepicker-bs3.css">');
@@ -171,10 +193,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             frame1.remove();
         }, 500);
 
+
         return true;
     }
 
+
+
+
+
 </script>
+
 <script>
     $(document).ready(function () {
         $('.detail_popover').popover({

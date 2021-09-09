@@ -15,7 +15,7 @@
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('assign_vehicle_on_route'); ?></h3>
+                            <h3 class="box-title"><?php //echo $title;      ?><?php echo $this->lang->line('assign_vehicle_on_route'); ?></h3>
                         </div><!-- /.box-header -->
                         <form id="form1" action="<?php echo base_url() ?>admin/vehroute"  method="post" accept-charset="utf-8">
                             <div class="box-body">
@@ -43,6 +43,7 @@
                                             ?>><?php echo $route['route_title'] ?></option>
 
                                             <?php
+                                      
                                         }
                                         ?>
                                     </select>
@@ -96,70 +97,70 @@
                     <div class="box-body">
                         <div class="mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('vehicle_route_list'); ?></div>
-                            <div class="table-responsive">  
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
+                          <div class="table-responsive">  
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
 
-                                            <th><?php echo $this->lang->line('route'); ?>
-                                            </th>
-                                            <th><?php echo $this->lang->line('vehicle'); ?>
-                                            </th>
+                                        <th><?php echo $this->lang->line('route'); ?>
+                                        </th>
+                                        <th><?php echo $this->lang->line('vehicle'); ?>
+                                        </th>
 
-                                            <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if (empty($vehroutelist)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            foreach ($vehroutelist as $vehroute) {
-                                                ?>
-                                                <tr>
-                                                    <td class="mailbox-name">
-                                                        <?php echo $vehroute->route_title; ?>
-
-                                                    </td>
-
-
-                                                    <td>
-                                                        <?php
-                                                        $vehicles = $vehroute->vehicles;
-                                                        if (!empty($vehicles)) {
-
-
-                                                            foreach ($vehicles as $key => $value) {
-
-
-                                                                echo "<div><b>" . $value->vehicle_no . "</b></div>";
-                                                            }
-                                                        }
-                                                        ?>
-
-                                                    </td>
-                                                    <td class="mailbox-date pull-right">
-                                                        <?php if ($this->rbac->hasPrivilege('assign_vehicle', 'can_edit')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/vehroute/edit/<?php echo $vehroute->route_id; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                        <?php } if ($this->rbac->hasPrivilege('assign_vehicle', 'can_delete')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/vehroute/delete/<?php echo $vehroute->route_id; ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                        }
+                                        <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if (empty($vehroutelist)) {
                                         ?>
 
-                                    </tbody>
-                                </table><!-- /.table -->
-                            </div>
+                                        <?php
+                                    } else {
+                                        foreach ($vehroutelist as $vehroute) {
+                                            ?>
+                                            <tr>
+                                                <td class="mailbox-name">
+                                                    <?php echo $vehroute->route_title; ?>
+
+                                                </td>
+
+
+                                                <td>
+                                                    <?php
+                                                    $vehicles = $vehroute->vehicles;
+                                                    if (!empty($vehicles)) {
+
+
+                                                        foreach ($vehicles as $key => $value) {
+
+
+                                                            echo "<div><b>" . $value->vehicle_no . "</b></div>";
+                                                        }
+                                                    }
+                                                    ?>
+
+                                                </td>
+                                                <td class="mailbox-date pull-right">
+                                                    <?php if ($this->rbac->hasPrivilege('assign_vehicle', 'can_edit')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/vehroute/edit/<?php echo $vehroute->route_id; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    <?php } if ($this->rbac->hasPrivilege('assign_vehicle', 'can_delete')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/vehroute/delete/<?php echo $vehroute->route_id; ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+                                                    <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
+                                </tbody>
+                            </table><!-- /.table -->
+                        </div>
 
 
                         </div><!-- /.mail-box-messages -->

@@ -33,9 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbar-collapse-3">
                     <ul class="nav navbar-nav">
                         <?php
-                      
                         foreach ($main_menus as $menu_key => $menu_value) {
-
                             $submenus = false;
                             $cls_menu_dropdown = "";
                             $menu_selected = "";

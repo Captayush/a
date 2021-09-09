@@ -12,30 +12,33 @@ class Attendence extends Student_Controller
         parent::__construct();
     }
 
-    public function getdaysubattendence()
+
+   public function getdaysubattendence()
     {
-        $date = $this->input->post('date');
-        $date = date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date')));
+        $date=$this->input->post('date');
+        $date=date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date')));
 
         $attendencetypes = $this->attendencetype_model->get();
-        $timestamp       = strtotime($date);
-        $day             = date('l', $timestamp);
+        // $date=date('2019-11-11');   
+        $timestamp = strtotime($date);
+        $day = date('l', $timestamp);
 
-        $student_id                    = $this->customlib->getStudentSessionUserID();
-        $student                       = $this->student_model->get($student_id);
-        $student_current_class         = $this->customlib->getStudentCurrentClsSection();
-        $student_session_id            = $student_current_class->student_session_id;
-        $class_id                      = $student_current_class->class_id;
-        $section_id                    = $student_current_class->section_id;
+        $student_id            = $this->customlib->getStudentSessionUserID();
+        $student               = $this->student_model->get($student_id);
+        $student_current_class = $this->customlib->getStudentCurrentClsSection();
+        $student_session_id    = $student_current_class->student_session_id;
+        $class_id    = $student_current_class->class_id;
+        $section_id    = $student_current_class->section_id;
         $result['attendencetypeslist'] = $attendencetypes;
-        $result['attendence']          = $this->studentsubjectattendence_model->studentAttendanceByDate($class_id, $section_id, $day, $date, $student_session_id);
-        $result_page                   = $this->load->view('user/attendence/_getdaysubattendence', $result, true);
-        echo json_encode(array('status' => 1, 'result_page' => $result_page));
+        $result['attendence']=$this->studentsubjectattendence_model->studentAttendanceByDate($class_id, $section_id, $day, $date,$student_session_id);
+        $result_page=$this->load->view('user/attendence/_getdaysubattendence', $result,true);
+       echo json_encode(array('status' => 1,'result_page'=>$result_page));
+       
+        
     }
-
     public function index()
     {
-
+    
         $this->session->set_userdata('top_menu', 'Attendence');
         $this->session->set_userdata('sub_menu', 'book/index');
         $data['title']      = 'Attendence List';
@@ -52,6 +55,7 @@ class Attendence extends Student_Controller
             $this->load->view('user/attendence/attendenceSubject', $data);
         } else {
             $this->load->view('user/attendence/attendenceIndex', $data);
+
         }
 
         $this->load->view('layout/student/footer');
@@ -104,5 +108,4 @@ class Attendence extends Student_Controller
             echo false;
         }
     }
-
 }

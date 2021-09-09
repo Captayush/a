@@ -6,6 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
-    'Google_' => array($vendorDir . '/google/apiclient/src'),
+    'org\\bovigo\\vfs' => array($vendorDir . '/mikey179/vfsStream/src/main/php'),
+    'Omnipay\\Common\\' => array($vendorDir . '/omnipay/common/src'),
+    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
 );

@@ -47,7 +47,7 @@ class Vehroute extends Admin_Controller {
 
 
             $this->vehroute_model->add($vehicle_batch_array);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/vehroute/index');
         }
         $vehicle_result = $this->vehicle_model->get();
@@ -77,7 +77,7 @@ class Vehroute extends Admin_Controller {
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;
         $vehroute = $this->vehroute_model->get($id);
-
+       
         $data['vehroute'] = $vehroute;
         $data['title_list'] = 'Fees Master List';
 
@@ -155,7 +155,7 @@ class Vehroute extends Admin_Controller {
 
 
 
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('update_message').'</div>');
             redirect('admin/vehroute/index');
         }
     }

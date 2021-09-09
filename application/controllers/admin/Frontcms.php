@@ -19,6 +19,9 @@ class Frontcms extends Admin_Controller {
         $data['front_themes'] = $this->front_themes;
 
         $frontcmslist = $this->frontcms_setting_model->get();
+
+
+
         $data['title'] = 'Add Front CMS Setting';
         $data['title_list'] = 'Front CMS Settings';
         $this->session->set_userdata('top_menu', 'System Settings');
@@ -49,7 +52,6 @@ class Frontcms extends Admin_Controller {
                 'sidebar_options' => $sidebar_options,
                 'google_analytics' => $this->input->post('google_analytics'),
                 'footer_text' => $this->input->post('footer_text'),
-                'whatsapp_url' => $this->input->post('whatsapp_url'),
                 'fb_url' => $this->input->post('fb_url'),
                 'twitter_url' => $this->input->post('twitter_url'),
                 'youtube_url' => $this->input->post('youtube_url'),
@@ -57,10 +59,7 @@ class Frontcms extends Admin_Controller {
                 'instagram_url' => $this->input->post('instagram_url'),
                 'pinterest_url' => $this->input->post('pinterest_url'),
                 'linkedin_url' => $this->input->post('linkedin_url'),
-                'cookie_consent' => $this->input->post('cookie_consent'),
             );
-
-
             if (isset($_FILES["logo"]) && !empty($_FILES["logo"]['name'])) {
                 $newLogoName = $this->customlib->uniqueFileName('front_logo-', $_FILES["logo"]['name']);
                 $logo_dir = "./uploads/school_content/logo/" . $newLogoName;
@@ -78,7 +77,7 @@ class Frontcms extends Admin_Controller {
                 }
             }
             $this->frontcms_setting_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/frontcms');
         }
 
@@ -98,7 +97,6 @@ class Frontcms extends Admin_Controller {
             $frontcmslist->theme = '';
             $frontcmslist->complain_form_email = '';
             $frontcmslist->footer_text = '';
-            $frontcmslist->whatsapp_url = '';
             $frontcmslist->fb_url = '';
             $frontcmslist->twitter_url = '';
             $frontcmslist->youtube_url = '';
@@ -106,7 +104,6 @@ class Frontcms extends Admin_Controller {
             $frontcmslist->instagram_url = '';
             $frontcmslist->pinterest_url = '';
             $frontcmslist->linkedin_url = '';
-            $frontcmslist->cookie_consent = '';
         }
         $data['frontcmslist'] = $frontcmslist;
         $this->load->view('layout/header', $data);

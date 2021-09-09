@@ -1,9 +1,54 @@
 <style type="text/css">
-    .table .pull-right {text-align: initial; width: auto; margin-bottom: 3px}
+    .material-switch > input[type="checkbox"] {
+        display: none;   
+    }
+
+    .material-switch > label { 
+        cursor: pointer;
+        height: 0px;
+        position: relative; 
+        width: 40px;  
+    }
+  
+    .material-switch > label::before {
+        background: rgb(0, 0, 0);
+        box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        content: '';
+        height: 14px;
+        margin-top: -8px;
+        position:absolute;
+        opacity: 0.3;
+        transition: all 0.4s ease-in-out;
+        width: 40px;
+    }
+    .material-switch > label::after {
+        background: rgb(255, 255, 255);
+        border-radius: 16px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        content: '';
+        height: 20px;
+        left: -4px;
+        margin-top: -8px;
+        position: absolute;
+        top: -4px;
+        transition: all 0.3s ease-in-out;
+        width: 20px;
+    }
+    .material-switch > input[type="checkbox"]:checked + label::before {
+        background: inherit;
+        opacity: 0.5;
+    }
+    .material-switch > input[type="checkbox"]:checked + label::after {
+        background: inherit;
+        left: 20px;
+    }
+    .table .pull-right {text-align: initial; width: auto; margin-bottom: 1px}
 </style>
 <?php
 $language = $this->customlib->getLanguage();
 $language_name = $language["short_code"];
+
 ?>
 
 <div class="content-wrapper">
@@ -18,12 +63,12 @@ $language_name = $language["short_code"];
             <div class="box-header">
                 <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
             </div>
-            <form class="assign_teacher_form" action="<?php echo base_url(); ?>admin/syllabus/status" method="post" enctype="multipart/form-data">
+                <form class="assign_teacher_form" action="<?php echo base_url(); ?>admin/syllabus/status" method="post" enctype="multipart/form-data">
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
                             <?php if ($this->session->flashdata('msg')) { ?>
-                                <?php echo $this->session->flashdata('msg') ?>
+                            <?php echo $this->session->flashdata('msg') ?>
                             <?php } ?>
                             <?php echo $this->customlib->getCSRF(); ?>
                         </div> 
@@ -53,7 +98,7 @@ $language_name = $language["short_code"];
                                 <select  id="secid" name="section_id" class="form-control" >
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                 </select>
-                                <span class="class_id_error text-danger"><?php echo form_error('section_id'); ?></span>
+                                 <span class="class_id_error text-danger"><?php echo form_error('section_id'); ?></span>
                             </div>
                         </div>
                         <div class="col-md-3 col-lg-3 col-sm-6">
@@ -62,7 +107,7 @@ $language_name = $language["short_code"];
                                 <select  id="subject_group_id" name="subject_group_id" class="form-control" >
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                 </select>
-                                <span class="class_id_error text-danger"><?php echo form_error('subject_group_id'); ?></span>
+                                 <span class="class_id_error text-danger"><?php echo form_error('subject_group_id'); ?></span>
                             </div>
                         </div>
                         <div class="col-md-3 col-lg-3 col-sm-6">
@@ -71,7 +116,7 @@ $language_name = $language["short_code"];
                                 <select  id="subid" name="subject_id" class="form-control" >
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                 </select>
-                                <span class="class_id_error text-danger"><?php echo form_error('subject_id'); ?></span>
+                                 <span class="class_id_error text-danger"><?php echo form_error('subject_id'); ?></span>
                             </div>
                         </div>
                     </div>
@@ -79,142 +124,132 @@ $language_name = $language["short_code"];
                 </div>
             </form>
 
+            
+<?php if(!empty($lessons)){
+    ?>
+    
 
-            <?php if (!empty($lessons)) {
-                ?>
+       
+            <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('syllabus')." ".$this->lang->line('status')." ".$this->lang->line('for').": ".$subject_name; ?></h3>
+            </div>
+         <div class="box-body" id="transfee">    
+          <div class="table-responsive mailbox-messages" > 
 
-
-
-                <div class="box-header">
-                    <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('syllabus') . " " . $this->lang->line('status') . " " . $this->lang->line('for') . ": " . $subject_name; ?></h3>
-                </div>
-                <div class="box-body" id="transfee">    
-                    <div class="table-responsive mailbox-messages"> 
-
-
-                    <p class="pull-right">
-                    <a class="btn btn-default btn-xs displayinline" id="btnExport" onclick="fnExcelReport();"> <i class="fa fa-file-excel-o"></i> </a>  
-                        <a class="btn btn-default btn-xs displayinline" id="print" onclick="printDiv()" ><i class="fa fa-print"></i></a> </p>
-
-
-                        <table class="table table-bordered topictable ptt10" id="headerTable">
-                            <tr class="hide" id="visible">
-                                <td colspan="5"><center><b><?php echo $this->lang->line('syllabus') . " " . $this->lang->line('status') . " " . $this->lang->line('for') . ": " . $subject_name; ?></b></center></td>
-                            </tr>
-                            <tr>
-                                <th width="30">#</th>
-                                <th width="60%"><?php echo $this->lang->line('lesson'); ?> - <?php echo $this->lang->line('topic'); ?></th>
-                                <th width="20%"><?php echo $this->lang->line('topic_completion_date'); ?></th>
-                                <th width=""><?php echo $this->lang->line('status'); ?></th>
-                                <?php if ($this->rbac->hasPrivilege('manage_syllabus_status', 'can_edit')) { ?>
-                                    <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
-                                <?php } ?>
-                            </tr>
-                            <?php
-                            $losson_count = 1;
-                            foreach ($lessons as $key => $value) {
+		  
+		  
+                    <a class="btn btn-default btn-xs pull-right" id="print" onclick="printDiv()" ><i class="fa fa-print"></i></a> <a class="btn btn-default btn-xs pull-right" id="btnExport" onclick="fnExcelReport();"> <i class="fa fa-file-excel-o"></i> </a>
+					
+		  
+            <table class="table table-bordered topictable" id="headerTable">
+				<tr class="hide" id="visible">
+					<td colspan="5"><center><b><?php echo $this->lang->line('syllabus')." ".$this->lang->line('status')." ".$this->lang->line('for').": ".$subject_name; ?></b></center></td>
+				</tr>
+                <tr>
+                    <th width="30">#</th>
+                    <th width="60%"><?php echo $this->lang->line('lesson');?> - <?php echo $this->lang->line('topic');?></th>
+                    <th width="20%"><?php echo $this->lang->line('topic_completion_date'); ?></th>
+                    <th width=""><?php echo $this->lang->line('status'); ?></th>
+                    <?php  if($this->rbac->hasPrivilege('manage_syllabus_status','can_edit')){ ?>
+                    <th class="pull-right"><?php echo $this->lang->line('action'); ?></th>
+                <?php } ?>
+                </tr>
+                <?php 
+                $losson_count=1;
+             foreach ($lessons as $key => $value) {
+                                 
                                 ?>
-                                <tr>
-                                    <td><?php echo $losson_count; ?></td>
-                                    <td>
-                                        <h4><?php echo $value['name']; ?></h4>
+                <tr>
+                    <td><?php echo $losson_count; ?></td>
+                    <td>
+                        <h4><?php  echo $value['name']; ?></h4>
 
-                                        <ul class="stausbtns">
-                                            <?php
-                                            if (isset($value['topic'])) {
-                                                $topic_count = 1;
-                                                foreach ($value['topic'] as $topic_key => $topic_value) {
-                                                    ?> 
-                                                    <li><span><?php echo $losson_count . "." . $topic_count; ?></span><?php echo $topic_value['name']; ?></li>
-
-                                                    <?php
-                                                    $topic_count++;
-                                                }
-                                            }
-                                            ?>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <h4 style="height: 14px;"></h4>
-                                        <ul class="stausbtns">
-                                            <?php
-                                            if (isset($value['topic'])) {
-
-                                                foreach ($value['topic'] as $topic_key => $topic_value) {
-                                                    ?>
-                                                    <?php if ($topic_value['status'] == 1) { ?> <li><?php echo date($this->customlib->getSchoolDateFormat(), strtotime($topic_value['complete_date'])); ?> </li><?php } else { ?>
-                                                        <li> &nbsp; </li>
-                                                    <?php } ?>
-
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <h4 style="height: 14px;"></h4>
-                                        <ul class="stausbtns">
-                                            <?php
-                                            if (isset($value['topic'])) {
-
-                                                foreach ($value['topic'] as $topic_key => $topic_value) {
-                                                    ?>
-                                                    <li><?php echo $status[$topic_value['status']]; ?></li>
-
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </ul>
-                                    </td>
-                                    <?php if ($this->rbac->hasPrivilege('manage_syllabus_status', 'can_edit')) { ?>
-                                        <td class="pull-right">
-                                            <h4 style="height: 14px;"></h4>
-                                            <ul class="topiclist">
-                                                <?php
-                                                if (isset($value['topic'])) {
-
-                                                    foreach ($value['topic'] as $topic_key => $topic_value) {
-                                                        ?>
-                                                        <li>
-
-                                                            <div class="material-switch pull-right">
-                                                                <input id="topic<?php echo $topic_value['id'] ?>" name="someSwitchOption001" type="checkbox" class="chk" data-rowid="<?php echo $topic_value['id'] ?>" value="checked" <?php if ($topic_value['status'] == "1") echo "checked='checked'"; ?> />
-                                                                <label for="topic<?php echo $topic_value['id'] ?>" class="label-success"></label>
-                                                            </div>
-                                                        </li>
-
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </ul>
-
-                                        </td>
-                                    <?php } ?>
-                                </tr>
-                                <?php
-                                $losson_count++;
-                            }
-                            ?>
-                        </table>
-                    </div><!--./table-responsive-->   
-
-                </div>
-                <?php
-            }else {
-                if ($no_record != 0) {
-                    ?>
-
-
-                    <div class="box-header">
-                        <div class="alert alert-danger"> <center><?php echo $this->lang->line('no_record_found'); ?></center></div>
+                        <ul class="stausbtns">
+                            <?php 
+                            if(isset($value['topic'])){
+                                $topic_count=1;
+                            foreach ($value['topic'] as $topic_key => $topic_value) {
+                            
+                         ?> 
+                            <li><span><?php echo $losson_count.".".$topic_count; ?></span><?php echo $topic_value['name']; ?></li>
+                            
+                            <?php 
+                            $topic_count++;
+                            }}
+                         ?>
+                      </ul>
+                    </td>
+                     <td>
+                        <h4 style="height: 14px;"></h4>
+                        <ul class="stausbtns">
+                            <?php 
+                            if(isset($value['topic'])){
+                                
+                            foreach ($value['topic'] as $topic_key => $topic_value) {
+                            
+                         ?>
+                           <?php if($topic_value['status']==1){ ?> <li><?php  echo date($this->customlib->getSchoolDateFormat(),strtotime($topic_value['complete_date'])); ?> </li><?php }else{ ?>
+						   <li> &nbsp; </li>
+						   <?php } ?>
+                            
+                            <?php 
+                            
+                            }}
+                         ?>
+                      </ul>
+                  </td>
+                    <td>
+                        <h4 style="height: 14px;"></h4>
+                        <ul class="stausbtns">
+                            <?php 
+                            if(isset($value['topic'])){
+                                
+                            foreach ($value['topic'] as $topic_key => $topic_value) {
+                            
+                         ?>
+                            <li><?php echo $status[$topic_value['status']]; ?></li>
+                            
+                            <?php 
+                            
+                            }}
+                         ?>
+                      </ul>
+                  </td>
+                  <?php  if($this->rbac->hasPrivilege('manage_syllabus_status','can_edit')){ ?>
+                    <td class="pull-right">
+                        <h4 style="height: 14px;"></h4>
+                        <ul class="topiclist">
+                            <?php 
+                            if(isset($value['topic'])){
+                                
+                            foreach ($value['topic'] as $topic_key => $topic_value) {
+                            
+                         ?>
+                            <li>
+                                
+                                <div class="material-switch pull-right">
+                <input id="topic<?php echo $topic_value['id'] ?>" name="someSwitchOption001" type="checkbox" class="chk" data-rowid="<?php echo $topic_value['id'] ?>" value="checked" <?php if ($topic_value['status'] == "1") echo "checked='checked'"; ?> />
+                    <label for="topic<?php echo $topic_value['id'] ?>" class="label-success"></label>
                     </div>
-                <?php
-                }
-            }
-            ?>
+                </li>
+                            
+                            <?php 
+                            
+                            }}
+                         ?>
+                      </ul>
+                          
+                    </td>
+                    <?php } ?>
+                </tr>
+                <?php $losson_count++;
+            } ?>
+            </table>
+         </div><!--./table-responsive-->   
+             
+        </div>
+<?php
+} ?>
     </section>
 </div>
 <div id="topic_status" class="modal fade " role="dialog">
@@ -222,25 +257,25 @@ $language_name = $language["short_code"];
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" onclick="close_modal()" >&times;</button>
-                <h4 class="modal-title" id="modal-title" ><?php echo $this->lang->line('topic_completion_date'); ?> <small style="color:red;"> *</small></h4>
+                <h4 class="modal-title" id="modal-title" ><?php echo $this->lang->line('topic_completion_date');?></h4>
             </div>
             <div class="modal-body">
 
                 <div class="row">
                     <form role="form" id="addevent_form11" method="post" enctype="multipart/form-data" action="">
-
+                        
 
                         <div class="form-group col-md-12">
-
+                           
                             <input type="hidden" id="topic_id" name="id">
-
+                            
                             <input class="form-control date" id="date" name="date" type="text"  >
                         </div>
-
-
+                    
+                        
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <input type="submit" class="btn btn-primary pull-right"  value="<?php echo $this->lang->line('save'); ?>"></div> 
-                    </form>
+                        </form>
                 </div>
 
             </div>
@@ -250,39 +285,39 @@ $language_name = $language["short_code"];
 
 <script type="text/javascript">
 
-    function close_modal() {
-
-        window.location.reload(true);
+    function close_modal(){
+    
+ window.location.reload(true);
     }
 
-    $(document).ready(function () {
+      $(document).ready(function () {
         $(document).on('click', '.chk', function () {
             var checked = $(this).is(':checked');
             var rowid = $(this).data('rowid');
-
+        
             if (checked) {
-
-                var status = "1";
-                $('#topic_status').modal('show');
-                $('#topic_id').val(rowid);
-
-
+               
+                    var status = "1";    
+                    $('#topic_status').modal('show');  
+                    $('#topic_id').val(rowid);
+                
+          
             } else {
-                if (!confirm('<?PHP echo $this->lang->line('change_status') ?>')) {
+                if (!confirm('<?PHP echo $this->lang->line('change_status')?>')) {
                     $(this).removeAttr('checked');
                 } else {
-
+                   
                     var status = "0";
-                    changeTopicStatus(rowid, status);
+                changeTopicStatus(rowid, status);
 
-
+                
                 }
-
+                
             }
         });
     });
 
-    function change_status(id) {
+      function change_status(id){
         $.ajax({
             type: "POST",
             url: base_url + "admin/lessonplan/get_",
@@ -292,12 +327,12 @@ $language_name = $language["short_code"];
                 successMsg(data.msg);
             }
         });
-    }
+    }  
 
-
+      
 
     function changeTopicStatus(rowid, status) {
-
+    
         var base_url = '<?php echo base_url() ?>';
         $.ajax({
             type: "POST",
@@ -306,11 +341,11 @@ $language_name = $language["short_code"];
             dataType: "json",
             success: function (data) {
                 successMsg(data.msg);
-                window.location.reload(true);
+                 window.location.reload(true);
             }
         });
-    }
-    $("#addevent_form11").on('submit', (function (e) {
+    }     
+  $("#addevent_form11").on('submit', (function (e) {
         e.preventDefault();
 
         var $this = $(this).find("button[type=submit]:focus");
@@ -345,7 +380,7 @@ $language_name = $language["short_code"];
                     $('#date').val();
                     $('#topic_status').modal('hide');
 
-                    window.location.reload(true);
+                   window.location.reload(true);
                 }
             },
             error: function (xhr) { // if error occured
@@ -360,15 +395,15 @@ $language_name = $language["short_code"];
     }));
 </script>
 <script>
-    $(document).ready(function (e) {
+     $(document).ready(function (e) {
 
         getSectionByClass("<?php echo $class_id ?>", "<?php echo $section_id ?>", 'secid');
-
+       
         getSubjectGroup("<?php echo $class_id ?>", "<?php echo $section_id ?>", "<?php echo $subject_group_id ?>", 'subject_group_id')
         getsubjectBySubjectGroup("<?php echo $class_id ?>", "<?php echo $section_id ?>", "<?php echo $subject_group_id ?>", "<?php echo $subject_id ?>", 'subid');
 
     });
-    function getSectionByClass(class_id, section_id, select_control) {
+function getSectionByClass(class_id, section_id, select_control) {
         if (class_id != "") {
             $('#' + select_control).html("");
             var base_url = '<?php echo base_url() ?>';
@@ -398,16 +433,16 @@ $language_name = $language["short_code"];
             });
         }
     }
-    $(document).on('change', '#secid', function () {
+ $(document).on('change', '#secid', function () {
         var class_id = $('#searchclassid').val();
         var section_id = $(this).val();
         getSubjectGroup(class_id, section_id, 0, 'subject_group_id');
     });
-    function getSubjectGroup(class_id, section_id, subjectgroup_id, subject_group_target) {
+  function getSubjectGroup(class_id, section_id, subjectgroup_id, subject_group_target) {
         if (class_id != "" && section_id != "") {
 
             var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
-
+ 
             $.ajax({
                 type: 'POST',
                 url: base_url + 'admin/subjectgroup/getGroupByClassandSection',
@@ -442,7 +477,7 @@ $language_name = $language["short_code"];
     }
 
 
-    $(document).on('change', '#subject_group_id', function () {
+     $(document).on('change', '#subject_group_id', function () {
         var class_id = $('#searchclassid').val();
         var section_id = $('#secid').val();
         var subject_group_id = $(this).val();
@@ -451,7 +486,7 @@ $language_name = $language["short_code"];
 
     });
 
-    function getsubjectBySubjectGroup(class_id, section_id, subject_group_id, subject_group_subject_id, subject_target) {
+     function getsubjectBySubjectGroup(class_id, section_id, subject_group_id, subject_group_subject_id, subject_target) {
         if (class_id != "" && section_id != "" && subject_group_id != "") {
 
             var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
@@ -487,65 +522,64 @@ $language_name = $language["short_code"];
             });
         }
     }
-
+   
 
 
 </script>
 <script>
+    
+  
 
+  document.getElementById("print").style.display = "block";
+  document.getElementById("btnExport").style.display = "block";
 
-
-    document.getElementById("print").style.display = "block";
-    document.getElementById("btnExport").style.display = "block";
-
-    function printDiv() {
-        $("#visible").removeClass("hide");
-        $(".pull-right").addClass("hide");
-        $(".text-right").addClass("hide");
-
-        document.getElementById("print").style.display = "none";
-        document.getElementById("btnExport").style.display = "none";
-        var divElements = document.getElementById('transfee').innerHTML;
-        var oldPage = document.body.innerHTML;
-        document.body.innerHTML =
-                "<html><head><title></title></head><body>" +
-                divElements + "</body>";
-        window.print();
-        document.body.innerHTML = oldPage;
-        location.reload(true);
-    }
-
-    function fnExcelReport()
-    {
-        var tab_text = "<table border='2px'><tr >";
-        var textRange;
-        var j = 0;
-        tab = document.getElementById('headerTable'); // id of table
-
-        for (j = 0; j < tab.rows.length; j++)
-        {
-            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
-            //tab_text=tab_text+"</tr>";
+        function printDiv() { 
+		$("#visible").removeClass("hide");
+		$(".pull-right").addClass("hide");
+		
+            document.getElementById("print").style.display = "none";
+             document.getElementById("btnExport").style.display = "none";
+            var divElements = document.getElementById('transfee').innerHTML;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = 
+              "<html><head><title></title></head><body>" + 
+              divElements + "</body>";
+            window.print();
+            document.body.innerHTML = oldPage;
+            location.reload(true);
         }
+    
+ function fnExcelReport()
+{
+    var tab_text="<table border='2px'><tr >";
+    var textRange; var j=0;
+    tab = document.getElementById('headerTable'); // id of table
 
-        tab_text = tab_text + "</table>";
-        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
-        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
-        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
-
-        var ua = window.navigator.userAgent;
-        var msie = ua.indexOf("MSIE ");
-        $("#visible").addClass("hide");
-        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
-        {
-            txtArea1.document.open("txt/html", "replace");
-            txtArea1.document.write(tab_text);
-            txtArea1.document.close();
-            txtArea1.focus();
-            sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
-        } else                 //other browser not tested on IE 11
-            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
-
-        return (sa);
+    for(j = 0 ; j < tab.rows.length ; j++) 
+    {     
+        tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        //tab_text=tab_text+"</tr>";
     }
-</script>
+
+    tab_text=tab_text+"</table>";
+    tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+    tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+    tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE "); 
+	$("#visible").addClass("hide");
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html","replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus(); 
+        sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+    }  
+    else                 //other browser not tested on IE 11
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+    return (sa);
+}
+    </script>

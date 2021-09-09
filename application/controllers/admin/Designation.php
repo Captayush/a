@@ -21,7 +21,7 @@ class Designation extends Admin_Controller {
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'admin/designation/designation');
         $designation = $this->designation_model->get();
-        $data["title"] = $this->lang->line('add') . " " . $this->lang->line('designation');
+        $data["title"] = $this->lang->line('add')." ".$this->lang->line('designation');
         $data["designation"] = $designation;
         $this->form_validation->set_rules(
                 'type', $this->lang->line('name'), array('required',
@@ -52,7 +52,7 @@ class Designation extends Admin_Controller {
                 $data = array('designation' => $type, 'is_active' => 'yes');
             }
             $insert_id = $this->designation_model->addDesignation($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('success_message').'</div>');
             redirect("admin/designation/designation");
         } else {
 
@@ -65,7 +65,7 @@ class Designation extends Admin_Controller {
     function designationedit($id) {
 
         $result = $this->designation_model->get($id);
-        $data["title"] = $this->lang->line('edit') . " " . $this->lang->line('designation');
+        $data["title"] = $this->lang->line('edit')." ".$this->lang->line('designation');
         $data["result"] = $result;
 
         $designation = $this->designation_model->get();

@@ -104,34 +104,34 @@
                                         foreach ($feediscountList as $feediscount) {
                                             ?>
                                             <tr>
-                                                <td class="mailbox-name">
-                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $feediscount['name'] ?></a>
+                                                 <td class="mailbox-name">
+                                                <a href="#" data-toggle="popover" class="detail_popover"><?php echo $feediscount['name'] ?></a>
 
-                                                    <div class="fee_detail_popover" style="display: none">
-                                                        <?php
-                                                        if ($feediscount['description'] == "") {
-                                                            ?>
-                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <p class="text text-info"><?php echo $feediscount['description']; ?></p>
-                                                            <?php
-                                                        }
+                                                <div class="fee_detail_popover" style="display: none">
+                                                    <?php
+                                                    if ($feediscount['description'] == "") {
                                                         ?>
-                                                    </div>
-                                                </td>
+                                                        <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                        <p class="text text-info"><?php echo $feediscount['description']; ?></p>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </td>
                                                 <td class="mailbox-name">
-                                                    <?php echo $feediscount['code'] ?>
+        <?php echo $feediscount['code'] ?>
 
                                                 </td>
 
                                                 <td class="mailbox-name">
-                                                    <?php echo $feediscount['amount'] ?>
+        <?php echo $feediscount['amount'] ?>
                                                 </td>
 
 
-                                                <td class="mailbox-date pull-right white-space-nowrap">
+                                                <td class="mailbox-date pull-right">
                                                     <?php
                                                     if ($this->rbac->hasPrivilege('fees_discount_assign', 'can_view')) {
                                                         ?>
@@ -154,7 +154,7 @@
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/feediscount/delete/<?php echo $feediscount['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
-                                                    <?php } ?>
+                                            <?php } ?>
                                                 </td>
                                             </tr>
                                             <?php

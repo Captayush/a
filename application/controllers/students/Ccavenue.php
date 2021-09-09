@@ -1,133 +1,118 @@
 <?php
 
-if (!defined('BASEPATH')) {
+if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-}
 
-class Ccavenue extends Student_Controller {
+class Ccavenue extends CI_Controller {
 
-    public function __construct()
-    {
+    function __construct() {
         parent::__construct();
         $this->setting = $this->setting_model->get();
-        $this->load->library('Ccavenue_crypto');
     }
 
-    public function index()
-    {
+    public function index() {
         $this->session->set_userdata('top_menu', 'Library');
         $this->session->set_userdata('sub_menu', 'book/index');
-        $data['params']         = $this->session->userdata('params');
-        $data['setting']        = $this->setting;
-        
-        $data['student_fees_master_array']=$data['params']['student_fees_master_array'];
+        $data = $this->session->userdata('params');
+        $data['setting'] = $this->setting;
+
         $this->load->view('student/ccavenue', $data);
-    } 
+    }
 
-    public function pay()
-    {
+    public function pay() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            $session_data            = $this->session->userdata('params');
-            $pay_method              = $this->paymentsetting_model->getActiveMethod();
-            $details['tid']          = abs(crc32(uniqid()));
-            $details['merchant_id']  = $pay_method->api_secret_key;
-            $details['order_id']     = abs(crc32(uniqid()));
-            $details['amount']       = number_format((float) ($session_data['fine_amount_balance'] + $session_data['total']), 2, '.', '');
-            $details['currency']     = 'INR';
-            $details['redirect_url'] = base_url('students/ccavenue/success');
-            $details['cancel_url']   = base_url('students/ccavenue/cancel');
-            $details['language']     = "EN";
-            $details['billing_name']     = $session_data['name'];
-
-            $merchant_data = "";
-            foreach ($details as $key => $value) {
-                $merchant_data .= $key . '=' . $value . '&';
-            }
-            $data['encRequest']  = $this->ccavenue_crypto->encrypt($merchant_data, $pay_method->salt);
-            $data['access_code'] = $pay_method->api_publishable_key;
+            $session_data = $this->session->userdata('params');
+            $pay_method = $this->paymentsetting_model->getActiveMethod();
+            $data = array(
+                'merchant_id' => $pay_method->api_secret_key,
+                'working_key' => $pay_method->salt,
+                'amount' => $session_data['payment_detail']->amount,
+                'order_id' => abs(crc32(uniqid())),
+                'url' => base_url('parent/ccavenue/success'),
+                'billing_cust_name' => "",
+                'billing_cust_address' => "",
+                'billing_cust_country' => "",
+                'billing_cust_state' => "",
+                'billing_city' => "",
+                'billing_zip' => "",
+                'billing_cust_tel' => "",
+                'billing_cust_email' => "",
+                'delivery_cust_name' => "",
+                'delivery_cust_address' => "",
+                'delivery_cust_country' => "",
+                'delivery_cust_state' => "",
+                'delivery_city' => "",
+                'delivery_zip' => "",
+                'delivery_cust_tel' => "",
+                'delivery_cust_notes' => "",
+            );
 
             $this->load->view('student/ccavenue_pay', $data);
         } else {
-            redirect(base_url('user/user/dashboard'));
+            redirect(site_url('user/user/dashboard'));
         }
     }
 
-    public function success()
-    {
+    public function success() {
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
 
-        $status     = array();
-        $rcvdString = "";
-        $params     = $this->session->userdata('params');
-        
-        if (!empty($params)) {
-            $pay_method  = $this->paymentsetting_model->getActiveMethod();
-            $encResponse = $_POST["encResp"];
-            $rcvdString  = $this->ccavenue_crypto->decrypt($encResponse, $pay_method->salt);
+            $AuthDesc = "";
+            $MerchantId = "";
+            $OrderId = "";
+            $Amount = 0;
+            $Checksum = 0;
+            $veriChecksum = false;
+            $pay_method = $this->paymentsetting_model->getActiveMethod();
 
-            if ($rcvdString !== '') {
+            $Checksum = $this->input->post('Checksum');
+            $MerchantId = $this->input->post('Merchant_Id');
+            $OrderId = $this->input->post('Order_Id');
+            $Amount = $this->input->post('Amount');
+            $AuthDesc = $this->input->post('AuthDesc');
+            $workingKey = $pay_method->salt;
+            $rcvdString = $MerchantId . '|' . $OrderId . '|' . $Amount . '|' . $AuthDesc . '|' . $workingKey;
+            $veriChecksum = $this->adler32->verifyChecksum($this->adler32->genchecksum($rcvdString), $Checksum);
 
-                $decryptValues = explode('&', $rcvdString);
-                $dataSize      = sizeof($decryptValues);
-                for ($i = 0; $i < $dataSize; $i++) {
-                    $information             = explode('=', $decryptValues[$i]);
-                    $status[$information[0]] = $information[1];
+
+            if ($veriChecksum == TRUE && $AuthDesc === "Y") {
+                $nb_order_no = $this->input->post('nb_order_no');
+                $params = $this->session->userdata('params');
+                $json_array = array(
+                    'amount' => $Amount,
+                    'date' => date('Y-m-d'),
+                    'amount_discount' => 0,
+                    'amount_fine' => 0,
+                    'description' => "Online fees deposit through CCAvenue. TXN ID: " . $OrderId . ", CCAvenue Ref ID: " . $nb_order_no,
+                    'received_by' => '',
+                    'payment_mode' => 'CCAvenue',
+                );
+                $data = array(
+                    'student_fees_master_id' => $params['student_fees_master_id'],
+                    'fee_groups_feetype_id' => $params['fee_groups_feetype_id'],
+                    'amount_detail' => $json_array
+                );
+                $send_to = $params['guardian_phone'];
+                $inserted_id = $this->studentfeemaster_model->fee_deposit($data, $send_to);
+
+                if ($inserted_id) {
+                    $invoice_detail = json_decode($inserted_id);
+                    redirect(base_url("students/payment/successinvoice/" . $invoice_detail->invoice_id . "/" . $invoice_detail->sub_invoice_id));
+                } else {
+                    
                 }
-            }
+            } else if ($veriChecksum == TRUE && $AuthDesc === "B") {
 
-            if (!empty($status)) {
-                if ($status['order_status'] == "Success") {
-
-                    $tracking_id = $status['tracking_id'];
-                    $bank_ref_no = $status['bank_ref_no'];
-                    $bulk_fees=array();
-            
-         
-            foreach ($params['student_fees_master_array'] as $fee_key => $fee_value) {
-           
-             $json_array = array(
-                'amount'          =>  $fee_value['amount_balance'],
-                'date'            => date('Y-m-d'),
-                'amount_discount' => 0,
-                'amount_fine'     => $fee_value['fine_balance'],
-                'description'     => "Online fees deposit through CCAvenue. TXN ID: " . $tracking_id . " Bank Ref. No.: " . $bank_ref_no,
-                'received_by'     => '',
-                'payment_mode'    => 'CCAvenue',
-            );
-
-            $insert_fee_data = array(
-                'student_fees_master_id' => $fee_value['student_fees_master_id'],
-                'fee_groups_feetype_id'  => $fee_value['fee_groups_feetype_id'],
-                'amount_detail'          => $json_array,
-            );                 
-           $bulk_fees[]=$insert_fee_data;
-            //========
-            }
-            $send_to     = $params['guardian_phone'];
-            $inserted_id = $this->studentfeemaster_model->fee_deposit_bulk($bulk_fees, $send_to);
-            if ($inserted_id) {
-                  redirect(base_url("students/payment/successinvoice"));                     
+                $this->session->set_flashdata('message', 'Thank you for shopping with us.We will keep you posted regarding the status of your order through e-mail');
+                redirect(site_url('parent/payment/paymentfailed'));
+            } else if ($veriChecksum == TRUE && $AuthDesc === "N") {
+                $this->session->set_flashdata('message', 'Thank you for shopping with us.However,the transaction has been declined');
+                redirect(site_url('students/payment/paymentfailed'));
             } else {
-              redirect(base_url('students/payment/paymentfailed'));
+                $this->session->set_flashdata('message', 'Security Error. Illegal access detected');
+
+                redirect(site_url('students/payment/paymentfailed'));
             }
-
-                } else if ($status['order_status'] === "Aborted") {
-                    echo "<br>We will keep you posted regarding the status of your order through e-mail";
-
-                } else if ($status['order_status'] === "Failure") {
-                    redirect(base_url("students/payment/paymentfailed"));} else {
-                    echo "<br>Security Error. Illegal access detected";
-
-                }
-            }
-
-        } else {
-           
         }
-    }
-
-    public function cancel()
-    {
-
     }
 
 }

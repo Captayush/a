@@ -196,7 +196,7 @@ foreach ($teacherlist as $teacher) {
             e.preventDefault();
 
         });
-
+ 
         $(document).on('change', '#class_id', function (e) {
             $('#section_id').html("");
             resetForm();

@@ -23,17 +23,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <select autofocus="" id="class_id" name="class_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
-                                        foreach ($classlist as $class) {
-                                            ?>
-                                            <option value="<?php echo $class['id'] ?>" <?php
-                                            if (set_value('class_id') == $class['id']) {
-                                                echo "selected=selected";
-                                            }
-                                            ?>><?php echo $class['class'] ?></option>
-                                                    <?php
-                                                    $count++;
-                                                }
-                                                ?>
+foreach ($classlist as $class) {
+    ?>
+                                            <option value="<?php echo $class['id'] ?>" <?php if (set_value('class_id') == $class['id']) {
+        echo "selected=selected";
+    }
+    ?>><?php echo $class['class'] ?></option>
+                                            <?php
+$count++;
+}
+?>
                                     </select>
                                     <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                 </div>
@@ -49,17 +48,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <select  id="category_id" name="category_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
-                                        foreach ($categorylist as $category) {
-                                            ?>
-                                            <option value="<?php echo $category['id'] ?>" <?php
-                                            if (set_value('category_id') == $category['id']) {
-                                                echo "selected=selected";
-                                            }
-                                            ?>><?php echo $category['category'] ?></option>
-                                                    <?php
-                                                    $count++;
-                                                }
-                                                ?>
+foreach ($categorylist as $category) {
+    ?>
+                                            <option value="<?php echo $category['id'] ?>" <?php if (set_value('category_id') == $category['id']) {
+        echo "selected=selected";
+    }
+    ?>><?php echo $category['category'] ?></option>
+                                            <?php
+$count++;
+}
+?>
                                     </select>
                                 </div>
                                 <div class="col-sm-2">
@@ -67,16 +65,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <select class="form-control" name="gender">
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
-                                        foreach ($genderList as $key => $value) {
-                                            ?>
-                                            <option value="<?php echo $key; ?>" <?php
-                                            if (set_value('gender') == $key) {
-                                                echo "selected";
-                                            }
-                                            ?>><?php echo $value; ?></option>
-                                                    <?php
-                                                }
-                                                ?>
+foreach ($genderList as $key => $value) {
+    ?>
+                                            <option value="<?php echo $key; ?>" <?php if (set_value('gender') == $key) {
+        echo "selected";
+    }
+    ?>><?php echo $value; ?></option>
+                                            <?php
+}
+?>
                                     </select>
                                 </div>
                                 <div class="col-sm-2">
@@ -84,18 +81,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <select  id="rte" name="rte" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
-                                        foreach ($RTEstatusList as $k => $rte) {
-                                            ?>
-                                            <option value="<?php echo $k; ?>" <?php
-                                            if (set_value('rte') == $k) {
-                                                echo "selected";
-                                            }
-                                            ?>><?php echo $rte; ?></option>
+foreach ($RTEstatusList as $k => $rte) {
+    ?>
+                                            <option value="<?php echo $k; ?>" <?php if (set_value('rte') == $k) {
+        echo "selected";
+    }
+    ?>><?php echo $rte; ?></option>
 
                                             <?php
-                                            $count++;
-                                        }
-                                        ?>
+$count++;
+}
+?>
                                     </select>
                                 </div>
                             </div>
@@ -112,8 +108,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                     <?php
-                    if (isset($resultlist)) {
-                        ?>
+if (isset($resultlist)) {
+    ?>
                         <div class="box box-info">
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-users"></i> Assign Subject Group
@@ -128,29 +124,29 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <div class="table-responsive">
                                                 <?php
 // echo "<pre/>";
-                                                // print_r($subjectgroupList);
-                                                foreach ($subjectgroupList as $subjectgroupList) {
-                                                    ?>
+    // print_r($subjectgroupList);
+    foreach ($subjectgroupList as $subjectgroupList) {
+        ?>
                                                     <h4>
                                                         <input type="hidden" name="subject_group_id" value="<?php echo $subjectgroupList->id; ?>">
                                                         <a href="#" data-toggle="popover" class="detail_popover"><?php echo $subjectgroupList->name; ?></a>
                                                     </h4>
                                                     <table class="table">
                                                         <thead>
-                                                        <th>Subject</th>
-                                                        <th>Code</th>
+                                                            <th>Subject</th>
+                                                            <th>Code</th>
                                                         </thead>
                                                         <tbody>
                                                             <?php
-                                                            if (empty($subjectgroupList->group_subject)) {
-                                                                ?>
+if (empty($subjectgroupList->group_subject)) {
+            ?>
 
                                                             <td colspan="5" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
                                                             <?php
-                                                        } else {
+} else {
 
-                                                            foreach ($subjectgroupList->group_subject as $subject_grp_key => $subject_grp_value) {
-                                                                ?>
+            foreach ($subjectgroupList->group_subject as $subject_grp_key => $subject_grp_value) {
+                ?>
                                                                 <tr class="mailbox-name">
                                                                     <td>
                                                                         <?php echo $subject_grp_value->name; ?>
@@ -160,16 +156,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                     </td>
                                                                 </tr>
                                                                 <?php
-                                                            }
-                                                        }
-                                                        ?>
+}
+        }
+        ?>
                                                         </tr>
 
                                                         </tbody>
                                                     </table>
                                                     <?php
-                                                }
-                                                ?>
+}
+    ?>
 
                                             </div>
                                         </div>
@@ -190,28 +186,28 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                         </tr>
                                                         <?php
-                                                        if (empty($resultlist)) {
-                                                            ?>
+if (empty($resultlist)) {
+        ?>
                                                             <tr>
                                                                 <td colspan="7" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
                                                             </tr>
                                                             <?php
-                                                        } else {
-                                                            $count = 1;
-                                                            foreach ($resultlist as $student) {
-                                                                ?>
+} else {
+        $count = 1;
+        foreach ($resultlist as $student) {
+            ?>
                                                                 <tr>
 
                                                                     <td>
                                                                         <?php
-                                                                        if ($student['student_subject_group_id'] != 0) {
-                                                                            $sel = "checked='checked'";
-                                                                        } else {
-                                                                            $sel = "";
-                                                                        }
-                                                                        ?>
-                                                                        <input class="checkbox" type="checkbox" name="student_session_id[]"  value="<?php echo $student['student_session_id']; ?>" <?php echo $sel; ?>/>
-                                                                        <input type="hidden" name="student_subject_group_id_<?php echo $student['student_session_id']; ?>" value="<?php echo $student['student_subject_group_id']; ?>">
+if ($student['student_subject_group_id'] != 0) {
+                $sel = "checked='checked'";
+            } else {
+                $sel = "";
+            }
+            ?>
+<input class="checkbox" type="checkbox" name="student_session_id[]"  value="<?php echo $student['student_session_id']; ?>" <?php echo $sel; ?>/>
+<input type="hidden" name="student_subject_group_id_<?php echo $student['student_session_id']; ?>" value="<?php echo $student['student_subject_group_id']; ?>">
                                                                         <input type="hidden" name="student_ids[]" value="<?php echo $student['student_session_id']; ?>">
                                                                     </td>
 
@@ -224,10 +220,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                                 </tr>
                                                                 <?php
-                                                            }
-                                                            $count++;
-                                                        }
-                                                        ?>
+}
+        $count++;
+    }
+    ?>
                                                     </tbody></table>
 
                                             </div>
@@ -243,8 +239,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </div>
                         </div>
                         <?php
-                    }
-                    ?>
+}
+?>
                 </form>
             </div>
 
@@ -282,9 +278,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 url: base_url + "sections/getByClass",
                 data: {'class_id': class_id},
                 dataType: "json",
-                beforeSend: function () {
-                    $('#section_id').addClass('dropdownloading');
-                },
+                     beforeSend: function(){
+                 $('#section_id').addClass('dropdownloading');
+                 },
                 success: function (data) {
                     $.each(data, function (i, obj)
                     {
@@ -296,18 +292,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     });
                     $('#section_id').append(div_data);
                 },
-                complete: function () {
-                    $('#section_id').removeClass('dropdownloading');
-                }
+                  complete: function(){
+              $('#section_id').removeClass('dropdownloading');
+               }
             });
         }
     }
 
     $(document).ready(function () {
-        $("#confirm-group_update").modal({
-            backdrop: false,
-            show: false
-        });
+                $("#confirm-group_update").modal({
+                    backdrop: false,
+                    show:false
+                });
         var class_id = $('#class_id').val();
         var section_id = '<?php echo set_value('section_id') ?>';
         getSectionByClass(class_id, section_id);
@@ -321,9 +317,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 url: base_url + "sections/getByClass",
                 data: {'class_id': class_id},
                 dataType: "json",
-                beforeSend: function () {
-                    $('#section_id').addClass('dropdownloading');
-                },
+                    beforeSend: function(){
+                 $('#section_id').addClass('dropdownloading');
+                 },
                 success: function (data) {
                     $.each(data, function (i, obj)
                     {
@@ -331,69 +327,69 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     });
                     $('#section_id').append(div_data);
                 },
-                complete: function () {
-                    $('#section_id').removeClass('dropdownloading');
-                }
+                  complete: function(){
+              $('#section_id').removeClass('dropdownloading');
+               }
             });
         });
     });
 
+ 
 
 
+           $(document).on('click', '.update_sub_group', function(e) {
+            var $modalDiv = $('#confirm-group_update');
+             $.ajax({
+                type: "POST",
+                dataType: 'Json',
+                url: $("#assign_form").attr('action'),
+                data: $("#assign_form").serialize(), // serializes the form's elements.
+               beforeSend: function() {
+               $modalDiv.addClass('modal_loading');
+              },
+                success: function (data)
+                {
+                    if (data.status == "fail") {
+                        var message = "";
+                        $.each(data.error, function (index, value) {
 
-    $(document).on('click', '.update_sub_group', function (e) {
-        var $modalDiv = $('#confirm-group_update');
-        $.ajax({
-            type: "POST",
-            dataType: 'Json',
-            url: $("#assign_form").attr('action'),
-            data: $("#assign_form").serialize(), // serializes the form's elements.
-            beforeSend: function () {
-                $modalDiv.addClass('modal_loading');
-            },
-            success: function (data)
-            {
-                if (data.status == "fail") {
-                    var message = "";
-                    $.each(data.error, function (index, value) {
-
-                        message += value;
-                    });
-                    errorMsg(message);
-                } else {
-                    successMsg(data.message);
-                }
+                            message += value;
+                        });
+                        errorMsg(message);
+                    } else {
+                        successMsg(data.message);
+                    }
 
 
-            },
+                },
 
-            error: function (xhr) { // if error occured
-                alert("Error occured.please try again");
+                   error: function(xhr) { // if error occured
+        alert("Error occured.please try again");
 
-            },
-            complete: function () {
-                $modalDiv.modal('hide').removeClass('modal_loading');
-            }
+    },
+    complete: function() {
+      $modalDiv.modal('hide').removeClass('modal_loading');
+    }
+            });
+
         });
-
-    });
 </script>
 
 
-<div class="modal fade" id="confirm-group_update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">Confirm Update --r</h4>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to update record?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success update_sub_group">Update</button>
+    <div class="modal fade" id="confirm-group_update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Update --r</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Do you want to update record?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success update_sub_group">Update</button>
+                </div>
             </div>
         </div>
     </div>
-</div>

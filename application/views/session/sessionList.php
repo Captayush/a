@@ -1,4 +1,4 @@
-data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
+ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
     <section class="content-header">
         <h1>
             <i class="fa fa-gears"></i> <?php echo $this->lang->line('system_settings'); ?></h1>
@@ -47,56 +47,56 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
                             <?php echo $this->session->flashdata('list_msg') ?>
                         <?php } ?>
                         <div class="mailbox-messages">
-                            <div class="">
-                                <div class="download_label"><?php echo $this->lang->line('session_list'); ?></div>
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('session'); ?></th>
-                                            <th><?php echo $this->lang->line('status'); ?></th>
-                                            <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $count = 1;
-                                        foreach ($sessionlist as $session) {
-                                            ?>
-                                            <tr>
-                                                <td class="mailbox-name"><?php echo $session['session'] ?></td>
-                                                <td class="mailbox-name"><?php
-                                                    if ($session['active'] != 0) {
-                                                        ?>
-                                                        <span class="label bg-green"><?php echo $this->lang->line('active'); ?></span>
-                                                        <?php
-                                                    } else {
-                                                        
-                                                    }
-                                                    ?></td>
-                                                <td class="mailbox-date text-right">
-                                                    <?php if ($this->rbac->hasPrivilege('session_setting', 'can_edit')) { ?>
-                                                        <a data-placement="left" href="<?php echo base_url(); ?>sessions/edit/<?php echo $session['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                            <i class="fa fa-pencil"></i>
-                                                        </a>
-                                                    <?php } if ($this->rbac->hasPrivilege('session_setting', 'can_delete')) { ?>
-                                                        <a data-placement="left" href="<?php echo base_url(); ?>sessions/delete/<?php echo $session['id'] ?>"class="btn btn-default btn-xs <?php
-                                                        if ($session['active'] != 0) {
-                                                            echo'disabled';
-                                                        }
-                                                        ?>"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                            <i class="fa fa-remove"></i>
-                                                        </a>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                            $count++;
-                                        }
+                        <div class="">
+                            <div class="download_label"><?php echo $this->lang->line('session_list'); ?></div>
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('session'); ?></th>
+                                        <th><?php echo $this->lang->line('status'); ?></th>
+                                        <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $count = 1;
+                                    foreach ($sessionlist as $session) {
                                         ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> 
+                                        <tr>
+                                            <td class="mailbox-name"><?php echo $session['session'] ?></td>
+                                            <td class="mailbox-name"><?php
+                                                if ($session['active'] != 0) {
+                                                    ?>
+                                                    <span class="label bg-green"><?php echo $this->lang->line('active'); ?></span>
+                                                    <?php
+                                                } else {
+                                                    
+                                                }
+                                                ?></td>
+                                            <td class="mailbox-date text-right">
+                                                <?php if ($this->rbac->hasPrivilege('session_setting', 'can_edit')) { ?>
+                                                    <a data-placement="left" href="<?php echo base_url(); ?>sessions/edit/<?php echo $session['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                <?php } if ($this->rbac->hasPrivilege('session_setting', 'can_delete')) { ?>
+                                                    <a data-placement="left" href="<?php echo base_url(); ?>sessions/delete/<?php echo $session['id'] ?>"class="btn btn-default btn-xs <?php
+                                                    if ($session['active'] != 0) {
+                                                        echo'disabled';
+                                                    }
+                                                    ?>"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
+                                                <?php } ?>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                        $count++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                       </div> 
                     </div>
 
                 </div>

@@ -12,7 +12,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                         <div class="box-tools pull-right">
-                            <a href="<?php echo site_url('admin/timetable/create') ?>" type="button"  class="btn btn-sm btn-primary" autocomplete="off"><i class="fa fa-plus"></i> <?php echo $this->lang->line('add'); ?></a>
+                            <a href="<?php echo site_url('admin/timetable/create')?>" type="button"  class="btn btn-sm btn-primary" autocomplete="off"><i class="fa fa-plus"></i> Add</a>
                         </div>
                     </div>
                     <form action="<?php echo site_url('admin/timetable/classreport') ?>" method="post" accept-charset="utf-8">
@@ -66,68 +66,63 @@
                             if (!empty($timetable)) {
                                 ?>
 
-                                <div class="table-responsive">    
-                                    <table class="table table-stripped">
-                                        <thead>
-                                            <tr>
-                                                <?php
-                                                foreach ($timetable as $tm_key => $tm_value) {
-                                                    ?>
-                                                    <th class="text text-center"><?php echo $this->lang->line(strtolower($tm_key)); ?>
-
-                                                    </th>
-                                                    <?php
-                                                }
+                            <div class="table-responsive">    
+                                <table class="table table-stripped">
+                                    <thead>
+                                        <tr>
+                                            <?php
+                                            foreach ($timetable as $tm_key => $tm_value) {
                                                 ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
+                                                <th class="text text-center"><?php echo $this->lang->line(strtolower($tm_key)); ?>
+                                                    
+                                                </th>
                                                 <?php
-                                                foreach ($timetable as $tm_key => $tm_value) {
-                                                    ?>
-                                                    <td class="text text-center" width="14%">
+                                            }
+                                            ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <?php
+                                            foreach ($timetable as $tm_key => $tm_value) {
+                                                ?>
+                                                <td class="text text-center" width="14%">
 
+                                                    <?php
+                                                    if (!$timetable[$tm_key]) {
+                                                        ?>
+                                                        <div class="attachment-block clearfix">
+                                                            <b class="text text-center"><?php echo $this->lang->line('not'); ?> <br><?php echo $this->lang->line('scheduled'); ?></b><br>
+                                                        </div>
                                                         <?php
-                                                        if (!$timetable[$tm_key]) {
+                                                    } else {
+                                                        foreach ($timetable[$tm_key] as $tm_k => $tm_kue) {
                                                             ?>
                                                             <div class="attachment-block clearfix">
-                                                                <b class="text text-center"><?php echo $this->lang->line('not'); ?> <br><?php echo $this->lang->line('scheduled'); ?></b><br>
+
+                                                                <b class="text-green"><?php echo $this->lang->line('subject') ?>: <?php echo $tm_kue->subject_name; if($tm_kue->code!=''){ echo " (" . $tm_kue->code . ")"; }  ?>
+
+                                                                </b><br>
+
+                                                                <strong class="text-green"><?php echo $tm_kue->time_from ?></strong>
+                                                                <b class="text text-center">-</b>
+                                                                <strong class="text-green"><?php echo $tm_kue->time_to; ?></strong><br>
+
+                                                                <strong class="text-green"><?php echo $this->lang->line('room_no'); ?>: <?php echo $tm_kue->room_no; ?></strong><br>
+
                                                             </div>
                                                             <?php
-                                                        } else {
-                                                            foreach ($timetable[$tm_key] as $tm_k => $tm_kue) {
-                                                                ?>
-                                                                <div class="attachment-block clearfix">
-
-                                                                    <b class="text-green"><?php echo $this->lang->line('subject') ?>: <?php
-                                                                        echo $tm_kue->subject_name;
-                                                                        if ($tm_kue->code != '') {
-                                                                            echo " (" . $tm_kue->code . ")";
-                                                                        }
-                                                                        ?>
-
-                                                                    </b><br>
-
-                                                                    <strong class="text-green"><?php echo $tm_kue->time_from ?></strong>
-                                                                    <b class="text text-center">-</b>
-                                                                    <strong class="text-green"><?php echo $tm_kue->time_to; ?></strong><br>
-
-                                                                    <strong class="text-green"><?php echo $this->lang->line('room_no'); ?>: <?php echo $tm_kue->room_no; ?></strong><br>
-
-                                                                </div>
-                                                                <?php
-                                                            }
                                                         }
-                                                        ?>
-                                                    </td>
-                                                    <?php
-                                                }
-                                                ?>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>  
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <?php
+                                            }
+                                            ?>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              </div>  
                                 <?php
                             }
                             ?>

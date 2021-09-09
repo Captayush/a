@@ -8,18 +8,19 @@ class Subject extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('file');
+       
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('subject', 'can_view')) {
+     if (!$this->rbac->hasPrivilege('subject', 'can_view')) {
             access_denied();
         }
-        $this->session->set_userdata('top_menu', 'Academics');
-        $this->session->set_userdata('sub_menu', 'Academics/subject');
+        $this->session->set_userdata('top_menu','Academics');
+        $this->session->set_userdata('sub_menu','Academics/subject');
         $data['title'] = 'Add subject';
         $subject_result = $this->subject_model->get();
         $data['subjectlist'] = $subject_result;
-        $data['subject_types'] = $this->customlib->subjectType();
+        $data['subject_types']=$this->customlib->subjectType();
         $this->form_validation->set_rules('name', $this->lang->line('subject_name'), 'trim|required|xss_clean|callback__check_name_exists');
         $this->form_validation->set_rules('type', $this->lang->line('type'), 'trim|required|xss_clean');
         if ($this->input->post('code')) {
@@ -36,7 +37,7 @@ class Subject extends Admin_Controller {
                 'type' => $this->input->post('type'),
             );
             $this->subject_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/subject/index');
         }
     }
@@ -61,6 +62,8 @@ class Subject extends Admin_Controller {
         $this->subject_model->remove($id);
         redirect('admin/subject/index');
     }
+
+
 
     function _check_name_exists() {
         $data['name'] = $this->security->xss_clean($this->input->post('name'));
@@ -92,7 +95,7 @@ class Subject extends Admin_Controller {
         $data['id'] = $id;
         $subject = $this->subject_model->get($id);
         $data['subject'] = $subject;
-        $data['subject_types'] = $this->customlib->subjectType();
+          $data['subject_types']=$this->customlib->subjectType();
         $this->form_validation->set_rules('name', $this->lang->line('subject'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('layout/header', $data);
@@ -106,7 +109,7 @@ class Subject extends Admin_Controller {
                 'type' => $this->input->post('type'),
             );
             $this->subject_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/subject/index');
         }
     }

@@ -164,30 +164,30 @@
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->              
                     <!-- page image -->
-                    <!-- page image -->
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('featured_image'); ?></h3>
-                            <div class="box-tools pull-right">
-                                <!-- Buttons, labels, and many other things can be placed here! -->
-                                <!-- Here is a label for example -->
-                                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" data-placement="left" title="Collapse"><i class="fa fa-minus"></i></button>
-                            </div><!-- /.box-tools -->
-                        </div><!-- /.box-header -->
+                     <!-- page image -->
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><?php echo $this->lang->line('featured_image'); ?></h3>
+                                <div class="box-tools pull-right">
+                                    <!-- Buttons, labels, and many other things can be placed here! -->
+                                    <!-- Here is a label for example -->
+                                    <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" data-placement="left" title="Collapse"><i class="fa fa-minus"></i></button>
+                                </div><!-- /.box-tools -->
+                            </div><!-- /.box-header -->
 
-                        <div class="box-body">
+                            <div class="box-body">
 
 
-                            <div class="form-group">
-                                <div class="input-group input-group-sm">
-                                    <input class="form-control iframe-btn" placeholder="<?php echo $this->lang->line('select_image'); ?>" type="text" name="image" id="image" value="<?php echo $result['feature_image']; ?>">
-                                    <span class="input-group-btn">
-                                        <a href="#" class="btn cfees feature_image_btn" id="feature_image" data-toggle="tooltip" data-title="<?php echo $this->lang->line('select_image'); ?>" type="button" ><i class="fa fa-folder-open"></i></a>
-                                        <a href="#" class="btn removegraybtn delete_media" id="image" data-toggle="tooltip" data-title="<?php echo $this->lang->line('delete'); ?>" type="button"><i class="fa fa-trash"></i></a>
+                                <div class="form-group">
+                                    <div class="input-group input-group-sm">
+                                        <input class="form-control iframe-btn" placeholder="<?php echo $this->lang->line('select_image'); ?>" type="text" name="image" id="image" value="<?php echo $result['feature_image']; ?>">
+                                        <span class="input-group-btn">
+                                            <a href="#" class="btn cfees feature_image_btn" id="feature_image" data-toggle="tooltip" data-title="<?php echo $this->lang->line('select_image'); ?>" type="button" ><i class="fa fa-folder-open"></i></a>
+                                            <a href="#" class="btn removegraybtn delete_media" id="image" data-toggle="tooltip" data-title="<?php echo $this->lang->line('delete'); ?>" type="button"><i class="fa fa-trash"></i></a>
 
-                                    </span>
-                                </div>
-                                <?php
+                                        </span>
+                                    </div>
+                                     <?php
                                 $image_display = " display: none";
                                 if ($result['feature_image'] != "") {
                                     $image_display = "";
@@ -196,9 +196,9 @@
                                 <div id="image_preview" class="thumbnail" style="margin-top: 10px; <?php echo $image_display; ?>">
                                     <img src="<?php echo $result['feature_image']; ?>" class="img-responsive feature_image_url" >
                                 </div>
-                            </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
+                                </div>
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
 
                     <!-- Save button -->
                     <div class="box box-primary">
@@ -215,7 +215,12 @@
 <script>
     $(document).ready(function () {
         var popup_target = 'media_images';
-    
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+        $('.date').datepicker({
+            format: date_format,
+            autoclose: true
+        });
+
         CKEDITOR.replace('editor1',
                 {
                     allowedContent: true

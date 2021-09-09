@@ -17,24 +17,24 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('system_update') ?></h3>
+                        <h3 class="box-title titlefix"><?php echo $this->lang->line('system_update')?></h3>
                         <div class="box-tools pull-right">
 
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
                     <div class="box-body">
-
-
+            
+                       
                         <div class="row text-center">
                             <div class="col-md-6 col-md-offset-3 progress" style="display: none;">
-                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                    <span class="sr-only">100% <?php echo $this->lang->line('complete') ?></span>
-                                </div>
+                              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                <span class="sr-only">100% <?php echo $this->lang->line('complete')?></span>
+                              </div>
                             </div>
                             <div class="col-md-4 col-md-offset-4">
-                                <div class="alert <?php echo (isset($version) && $version != "") ? 'alert-danger' : 'alert-success' ?>">
+                                <div class="alert <?php echo (isset($version) && $version != "") ? 'alert-danger':'alert-success' ?>">
                                     <p class="versionup">
-                                        <?php echo $this->lang->line('your') . " " . $this->lang->line('app_name') . " " . $this->lang->line('version'); ?> <span> <?php echo $this->customlib->getAppVersion(); ?></span></p>
+                                        <?php echo $this->lang->line('your')." ".$this->lang->line('app_name')." ".$this->lang->line('version'); ?> <span> <?php echo $this->customlib->getAppVersion(); ?></span></p>
                                 </div><!--./alert alert-danger-->
                             </div><!--./col-md-4 -->
                             <?php
@@ -42,67 +42,64 @@
                                 ?>
                                 <div class="col-md-4 col-md-offset-4">
                                     <div class="alert alert-success">
-                                        <p class="versionup"><?php echo $this->lang->line('latest') . " " . $this->lang->line('app_name') . " " . $this->lang->line('version'); ?> <span> <?php echo $version; ?></span></p>
+                                        <p class="versionup"><?php echo $this->lang->line('latest')." ".$this->lang->line('app_name')." ".$this->lang->line('version'); ?> <span> <?php echo $version; ?></span></p>
                                     </div><!--./alert alert-danger-->
                                 </div><!--./col-md-4 -->
 
                                 <?php
                             }
-                            echo "<div class='clearfix'></div>";
-
-                            if ($this->session->flashdata('message')) {
-                                ?>
-                                <div class="col-md-12">
-                                    <div class="text-success">
-                                        <ul class="update-list">
-                                            <?php
-                                            foreach ($this->session->flashdata('message') as $message_key => $message_value) {
-                                                ?>
-                                                <li><h5><i class="fa fa-info-circle"></i> <?php echo $message_value; ?></h5></li>
-                                                <?php
-                                            }
+                           echo "<div class='clearfix'></div>";
+ 
+                        if ($this->session->flashdata('message')) {
+                            ?>
+                            <div class="col-md-12">
+                                <div class="text-success">
+                                    <ul class="update-list">
+                                        <?php
+                                        foreach ($this->session->flashdata('message') as $message_key => $message_value) {
                                             ?>
-                                        </ul>
-                                    </div>
-                                </div>  
-                                <?php
-                            }
-
-                            if ($this->session->flashdata('error')) {
-                                ?>
-                                <div class="col-md-12">
-                                    <div class="text-danger">
-                                        <ul class="update-list">
+                                            <li><h5><i class="fa fa-info-circle"></i> <?php echo $message_value; ?></h5></li>
                                             <?php
-                                            foreach ($this->session->flashdata('error') as $error_key => $error_value) {
-                                                ?>
-                                                <li><h5><i class="fa fa-info-circle"></i> <?php echo $error_value; ?></h5>
-                                                    <?php
-                                                }
-                                                ?>
-                                        </ul>
-                                    </div>
-                                </div>  
-                                <?php
-                            }
+                                        }
+                                        ?>
+                                    </ul>
+                                </div>
+                              </div>  
+                            <?php
+                        }
 
+                        if ($this->session->flashdata('error')) {
+                            ?>
+                            <div class="col-md-12">
+                                <div class="text-danger">
+                                    <ul class="update-list">
+                                        <?php
+                                        foreach ($this->session->flashdata('error') as $error_key => $error_value) {
+                                            ?>
+                                            <li><h5><i class="fa fa-info-circle"></i> <?php echo $error_value; ?></h5>
+                                            <?php
+                                        }
+                                        ?>
+                                    </ul>
+                                </div>
+                              </div>  
+                            <?php
+                        }
+                        
 
                             if (isset($version) && $version != "") {
                                 ?>
                                 <div class="col-md-12 mb10 mt10 upgradeup">
                                     <!-- <h4><i class="fa fa-info-circle"></i> New version is available for update.</h4> -->
                                     <form method="POST" action="<?php echo site_url('admin/updater'); ?>" id="form-update">
-                                        <button type="button" class="btn cfees btn-submit" name="update_btn" value="update"> <?php echo $this->lang->line('update_now') ?></button>
+                                        <button type="button" class="btn cfees btn-submit" name="update_btn" value="update"> <?php echo $this->lang->line('update_now')?></button>
                                     </form>
                                 </div><!--./col-md-12-->
 
                                 <?php
                             }
                             ?>
-<div class="font15">
-Please check <a href="https://smart-school.in/category/changelog/smart-school" target="_blank" class="displayinline align-text-top font-weight-bold">changelog</a> for latest version update. 
-    
-</div>
+
                         </div><!--./row-->
 
 
@@ -126,13 +123,13 @@ Please check <a href="https://smart-school.in/category/changelog/smart-school" t
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('confirmation'); ?></h4>
+                <h4 class="modal-title" id="myModalLabel"><?php  echo $this->lang->line('confirmation'); ?></h4>
             </div>
             <div class="modal-body">
-                <p><?php echo $this->lang->line('updater_instruction') ?></p>
-                <p><?php echo $this->lang->line('do_you_want_to_proceed') ?></p>
+                <p><?php echo $this->lang->line('updater_instruction')?></p>
+                <p><?php echo $this->lang->line('do_you_want_to_proceed')?></p>
                 <!-- <button type="button" class="btn btn-primary" data-dismiss="modal">No --r</button> -->
-
+                
             </div>
             <div class="modal-footer"><button type="button" class="btn cfees pull-right confirm-yes"><?php echo $this->lang->line('yes'); ?> </button></div>
         </div>
@@ -148,7 +145,7 @@ Please check <a href="https://smart-school.in/category/changelog/smart-school" t
 
     $('.confirm-yes').on('click', function (e) {
         $('#confirm-update').modal('hide');
-        $('.progress').css('display', 'block');
+        $('.progress').css('display','block');
         $('form#form-update').submit();
     });
 

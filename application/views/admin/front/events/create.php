@@ -218,6 +218,10 @@
 
     $(document).ready(function () {
         var popup_target = 'media_images';
+        
+
+
+
 
         CKEDITOR.replace('editor1',
                 {
@@ -405,6 +409,7 @@
 
             </div>
             <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-default" data-dismiss="modal"><?php //echo $this->lang->line('cancel'); ?></button> -->
                 <button type="button" class="btn btn-primary add_media"><?php echo $this->lang->line('add'); ?></button>
             </div>
         </div>

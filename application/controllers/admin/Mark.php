@@ -14,7 +14,7 @@ class Mark extends Admin_Controller {
     }
 
     function index() {
-
+       
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/examinations');
         $this->session->set_userdata('subsub_menu', 'Reports/examinations/exam_marks_report');
@@ -28,7 +28,7 @@ class Mark extends Admin_Controller {
         $data['examlist'] = $exam;
         $data['classlist'] = $class;
         $userdata = $this->customlib->getUserData();
-
+        
         $feecategory = $this->feecategory_model->get();
         $data['feecategorylist'] = $feecategory;
         $this->form_validation->set_rules('exam_id', 'Exam', 'trim|required|xss_clean');
@@ -88,6 +88,7 @@ class Mark extends Admin_Controller {
                 }
 
                 $data['examSchedule']['result'] = $new_array;
+                
             } else {
                 $s = array('status' => 'no');
                 $data['examSchedule'] = $s;
@@ -118,7 +119,7 @@ class Mark extends Admin_Controller {
     }
 
     function create() {
-
+        
         $session = $this->setting_model->getCurrentSession();
         $data['title'] = 'Exam Schedule';
         $data['exam_id'] = "";
@@ -129,7 +130,7 @@ class Mark extends Admin_Controller {
         $data['examlist'] = $exam;
         $data['classlist'] = $class;
         $userdata = $this->customlib->getUserData();
-
+       
         $feecategory = $this->feecategory_model->get();
         $data['feecategorylist'] = $feecategory;
         $this->form_validation->set_rules('exam_id', 'Exam', 'trim|required|xss_clean');

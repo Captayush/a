@@ -4,7 +4,7 @@ class Timeline extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-
+		
         $this->load->library('form_validation');
         $this->load->model('timeline_model');
     }
@@ -24,7 +24,7 @@ class Timeline extends Admin_Controller {
 
             $array = array('status' => 'fail', 'error' => $msg, 'message' => '');
         } else {
-            $visible_check = $this->input->post('visible_check');
+            $visible_check = $this->input->post('visible_check'); 
             $timeline_date = $this->input->post('timeline_date');
             if (empty($visible_check)) {
                 $visible = '';
@@ -32,7 +32,7 @@ class Timeline extends Admin_Controller {
 
                 $visible = $visible_check;
             }
-
+			
             $timeline = array(
                 'title' => $this->input->post('timeline_title'),
                 'description' => $this->input->post('timeline_desc'),
@@ -49,7 +49,7 @@ class Timeline extends Admin_Controller {
                     die("Error creating folder $uploaddir");
                 }
                 $fileInfo = pathinfo($_FILES["timeline_doc"]["name"]);
-                $document = 'uploads/student_timeline/' . basename($_FILES['timeline_doc']['name']);
+                $document = 'uploads/student_timeline/' .basename($_FILES['timeline_doc']['name']);
 
                 $img_name = $id . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["timeline_doc"]["tmp_name"], $uploaddir . $img_name);
@@ -106,7 +106,7 @@ class Timeline extends Admin_Controller {
                     die("Error creating folder $uploaddir");
                 }
                 $fileInfo = pathinfo($_FILES["timeline_doc"]["name"]);
-                $document = 'uploads/staff_timeline/' . basename($_FILES['timeline_doc']['name']);
+                $document = 'uploads/staff_timeline/' .basename($_FILES['timeline_doc']['name']);
 
                 $img_name = $id . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["timeline_doc"]["tmp_name"], $uploaddir . $img_name);

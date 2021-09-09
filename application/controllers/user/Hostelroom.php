@@ -14,7 +14,7 @@ class Hostelroom extends Student_Controller {
         $data['roomtypelist'] = $roomtypelist;
         $hostellist = $this->hostel_model->get();
         $data['hostellist'] = $hostellist;
-        $student_id = $this->customlib->getStudentSessionUserID();
+         $student_id = $this->customlib->getStudentSessionUserID();
         $student = $this->student_model->get($student_id);
         $data['studentList'] = $student;
         $this->session->set_userdata('top_menu', 'Hostel');

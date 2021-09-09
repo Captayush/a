@@ -80,20 +80,7 @@
         </form>
     </div>
 </div>
-<script type="text/javascript">
-     var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy','M' => 'M']) ?>';
 
-    $(document).ready(function () {      
-        $('body').on('focus',".date", function(){
-            $(this).datepicker({
-                todayHighlight: false,
-                format: date_format,
-                autoclose: true,
-                weekStart : start_week
-            });
-        });
-        });
-</script>
 
 <script type="text/javascript">
 

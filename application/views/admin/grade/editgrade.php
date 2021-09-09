@@ -51,12 +51,12 @@
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('percent_upto'); ?></label><small class="req"> *</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('percent_from'); ?></label><small class="req"> *</small>
                                     <input id="mark_from" name="mark_from"  type="text" class="form-control"  value="<?php echo set_value('mark_from', $editgrade['mark_from']); ?>" />
                                     <span class="text-danger"><?php echo form_error('mark_from'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('percent_from'); ?></label><small class="req"> *</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('percent_upto'); ?></label><small class="req"> *</small>
                                     <input id="mark_upto" name="mark_upto"  type="text" class="form-control"  value="<?php echo set_value('mark_upto', $editgrade['mark_upto']); ?>" />
                                     <span class="text-danger"><?php echo form_error('mark_upto'); ?></span>
                                 </div>
@@ -89,7 +89,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('grade_list'); ?></h3>
+                        <h3 class="box-title titlefix"><?php //echo $title_list;       ?><?php echo $this->lang->line('grade_list'); ?></h3>
                         <div class="box-tools pull-right">
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
@@ -194,7 +194,14 @@
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('.detail_popover').popover({

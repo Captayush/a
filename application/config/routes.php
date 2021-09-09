@@ -11,7 +11,7 @@ $route['student/unauthorized'] = 'user/user/unauthorized';
 $route['teacher/unauthorized'] = 'teacher/teacher/unauthorized';
 $route['accountant/unauthorized'] = 'accountant/accountant/unauthorized';
 $route['librarian/unauthorized'] = 'librarian/librarian/unauthorized';
-$route['404_override'] = 'welcome/show_404';
+$route['404_override'] = 'school/show_404';
 $route['translate_uri_dashes'] = FALSE;
 $route['cron/(:any)'] = 'cron/index/$1';
 

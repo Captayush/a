@@ -6,8 +6,10 @@ namespace Midtrans;
  * Send request to Midtrans API
  * Better don't use this class directly, use CoreApi, Transaction
  */
-class ApiRequestor {
 
+class ApiRequestor
+{
+    
     /**
      * Send GET request
      * 
@@ -15,7 +17,8 @@ class ApiRequestor {
      * @param string  $server_key
      * @param mixed[] $data_hash
      */
-    public static function get($url, $server_key, $data_hash) {
+    public static function get($url, $server_key, $data_hash)
+    {
         return self::remoteCall($url, $server_key, $data_hash, false);
     }
 
@@ -26,7 +29,8 @@ class ApiRequestor {
      * @param string  $server_key
      * @param mixed[] $data_hash
      */
-    public static function post($url, $server_key, $data_hash) {
+    public static function post($url, $server_key, $data_hash)
+    {
         return self::remoteCall($url, $server_key, $data_hash, true);
     }
 
@@ -38,7 +42,8 @@ class ApiRequestor {
      * @param mixed[] $data_hash
      * @param bool    $post
      */
-    public static function remoteCall($url, $server_key, $data_hash, $post = true) {
+    public static function remoteCall($url, $server_key, $data_hash, $post = true)
+    {
         $ch = curl_init();
 
         $curl_options = array(
@@ -56,7 +61,7 @@ class ApiRequestor {
             // We need to combine headers manually, because it's array and it will no be merged
             if (Config::$curlOptions[CURLOPT_HTTPHEADER]) {
                 $mergedHeders = array_merge($curl_options[CURLOPT_HTTPHEADER], Config::$curlOptions[CURLOPT_HTTPHEADER]);
-                $headerOptions = array(CURLOPT_HTTPHEADER => $mergedHeders);
+                $headerOptions = array( CURLOPT_HTTPHEADER => $mergedHeders );
             } else {
                 $mergedHeders = array();
             }
@@ -92,11 +97,11 @@ class ApiRequestor {
             try {
                 $result_array = json_decode($result);
             } catch (\Exception $e) {
-                throw new \Exception("API Request Error unable to json_decode API response: " . $result . ' | Request url: ' . $url);
+                throw new \Exception("API Request Error unable to json_decode API response: ".$result . ' | Request url: '.$url);
             }
             if (!in_array($result_array->status_code, array(200, 201, 202, 407))) {
                 $message = 'Midtrans Error (' . $result_array->status_code . '): '
-                        . $result_array->status_message;
+                . $result_array->status_message;
                 if (isset($result_array->validation_messages)) {
                     $message .= '. Validation Messages (' . implode(", ", $result_array->validation_messages) . ')';
                 }
@@ -110,7 +115,8 @@ class ApiRequestor {
         }
     }
 
-    private static function processStubed($curl, $url, $server_key, $data_hash, $post) {
+    private static function processStubed($curl, $url, $server_key, $data_hash, $post)
+    {
         VT_Tests::$lastHttpRequest = array(
             "url" => $url,
             "server_key" => $server_key,
@@ -121,5 +127,4 @@ class ApiRequestor {
 
         return VT_Tests::$stubHttpResponse;
     }
-
 }

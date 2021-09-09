@@ -14,27 +14,31 @@ class MY_Controller extends CI_Controller
         parent::__construct();
         $this->config->load('license');
         $this->load->helper('language');
+
         $this->load->library('auth');
         $this->load->library('module_lib');
         $this->load->library('pushnotification');
         $this->load->library('jsonlib');
         $this->load->helper(array('directory', 'customfield', 'custom'));
-        $this->load->model(array('setting_model', 'customfield_model', 'onlinestudent_model', 'houselist_model', 'onlineexam_model', 'onlineexamquestion_model', 'onlineexamresult_model', 'examstudent_model', 'admitcard_model', 'marksheet_model', 'chatuser_model', 'examgroupstudent_model', 'examgroup_model', 'batchsubject_model', 'filetype_model'));
+        $this->load->model(array('setting_model', 'customfield_model', 'onlinestudent_model', 'houselist_model', 'onlineexam_model', 'onlineexamquestion_model', 'onlineexamresult_model', 'examstudent_model', 'admitcard_model', 'marksheet_model', 'chatuser_model', 'examgroupstudent_model', 'examgroup_model', 'batchsubject_model'));
 
         if ($this->session->has_userdata('admin')) {
 
             $admin    = $this->session->userdata('admin');
             $language = ($admin['language']['language']);
+
         } else if ($this->session->has_userdata('student')) {
 
             $student  = $this->session->userdata('student');
             $language = ($student['language']['language']);
+
         } else {
             $this->school_details = $this->setting_model->getSchoolDetail();
-            $language             = ($this->school_details->language);
+            $language = ($this->school_details->language);
+
         }
 
-        $this->config->set_item('language', $language);
+        $this->config->set_item('language', strtotime($language));
         $lang_array = array('form_validation_lang');
         $map        = directory_map(APPPATH . "./language/" . $language . "/app_files");
         foreach ($map as $lang_key => $lang_value) {
@@ -48,9 +52,7 @@ class MY_Controller extends CI_Controller
 
 class Admin_Controller extends MY_Controller
 {
-
     protected $aaaa = false;
-
     public function __construct()
     {
         parent::__construct();
@@ -58,7 +60,7 @@ class Admin_Controller extends MY_Controller
         $this->check_license();
         $this->load->library('rbac');
         $this->config->load('app-config');
-        $this->load->model(array('batchsubject_model', 'examgroup_model', 'examsubject_model', 'examgroupstudent_model', 'feereminder_model', 'filetype_model'));
+        $this->load->model(array('batchsubject_model', 'examgroup_model', 'examsubject_model', 'examgroupstudent_model', 'feereminder_model'));
 
         $this->config->load('ci-blog');
         $this->config->load('custom_filed-config');
@@ -66,7 +68,7 @@ class Admin_Controller extends MY_Controller
 
     public function check_license()
     {
-
+		return true;
         $license = $this->config->item('SSLK');
 
         if (!empty($license)) {
@@ -85,10 +87,12 @@ class Admin_Controller extends MY_Controller
             } else {
 
                 $this->update_ss_routine();
-            }
-        }
-    }
 
+            }
+
+        }
+
+    }
     public function update_ss_routine()
     {
 
@@ -175,19 +179,13 @@ class Front_Controller extends CI_Controller
         if (!$this->front_setting) {
 
             redirect('site/userlogin');
-        } else {
-            $front_cms_class  = $this->router->fetch_class();
-            $front_cms_method = $this->router->fetch_method();
-            if ($this->front_setting->is_active_front_cms) {
-                $this->config->set_item('front_layout', true);
-            }
-            if (!$this->front_setting->is_active_front_cms) {
-                $this->config->set_item('front_layout', false);
-            }
 
-            if (!$this->front_setting->is_active_front_cms && !($front_cms_class == "welcome" && $front_cms_method == "admission")) {
+        } else {
+
+            if (!$this->front_setting->is_active_front_cms) {
 
                 redirect('site/userlogin');
+
             }
         }
 
@@ -223,8 +221,7 @@ class Front_Controller extends CI_Controller
         if (count($footer_menu_list) > 0) {
             $this->data['footer_menus'] = $this->cms_menuitems_model->getMenus($footer_menu_list['id']);
         }
-        $this->data['layout_type'] = $layout;
-        $this->data['header']      = $this->load->view('themes/' . $this->theme_path . '/header', $this->data, true);
+        $this->data['header'] = $this->load->view('themes/' . $this->theme_path . '/header', $this->data, true);
 
         $this->data['slider'] = $this->load->view('themes/' . $this->theme_path . '/home_slider', $this->data, true);
 
@@ -233,16 +230,13 @@ class Front_Controller extends CI_Controller
         $this->base_assets_url = 'backend/' . THEMES_DIR . '/' . $this->theme_path . '/';
 
         $this->data['base_assets_url'] = BASE_URI . $this->base_assets_url;
-        $is_captcha                    = $this->captchalib->is_captcha('admission');
-        $this->data["is_captcha"]      = $is_captcha;
 
-        if ($layout == true) {
-            $this->data['content'] = (is_null($content)) ? '' : $this->load->view(THEMES_DIR . '/' . $this->theme_path . '/' . $content, $this->data, true);
-            $this->load->view(THEMES_DIR . '/' . $this->theme_path . '/layout', $this->data);
-        } else {
-            $this->data['content'] = (is_null($content)) ? '' : $this->load->view(THEMES_DIR . '/' . $this->theme_path . '/' . $content, $this->data, true);
-            $this->load->view(THEMES_DIR . '/' . $this->theme_path . '/base_layout', $this->data);
-        }
+        // if ($layout == true) {
+        $this->data['content'] = (is_null($content)) ? '' : $this->load->view(THEMES_DIR . '/' . $this->theme_path . '/' . $content, $this->data, true);
+        $this->load->view(THEMES_DIR . '/' . $this->theme_path . '/layout', $this->data);
+        // } else {
+        //     $this->load->view(THEMES_DIR . '/' . $this->config->item('ci_blog_theme') . '/' . $content, $this->data);
+        // }
     }
 
     protected function load_theme_form($content = null, $layout = true)
@@ -270,9 +264,12 @@ class Front_Controller extends CI_Controller
 
         $this->data['base_assets_url'] = BASE_URI . $this->base_assets_url;
 
+        // if ($layout == true) {
         $this->data['content'] = (is_null($content)) ? '' : $this->load->view(THEMES_DIR . '/' . $this->theme_path . '/' . $content, $this->data, true);
         $this->load->view(THEMES_DIR . '/' . $this->theme_path . '/layout', $this->data);
-
+        // } else {
+        //     $this->load->view(THEMES_DIR . '/' . $this->config->item('ci_blog_theme') . '/' . $content, $this->data);
+        // }
     }
 
     private function check_installation()

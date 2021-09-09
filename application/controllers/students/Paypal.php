@@ -3,17 +3,17 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Paypal extends Student_Controller {
+class Paypal extends CI_Controller {
 
     public $setting = "";
 
     function __construct() {
         parent::__construct();
         $this->load->helper('file');
-
+       
         $this->load->library('auth');
         $this->load->library('paypal_payment');
-
+        
         $this->setting = $this->setting_model->get();
     }
 
@@ -23,7 +23,7 @@ class Paypal extends Student_Controller {
         $data = array();
         $data['params'] = $this->session->userdata('params');
         $data['setting'] = $this->setting;
-        $data['student_fees_master_array']=$data['params']['student_fees_master_array'];
+
         $this->load->view('student/paypal', $data);
     }
 
@@ -49,7 +49,7 @@ class Paypal extends Student_Controller {
             echo json_encode($array);
         }
     }
- 
+
     public function complete() {
 
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
@@ -65,7 +65,7 @@ class Paypal extends Student_Controller {
             $data['name'] = $params['name'];
             $data['guardian_phone'] = $params['guardian_phone'];
 
-            $response = $this->paypal_payment->payment($data, "student");
+            $response = $this->paypal_payment->payment($data,"student");
             if ($response->isSuccessful()) {
                 
             } elseif ($response->isRedirect()) {
@@ -93,7 +93,7 @@ class Paypal extends Student_Controller {
         $data['currency_name'] = $params['invoice']->currency_name;
         $data['name'] = $params['name'];
         $data['guardian_phone'] = $params['guardian_phone'];
-        $response = $this->paypal_payment->success($data, "student");
+        $response = $this->paypal_payment->success($data,"student");
 
         $paypalResponse = $response->getData();
         if ($response->isSuccessful()) {
@@ -107,12 +107,12 @@ class Paypal extends Student_Controller {
                         'amount' => $params['total'],
                         'date' => date('Y-m-d'),
                         'amount_discount' => 0,
-                        'amount_fine' => $params['fine_amount_balance'],
+                        'amount_fine' => 0,
                         'description' => "Online fees deposit through Paypal Ref ID: " . $ref_id,
                         'received_by' => '',
                         'payment_mode' => 'Paypal',
                     );
-
+                    
                     $data = array(
                         'student_fees_master_id' => $params['student_fees_master_id'],
                         'fee_groups_feetype_id' => $params['fee_groups_feetype_id'],

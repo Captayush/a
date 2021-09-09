@@ -2,9 +2,11 @@
 
 namespace Midtrans;
 
-class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase {
+class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function testCharge() {
+    public function testCharge()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": 200,
@@ -13,8 +15,8 @@ class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase {
 
         $params = array(
             'transaction_details' => array(
-                'order_id' => "Order-111",
-                'gross_amount' => 10000,
+            'order_id' => "Order-111",
+            'gross_amount' => 10000,
             )
         );
 
@@ -23,21 +25,24 @@ class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($charge->status_code, "200");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/charge"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/charge"
         );
 
         $fields = VT_Tests::lastReqOptions();
         $this->assertEquals($fields["POST"], 1);
         $this->assertEquals(
-                $fields["POSTFIELDS"], '{"payment_type":"credit_card","transaction_details":{"order_id":"Order-111","gross_amount":10000}}'
+            $fields["POSTFIELDS"],
+            '{"payment_type":"credit_card","transaction_details":{"order_id":"Order-111","gross_amount":10000}}'
         );
     }
 
-    public function testRealConnect() {
+    public function testRealConnect()
+    {
         $params = array(
             'transaction_details' => array(
-                'order_id' => rand(),
-                'gross_amount' => 10000,
+            'order_id' => rand(),
+            'gross_amount' => 10000,
             )
         );
 
@@ -46,18 +51,20 @@ class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase {
         } catch (\Exception $error) {
             $errorHappen = true;
             $this->assertContains(
-                    $error->getMessage(), array(
-                "Midtrans Error (401): Transaction cannot be authorized with the current client/server key.",
-                "Midtrans Error (411): Token id is missing, invalid, or timed out",
-                "Midtrans Error (401): Operation is not allowed due to unauthorized payload."
-                    )
+                $error->getMessage(),
+                array(
+                    "Midtrans Error (401): Transaction cannot be authorized with the current client/server key.",
+                    "Midtrans Error (411): Token id is missing, invalid, or timed out",
+                    "Midtrans Error (401): Operation is not allowed due to unauthorized payload."
+                )
             );
         }
 
         $this->assertTrue($errorHappen);
     }
 
-    public function testCapture() {
+    public function testCapture()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": "200",
@@ -79,7 +86,8 @@ class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($capture->status_code, "200");
 
         $this->assertEquals(
-                VT_Tests::$lastHttpRequest["url"], "https://api.sandbox.midtrans.com/v2/capture"
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/capture"
         );
 
         $fields = VT_Tests::lastReqOptions();
@@ -87,8 +95,8 @@ class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($fields["POSTFIELDS"], '{"transaction_id":"A27550"}');
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         VT_Tests::reset();
     }
-
 }

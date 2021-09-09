@@ -48,6 +48,10 @@ class ImageResize {
         $this->thumbnail_prefix = $this->CI->config->item("thumbnail_prefix");
         $this->random_file_name = $this->CI->config->item("random_file_name");
         $this->quality = $this->CI->config->item("quality");
+        // $this->file_data = $this->config->item("file_data");
+        // $this->file_count = count($this->file_data['name']);
+        // $this->destination_dir = $config["destination_folder"];
+        // $this->thumbnail_destination_dir = $config["thumbnail_destination_folder"];
     }
 
     //resize function
@@ -96,6 +100,7 @@ class ImageResize {
                     //thumbnail creation
                     $this->image_size_info = filesize($this->curr_tmp_name);
 
+
                     $img_array = array(
                         'store_name' => $this->new_file_name,
                         'file_type' => $file_ext,
@@ -128,7 +133,7 @@ class ImageResize {
                                     $source = imagecreatefromgif($upload_image);
                                     break;
                                 default:
-                                
+                                // $source = imagecreatefromjpeg($upload_image);
                             }
 
                             imagecopyresized($thumb_create, $source, 0, 0, 0, 0, $thumb_width, $thumb_height, $width, $height);
@@ -144,7 +149,7 @@ class ImageResize {
                                     imagegif($thumb_create, $thumbnail, 100);
                                     break;
                                 default:
-                                
+                                // imagejpeg($thumb_create, $thumbnail, 100);
                             }
                         }
                     }

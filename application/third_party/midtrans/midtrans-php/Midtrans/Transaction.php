@@ -5,7 +5,8 @@ namespace Midtrans;
 /**
  * API methods to get transaction status, approve and cancel transactions
  */
-class Transaction {
+class Transaction
+{
 
     /**
      * Retrieve transaction status
@@ -14,9 +15,12 @@ class Transaction {
      * 
      * @return mixed[]
      */
-    public static function status($id) {
+    public static function status($id)
+    {
         return ApiRequestor::get(
-                        Config::getBaseUrl() . '/' . $id . '/status', Config::$serverKey, false
+            Config::getBaseUrl() . '/' . $id . '/status',
+            Config::$serverKey,
+            false
         );
     }
 
@@ -27,10 +31,13 @@ class Transaction {
      * 
      * @return string
      */
-    public static function approve($id) {
+    public static function approve($id)
+    {
         return ApiRequestor::post(
-                        Config::getBaseUrl() . '/' . $id . '/approve', Config::$serverKey, false
-                )->status_code;
+            Config::getBaseUrl() . '/' . $id . '/approve',
+            Config::$serverKey,
+            false
+        )->status_code;
     }
 
     /**
@@ -40,12 +47,15 @@ class Transaction {
      * 
      * @return string
      */
-    public static function cancel($id) {
+    public static function cancel($id)
+    {
         return ApiRequestor::post(
-                        Config::getBaseUrl() . '/' . $id . '/cancel', Config::$serverKey, false
-                )->status_code;
+            Config::getBaseUrl() . '/' . $id . '/cancel',
+            Config::$serverKey,
+            false
+        )->status_code;
     }
-
+  
     /**
      * Expire transaction before it's setteled
      * 
@@ -53,9 +63,12 @@ class Transaction {
      * 
      * @return mixed[]
      */
-    public static function expire($id) {
+    public static function expire($id)
+    {
         return ApiRequestor::post(
-                        Config::getBaseUrl() . '/' . $id . '/expire', Config::$serverKey, false
+            Config::getBaseUrl() . '/' . $id . '/expire',
+            Config::$serverKey,
+            false
         );
     }
 
@@ -68,9 +81,12 @@ class Transaction {
      * 
      * @return mixed[]
      */
-    public static function refund($id, $params) {
+    public static function refund($id, $params)
+    {
         return ApiRequestor::post(
-                        Config::getBaseUrl() . '/' . $id . '/refund', Config::$serverKey, $params
+            Config::getBaseUrl() . '/' . $id . '/refund',
+            Config::$serverKey,
+            $params
         );
     }
 
@@ -83,9 +99,12 @@ class Transaction {
      * 
      * @return mixed[]
      */
-    public static function refundDirect($id, $params) {
+    public static function refundDirect($id, $params)
+    {
         return ApiRequestor::post(
-                        Config::getBaseUrl() . '/' . $id . '/refund/online/direct', Config::$serverKey, $params
+            Config::getBaseUrl() . '/' . $id . '/refund/online/direct',
+            Config::$serverKey,
+            $params
         );
     }
 
@@ -97,10 +116,12 @@ class Transaction {
      * 
      * @return mixed[]
      */
-    public static function deny($id) {
+    public static function deny($id)
+    {
         return ApiRequestor::post(
-                        Config::getBaseUrl() . '/' . $id . '/deny', Config::$serverKey, false
+            Config::getBaseUrl() . '/' . $id . '/deny',
+            Config::$serverKey,
+            false
         );
     }
-
 }

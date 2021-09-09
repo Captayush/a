@@ -1,4 +1,5 @@
 <body>
+    <!-- https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/ -->
     <img src="img/tc5.png" class="tcmybg" width="100%" height="100%" />
     <div class="tc-container">
         <table style="width: 80%; margin:0 auto">
@@ -21,5 +22,6 @@
             </tr>
         </table>
     </div>
+
 </body>  
 </html>

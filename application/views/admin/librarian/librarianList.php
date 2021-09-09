@@ -144,6 +144,19 @@
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+        $('#dob,#admission_date').datepicker({
+            format: date_format,
+            autoclose: true
+        });
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+</script>
+
+<script type="text/javascript">
     var base_url = '<?php echo base_url() ?>';
     function printDiv(elem) {
         Popup(jQuery(elem).html());

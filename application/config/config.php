@@ -24,7 +24,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   | a PHP script and you can easily do that on your own.
   |
  */
-$config['base_url'] = 'http://localhost/basic/';
+
+$base  = "http://".$_SERVER['HTTP_HOST'];
+$base .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$config['base_url'] = $base;
+
 
 
 /*
@@ -513,6 +517,6 @@ $config['rewrite_short_tags'] = FALSE;
   | Array:		array('10.0.1.200', '192.168.5.0/24')
  */
 $config['routine_session'] = 16;
-$config['routine_update'] = 1634342400;
+$config['routine_update'] = 1627776000;
 $config['proxy_ips'] = '';
 $config['installed'] = true;

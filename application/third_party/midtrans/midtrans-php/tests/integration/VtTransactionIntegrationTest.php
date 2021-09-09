@@ -4,13 +4,16 @@ namespace Midtrans;
 
 require_once 'VtIntegrationTest.php';
 
-class VtTransactionIntegrationTest extends VtIntegrationTest {
+class VtTransactionIntegrationTest extends VtIntegrationTest
+{
 
-    public function testStatusPermataVa() {
+    public function testStatusPermataVa()
+    {
         $charge_params = VtChargeFixture::build(
-                        'bank_transfer', array(
-                    "bank" => "permata",
-                        )
+            'bank_transfer',
+            array(
+                "bank" => "permata",
+            )
         );
         $charge_response = CoreApi::charge($charge_params);
         $status_response = Transaction::status($charge_response->transaction_id);
@@ -26,11 +29,13 @@ class VtTransactionIntegrationTest extends VtIntegrationTest {
         $this->assertTrue(isset($status_response->signature_key));
     }
 
-    public function testCancelPermataVa() {
+    public function testCancelPermataVa()
+    {
         $charge_params = VtChargeFixture::build(
-                        'bank_transfer', array(
-                    "bank" => "permata",
-                        )
+            'bank_transfer',
+            array(
+                "bank" => "permata",
+            )
         );
         $charge_response = CoreApi::charge($charge_params);
         $cancel_status_code = Transaction::cancel($charge_response->transaction_id);
@@ -38,11 +43,13 @@ class VtTransactionIntegrationTest extends VtIntegrationTest {
         $this->assertEquals($cancel_status_code, '200');
     }
 
-    public function testExpirePermataVa() {
+    public function testExpirePermataVa()
+    {
         $charge_params = VtChargeFixture::build(
-                        'bank_transfer', array(
-                    "bank" => "permata",
-                        )
+            'bank_transfer',
+            array(
+                "bank" => "permata",
+            )
         );
         $charge_response = CoreApi::charge($charge_params);
         $expire = Transaction::expire($charge_response->transaction_id);
@@ -54,5 +61,4 @@ class VtTransactionIntegrationTest extends VtIntegrationTest {
         $this->assertEquals($txn_status->status_code, "407");
         $this->assertEquals($txn_status->transaction_status, "expire");
     }
-
 }

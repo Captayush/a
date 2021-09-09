@@ -91,6 +91,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
+                    <!-- <div class="box-header ptbnull"></div> -->
+
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                     </div>
@@ -99,9 +101,11 @@
                             <?php
                             if ($this->session->flashdata('msg')) {
 
+
                                 echo $this->session->flashdata('msg');
                             }
                             ?>
+
                             <?php echo $this->customlib->getCSRF(); ?>
                             <div class="row">
                                 <div class="col-md-6">
@@ -125,6 +129,7 @@
                                         <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">
@@ -135,18 +140,21 @@
                                         <span class="text-danger"><?php echo form_error('date'); ?></span>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <button type="submit" name="search" value="search" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
-                                    </div>  
-                                </div>   
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                <button type="submit" name="search" value="search" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                              </div>  
+                            </div>   
                             </div>
                         </div>
+
                     </form>
-                    <?php
-                    if (isset($resultlist)) {
-                        ?>
-                        <div class="box-header ptbnull"></div>  
+              
+                <?php
+                if (isset($resultlist)) {
+                    ?>
+                  <div class="box-header ptbnull"></div>  
+                    
                         <div class="box-header with-border">
                             <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('list'); ?></h3>
                             <div class="box-tools pull-right">
@@ -175,7 +183,7 @@
                                     <?php
                                 }
                                 ?>
-                                <form action="<?php echo site_url('admin/staffattendance/index') ?>" id="save_attendance" method="post">
+                                <form action="<?php echo site_url('admin/staffattendance/index') ?>" method="post">
                                     <?php echo $this->customlib->getCSRF(); ?>
                                     <div class="mailbox-controls">
                                         <span class="button-checkbox">
@@ -184,7 +192,7 @@
                                         </span>
                                         <div class="pull-right">
                                             <?php if ($this->rbac->hasPrivilege('staff_attendance', 'can_add')) { ?>
-                                                <button type="submit" name="search" value="saveattendence" class="btn btn-primary btn-sm pull-right checkbox-toggle" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('save_attendance'); ?>"><i class="fa fa-save"></i> <?php echo $this->lang->line('save_attendance'); ?> </button>
+                                                <button type="submit" name="search" value="saveattendence" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-save"></i> <?php echo $this->lang->line('save_attendance'); ?> </button>
                                             <?php } ?>
                                         </div>
                                     </div>
@@ -200,7 +208,7 @@
                                                     <th><?php echo $this->lang->line('name'); ?></th>
                                                     <th><?php echo $this->lang->line('role'); ?></th>
                                                     <th><?php echo $this->lang->line('attendance'); ?></th>
-                                                    <th class="text-right"><?php echo $this->lang->line('note'); ?></th>
+                                                    <th><?php echo $this->lang->line('note'); ?></th>
 
                                                 </tr>
                                             </thead>
@@ -224,6 +232,7 @@
                                                             <?php echo $value['name'] . " " . $value['surname']; ?>
                                                         </td>
                                                         <td><?php echo $value['user_type']; ?></td>
+
                                                         <td>
                                                             <?php
                                                             $c = 1;
@@ -243,6 +252,7 @@
                                                                         <?php
                                                                     }else {
                                                                         ?>
+
                                                                         <div class="radio radio-info radio-inline">
                                                                             <input <?php if (($c == 1) && ($resultlist[0]['staff_attendance_type_id'] != 5)) echo "checked"; ?> type="radio" id="attendencetype<?php echo $value['staff_id'] . "-" . $count; ?>" value="<?php echo $type['id'] ?>" name="attendencetype<?php echo $value['staff_id']; ?>" >
                                                                             <label for="attendencetype<?php echo $value['staff_id'] . "-" . $count; ?>"> 
@@ -263,6 +273,7 @@
                                                         <?php if ($value["date"] == 'xxx') { ?> 
                                                             <td><input type="text" name="remark<?php echo $value["staff_id"] ?>" ></td>
                                                         <?php } else { ?>
+
                                                             <td><input type="text" name="remark<?php echo $value["staff_id"] ?>" value="<?php echo $value["remark"]; ?>" ></td>
                                                         <?php } ?>
                                                     </tr>
@@ -290,16 +301,11 @@
             </div>
 
             <script type="text/javascript">
-
-                $(document).on('submit','#save_attendance',function(e) {
-                    $('#load').button('loading');
-                });
-
                 $(document).ready(function () {
                     $.extend($.fn.dataTable.defaults, {
                         searching: false,
                         ordering: true,
-                        paging: false, 
+                        paging: false,
                         retrieve: true,
                         destroy: true,
                         info: false
@@ -310,36 +316,51 @@
             </script>       
             <script type="text/javascript">
 
+
                 window.onload = function xy() {
+
 
                     var ch = '<?php
                 if (!empty($resultlist)) {
                     echo $resultlist[0]['staff_attendance_type_id'];
                 }
-                ?>'; 
+                ?>';
 
                     if (ch == 5) {
+
                         $("input[type=radio]").attr('disabled', true);
 
                     } else {
+
                         $("input[type=radio]").attr('disabled', false);
                     }
 
                 };
                 $(document).ready(function () {
+
+
+                 
+
+
                     $('#checkbox1').change(function () {
+
                         if (this.checked) {
-                            var returnVal = confirm("<?php echo $this->lang->line('are_you_sure'); ?>");
+                            var returnVal = confirm("<?php echo $this->lang->line('are_you_sure');?>");
                             $(this).prop("checked", returnVal);
 
                             $("input[type=radio]").attr('disabled', true);
+
+
                         } else {
                             $("input[type=radio]").attr('disabled', false);
                             $("input[type=radio][value='1']").attr("checked", "checked");
 
                         }
+
                     });
                 });
+
+
             </script>
             <script type="text/javascript">
                 $(function () {

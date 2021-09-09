@@ -56,7 +56,7 @@
                                     <span class="text-danger"><?php echo form_error('item_category_id'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('unit') ?></label><small class="req"> *</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('unit')?></label><small class="req"> *</small>
                                     <input autofocus="" id="unit" name="unit" placeholder="" type="text" class="form-control"  value="<?php echo set_value('unit'); ?>" />
                                     <span class="text-danger"><?php echo form_error('unit'); ?></span>
                                 </div>
@@ -93,11 +93,11 @@
                                             <th><?php echo $this->lang->line('item'); ?></th>                                 
                                             <th><?php echo $this->lang->line('category'); ?>
                                             </th>
-                                            <th><?php echo $this->lang->line('unit'); ?>
+                                             <th><?php echo $this->lang->line('unit'); ?>
                                             </th>
                                             <th><?php echo $this->lang->line('available_quantity'); ?>
                                             </th>
-
+                                            
                                             <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                         </tr>
                                     </thead>
@@ -134,7 +134,7 @@
                                                         <?php echo $items['item_category']; ?>
 
                                                     </td>
-                                                    <td class="mailbox-name">
+                                                     <td class="mailbox-name">
                                                         <?php echo $items['unit']; ?>
 
                                                     </td>
@@ -147,7 +147,7 @@
                                                     </td>
 
 
-
+                                                    
 
                                                     <td class="mailbox-date pull-right">
                                                         <?php if ($this->rbac->hasPrivilege('item', 'can_edit')) { ?> 
@@ -159,146 +159,161 @@
                                                                 <i class="fa fa-remove"></i>
                                                             </a>
                                                         <?php } ?>
-
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                        }
-                                        ?>
-
-                                    </tbody>
-                                </table><!-- /.table -->
-
-
-
-                            </div><!-- /.mail-box-messages -->
-                        </div><!-- /.box-body -->
-                    </div>
-                </div><!--/.col (left) -->
-                <!-- right column -->
-            <?php } else {
-                ?>
-                <div class="col-md-12">
-                    <!-- general form elements -->
-                    <div class="box box-primary">
-                        <div class="box-header ptbnull">
-                            <h3 class="box-title titlefix"> <?php echo $this->lang->line('item_list'); ?></h3>
-                            <div class="box-tools pull-right">
-                            </div><!-- /.box-tools -->
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
-                            <div class="table-responsive mailbox-messages">
-                                <div class="download_label"><?php echo $this->lang->line('item_list'); ?></div>
-                                <table class="table table-hover table-striped table-bordered example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('item'); ?></th>                                 
-                                            <th><?php echo $this->lang->line('category'); ?>
-                                            </th>
-                                            <th><?php echo $this->lang->line('available_quantity'); ?>
-                                            </th>
-                                            <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if (empty($itemlist)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            foreach ($itemlist as $items) {
+                                                        
+                                                        </td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
                                                 ?>
+
+                                                </tbody>
+                                                </table><!-- /.table -->
+
+
+
+                                                </div><!-- /.mail-box-messages -->
+                                                </div><!-- /.box-body -->
+                                                </div>
+                                                </div><!--/.col (left) -->
+                                                <!-- right column -->
+                                            <?php } else {
+                                                ?>
+                                                <div class="col-md-12">
+                                                <!-- general form elements -->
+                                                <div class="box box-primary">
+                                                <div class="box-header ptbnull">
+                                                <h3 class="box-title titlefix"> <?php echo $this->lang->line('item_list'); ?></h3>
+                                                <div class="box-tools pull-right">
+                                                </div><!-- /.box-tools -->
+                                                </div><!-- /.box-header -->
+                                                <div class="box-body">
+                                                <div class="table-responsive mailbox-messages">
+                                                <div class="download_label"><?php echo $this->lang->line('item_list'); ?></div>
+                                                <table class="table table-hover table-striped table-bordered example">
+                                                <thead>
                                                 <tr>
-                                                    <td class="mailbox-name">
+                                                <th><?php echo $this->lang->line('item'); ?></th>                                 
+                                                <th><?php echo $this->lang->line('category'); ?>
+                                                </th>
+                                                <th><?php echo $this->lang->line('available_quantity'); ?>
+                                                </th>
+                                                <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php
+                                                if (empty($itemlist)) {
+                                                    ?>
+
+                                                    <?php
+                                                } else {
+                                                    foreach ($itemlist as $items) {
+                                                        ?>
+                                                        <tr>
+                                                        <td class="mailbox-name">
                                                         <a href="#" data-toggle="popover" class="detail_popover"><?php echo $items['name'] ?></a>
 
                                                         <div class="fee_detail_popover" style="display: none">
-                                                            <?php
-                                                            if ($items['description'] == "") {
-                                                                ?>
-                                                                <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                                <?php
-                                                            } else {
-                                                                ?>
-                                                                <p class="text text-info"><?php echo $items['description']; ?></p>
-                                                                <?php
-                                                            }
+                                                        <?php
+                                                        if ($items['description'] == "") {
                                                             ?>
+                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
+                                                            <?php
+                                                        } else {
+                                                            ?>
+                                                            <p class="text text-info"><?php echo $items['description']; ?></p>
+                                                            <?php
+                                                        }
+                                                        ?>
                                                         </div>
-                                                    </td>
+                                                        </td>
 
 
-                                                    <td class="mailbox-name">
+                                                        <td class="mailbox-name">
                                                         <?php echo $items['item_category']; ?>
 
-                                                    </td>
-                                                    <td class="mailbox-name">
+                                                        </td>
+                                                        <td class="mailbox-name">
                                                         <?php
                                                         echo $items['added_stock'] - $items['issued'];
                                                         ;
                                                         ?>
 
-                                                    </td>
+                                                        </td>
 
 
 
 
-                                                    <td class="mailbox-date pull-right"">
+                                                        <td class="mailbox-date pull-right"">
                                                         <?php if ($this->rbac->hasPrivilege('item', 'can_edit')) { ?> 
                                                             <a href="<?php echo base_url(); ?>admin/item/edit/<?php echo $items['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
+                                                            <i class="fa fa-pencil"></i>
                                                             </a>
                                                         <?php }if ($this->rbac->hasPrivilege('item', 'can_delete')) { ?>  
                                                             <a href="<?php echo base_url(); ?>admin/item/delete/<?php echo $items['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
+                                                            <i class="fa fa-remove"></i>
                                                             </a>
                                                         <?php } ?>
+                                                    
+                                                        </td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
 
-                                                    </td>
-                                                </tr>
+                                                </tbody>
+                                                </table><!-- /.table -->
+
+
+
+                                                </div><!-- /.mail-box-messages -->
+                                                </div><!-- /.box-body -->
+                                                </div>
+                                                </div><!--/.col (left) -->
+                                                <!-- right column -->
                                                 <?php
                                             }
-                                        }
-                                        ?>
+                                            ?>
+                                            </div>
+                                            <div class="row">
+                                            <!-- left column -->
 
-                                    </tbody>
-                                </table><!-- /.table -->
+                                            <!-- right column -->
+                                            <div class="col-md-12">
 
+                                            </div><!--/.col (right) -->
+                                            </div>   <!-- /.row -->
+                                            </section><!-- /.content -->
+                                            </div><!-- /.content-wrapper -->
 
+                                            <script type="text/javascript">
+                                            $(document).ready(function () {
+                                            var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
 
-                            </div><!-- /.mail-box-messages -->
-                        </div><!-- /.box-body -->
-                    </div>
-                </div><!--/.col (left) -->
-                <!-- right column -->
-                <?php
-            }
-            ?>
-        </div>
-        <div class="row">
-            <!-- left column -->
+                                            $('#date').datepicker({
+                                            //  format: "dd-mm-yyyy",
+                                            format: date_format,
+                                            autoclose: true
+                                            });
 
-            <!-- right column -->
-            <div class="col-md-12">
+                                            $("#btnreset").click(function () {
+                                            $("#form1")[0].reset();
+                                            });
 
-            </div><!--/.col (right) -->
-        </div>   <!-- /.row -->
-    </section><!-- /.content -->
-</div><!-- /.content-wrapper -->
-
-
-<script>
-    $(document).ready(function () {
-        $('.detail_popover').popover({
-            placement: 'right',
-            trigger: 'hover',
-            container: 'body',
-            html: true,
-            content: function () {
-                return $(this).closest('td').find('.fee_detail_popover').html();
-            }
-        });
-    });
-</script>
+                                            });
+                                            </script>
+                                            <script>
+                                            $(document).ready(function () {
+                                            $('.detail_popover').popover({
+                                            placement: 'right',
+                                            trigger: 'hover',
+                                            container: 'body',
+                                            html: true,
+                                            content: function () {
+                                            return $(this).closest('td').find('.fee_detail_popover').html();
+                                            }
+                                            });
+                                            });
+                                            </script>

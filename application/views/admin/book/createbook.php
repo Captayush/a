@@ -18,13 +18,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     <div class="box-header with-border">
                         <h3 class="box-title"><?php echo $this->lang->line('add_book'); ?></h3>
                         <div class="box-tools pull-right">
-                            <?php if ($this->rbac->hasPrivilege('import_book', 'can_view')) {
+                            <?php if($this->rbac->hasPrivilege('import_book','can_view')){
                                 ?>
-                                <a class="btn btn-sm btn-primary" href="<?php echo base_url(); ?>admin/book/import" autocomplete="off"><i class="fa fa-plus"></i> <?php echo $this->lang->line('import') . " " . $this->lang->line('book'); ?></a> 
-                            <?php }
-                            ?>
-
-
+                                <a class="btn btn-sm btn-primary" href="<?php echo base_url(); ?>admin/book/import" autocomplete="off"><i class="fa fa-plus"></i> <?php echo $this->lang->line('import')." ".$this->lang->line('book'); ?></a> 
+                                <?php
+                            }?>
+                                
+      
                         </div>
                     </div><!-- /.box-header -->
                     <!-- form start -->
@@ -92,7 +92,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('postdate'); ?></label>
-                                <input id="postdate" name="postdate"  placeholder="" type="text" class="form-control date"  value="<?php echo set_value('postdate', date($this->customlib->getSchoolDateFormat())); ?>" />
+                                <input id="postdate" name="postdate"  placeholder="" type="text" class="form-control date"  value="<?php echo set_value('postdate',date($this->customlib->getSchoolDateFormat())); ?>" />
                                 <span class="text-danger"><?php echo form_error('postdate'); ?></span>
                             </div>
                             <div class="clearfix"></div>
@@ -134,7 +134,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         });
 
     });
-
+   
 
 </script>
 <script>

@@ -1,5 +1,5 @@
 
-<div class="content-wrapper">  
+<div class="content-wrapper" style="min-height: 348px;">  
     <section class="content-header">
         <h1>
             <i class="fa fa-ioxhost"></i> <?php echo $this->lang->line('front_office'); ?></h1>
@@ -80,7 +80,7 @@
                                     } else {
                                         foreach ($complaint_type_list as $key => $value) {
                                             ?>
-                                            <tr> 
+                                            <tr>
 
                                                 <td class="mailbox-name">
                                                     <a href="#" data-toggle="popover" class="detail_popover"><?php echo $value['complaint_type'] ?></a>
@@ -100,17 +100,17 @@
                                                     </div></td>
 
 
-                                                <td class="mailbox-date pull-right white-space-nowrap">
-                                                    <?php if ($this->rbac->hasPrivilege('setup_font_office', 'can_edit')) { ?>
-                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/complainttype/editcomplainttype/<?php echo $value['id']; ?>"  class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('edit') ?>">
+                                                <td class="mailbox-date pull-right">
+        <?php if ($this->rbac->hasPrivilege('setup_font_office', 'can_edit')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/complainttype/editcomplainttype/<?php echo $value['id']; ?>"  class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="Edit">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php } if ($this->rbac->hasPrivilege('setup_font_office', 'can_delete')) { ?>
-                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/complainttype/delete/<?php echo $value['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete') ?>">
+        <?php } if ($this->rbac->hasPrivilege('setup_font_office', 'can_delete')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/complainttype/delete/<?php echo $value['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="Delete">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
 
-                                                    <?php } ?>
+        <?php } ?>
                                                 </td>
 
 

@@ -79,7 +79,7 @@ class Gallery extends Admin_Controller {
             $data['slug'] = $this->slug->create_uri($data);
             $data['url'] = $this->config->item('ci_front_page_read_url') . $data['slug'];
             $this->cms_program_model->inst_batch($data, $gallery_array);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/front/gallery');
         }
     }
@@ -93,7 +93,7 @@ class Gallery extends Admin_Controller {
         $this->session->set_userdata('top_menu', 'Front CMS');
         $this->session->set_userdata('sub_menu', 'admin/front/gallery');
         $result = $this->cms_program_model->getBySlug(urldecode($slug));
-
+       
         $data['result'] = $result;
 
 
@@ -152,14 +152,14 @@ class Gallery extends Admin_Controller {
                 'meta_description' => $this->input->post('meta_description')
             );
 
-            if ($_POST['image'] != '') {
-                $data['feature_image'] = $this->input->post('image');
+            if($_POST['image']!=''){
+                $data['feature_image']=$this->input->post('image');
             }
-
+            
             $data['slug'] = $this->slug->create_uri($data, $this->input->post('id'));
             $data['url'] = $this->config->item('ci_front_page_read_url') . $data['slug'];
             $this->cms_program_model->update_batch($data, $gallery_array, $remove_list);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('update_message').'</div>');
             redirect('admin/front/gallery');
         }
     }
@@ -170,7 +170,7 @@ class Gallery extends Admin_Controller {
         }
         $data['title'] = 'Fees Master List';
         $this->cms_program_model->removeBySlug(urldecode($id), 'gallery');
-        $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
+        $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('delete_message').'</div>');
         redirect('admin/front/gallery/');
     }
 

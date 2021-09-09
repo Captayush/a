@@ -5,17 +5,17 @@
     </section>
     <!-- Main content -->
     <section class="content">
-        <div class="row">
-            <div class="col-md-4">
+        <div class="row">           
+            <div class="col-md-4">             
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?php echo $this->lang->line('edit_accountant'); ?></h3>
-                    </div>
+                    </div> 
                     <form action="<?php echo site_url('admin/accountant/edit/' . $id) ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8"  enctype="multipart/form-data">
                         <div class="box-body">
-                            <?php if ($this->session->flashdata('msg')) {?>
+                            <?php if ($this->session->flashdata('msg')) { ?>
                                 <?php echo $this->session->flashdata('msg') ?>
-                            <?php }?>
+                            <?php } ?>  
                             <?php echo $this->customlib->getCSRF(); ?>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?></label>
@@ -32,15 +32,12 @@
                                 <select class="form-control" name="gender">
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     <?php
-foreach ($genderList as $key => $value) {
-    ?>
-                                        <option value="<?php echo $key; ?>" <?php if (set_value('gender', $librarian['sex']) == $key) {
-        echo "selected";
-    }
-    ?>><?php echo $value; ?></option>
+                                    foreach ($genderList as $key => $value) {
+                                        ?>
+                                        <option value="<?php echo $key; ?>" <?php if (set_value('gender', $librarian['sex']) == $key) echo "selected"; ?>><?php echo $value; ?></option>
                                         <?php
-}
-?>
+                                    }
+                                    ?>
                                 </select>
                                 <span class="text-danger"><?php echo form_error('gender'); ?></span>
                             </div>
@@ -69,15 +66,15 @@ foreach ($genderList as $key => $value) {
                             <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
                         </div>
                     </form>
-                </div>
+                </div> 
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8">               
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('accountant_list'); ?></h3>
+                        <h3 class="box-title titlefix"><?php echo $this->lang->line('accountant_list'); ?></h3>                       
                     </div>
                     <div class="box-body">
-                        <div class="mailbox-controls">
+                        <div class="mailbox-controls">                          
                         </div>
                         <div class="table-responsive mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('accountant_list'); ?></div>
@@ -94,22 +91,22 @@ foreach ($genderList as $key => $value) {
                                 </thead>
                                 <tbody>
                                     <?php if (empty($librarianlist)) {
-    ?>
+                                        ?>
                                         <tr>
                                             <td colspan="12" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
                                         </tr>
                                         <?php
-} else {
-    $count = 1;
-    foreach ($librarianlist as $librarian) {
-        ?>
+                                    } else {
+                                        $count = 1;
+                                        foreach ($librarianlist as $librarian) {
+                                            ?>
                                             <tr>
 
                                                 <td class="mailbox-name"> <?php echo $librarian['name'] ?></td>
                                                 <td class="mailbox-name"> <?php echo $librarian['email'] ?></td>
                                                 <td class="mailbox-name"> <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($librarian['dob'])); ?></td>
                                                 <td class="mailbox-name"> <?php echo $librarian['phone'] ?></td>
-                                                <td class="mailbox-date pull-right">
+                                                <td class="mailbox-date pull-right"">
                                                     <a href="<?php echo base_url(); ?>admin/accountant/view/<?php echo $librarian['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>">
                                                         <i class="fa fa-list"></i>
                                                     </a>
@@ -122,23 +119,23 @@ foreach ($genderList as $key => $value) {
                                                 </td>
                                             </tr>
                                             <?php
-}
-    $count++;
-}
-?>
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
     </section>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy']) ?>';
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
         $('#dob,#admission_date').datepicker({
             format: date_format,
             autoclose: true

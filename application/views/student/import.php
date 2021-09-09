@@ -10,103 +10,96 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     <section class="content">
         <div class="row">
             <div class="col-md-12">
-                <div class="box box-info" style="padding:5px;">
-                    <div class="box-header with-border">
+				<div class="box box-info" style="padding:5px;">
+					<div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                         <div class="pull-right box-tools">                            
-                            <a href="<?php echo site_url('student/exportformat') ?>">
+                            <a href="<?php echo site_url('student/exportformat')?>">
                                 <button class="btn btn-primary btn-sm"><i class="fa fa-download"></i> <?php echo $this->lang->line('dl_sample_import'); ?></button>
                             </a>
                         </div>
                     </div>
-                    <div class="box-body">      
-                        <?php if ($this->session->flashdata('msg')) { ?> <div>  <?php echo $this->session->flashdata('msg') ?> </div> <?php } ?>
-                        <br/>
-                        1. <?php echo $this->lang->line('import_student_step1'); ?>          
-                      <br/>
+                <div class="box-body">      
+                    <?php if($this->session->flashdata('msg')) { ?> <div>  <?php echo $this->session->flashdata('msg') ?> </div> <?php } ?>
+                    <br/>           
+						1. Your CSV data should be in the format below. The first line of your CSV file should be the column headers as in the table example. Also make sure that your file is UTF-8 to avoid unnecessary encoding problems.<br/>
+						
+						2. If the column you are trying to import is date make sure that is formatted in format Y-m-d (2018-06-06).<br/>
+						
+						3. Duplicate "Admission Number" (unique) and "Roll Number" (unique in class) rows will not be imported.<br/>
+						
+						4. For student "Gender" use Male, Female value.<br/>
+						
+						5. For student "Blood Group" use O+, A+, B+, AB+, O-, A-, B-, AB- value.<br/>
+						
+						6. For "RTE" use Yes, No value.<br/>
+						
+						7. For "If Guardian Is" user father,mother,other value.<br/>
+						
+						8. Category name comes from other table so for "category", enter Category Id (Category Id can be found on category page ).<br/>
+						
+						9. Student house comes from other table so for "student house", enter Student House Id (Student House Id can be found on student house page ).
+						<hr/></div>
+               <div class="box-body table-responsive">
+                <table class="table table-striped table-bordered table-hover" id="sampledata">
+                    <thead>
+                        <tr>
+                    <?php foreach ($fields as $key => $value) {
 
-                        2. <?php echo $this->lang->line('import_student_step2'); ?> <br/>
-                        3. <?php echo $this->lang->line('import_student_step3'); ?>
-                        <br/>
-                        4. <?php echo $this->lang->line('import_student_step4'); ?>
-                        <br/>
+                        if($value == 'adhar_no'){
+                            $value = "national_identification_no";
+                        }
 
-                        5. <?php echo $this->lang->line('import_student_step5'); ?><br/>
+                        if($value == 'samagra_id'){
+                            $value = "local_identification_no";
+                        }
+                        if($value == 'firstname'){
+                            $value = "first_name";
+                        }
+                        if($value == 'lastname'){
+                            $value = "last_name";
+                        }
+                        if($value == 'guardian_is'){
+                            $value = "if_guardian_is";
+                        }
+                        if($value == 'dob'){
+                            $value = "date_of_birth";
+                        }
+                         if($value == 'category_id'){
+                            $value = "category";
+                        }
+                         if($value == 'school_house_id'){
+                            $value = "house";
+                        }
+                        if($value == 'mobileno'){
+                            $value = "mobile_no";
+                        }
+                        if($value == 'previous_school'){
+                            $value = "previous_school_details";
+                        }
+                        $add = "";
+                        if(($value == "admission_no")  ||($value == "firstname") ||($value == "dob") ||($value == "if_guardian_is")  ||($value == "gender")  ||($value == "guardian_name")  ||($value == "guardian_phone") ){
+                            $add = "<span class=text-red>*</span>";
+                        }
+                    ?>    
+                   <th><?php echo $add."<span>".$this->lang->line($value)."</span>"; ?></th>
+                   <?php } ?>
+               </tr>
+               </thead>
+               <tbody>
+                <tr>
+                     <?php foreach ($fields as $key => $value) {
+                    ?>    
+                   <td><?php echo "Sample Data" ?></td>
+                   <?php } ?>
+               </tr>
+               </tbody>
 
-                        6. <?php echo $this->lang->line('import_student_step6'); ?><br/>
+                </table>        
+                </div>
+                <hr/>
 
-                        7. <?php echo $this->lang->line('import_student_step7'); ?><br/>
-
-                        8. <?php echo $this->lang->line('import_student_step8'); ?><br/>
-
-                        9. <?php echo $this->lang->line('import_student_step9'); ?>
-                        <hr/></div>
-                    <div class="box-body table-responsive">
-                        <table class="table table-striped table-bordered table-hover" id="sampledata">
-                            <thead>
-                                <tr>
-                                    <?php
-                                    foreach ($fields as $key => $value) {
-echo $value;
-
-                                        if ($value == 'adhar_no') {
-                                            $value = "national_identification_no";
-                                        }
-
-                                        if ($value == 'samagra_id') {
-                                            $value = "local_identification_no";
-                                        }
-                                        if ($value == 'firstname') {
-                                            $value = "first_name";
-                                        }
-                                         if ($value == 'middlename') {
-                                            $value = "middle_name";
-                                        }
-                                        if ($value == 'lastname') {
-                                            $value = "last_name";
-                                        }
-                                        if ($value == 'guardian_is') {
-                                            $value = "if_guardian_is";
-                                        }
-                                        if ($value == 'dob') {
-                                            $value = "date_of_birth";
-                                        }
-                                        if ($value == 'category_id') {
-                                            $value = "category";
-                                        }
-                                        if ($value == 'school_house_id') {
-                                            $value = "house";
-                                        }
-                                        if ($value == 'mobileno') {
-                                            $value = "mobile_no";
-                                        }
-                                        if ($value == 'previous_school') {
-                                            $value = "previous_school_details";
-                                        }
-                                        $add = "";
-                                        
-                                        if (($value == "admission_no") || ($value == "firstname") || ($value == "date_of_birth") || ($value == "if_guardian_is") || ($value == "gender") || ($value == "guardian_name") || ($value == "guardian_phone")) {
-                                            $add = "<span class=text-red>*</span>";
-                                        }
-                                        ?>    
-                                        <th><?php echo $add . "<span>" . $this->lang->line($value) . "</span>"; ?></th>
-                                    <?php } ?>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <?php foreach ($fields as $key => $value) {
-                                        ?>    
-                                        <td><?php echo "Sample Data" ?></td>
-                                    <?php } ?>
-                                </tr>
-                            </tbody>
-
-                        </table>        
-                    </div>
-                    <hr/> 
-
-                    <form action="<?php echo site_url('student/import') ?>"  id="employeeform" name="employeeform" method="post" enctype="multipart/form-data">
+                <form action="<?php echo site_url('student/import') ?>"  id="employeeform" name="employeeform" method="post" enctype="multipart/form-data">
                         <div class="box-body">
                             <?php echo $this->customlib->getCSRF(); ?>
                             <div class="row">
@@ -134,7 +127,7 @@ echo $value;
                                         </select>
                                         <span class="text-danger"><?php echo form_error('section_id'); ?></span>
                                     </div>
-                                </div>
+								</div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputFile"><?php echo $this->lang->line('select_csv_file'); ?></label><small class="req"> *</small>
@@ -142,21 +135,21 @@ echo $value;
                                             <span class="text-danger"><?php echo form_error('file'); ?></span></div>
                                     </div></div>
                                 <div class="col-md-6 pt20">
-                                    <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('import_student'); ?></button>
+                                     <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('import_student'); ?></button>
                                 </div>     
 
                             </div>
                         </div>
-
-
+                       
+                         
                     </form>
+                    
+                <div>
 
-                    <div>
 
 
-
-                    </div>
                 </div>
+            </div>
                 </section>
             </div>
 
@@ -186,12 +179,12 @@ echo $value;
                     }
                 }
                 $(document).ready(function () {
-                    $("#sampledata").DataTable({
-                        searching: false,
-                        ordering: false,
-                        paging: false,
-                        bSort: false,
-                        info: false, });
+                $("#sampledata").DataTable({
+				searching: false,
+				ordering: false,
+				paging: false,
+				bSort: false,
+				info: false,});
 
                     var class_id = $('#class_id').val();
                     var section_id = '<?php echo set_value('section_id') ?>';
@@ -204,7 +197,7 @@ echo $value;
                         $.ajax({
                             type: "GET",
                             url: base_url + "sections/getByClass",
-                            data: {'class_id': class_id},
+                            data: {'class_id': class_id },
                             dataType: "json",
                             success: function (data) {
                                 $.each(data, function (i, obj)

@@ -1,6 +1,8 @@
 <?php
 
-
+/**
+ * 
+ */
 class LeaveTypes extends Admin_Controller {
 
     function __construct() {
@@ -18,7 +20,7 @@ class LeaveTypes extends Admin_Controller {
 
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'admin/leavetypes');
-        $data["title"] = $this->lang->line('add') . " " . $this->lang->line('leave') . " " . $this->lang->line('type');
+        $data["title"] = $this->lang->line('add')." ".$this->lang->line('leave')." ".$this->lang->line('type');
 
         $LeaveTypes = $this->leavetypes_model->getLeaveType();
 
@@ -36,7 +38,7 @@ class LeaveTypes extends Admin_Controller {
             array('check_exists', array($this->leavetypes_model, 'valid_leave_type'))
                 )
         );
-        $data["title"] = $this->lang->line('add') . " " . $this->lang->line('leave') . " " . $this->lang->line('type');
+        $data["title"] = $this->lang->line('add')." ".$this->lang->line('leave')." ".$this->lang->line('type');
         if ($this->form_validation->run()) {
 
             $type = $this->input->post("type");
@@ -62,7 +64,7 @@ class LeaveTypes extends Admin_Controller {
             }
 
             $insert_id = $this->leavetypes_model->addLeaveType($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('success_message').'</div>');
             redirect("admin/leavetypes");
         } else {
 
@@ -78,7 +80,7 @@ class LeaveTypes extends Admin_Controller {
 
         $result = $this->staff_model->getLeaveType($id);
 
-        $data["title"] = $this->lang->line('edit') . " " . $this->lang->line('leave') . " " . $this->lang->line('type');
+        $data["title"] =$this->lang->line('edit')." ".$this->lang->line('leave')." ".$this->lang->line('type');
         $data["result"] = $result;
 
         $LeaveTypes = $this->leavetypes_model->getLeaveType();

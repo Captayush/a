@@ -1,9 +1,9 @@
 <style type="text/css">
 
-    }
+}
 </style>
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
 
 
@@ -15,7 +15,7 @@
             <div class="col-md-12">
                 <!-- general form elements -->
                 <div id="frame">
-                    <!-- <div class="chatloader"></div>  -->
+                     <!-- <div class="chatloader"></div>  -->
                     <div id="sidepanel">
                         <input type="hidden" name="chat_connection_id" value="0">
                         <input type="hidden" name="chat_to_user" value="0">
@@ -52,7 +52,7 @@
                             <div class="wrap">
                                 <input type="text" placeholder="Write your message..." class="chat_input" />
                                 <!-- <i class="fa fa-paperclip attachment" aria-hidden="true"></i> -->
-                                <button class="submit input_submit" disabled="disabled"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                <button class="submit input_submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><?php echo $this->lang->line('add') . " " . $this->lang->line('contact') ?><small style="color:red;"> *</small></h4>
+                    <h4 class="modal-title"><?php echo $this->lang->line('add') . " " . $this->lang->line('contact') ?></h4>
                 </div>
                 <div class="modal-body">
                     <div id="custom-search-input">
@@ -119,20 +119,6 @@
     $(function () {
         setInterval(updateTime, 1000);
     });
-
-$(document).on('input','.chat_input',function(){
-
-     if ($.trim($(this).val()) == '') {
-
-        $('.input_submit').prop('disabled', true);
-    }else{
-
-        $('.input_submit').prop('disabled', false);
-
-    }
-});
-
-
 
     $(document).on('keyup', '.search-query', function () {
         $this = $(this);
@@ -244,11 +230,11 @@ $(document).on('input','.chat_input',function(){
     $(document).on('keydown', '.chat_input', function (e) {
 
 
-        switch (e.which) {
-            case 13:
-                newChatMessage();
-                break;
-        }
+         switch (e.which) {
+           case 13:
+            newChatMessage();
+            break;
+           }
 
 
 
@@ -266,15 +252,9 @@ $(document).on('input','.chat_input',function(){
         e.preventDefault(); // To prevent the default
     });
 
-    function htmlEncode(str) {
-        return String(str).replace(/[^\w. ]/gi, function (c) {
-            return '&#' + c.charCodeAt(0) + ';';
-        });
-    }
 
     function newChatMessage() {
-        message = htmlEncode($(".message-input input").val());
-        $('.input_submit').prop('disabled', true);
+        message = $(".message-input input").val();
         if ($.trim(message) == '') {
             return false;
         }
@@ -298,6 +278,7 @@ $(document).on('input','.chat_input',function(){
                     $('<li class="replies"><p>' + message + '</p> <span class="time_date_send"> ' + date_time_temp + '</span></li>').appendTo($('.messages ul'));
                     $('.chat_input').val(null);
                     $('.contact.active .preview').html('<span><?php echo $this->lang->line('you') ?>: </span>' + message);
+                    // $(".messages").animate({scrollTop: $(document).height()}, "fast");
 
                     $('.messages').animate({
                         scrollTop: $('.messages')[0].scrollHeight}, "slow");
@@ -371,6 +352,8 @@ $(document).on('input','.chat_input',function(){
         var userType = userrecord.data('userType');
         var $form = $(this),
                 url = $form.attr('action');
+        // var $this = $('.submit_class');
+        // $this.button('loading');
         var $button = $form.find("button[type=submit]:focus");
         $.ajax({
             type: "POST",
@@ -400,6 +383,9 @@ $(document).on('input','.chat_input',function(){
                     $("input[name='chat_to_user']").val(data.new_user.chat_user_id);
                     $("input[name='last_chat_id']").val(data.user_last_chat.id);
                     $(".chat_input").val("");
+                    console.log(data.new_user);
+
+
                     if (data.new_user.user_type == "student") {
                         new_user_type = "Student";
                         img = baseurl + data.new_user.image;
@@ -532,14 +518,16 @@ $(document).on('input','.chat_input',function(){
     }
 
     function js_yyyy_mm_dd_hh_mm_ss(now) {
-
-        var date_format = '<?php echo $this->customlib->getSchoolDateFormat() ?>';
-        var new_str = date_format;
-        var month_String = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+        var month = [
+            "Jan", "Feb", "Marh", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Octr", "Nov", "Dec"
+        ];
         now = new Date();
-        var day = String(now.getDate()).padStart(2, '0');
-        var month = String(now.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var year = now.getFullYear();
+        year = "" + now.getFullYear();
+        month = "" + month[now.getMonth()];
+        day = "" + now.getDate();
+        if (day.length == 1) {
+            day = "0" + day;
+        }
         hour = "" + now.getHours();
         if (hour.length == 1) {
             hour = "0" + hour;
@@ -552,20 +540,12 @@ $(document).on('input','.chat_input',function(){
         if (second.length == 1) {
             second = "0" + second;
         }
-        var inputAttr = {};
-        inputAttr["m"] = month;
-        inputAttr["M"] = month_String[now.getMonth()];
-        inputAttr["d"] = day;
-        inputAttr["Y"] = year;
-        for (var key in inputAttr) {
-            if (!inputAttr.hasOwnProperty(key)) {
-                continue;
-            }
+        var ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12;
+        hour = hour ? hour : 12; // the hour '0' should be '12'
+        // return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 
-            new_str = new_str.replace(key, inputAttr[key]);
-        }
-
-        return new_str + " " + hour + ":" + minute + ":" + second;
+        return day + " " + month + " " + year + ", " + hour + ":" + minute + ":" + ampm;
     }
 
 </script>

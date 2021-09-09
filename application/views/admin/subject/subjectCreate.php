@@ -25,7 +25,7 @@
                                 <span class="text-danger"><?php echo form_error('name'); ?></span>
                             </div>
 
-
+                         
                             <label class="radio-inline">
                                 <input type="radio" value="Theory" name="type"  <?php if (set_value('type') == "Theory") echo "checked"; ?> checked><?php echo $this->lang->line('theory'); ?>
                             </label>

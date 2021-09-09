@@ -15,21 +15,21 @@ $transaction_details = array(
     'gross_amount' => 94000, // no decimal allowed for creditcard
 );
 // Optional
-$item_details = array(
+$item_details = array (
     array(
         'id' => 'a1',
         'price' => 94000,
         'quantity' => 1,
         'name' => "Apple"
     ),
-);
+  );
 // Optional
 $customer_details = array(
-    'first_name' => "Andri",
-    'last_name' => "Litani",
-    'email' => "andri@litani.com",
-    'phone' => "081122334455",
-    'billing_address' => $billing_address,
+    'first_name'    => "Andri",
+    'last_name'     => "Litani",
+    'email'         => "andri@litani.com",
+    'phone'         => "081122334455",
+    'billing_address'  => $billing_address,
     'shipping_address' => $shipping_address
 );
 // Fill transaction details
@@ -40,7 +40,7 @@ $transaction = array(
 );
 
 $snapToken = Snap::getSnapToken($transaction);
-echo "snapToken = " . $snapToken;
+echo "snapToken = ".$snapToken;
 ?>
 
 <!DOCTYPE html>
@@ -50,9 +50,9 @@ echo "snapToken = " . $snapToken;
         <!-- TODO: Remove ".sandbox" from script src URL for production environment. Also input your client key in "data-client-key" -->
         <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<Set your ClientKey here>"></script>
         <script type="text/javascript">
-            document.getElementById('pay-button').onclick = function () {
+            document.getElementById('pay-button').onclick = function(){
                 // SnapToken acquired from previous step
-                snap.pay('<?php echo $snapToken ?>');
+                snap.pay('<?php echo $snapToken?>');
             };
         </script>
     </body>

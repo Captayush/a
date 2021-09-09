@@ -2,11 +2,10 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-
 /**
  * CodeIgniter Slug Library
  *
-  /**
+/**
  * Slug Library
  *
  * Nothing but legless, boneless creatures who are responsible for creating

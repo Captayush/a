@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,41 +9,14 @@
         <title><?php echo $this->customlib->getAppName(); ?></title>
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/bootstrap/css/bootstrap.min.css"> 
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/font-awesome.min.css"> 
-        <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/style-main.css"> <style type="text/css">
-            .table2 tr.border_bottom td {
-                box-shadow: none;
-                border-radius: 0;
-                border-bottom: 1px solid #e6e6e6;
-            }
-            .table2 td {
-                padding-bottom: 3px;
-                padding-top: 6px;
-            }
-            .title{
-                color: #0084B4;
-                font-weight: 600 !important;
-                font-size: 15px !important;;
-                display: inline;
-
-            }
-            .product-description {
-                display: block;
-                color: #999;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-            .text-fine{
-                color: #bf4f4d;
-            }
-        </style>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/style-main.css"> 
     </head>
     <body style="background: #ededed;">
         <div class="container">
             <div class="row">
                 <div class="paddtop20">
                     <div class="col-md-8 col-md-offset-2 text-center">
-                        <img src="<?php echo base_url('uploads/school_content/logo/' . $setting[0]['image']); ?>">
+                     <img src="<?php echo base_url('uploads/school_content/logo/' . $setting[0]['image']); ?>">
                     </div>
                     <div class="col-md-6 col-md-offset-3 mt20">
                         <div class="paymentbg">
@@ -53,29 +27,15 @@
                                         <th><?php echo $this->lang->line('description'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('amount'); ?> </th>
                                     </tr>
-                                    <?php
-                                    foreach ($student_fees_master_array as $fees_key => $fees_value) {
-                                        ?>
-                                        <tr>
-                                            <td>
-                                                <span class="title"><?php echo $fees_value['fee_group_name'] ?></span>
-                                                <span class="product-description">
-                                                    <?php echo $fees_value['fee_type_code']; ?>                    </span>
-                                            </td>
-                                            <td class="text-right"><?php echo $setting[0]['currency_symbol'] . number_format((float) $fees_value['amount_balance'], 2, '.', ''); ?></td>
-                                        </tr>
+                                    <tr>
+                                        <td><?php echo $fee_group_name . "<br/><span>" . $fee_code; ?></td>
 
-                                        <tr class="border_bottom">
-                                            <td> 
-                                                <span class="text-fine"><?php echo $this->lang->line('fine'); ?></span></td>
-                                            <td class="text-right"><?php echo $setting[0]['currency_symbol'] . number_format((float) $fees_value['fine_balance'], 2, '.', ''); ?></td>
-                                        </tr>
-                                        <?php
-                                    }
-                                    ?>
 
+
+                                        <td class="text-right"><?php echo $session_data['total']; ?></td>
+                                    </tr>
                                     <tr class="bordertoplightgray">
-                                        <td colspan="2" class="text-right"><?php echo $this->lang->line('total'); ?>: <?php echo $setting[0]['currency_symbol'] . number_format((float) ($session_data['fine_amount_balance'] + $session_data['total']), 2, '.', ''); ?></td>
+                                        <td colspan="2" class="text-right"><?php echo $this->lang->line('total'); ?>: <?php echo $session_data['total']; ?></td>
                                     </tr>
                                 </table>
                                 <?php
@@ -88,7 +48,7 @@
                                     <input type="hidden" name="hash" value="<?php echo $hash ?>"/>
                                     <input type="hidden" name="txnid" value="<?php echo $tid ?>" />
 
-                                    <input class="form-control" type="hidden" name="amount" value="<?php echo round(number_format((float) ($session_data['fine_amount_balance'] + $session_data['total']), 2, '.', '')); ?>"  readonly/>
+                                    <input class="form-control" type="hidden" name="amount" value="<?php echo $session_data['total']; ?>"  readonly/>
 
 
                                     <input class="form-control" type="hidden" name="firstname" id="firstname" value="<?php echo $session_data['name']; ?>" readonly/>
@@ -104,11 +64,10 @@
                                     <input name="furl" value="<?php echo $failure ?>" size="64" type="hidden" />                             
                                     <input type="hidden" name="service_provider" value="payu_paisa" size="64" />
                                     <input name="curl" value="<?php echo $cancel ?> " type="hidden" />
-
-                                    <button type="button" onclick="window.history.go(-1);
-                                            return false;" name="search"  value="" class="btn btn-info"><i class="fa fa fa-chevron-left"></i> <?php echo $this->lang->line('back') ?></button>    
-
-                                    <button type="button" class="btn cfees pull-right submit_button" ><i class="fa fa fa-money"></i> <?php echo $this->lang->line('pay_with_payu') ?></button></td>
+                                    
+                                      <button type="button" onclick="window.history.go(-1); return false;" name="search"  value="" class="btn btn-info"><i class="fa fa fa-chevron-left"></i> Back</button>    
+                                    
+                                    <button type="button" class="btn cfees pull-right submit_button" ><i class="fa fa fa-money"></i> Pay Now</button></td>
 
                                 </form>        
                             </div></div></div>                      
@@ -145,5 +104,6 @@
                 });
             });
         </script>
+
     </body>
 </html>          

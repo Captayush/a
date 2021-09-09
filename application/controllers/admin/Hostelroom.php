@@ -10,7 +10,6 @@ class Hostelroom extends Admin_Controller {
 
         $this->load->library('Customlib');
         $this->load->model("classteacher_model");
-         $this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
     public function index() {
@@ -64,7 +63,7 @@ class Hostelroom extends Admin_Controller {
                 'description' => $this->input->post('description'),
             );
             $this->hostelroom_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('success_message').'</div>');
             redirect('admin/hostelroom/index');
         }
     }
@@ -109,7 +108,7 @@ class Hostelroom extends Admin_Controller {
                 'description' => $this->input->post('description'),
             );
             $this->hostelroom_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">'.$this->lang->line('update_message').'</div>');
             redirect('admin/hostelroom/index');
         }
     }
@@ -131,95 +130,40 @@ class Hostelroom extends Admin_Controller {
         $class = $this->class_model->get();
         $data['classlist'] = $class;
         $userdata = $this->customlib->getUserData();
-        
-        $data['sch_setting'] = $this->sch_setting_detail;
-        $this->load->view("layout/header", $data);
-        $this->load->view("admin/hostelroom/studenthosteldetails", $data);
-        $this->load->view("layout/footer", $data);
-    }
-
-    //datatable function to check search parameter validation
-    public function searchvalidation()
-    {
-        $class_id       = $this->input->post('class_id');
-        $section_id     = $this->input->post('section_id');
-        $hostel_name         = $this->input->post('hostel_name');
-
-        $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
-        
-
-        if ($this->form_validation->run() == true) { 
-           
-            $params      = array('class_id' => $class_id, 'section_id' => $section_id ,'hostel_name'=>$hostel_name);
-            $array       = array('status' => 1, 'error' => '', 'params' => $params);
-            echo json_encode($array);
-       
-        } else {
-            
-            $error = array();
-            $error['class_id']   =    form_error('class_id');
-            $error['section_id'] =  form_error('section_id');
-            $array = array('status' => 0, 'error' => $error);
-            echo json_encode($array);
-        }
-      
-    }
-
-    public function dthostellist()
-    {
-        $class = $this->class_model->get();
-        $classlist = $class;
-        $userdata = $this->customlib->getUserData();
-        $sch_setting = $this->sch_setting_detail;
         $carray = array();
-
-        if (!empty($classlist)) {
-            foreach ($classlist as $ckey => $cvalue) {
+        
+        if (!empty($data["classlist"])) {
+            foreach ($data["classlist"] as $ckey => $cvalue) {
 
                 $carray[] = $cvalue["id"];
             }
         }
 
-        $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
-        $class_id       = $this->input->post('class_id');
-        $section_id     = $this->input->post('section_id');
-        $hostel_name    = $this->input->post('hostel_name');
-        
-        $sch_setting     = $this->sch_setting_detail;
+      
+        $hostellist = $this->hostel_model->get();
+        $data['hostellist'] = $hostellist;
+        $section_id = $this->input->post("section_id");
+        $class_id = $this->input->post("class_id");
+        $hostel_name = $this->input->post("hostel_name");
 
-         $resultlist = $this->hostelroom_model->searchHostelDetails($section_id, $class_id, $hostel_name);
-        $resultlist = json_decode($resultlist);
-        $dt_data=array();
-        if (!empty($resultlist->data)) {
-            foreach ($resultlist->data as $resultlist_key => $student) { 
+        $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
 
-                $viewbtn = "<a  href='".base_url()."student/view/".$student->sid."'>".$this->customlib->getFullName($student->firstname,$student->middlename,$student->lastname,$sch_setting->middlename,$sch_setting->lastname)."</a>";
-             
-                $row   = array();
-                $row[] = $student->class . " - " . $student->section;
-                $row[] = $student->admission_no ;
-                $row[] = $viewbtn;
-                $row[] = $student->mobileno ;
-                $row[] = $student->guardian_phone ;
-                $row[] = $student->hostel_name;
-                $row[] = $student->room_no ;
-                $row[] = $student->room_type ;
-                $row[] = $student->cost_per_bed ;
-                $dt_data[] = $row;  
-            }
+        if ($this->form_validation->run() == FALSE) {
 
+            $details = $this->hostelroom_model->studentHostelDetails($carray);
+            $data["resultlist"] = "";
+        } else {
+
+            $details = $this->hostelroom_model->searchHostelDetails($section_id, $class_id, $hostel_name);
+            $data["resultlist"] = $details;
         }
-        $json_data = array(
-            "draw"            => intval($resultlist->draw),
-            "recordsTotal"    => intval($resultlist->recordsTotal),
-            "recordsFiltered" => intval($resultlist->recordsFiltered),
-            "data"            => $dt_data,
-        );
-        echo json_encode($json_data); 
 
+        $this->load->view("layout/header", $data);
+        $this->load->view("admin/hostelroom/studenthosteldetails", $data);
+        $this->load->view("layout/footer", $data);
     }
 
-} 
+}
 
 ?>

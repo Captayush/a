@@ -8,7 +8,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-mortar-board"></i><?php echo $this->lang->line('timetable'); ?></h1>
+            <i class="fa fa-mortar-board"></i> Timetable --r</h1>
     </section>
     <!-- Main content -->
     <section class="content">
@@ -18,37 +18,37 @@
 
 
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('teacher') . " " . $this->lang->line('time') . " " . $this->lang->line('table'); ?></h3>
+                        <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('teacher')." ".$this->lang->line('time')." ".$this->lang->line('table');?></h3>
                         <div class="box-tools pull-right">
                         </div>
                     </div>
 
                     <div class="box-body">
                         <form action="<?php echo site_url('admin/timetable/getteachertimetable'); ?>" id="getTimetable" class="row">
-                            <div class="col-lg-4 col-md-4 col-sm-4">   
-                                <div class="form-group">
-                                    <label for="teacher"><?php echo $this->lang->line('teachers'); ?><small class="req"> *</small></label>
-                                    <select class="form-control" name="teacher" id="teacher">
-                                        <option value=""><?php echo $this->lang->line('select') ?></option>
-                                        <?php
-                                        if (!empty($staff_list)) {
-                                            foreach ($staff_list as $staff_key => $staff_value) {
-                                                ?>
-                                                <option value="<?php echo $staff_value['id']; ?>"><?php echo $staff_value["name"] . " " . $staff_value["surname"] . " (" . $staff_value['employee_id'] . ")"; ?></option>
-                                                <?php
-                                            }
+                         <div class="col-lg-4 col-md-4 col-sm-4">   
+                            <div class="form-group">
+                                <label for="teacher"><?php echo $this->lang->line('teachers'); ?><small class="req"> *</small></label>
+                                <select class="form-control" name="teacher" id="teacher">
+                                    <option value=""><?php echo $this->lang->line('select')?></option>
+                                    <?php
+                                    if (!empty($staff_list)) {
+                                        foreach ($staff_list as $staff_key => $staff_value) {
+                                            ?>
+                                            <option value="<?php echo $staff_value['id']; ?>"><?php echo $staff_value["name"] . " " . $staff_value["surname"]." (".$staff_value['employee_id'].")"; ?></option>
+                                            <?php
                                         }
-                                        ?>
-                                    </select>
+                                    }
+                                    ?>
+                                </select>
 
-                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-lg-4 col-md-4 col-sm-4"> 
+                             <div class="form-group">
+                                <label class="dhide" style="display: block; visibility:hidden;"><?php echo $this->lang->line('teacher') ?></label>
+                                <button type="submit" class="btn btn-primary btn-sm smallbtn28" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please wait"><?php echo $this->lang->line('search')?></button>
                             </div>    
-                            <div class="col-lg-4 col-md-4 col-sm-4"> 
-                                <div class="form-group">
-                                    <label class="dhide" style="display: block; visibility:hidden;"><?php echo $this->lang->line('teacher') ?></label>
-                                    <button type="submit" class="btn btn-primary btn-sm smallbtn28" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please wait"><?php echo $this->lang->line('search') ?></button>
-                                </div>    
-                            </div>   
+                         </div>   
                         </form>
                         <div class="timetable_data table-responsive clearboth">
 

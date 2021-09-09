@@ -23,10 +23,4 @@
         <th><?php echo $this->lang->line('note'); ?></th>
         <td><?php print_r($data['note']); ?></td>
     </tr>
-    <tr>
-        <th><?php echo $this->lang->line('id')." ".$this->lang->line('card'); ?></th>
-        <td><?php echo $data['id_proof']; ?></td>
-        <th></th>
-        <td></td>
-    </tr>
 </table>

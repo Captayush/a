@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -15,6 +14,7 @@ class Biometric extends CI_Controller
         $this->load->model('setting_model');
         $this->load->model('student_model');
         $this->load->model('stuattendence_model');
+
     }
 
     public function index()
@@ -51,11 +51,13 @@ class Biometric extends CI_Controller
                                     json_output(200, array('status' => 200, 'message' => 'Something Wrong.'));
                                 }
                             }
+
                         }
                     }
                 }
             }
         }
+
     }
 
 }

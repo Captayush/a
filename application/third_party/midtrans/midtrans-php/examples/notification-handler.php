@@ -18,15 +18,15 @@ if ($transaction == 'capture') {
         if ($fraud == 'challenge') {
             // TODO set payment status in merchant's database to 'Challenge by FDS'
             // TODO merchant should decide whether this transaction is authorized or not in MAP
-            echo "Transaction order_id: " . $order_id . " is challenged by FDS";
+            echo "Transaction order_id: " . $order_id ." is challenged by FDS";
         } else {
             // TODO set payment status in merchant's database to 'Success'
-            echo "Transaction order_id: " . $order_id . " successfully captured using " . $type;
+            echo "Transaction order_id: " . $order_id ." successfully captured using " . $type;
         }
     }
 } else if ($transaction == 'settlement') {
     // TODO set payment status in merchant's database to 'Settlement'
-    echo "Transaction order_id: " . $order_id . " successfully transfered using " . $type;
+    echo "Transaction order_id: " . $order_id ." successfully transfered using " . $type;
 } else if ($transaction == 'pending') {
     // TODO set payment status in merchant's database to 'Pending'
     echo "Waiting customer to finish transaction order_id: " . $order_id . " using " . $type;

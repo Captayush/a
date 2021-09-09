@@ -15,7 +15,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                     </div>
                     <div class="box-body">
-
+                     
 
                         <form role="form" action="<?php echo site_url('admin/feediscount/assign/' . $id) ?>" method="post" class="row">
                             <?php echo $this->customlib->getCSRF(); ?>
@@ -35,18 +35,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </select>
                                     <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                 </div>
-                            </div><!--./col-sm-3-->  
-                            <div class="col-sm-3">
-                                <div class="form-group">  
+                              </div><!--./col-sm-3-->  
+                                <div class="col-sm-3">
+                                  <div class="form-group">  
                                     <label><?php echo $this->lang->line('section'); ?></label>
                                     <select  id="section_id" name="section_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     </select>
                                     <span class="text-danger"><?php echo form_error('section_id'); ?></span>
-                                </div>  
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">  
+                                  </div>  
+                                </div>
+                                <div class="col-sm-2">
+                                  <div class="form-group">  
                                     <label><?php echo $this->lang->line('category'); ?></label>
                                     <select  id="category_id" name="category_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
@@ -59,10 +59,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         }
                                         ?>
                                     </select>
-                                </div>  
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">  
+                                  </div>  
+                                </div>
+                                <div class="col-sm-2">
+                                  <div class="form-group">  
                                     <label><?php echo $this->lang->line('gender'); ?></label>
                                     <select class="form-control" name="gender">
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
@@ -74,10 +74,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         }
                                         ?>
                                     </select>
-                                </div>  
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">  
+                                  </div>  
+                                </div>
+                                <div class="col-sm-2">
+                                  <div class="form-group">  
                                     <label><?php echo $this->lang->line('rte'); ?></label>
                                     <select  id="rte" name="rte" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
@@ -91,141 +91,143 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         }
                                         ?>
                                     </select>
-                                </div>  
-                            </div>
-
-
+                                  </div>  
+                                </div>
+                            
+                            
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <button type="submit" name="search" value="search_filter" class="btn btn-primary pull-right btn-sm checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
                                 </div>
                             </div>
                         </form>
-
+                     
                     </div>
+                
+                <form method="post" action="<?php echo site_url('admin/feediscount/studentdiscount') ?>" id="assign_form">
 
-                    <form method="post" action="<?php echo site_url('admin/feediscount/studentdiscount') ?>" id="assign_form">
 
-
-                        <?php
-                        if (isset($resultlist)) {
-                            ?>
-                            <div class="box-header ptbnull"></div>  
-                            <div class="">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('assign_fees_discount'); ?>
-                                        </i> <?php echo form_error('student'); ?></h3>
-                                    <div class="box-tools pull-right">
-                                    </div>
+                    <?php
+                    if (isset($resultlist)) {
+                        ?>
+                      <div class="box-header ptbnull"></div>  
+                        <div class="">
+                            <div class="box-header with-border">
+                                <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('assign_fees_discount'); ?>
+                                    </i> <?php echo form_error('student'); ?></h3>
+                                <div class="box-tools pull-right">
                                 </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="">
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="">
 
 
-                                            <div class="col-md-4">
+                                        <div class="col-md-4">
 
-                                                <div class="table-responsive">
-                                                    <h4>
-                                                        <?php echo $this->lang->line('fees_discount'); ?>
-                                                    </h4>
-                                                    <table class="table">
-                                                        <tbody>
+                                            <div class="table-responsive">
+                                                <h4>
+                                                    <?php echo $this->lang->line('fees_discount'); ?>
+                                                </h4>
+                                                <table class="table">
+                                                    <tbody>
 
-                                                            <tr class="mailbox-name">
-                                                        <input type="hidden" name="feediscount_id"value="<?php echo $feediscountList['id']; ?>">
-                                                        <td>
-                                                            <?php echo $feediscountList['code']; ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php echo $currency_symbol . $feediscountList['amount']; ?>
-                                                        </td>
-                                                        </td>
-                                                        </tr>
-                                                        </tbody></table>
+                                                        <tr class="mailbox-name">
+                                                    <input type="hidden" name="feediscount_id"value="<?php echo $feediscountList['id']; ?>">
+                                                    <td>
+                                                        <?php echo $feediscountList['code']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $currency_symbol . $feediscountList['amount']; ?>
+                                                    </td>
+                                                    </td>
+                                                    </tr>
+                                                    </tbody></table>
 
-                                                </div>
                                             </div>
-                                            <div class="col-md-8">
+                                        </div>
+                                        <div class="col-md-8">
 
 
-                                                <div class=" table-responsive">
+                                            <div class=" table-responsive">
 
-                                                    <table class="table table-striped">
-                                                        <tbody>
+                                                <table class="table table-striped">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th><input type="checkbox" id="select_all"/> <?php echo $this->lang->line('all'); ?></th>
+
+                                                            <th><?php echo $this->lang->line('admission_no'); ?></th>
+                                                            <th><?php echo $this->lang->line('student_name'); ?></th>
+                                                            <th><?php echo $this->lang->line('class'); ?></th>
+                                                            <th><?php echo $this->lang->line('father_name'); ?></th>
+                                                            <th><?php echo $this->lang->line('category'); ?></th>
+                                                            <th><?php echo $this->lang->line('gender'); ?></th>
+
+
+
+                                                        </tr>
+                                                        <?php
+                                                        if (empty($resultlist)) {
+                                                            ?>
                                                             <tr>
-                                                                <th><input type="checkbox" id="select_all"/> <?php echo $this->lang->line('all'); ?></th>
+                                                                <td colspan="6" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
+                                                            </tr>
+                                                            <?php
+                                                        } else {
+                                                            $count = 1;
+                                                            foreach ($resultlist as $student) {
+                                                                ?>
+                                                            <input type="hidden" name="student_list[]" value="<?php echo $student['student_session_id'] ?>">
+                                                            <tr>
 
-                                                                <th><?php echo $this->lang->line('admission_no'); ?></th>
-                                                                <th><?php echo $this->lang->line('student_name'); ?></th>
-                                                                <th><?php echo $this->lang->line('class'); ?></th>
-                                                                <th><?php echo $this->lang->line('father_name'); ?></th>
-                                                                <th><?php echo $this->lang->line('category'); ?></th>
-                                                                <th><?php echo $this->lang->line('gender'); ?></th>
+                                                                <td> 
+                                                                    <?php
+                                                                    if ($student['student_fees_discount_id'] != 0) {
+                                                                        $sel = "checked='checked'";
+                                                                    } else {
+                                                                        $sel = "";
+                                                                    }
+                                                                    ?>
+                                                                    <input class="checkbox" type="checkbox" name="student_session_id[]"  value="<?php echo $student['student_session_id']; ?>" <?php echo $sel; ?>/>
+                                                                </td>
 
+                                                                <td><?php echo $student['admission_no']; ?></td>
+                                                                <td><?php echo $student['firstname'] . " " . $student['lastname']; ?></td>
+                                                                <td><?php echo $student['class'] . "(" . $student['section'] . ")" ?></td>
+                                                                <td><?php echo $student['father_name']; ?></td>
+                                                                <td><?php echo $student['category']; ?></td>
+                                                                <td><?php echo $student['gender']; ?></td>
 
 
                                                             </tr>
                                                             <?php
-                                                            if (empty($resultlist)) {
-                                                                ?>
-                                                                <tr>
-                                                                    <td colspan="6" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
-                                                                </tr>
-                                                                <?php
-                                                            } else {
-                                                                $count = 1;
-                                                                foreach ($resultlist as $student) {
-                                                                    ?>
-                                                                <input type="hidden" name="student_list[]" value="<?php echo $student['student_session_id'] ?>">
-                                                                <tr>
-                                                                    <td> 
-                                                                        <?php
-                                                                        if ($student['student_fees_discount_id'] != 0) {
-                                                                            $sel = "checked='checked'";
-                                                                        } else {
-                                                                            $sel = "";
-                                                                        }
-                                                                        ?>
-                                                                        <input class="checkbox" type="checkbox" name="student_session_id[]"  value="<?php echo $student['student_session_id']; ?>" <?php echo $sel; ?>/>
-                                                                    </td>
-                                                                    <td><?php echo $student['admission_no']; ?></td>
-                                                                    <td><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname); ?></td>
-                                                                    <td><?php echo $student['class'] . "(" . $student['section'] . ")" ?></td>
-                                                                    <td><?php echo $student['father_name']; ?></td>
-                                                                    <td><?php echo $student['category']; ?></td>
-                                                                    <td><?php echo $student['gender']; ?></td>
-
-
-                                                                </tr>
-                                                                <?php
-                                                            }
-                                                            $count++;
                                                         }
-                                                        ?>
-                                                        </tbody></table>
-
-                                                </div>
-                                                <?php
-                                                if (!empty($resultlist)) {
+                                                        $count++;
+                                                    }
                                                     ?>
-                                                    <button type="submit" class="allot-fees pull-right btn btn-primary btn-sm " id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.."><?php echo $this->lang->line('save'); ?>
-                                                    </button>
-                                                <?php } ?>
+                                                    </tbody></table>
 
-                                                <br/>
-                                                <br/>
                                             </div>
+                                            <?php
+                                                        if (!empty($resultlist)) {
+                                                            ?>
+                                            <button type="submit" class="allot-fees pull-right btn btn-primary btn-sm " id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.."><?php echo $this->lang->line('save');?>
+                                            </button>
+                                        <?php } ?>
+
+                                            <br/>
+                                            <br/>
                                         </div>
                                     </div>
-
                                 </div>
+
                             </div>
-                            <?php
-                        }
-                        ?>
-                    </form>
-                </div>  
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </form>
+              </div>  
             </div>
 
         </div> 
@@ -312,14 +314,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><?php echo $this->lang->line('confirmation') ?></h4>
+                <h4 class="modal-title"><?php echo $this->lang->line('confirmation')?></h4>
             </div>
             <div class="modal-body">
-                <p><?php echo $this->lang->line('are_you_sure_assign_fees_discount') ?></p>
+                <p><?php echo $this->lang->line('are_you_sure_assign_fees_discount')?></p>
             </div>
             <div class="modal-footer">
-                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-danger btn secondary"><?php echo $this->lang->line('no') ?></a>
-                <a href="#" id="delete-btn" class="btn btn-confirm confirm"><?php echo $this->lang->line('yes') ?></a>
+                <a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-danger btn secondary">No</a>
+                <a href="#" id="delete-btn" class="btn btn-confirm confirm">Yes</a>
 
             </div>
         </div>

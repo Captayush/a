@@ -318,7 +318,7 @@ class Studentfee extends Student_Controller {
         $transport_record_array = array();
         if (!empty($fees_array)) {
             $ids = implode(',', $fees_array);
-            $monthly_record_array = $this->studentfee_model->getStudentFeesArray($student_session_id, $ids);
+            $monthly_record_array = $this->studentfee_model->getStudentFeesArray($ids, $student_session_id);
         }
         if (!empty($trans_array)) {
             $ids = implode(',', $trans_array);

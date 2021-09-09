@@ -83,7 +83,7 @@
                                                         <th><?php echo $this->lang->line('admission_no'); ?></th>
                                                         <th><?php echo $this->lang->line('student_name'); ?></th>
                                                         <th><?php echo $this->lang->line('father_name'); ?></th>
-                                                        <th><?php echo $this->lang->line('date_of_birth') ?></th>
+                                                        <th><?php echo $this->lang->line('date_of_birth')?></th>
                                                         <th><?php echo $this->lang->line('gender'); ?></th>
                                                         <?php
                                                         foreach ($exam_subjects as $exam_subject_key => $exam_subject_value) {
@@ -151,7 +151,7 @@
                                             <?php
                                         } else {
 
-                                            echo $this->lang->line('no_subject_found');
+                                          echo $this->lang->line('no_subject_found');
                                         }
                                         ?>
 

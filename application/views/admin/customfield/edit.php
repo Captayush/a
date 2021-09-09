@@ -38,7 +38,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
-
+   
 
     <!-- Main content -->
     <section class="content">
@@ -50,12 +50,12 @@
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('edit') . " " . $this->lang->line('custom') . " " . $this->lang->line('fields'); ?></h3>
+                            <h3 class="box-title"><?php echo $this->lang->line('edit')." ".$this->lang->line('custom')." ".$this->lang->line('fields'); ?></h3>
                         </div><!-- /.box-header -->
                         <form id="form1" action="<?php echo current_url() ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
                             <div class="box-body">
                                 <input type="hidden" name="id" value="<?php echo set_value('id', $cus_field->id); ?>">
-
+                          
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
                                 <?php } ?>
@@ -67,7 +67,7 @@
                                 <?php echo $this->customlib->getCSRF(); ?>
 
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field_belongs_to'); ?></label> <small class="req">*</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field_belongs_to');?></label> 
                                     <select autofocus="" id="belong_to" name="belong_to" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
@@ -83,7 +83,7 @@
                                     <span class="text-danger"><?php echo form_error('belong_to'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field') . ' ' . $this->lang->line('type') ?></label> <small class="req">*</small>
+                                    <label for="exampleInputEmail1"><?php  echo $this->lang->line('field').' ' . $this->lang->line('type')?></label> 
                                     <select autofocus="" id="type" name="type" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
@@ -99,13 +99,13 @@
                                     <span class="text-danger"><?php echo form_error('type'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field') . ' ' . $this->lang->line('name') ?></label> <small class="req">*</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('field').' '.$this->lang->line('name') ?></label> <small class="req">*</small>
                                     <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name', $cus_field->name); ?>" />
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('grid_boostrap'); ?></label>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('grid_boostrap');?></label>
                                     <div class="input-group">
                                         <span class="input-group-addon">col-md-</span>
                                         <input type="number" max="12" class="form-control" name="column" id="column" value="<?php echo set_value('column', $cus_field->bs_column); ?>" aria-invalid="false">
@@ -118,11 +118,11 @@
                                     <span class="text-danger"><?php echo form_error('field_values'); ?></span>
                                 </div>
                                 <div class="form-group"> <!-- Radio group !-->
-                                    <label class="control-label"><?php echo $this->lang->line('validation'); ?></label>
+                                    <label class="control-label"><?php echo $this->lang->line('validation');?></label>
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" class="content_available" name="validation" value="1" <?php echo set_checkbox('validation', '1', (set_value('validation', $cus_field->validation) == 1) ? TRUE : FALSE); ?>>
-                                            <?php echo $this->lang->line('required'); ?>
+                                             <?php echo $this->lang->line('required');?>
                                         </label>
                                     </div>
 
@@ -136,7 +136,7 @@
 
                                         <label>
                                             <input type="checkbox" class="content_available" name="display_tbl" value="1" <?php echo set_checkbox('display_tbl', '1', (set_value('display_tbl', $cus_field->visible_on_table) == 1) ? TRUE : FALSE); ?>>
-                                            <?php echo $this->lang->line('on') . " " . $this->lang->line('table'); ?>
+                                          <?php echo $this->lang->line('on')." ".$this->lang->line('table'); ?>
                                         </label>
                                     </div>
 
@@ -166,7 +166,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('custom') . " " . $this->lang->line('fields') . " " . $this->lang->line('list'); ?></h3>
+                        <h3 class="box-title titlefix"><?php echo $this->lang->line('custom')." ".$this->lang->line('fields')." ".$this->lang->line('list');?></h3>
                         <div class="box-tools pull-right">
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
@@ -193,9 +193,9 @@
                                         <div id="collapse<?php echo $custom_field_table_key ?>" class="panel-collapse collapse">
                                             <div class="panel-body">
 
-
+ 
                                                 <?php
-                                                $records_fields = isset($customfields[$custom_field_table_key]) ? $customfields[$custom_field_table_key] : array();
+                                               $records_fields = isset($customfields[$custom_field_table_key]) ? $customfields[$custom_field_table_key] : array();
                                                 if (!empty($records_fields)) {
                                                     ?>
                                                     <ul class="sortable-item ui-sortable list-group" data-record_name="<?php echo $custom_field_table_key; ?>">
@@ -208,9 +208,9 @@
 
 
                                                                     <a href="<?php echo site_url('admin/customfield/edit/' . $records_fields_value['id']); ?>" class="btn btn-xs" data-toggle="tooltip"
-                                                                       data-original-title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
+                                                                      data-original-title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
                                                                     <a href="<?php echo site_url('admin/customfield/delete/' . $records_fields_value['id']); ?>" class="btn btn-xs" data-toggle="tooltip"
-                                                                       data-original-title="<?php echo $this->lang->line('delete'); ?>" data-id="1" id="deleteItem"  data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-remove"></i></a>
+                                                                      data-original-title="<?php echo $this->lang->line('delete'); ?>" data-id="1" id="deleteItem"  data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-remove"></i></a>
 
 
                                                                 </span> <i class="fa fa-arrows"></i> <?php
@@ -223,10 +223,10 @@
 
                                                         </ol>
                                                         <?php
-                                                    } else {
+                                                    }else {
                                                         ?>
                                                         <div class="alert alert-danger">
-                                                            <?php echo $this->lang->line('no_record_found') ?>
+                                                             <?php echo $this->lang->line('no_record_found')?>
                                                         </div>
                                                         <?php
                                                     }

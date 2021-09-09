@@ -6,11 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
-    'Google_Service_Exception' => $vendorDir . '/google/apiclient/src/Google/Service/Exception.php',
-    'Google_Service_Resource' => $vendorDir . '/google/apiclient/src/Google/Service/Resource.php',
-    'Omnipay\\Omnipay' => $vendorDir . '/omnipay/common/src/Omnipay.php',
-    'Stringable' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
-    'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
-    'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+    'CallbackFilterIterator' => $vendorDir . '/symfony/polyfill-php54/Resources/stubs/CallbackFilterIterator.php',
+    'Omnipay\\Omnipay' => $vendorDir . '/omnipay/common/src/Omnipay/Omnipay.php',
+    'RecursiveCallbackFilterIterator' => $vendorDir . '/symfony/polyfill-php54/Resources/stubs/RecursiveCallbackFilterIterator.php',
+    'SessionHandlerInterface' => $vendorDir . '/symfony/polyfill-php54/Resources/stubs/SessionHandlerInterface.php',
 );

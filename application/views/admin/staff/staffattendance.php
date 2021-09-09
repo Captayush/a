@@ -115,13 +115,13 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                <?php echo $this->lang->line('date') . " | " . $this->lang->line('month'); ?>
+                                            <?php echo $this->lang->line('date') . " | " . $this->lang->line('month'); ?>
                                             </th>
                                             <?php foreach ($monthlist as $monthkey => $monthvalue) {
                                                 ?>
                                                 <th><?php echo $monthvalue ?></th>
-                                            <?php }
-                                            ?>
+        <?php }
+        ?>
 
 
 
@@ -145,32 +145,40 @@
                                                     ?>
                                                     <td><?php echo $resultlist[$att_dates]["key"]; ?></td>
 
-                                                <?php } ?>
+                                            <?php } ?>
                                             </tr>
-                                            <?php
-                                            $j++;
-                                        }
-                                        ?>   
+            <?php $j++;
+        }
+        ?>   
                                     </tbody>
                                 </table>
-                                <?php
-                            } else {
-                                ?>
+                                    <?php
+                                } else {
+                                    ?>
                                 <div class="alert alert-info">
-                                    <?php echo $this->lang->line('no_attendance_prepare'); ?>
+                                <?php echo $this->lang->line('no_attendance_prepare'); ?>
                                 </div>
-                                <?php
-                            }
-                            ?>
+        <?php
+    }
+    ?>
                         </div>
                     </div>
-                    <?php
-                }
-                ?>
+    <?php
+}
+?>
                 </section>
             </div>
             <script type="text/javascript">
+
+
                 $(document).ready(function () {
+
+                    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+                    $('#date').datepicker({
+                        format: date_format,
+                        autoclose: true
+                    });
+
                     $('.detail_popover').popover({
                         placement: 'right',
                         title: '',

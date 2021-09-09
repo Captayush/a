@@ -1,38 +1,35 @@
 <?php
 
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Rbac
-{
+class Rbac {
 
     private $userRoles = array();
     protected $permissions;
-    public $perm_category;
+    var $perm_category;
 
-    public function __construct()
-    {
+    function __construct() {
 
-        $this->CI          = &get_instance();
+        $this->CI = & get_instance();
         $this->permissions = array();
         $this->CI->config->load('mailsms');
         $this->perm_category = $this->CI->config->item('perm_category');
         self::loadPermission(); //Initiate the userroles
     }
 
-    public function loadPermission()
-    {
+    function loadPermission() {
         $admin_session = $this->CI->session->userdata('admin');
 
         foreach ($admin_session['roles'] as $key => $role) {
-            $permissions            = $this->getPermission($role);
+            $permissions = $this->getPermission($role);
             $this->userRoles[$role] = $permissions;
         }
     }
 
-    public function getPermission($role_id)
-    {
+    function getPermission($role_id) {
 
         $role_perm = $this->CI->rolepermission_model->getPermissionByRole($role_id);
+
 
         foreach ($role_perm as $key => $value) {
             foreach ($this->perm_category as $per_cat_key => $per_cat_value) {
@@ -46,16 +43,25 @@ class Rbac
         return $role_perm;
     }
 
-    public function hasPrivilege($category = null, $permission = null)
-    {
+    function hasPrivilege($category = null, $permission = null) {
 
-        $perm             = trim($category) . "-" . trim($permission);
-        $roles            = $this->CI->customlib->getStaffRole();
+        $perm = trim($category) . "-" . trim($permission);
+        $roles = $this->CI->customlib->getStaffRole();
         $logged_user_role = json_decode($roles)->name;
+
+
 
         if ($logged_user_role == 'Super Admin') {
             return true;
         }
+
+        // echo  "<pre>";
+        // print_r($this->permissions);
+        // echo "<pre>";
+        // exit;
+        // if(!$this->rbac->hasPrivilege('student','can_view')){
+        //   access_denied();
+        //   }
 
         foreach ($this->userRoles as $role) {
             if ($this->hasPermission($perm)) {
@@ -66,20 +72,20 @@ class Rbac
         return false;
     }
 
-    public function hasPermission($permission)
-    {
-
+    function hasPermission($permission) {
+// echo "<pre/>";
+//             print_r($this->permissions);
+//           exit();
         return isset($this->permissions[$permission]);
     }
 
-    public function module_permission($module_name)
-    {
+    function module_permission($module_name) {
+        //echo "hii";
         $module_perm = $this->CI->Module_model->getPermissionByModulename($module_name);
         return $module_perm;
     }
 
-    public function unautherized()
-    {
+    function unautherized() {
         $this->CI->load->view('layout/header');
         $this->CI->load->view('unauthorized');
         $this->CI->load->view('layout/footer');

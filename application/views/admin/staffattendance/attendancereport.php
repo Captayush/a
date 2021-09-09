@@ -89,239 +89,279 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-12">
-                                    <div class="form-group"> 
-                                        <button type="submit" name="search" value="search" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
-                                    </div>  
-                                </div>   
+                              <div class="col-sm-12">
+                              <div class="form-group"> 
+                                <button type="submit" name="search" value="search" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                              </div>  
+                            </div>   
                             </div>
                         </div>
-
+                       
                     </form>
+                
+                <?php
+                if (isset($resultlist)) {
 
-                    <?php
-                    if (isset($resultlist)) {
-                        ?>
-                        <div class="" id="attendencelist">
-                            <div class="box-header ptbnull"></div>
-                            <div class="box-header with-border" >
-                                <div class="row">
+                    ?>
+                    <div class="" id="attendencelist">
+                        <div class="box-header ptbnull"></div>
+                        <div class="box-header with-border" >
+                            <div class="row">
 
 
-                                    <div class="col-md-4 col-sm-4">
-                                        <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('attendance'); ?> <?php echo $this->lang->line('report'); ?></h3>
-                                    </div>
-                                    <div class="col-md-8 col-sm-8">
-                                        <div class="pull-right">
-                                            <?php
-                                            foreach ($attendencetypeslist as $key_type => $value_type) {
-                                                ?>
-                                                &nbsp;&nbsp;
-                                                <b>
-                                                    <?php
-                                                    $att_type = str_replace(" ", "_", strtolower($value_type['type']));
-                                                    echo $this->lang->line($att_type) . ": " . $value_type['key_value'] . "";
-                                                    ?>
-                                                </b>
-                                                <?php
-                                            }
+                                <div class="col-md-4 col-sm-4">
+                                    <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('attendance'); ?> <?php echo $this->lang->line('report'); ?></h3>
+                                </div>
+                                <div class="col-md-8 col-sm-8">
+                                    <div class="pull-right">
+                                        <?php
+                                        foreach ($attendencetypeslist as $key_type => $value_type) {
                                             ?>
-                                        </div>
+                                            &nbsp;&nbsp;
+                                            <b>
+                                                <?php
+                                                $att_type = str_replace(" ", "_", strtolower($value_type['type']));
+                                                echo $this->lang->line($att_type) . ": " . $value_type['key_value'] . "";
+                                                ?>
+                                            </b>
+                                            <?php
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
-                            <div class="box-body table-responsive">
+                        </div>
+                        <div class="box-body table-responsive">
 
 
-                                <?php
-                                if (!empty($resultlist)) {
-                                    ?>
-                                    <div class="mailbox-controls">
-                                        <div class="pull-right">
-                                        </div>
+                            <?php
+                            if (!empty($resultlist)) {
+                                ?>
+                                <div class="mailbox-controls">
+                                    <div class="pull-right">
                                     </div>
-                                    <div class="download_label"><?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('attendance'); ?> <?php echo $this->lang->line('report') ?></div>  <div> <?php echo 
-                            $this->customlib->get_postmessage();
-                                    ?></div>
-                                    <table class="table table-striped table-bordered table-hover example xyz">
-                                        <thead>
-                                            <tr>
-                                                <th>
-        <?php echo $this->lang->line('staff'); ?> / <?php echo $this->lang->line('date'); ?>
-                                                </th>
-                                                <th><br/><span data-toggle="tooltip" title="<?php echo "Gross Present Percentage(%)"; ?>">%</span></th>
-                                                <?php
-                                                if (!empty($attendence_array)) {
-                                                    foreach ($attendencetypeslist as $key => $value) {
-                                                        ?>
-                                                        <th colspan="" ><br/><span data-toggle="tooltip" title="<?php echo $this->lang->line('total'). ' ' . $value["type"]; ?>"><?php echo strip_tags($value["key_value"]); ?>
-
-                                                            </span></th>
-
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>  
-                                                <?php
-                                                foreach ($attendence_array as $at_key => $at_value) {
-
-                                                    if (date('D', $this->customlib->dateyyyymmddTodateformat($at_value)) == "Sun") {
-                                                        ?>
-                                                        <th class="tdcls text text-center bg-danger">
-                                                            <?php
-                                                            echo date('d', $this->customlib->dateyyyymmddTodateformat($at_value)) . "<br/>" .
-                                                            $this->lang->line(strtolower(date('D', $this->customlib->dateyyyymmddTodateformat($at_value))))
-                                                            ;
-                                                            ?> 
-                                                        </th>
-
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <th class="tdcls text text-center">
-                                                            <?php
-                                                            echo date('d', $this->customlib->dateyyyymmddTodateformat($at_value)) . "<br/>" .
-                                                            $this->lang->line(strtolower(date('D', $this->customlib->dateyyyymmddTodateformat($at_value))))
-                                                            ;
-                                                            ?>
-                                                        </th>
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if (empty($student_array)) {
-                                                ?>
-                                                <tr>
-                                                    <td colspan="32" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
-                                                </tr>
-                                                <?php
-                                            } else {
-                                                $row_count = 1;
-                                                $i = 0;
-                                                foreach ($student_array as $student_key => $student_value) {
-                                                    $total_present = ($monthAttendance[$i][$student_value['id']]['present'] + $monthAttendance[$i][$student_value['id']]['late'] + $monthAttendance[$i][$student_value['id']]['half_day']);
-
-                                                    $total_days = $monthAttendance[$i][$student_value['id']]['present'] + $monthAttendance[$i][$student_value['id']]['late'] + $monthAttendance[$i][$student_value['id']]['absent'] + $monthAttendance[$i][$student_value['id']]['half_day'];
-
-                                                    if ($total_days == 0) {
-                                                        $percentage = -1;
-                                                        $print_percentage = "-";
-                                                    } else {
-
-                                                        $percentage = ($total_present / $total_days) * 100;
-                                                        $print_percentage = round($percentage, 0);
-                                                    }
-
-                                                    if (($percentage < 75) && ($percentage >= 0)) {
-                                                        $label = "class='label label-danger'";
-                                                    } else if ($percentage > 75) {
-
-                                                        $label = "class='label label-success'";
-                                                    } else {
-
-                                                        $label = "class='label label-default'";
-                                                    }
+                                </div>
+                                <div class="download_label"><?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('attendance'); ?> <?php echo $this->lang->line('report')."<br>";$this->customlib->get_postmessage(); ?></div>
+                                <table class="table table-striped table-bordered table-hover example xyz">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                            <?php echo $this->lang->line('staff'); ?> / <?php echo $this->lang->line('date'); ?>
+                                            </th>
+                                            <th><br/><span data-toggle="tooltip" title="<?php echo "Gross Present Percentage(%)"; ?>">%</span></th>
+                                            <?php
+                                            if (!empty($attendence_array)) {
+                                                foreach ($attendencetypeslist as $key => $value) {
                                                     ?>
-                                                    <tr>
+                                                    <th colspan="" ><br/><span data-toggle="tooltip" title="<?php echo "Total " . $value["type"]; ?>"><?php echo strip_tags($value["key_value"]); ?>
 
-                                                        <th class="tdclsname"><span data-toggle="popover" class="detail_popover" data-original-title="" title=""><a href="#" style="color:#333"><?php echo $student_value['name'] . " " . $student_value['surname']; ?></a></span>
-                                                            <div class="fee_detail_popover" style="display: none"><?php echo $this->lang->line('staff_id'); ?>: <?php echo $student_value['employee_id']; ?></div>
-                                                        </th>
-                                                        <th><?php echo "<label $label>" . $print_percentage . "</label>"; ?></th>
-                                                        <th><?php echo $monthAttendance[$i][$student_value['id']]['present']; ?></th>
-                                                        <th><?php echo $monthAttendance[$i][$student_value['id']]['late']; ?></th>
-                                                        <th><?php echo $monthAttendance[$i][$student_value['id']]['absent']; ?></th>
-                                                        <th><?php echo $monthAttendance[$i][$student_value['id']]['half_day']; ?></th>
-                                                        <th><?php echo $monthAttendance[$i][$student_value['id']]['holiday']; ?></th>
+                                                        </span></th>
+
+                                                <?php }
+                                            }
+                                            ?>
+                                            <?php
+                                            foreach ($attendence_array as $at_key => $at_value) {
+                                              
+                                                if (date('D', $this->customlib->dateyyyymmddTodateformat($at_value)) == "Sun") {
+                                                    ?>
+                                                    <th class="tdcls text text-center bg-danger">
                                                         <?php
-                                                        foreach ($attendence_array as $at_key => $at_value) {
-                                                            ?>
-                                                            <th class="tdcls text text-center">
-                                                                <span data-toggle="popover" class="detail_popover" data-original-title="" title=""><a href="#" style="color:#333"><?php
-                                                                        print_r($resultlist[$at_value][$student_value['id']]['key']);
-                                                                        ?></a></span>
-                                                                <div class="fee_detail_popover" style="display: none"><?php
-                                                                    if (!empty($resultlist[$at_value][$student_value['id']]['remark'])) {
-                                                                        echo $resultlist[$at_value][$student_value['id']]['remark'];
-                                                                    }
-                                                                    ?></div>
-                                                            </th>
-                                                            <?php
-                                                        }
+                                                        echo date('d', $this->customlib->dateyyyymmddTodateformat($at_value)) . "<br/>" .
+                                                        date('D', $this->customlib->dateyyyymmddTodateformat($at_value))
+                                                        ;
                                                         ?>
+                                                    </th>
 
-                                                    </tr>
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                    <th class="tdcls text text-center">
+                                                        <?php
+                                                        echo date('d', $this->customlib->dateyyyymmddTodateformat($at_value)) . "<br/>" .
+                                                        date('D', $this->customlib->dateyyyymmddTodateformat($at_value))
+                                                        ;
+                                                        ?>
+                                                    </th>
                                                     <?php
-                                                    $i++;
                                                 }
                                             }
                                             ?>
-                                        </tbody>
-                                    </table>
-                                    <?php
-                                } else {
-                                    ?>
-                                    <div class="alert alert-info">
-                                    <?php echo $this->lang->line('no_attendance_prepare'); ?>
-                                    </div>
-                                    <?php
-                                }
+
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+        <?php if (empty($student_array)) {
+            ?>
+                                            <tr>
+                                                <td colspan="32" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
+                                            </tr>
+                                            <?php
+                                        } else {
+
+                                            $row_count = 1;
+                                            $i = 0;
+
+                                            foreach ($student_array as $student_key => $student_value) {
+
+                                                $total_present = ($monthAttendance[$i][$student_value['id']]['present'] + $monthAttendance[$i][$student_value['id']]['late'] + $monthAttendance[$i][$student_value['id']]['half_day']);
+
+                                                $total_days = $monthAttendance[$i][$student_value['id']]['present'] + $monthAttendance[$i][$student_value['id']]['late'] + $monthAttendance[$i][$student_value['id']]['absent'] + $monthAttendance[$i][$student_value['id']]['half_day'];
+
+
+                                                // if($total_days == 0){
+                                                //  $percentage = "-";
+                                                // }else{
+                                                //     $percentage = ($total_present/$total_days)*100 ; 
+                                                // } 
+
+                                                if ($total_days == 0) {
+                                                    $percentage = -1;
+                                                    $print_percentage = "-";
+                                                } else {
+
+                                                    $percentage = ($total_present / $total_days) * 100;
+                                                    $print_percentage = round($percentage, 0);
+                                                }
+
+                                                if (($percentage < 75) && ($percentage >= 0)) {
+                                                    $label = "class='label label-danger'";
+                                                } else if ($percentage > 75) {
+
+                                                    $label = "class='label label-success'";
+                                                } else {
+
+                                                    $label = "class='label label-default'";
+                                                }
+                                                // echo "<label $label>". $print_percentage."</label>";
+                                                ?>
+                                                <tr>
+
+                                                    <th class="tdclsname"><span data-toggle="popover" class="detail_popover" data-original-title="" title=""><a href="#" style="color:#333"><?php echo $student_value['name'] . " " . $student_value['surname']; ?></a></span>
+                                                        <div class="fee_detail_popover" style="display: none"><?php echo $this->lang->line('staff_id'); ?>: <?php echo $student_value['employee_id']; ?></div>
+                                                    </th>
+                                                    <th><?php echo "<label $label>" . $print_percentage . "</label>"; //echo round($percentage,2);  ?></th>
+                                                    <th><?php echo $monthAttendance[$i][$student_value['id']]['present']; ?></th>
+                                                    <th><?php echo $monthAttendance[$i][$student_value['id']]['late']; ?></th>
+                                                    <th><?php echo $monthAttendance[$i][$student_value['id']]['absent']; ?></th>
+                                                    <th><?php echo $monthAttendance[$i][$student_value['id']]['half_day']; ?></th>
+                                                    <th><?php echo $monthAttendance[$i][$student_value['id']]['holiday']; ?></th>
+                <?php
+                foreach ($attendence_array as $at_key => $at_value) {
+                    ?>
+                                                        <th class="tdcls text text-center">
+                                                            <span data-toggle="popover" class="detail_popover" data-original-title="" title=""><a href="#" style="color:#333"><?php
+                                                                print_r($resultlist[$at_value][$student_value['id']]['key']);
+                                                                ?></a></span>
+                                                            <div class="fee_detail_popover" style="display: none"><?php
+                                            if (!empty($resultlist[$at_value][$student_value['id']]['remark'])) {
+                                                echo $resultlist[$at_value][$student_value['id']]['remark'];
+                                            }
+                                                                ?></div>
+
+                                                        </th>
+                                                    <?php
+                                                }
+                                                ?>
+
+
+                                                </tr>
+                <?php
+                $i++;
+            }
+        }
+        ?>
+                                    </tbody>
+                                </table>
+                                <?php
+                            } else {
                                 ?>
-                            </div>
-                        </div>
+                                <div class="alert alert-info">
+        <?php echo $this->lang->line('no_attendance_prepare'); ?>
+                                </div>
                         <?php
                     }
                     ?>
-                </div><!--./box box-primary-->
-            </div>
-        </div>
-    </section>
+                        </div>
+                    </div>
+    <?php
+}
+?>
+</div><!--./box box-primary-->
 </div>
+</div>
+                </section>
+            </div>
+
+       
+            <script type="text/javascript">
 
 
-<script type="text/javascript">
-    var base_url = '<?php echo base_url() ?>';
-    function printDiv(elem) {
-        Popup(jQuery(elem).html());
-    }
-    function Popup(data)
-    {
-        var frame1 = $('<iframe />');
-        frame1[0].name = "frame1";
-        frame1.css({"position": "absolute", "top": "-1000000px"});
-        $("body").append(frame1);
-        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
-        frameDoc.document.open();
-        //Create a new HTML document.
-        frameDoc.document.write('<html>');
-        frameDoc.document.write('<head>');
-        frameDoc.document.write('<title></title>');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/bootstrap/css/bootstrap.min.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/font-awesome.min.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/ionicons.min.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/AdminLTE.min.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/skins/_all-skins.min.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/iCheck/flat/blue.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/morris/morris.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/datepicker/datepicker3.css">');
-        frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/daterangepicker/daterangepicker-bs3.css">');
-        frameDoc.document.write('</head>');
-        frameDoc.document.write('<body>');
-        frameDoc.document.write(data);
-        frameDoc.document.write('</body>');
-        frameDoc.document.write('</html>');
-        frameDoc.document.close();
-        setTimeout(function () {
-            window.frames["frame1"].focus();
-            window.frames["frame1"].print();
-            frame1.remove();
-        }, 500);
+                $(document).ready(function () {
+
+                    var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+                    $('#date').datepicker({
+                        format: date_format,
+                        autoclose: true
+                    });
+
+                    $('.detail_popover').popover({
+                        placement: 'right',
+                        title: '',
+                        trigger: 'hover',
+                        container: 'body',
+                        html: true,
+                        content: function () {
+                            return $(this).closest('th').find('.fee_detail_popover').html();
+                        }
+                    });
+                });
+            </script>
+            <script type="text/javascript">
+                var base_url = '<?php echo base_url() ?>';
+                function printDiv(elem) {
+                    Popup(jQuery(elem).html());
+                }
+                function Popup(data)
+                {
+
+                    var frame1 = $('<iframe />');
+                    frame1[0].name = "frame1";
+                    frame1.css({"position": "absolute", "top": "-1000000px"});
+                    $("body").append(frame1);
+                    var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+                    frameDoc.document.open();
+                    //Create a new HTML document.
+                    frameDoc.document.write('<html>');
+                    frameDoc.document.write('<head>');
+                    frameDoc.document.write('<title></title>');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/bootstrap/css/bootstrap.min.css">');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/font-awesome.min.css">');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/ionicons.min.css">');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/AdminLTE.min.css">');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/skins/_all-skins.min.css">');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/iCheck/flat/blue.css">');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/morris/morris.css">');
 
 
-        return true;
-    }
-</script>
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/datepicker/datepicker3.css">');
+                    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/daterangepicker/daterangepicker-bs3.css">');
+                    frameDoc.document.write('</head>');
+                    frameDoc.document.write('<body>');
+                    frameDoc.document.write(data);
+                    frameDoc.document.write('</body>');
+                    frameDoc.document.write('</html>');
+                    frameDoc.document.close();
+                    setTimeout(function () {
+                        window.frames["frame1"].focus();
+                        window.frames["frame1"].print();
+                        frame1.remove();
+                    }, 500);
+
+
+                    return true;
+                }
+            </script>

@@ -1,7 +1,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 
-
+   
 
     <!-- Main content -->
     <section class="content">
@@ -13,7 +13,7 @@
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('add') . " " . $this->lang->line('subject') . " " . $this->lang->line('group') ?></h3>
+                            <h3 class="box-title"><?php echo $this->lang->line('add')." ".$this->lang->line('subject')." ".$this->lang->line('group')?></h3>
                         </div><!-- /.box-header -->
                         <form id="form1" action="<?php echo site_url('admin/subjectgroup/edit/' . $subjectgroup[0]->id) ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
                             <?php
@@ -59,15 +59,15 @@
                                     <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                 </div>
                                 <div class="form-group"> <!-- Radio group !-->
-                                    <label class="control-label"><?php echo $this->lang->line('sections') ?></label><small class="req"> *</small>
+                                    <label class="control-label"><?php echo $this->lang->line('sections')?></label><small class="req"> *</small>
                                     <div class="section_checkbox">
-                                        <?php echo $this->lang->line('no') . " " . $this->lang->line('section') ?>
+                                       <?php echo $this->lang->line('no')." ".$this->lang->line('section')?>
                                     </div>
                                     <span class="text-danger"><?php echo form_error('sections[]'); ?></span>
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('subject') ?></label><small class="req"> *</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('subject')?></label><small class="req"> *</small>
 
 
                                     <?php
@@ -76,6 +76,7 @@
                                         <div class="checkbox">
                                             <label>
                                                 <?php
+                                               
                                                 ?>
                                                 <input type="checkbox" name="subject[]" value="<?php echo $subject['id'] ?>" <?php echo set_checkbox('subject[]', $subject['id'], getSelectedSubjects($subjectgroup, $subject['id']) ? TRUE : FALSE); ?>
                                                        ><?php echo $subject['name'] ?>
@@ -114,7 +115,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('subject') . " " . $this->lang->line('group') . " " . $this->lang->line('list') ?></h3>
+                        <h3 class="box-title titlefix"><?php echo $this->lang->line('subject')." ".$this->lang->line('group')." ".$this->lang->line('list')?></h3>
                         <div class="box-tools pull-right">
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
@@ -170,7 +171,7 @@
                                                 ?>
                                             </td>
                                             <td class="mailbox-date pull-right no_print">
-
+                                            
                                                 <?php
                                                 if ($this->rbac->hasPrivilege('subject_group', 'can_edit')) {
                                                     ?>
@@ -309,56 +310,56 @@ function getSelectedSubjects($subjectgroup, $find) {
             });
         }
     }
-    $(".no_print").css("display", "block");
-    document.getElementById("print").style.display = "block";
-    document.getElementById("btnExport").style.display = "block";
+   $(".no_print").css("display","block");
+document.getElementById("print").style.display = "block";
+  document.getElementById("btnExport").style.display = "block";
 
-    function printDiv() {
-        $(".no_print").css("display", "none");
-        document.getElementById("print").style.display = "none";
-        document.getElementById("btnExport").style.display = "none";
-        var divElements = document.getElementById('subject_list').innerHTML;
-        var oldPage = document.body.innerHTML;
-        document.body.innerHTML =
-                "<html><head><title></title></head><body>" +
-                divElements + "</body>";
-        window.print();
-        document.body.innerHTML = oldPage;
+        function printDiv() { 
+           $(".no_print").css("display","none");
+            document.getElementById("print").style.display = "none";
+             document.getElementById("btnExport").style.display = "none";
+            var divElements = document.getElementById('subject_list').innerHTML;
+            var oldPage = document.body.innerHTML;
+            document.body.innerHTML = 
+              "<html><head><title></title></head><body>" + 
+              divElements + "</body>";
+            window.print();
+            document.body.innerHTML = oldPage;
 
-        location.reload(true);
-    }
-
-    function fnExcelReport()
-    {
-        var tab_text = "<table border='2px'><tr >";
-        var textRange;
-        var j = 0;
-        tab = document.getElementById('headerTable'); // id of table
-
-        for (j = 0; j < tab.rows.length; j++)
-        {
-            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
-            //tab_text=tab_text+"</tr>";
+            location.reload(true);
         }
+    
+ function fnExcelReport()
+{
+    var tab_text="<table border='2px'><tr >";
+    var textRange; var j=0;
+    tab = document.getElementById('headerTable'); // id of table
 
-        tab_text = tab_text + "</table>";
-        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
-        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
-        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
-
-        var ua = window.navigator.userAgent;
-        var msie = ua.indexOf("MSIE ");
-
-        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
-        {
-            txtArea1.document.open("txt/html", "replace");
-            txtArea1.document.write(tab_text);
-            txtArea1.document.close();
-            txtArea1.focus();
-            sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
-        } else                 //other browser not tested on IE 11
-            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
-
-        return (sa);
+    for(j = 0 ; j < tab.rows.length ; j++) 
+    {     
+        tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        //tab_text=tab_text+"</tr>";
     }
+
+    tab_text=tab_text+"</table>";
+    tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+    tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+    tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE "); 
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html","replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus(); 
+        sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+    }  
+    else                 //other browser not tested on IE 11
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+    return (sa);
+}
 </script>

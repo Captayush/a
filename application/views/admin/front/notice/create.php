@@ -213,7 +213,7 @@
 
     $(document).ready(function () {
         var popup_target = 'media_images';
-
+        
 
         CKEDITOR.replace('editor1',
                 {

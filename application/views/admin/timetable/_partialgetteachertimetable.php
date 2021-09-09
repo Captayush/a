@@ -7,8 +7,8 @@ if (!empty($timetable)) {
                 <?php
                 foreach ($timetable as $tm_key => $tm_value) {
                     ?>
-
-                    <th class="text text-center"><?php echo $tm_key; ?></th>
+                    
+                  <th class="text text-center"><?php echo $tm_key; ?></th>
                     <?php
                 }
                 ?>
@@ -33,12 +33,7 @@ if (!empty($timetable)) {
                                 ?>
                                 <div class="attachment-block clearfix">
                                     <strong class="text-green"><?php echo $this->lang->line('class') ?>: <?php echo $tm_kue->class . "(" . $tm_kue->section . ")"; ?></strong><br>
-                                    <b class="text-green"><?php echo $this->lang->line('subject') ?>: <?php
-                                        echo $tm_kue->subject_name;
-                                        if ($tm_kue->subject_code != '') {
-                                            echo " (" . $tm_kue->subject_code . ")";
-                                        }
-                                        ?>
+                                    <b class="text-green"><?php echo $this->lang->line('subject') ?>: <?php echo $tm_kue->subject_name; if($tm_kue->subject_code!=''){ echo " (" . $tm_kue->subject_code . ")";}   ?>
 
                                     </b><br>
 
@@ -46,7 +41,7 @@ if (!empty($timetable)) {
                                     <b class="text text-center">-</b>
                                     <strong class="text-green"><?php echo $tm_kue->time_to; ?></strong><br>
 
-                                    <strong class="text-green"><?php echo $this->lang->line('room_no') ?>: <?php echo $tm_kue->room_no; ?></strong><br>
+                                    <strong class="text-green"><?php echo $this->lang->line('room_no')?>: <?php echo $tm_kue->room_no; ?></strong><br>
 
                                 </div>
                                 <?php
@@ -64,7 +59,7 @@ if (!empty($timetable)) {
 } else {
     ?>
     <div class="alert alert-info">
-    <?php echo $this->lang->line('no_record_found'); ?>
+        <?php echo $this->lang->line('no_record_found'); ?>
     </div>
     <?php
 }

@@ -6,8 +6,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-building-o"></i> <?php echo $this->lang->line('staff_certificate') ; ?>
-        </h1> 
+            <i class="fa fa-building-o"></i> Staff Certificate --r
+        </h1>
     </section>
     <!-- Main content -->
     <section class="content">
@@ -16,7 +16,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <!-- Horizontal Form -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><?php echo $this->lang->line('edit_staff_certificates') ; ?></h3>
+                        <h3 class="box-title">Edit Staff Certificates --r</h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     <form action="<?php echo site_url('admin/Staffcertificate/edit/' . $editcertificate[0]->id) ?>"  id="certificateform" enctype="multipart/form-data" name="certificateform" method="post" accept-charset="utf-8">
@@ -32,41 +32,41 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <?php echo $this->customlib->getCSRF(); ?>
                             <input type="hidden" name="id" value="<?php echo set_value('id', $editcertificate[0]->id); ?>" >
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('certificate_name') ; ?> *</label>
+                                <label for="exampleInputEmail1">Certificate Name * --r</label>
                                 <input autofocus="" id="certificate_name" name="certificate_name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('certificate_name', $editcertificate[0]->certificate_name); ?>" />
                                 <span class="text-danger"><?php echo form_error('certificate_name'); ?></span>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('header_left_text') ; ?></label>
+                                <label for="exampleInputEmail1">Header Left Text --r</label>
                                 <input autofocus="" id="left_header" name="left_header" placeholder="" type="text" class="form-control"  value="<?php echo set_value('left_header', $editcertificate[0]->left_header); ?>" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('header_center_text') ; ?></label>
+                                <label for="exampleInputEmail1">Header Center Text --r</label>
                                 <input autofocus="" id="center_header" name="center_header" placeholder="" type="text" class="form-control"  value="<?php echo set_value('center_header', $editcertificate[0]->center_header); ?>" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('header_right_text') ; ?></label>
+                                <label for="exampleInputEmail1">Header Right Text --r</label>
                                 <input autofocus="" id="right_header" name="right_header" placeholder="" type="text" class="form-control"  value="<?php echo set_value('right_header', $editcertificate[0]->right_header); ?>" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('certificate_text') ; ?> * </label>
+                                <label for="exampleInputEmail1">Certificate Text * --r</label>
                                 <textarea class="form-control" id="certificate_text" name="certificate_text" placeholder="" rows="3" placeholder=""><?php echo set_value('certificate_name', $editcertificate[0]->certificate_text); ?></textarea>
                                 <span class="text-danger"><?php echo form_error('certificate_text'); ?></span>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('footer_left_text') ; ?></label>
+                                <label for="exampleInputEmail1">Footer Left Text --r</label>
                                 <input autofocus="" id="left_footer" name="left_footer" placeholder="" type="text" class="form-control"  value="<?php echo set_value('left_footer', $editcertificate[0]->left_footer); ?>" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('footer_center_text') ; ?></label>
+                                <label for="exampleInputEmail1">Footer Center Text --r</label>
                                 <input autofocus="" id="center_footer" name="center_footer" placeholder="" type="text" class="form-control"  value="<?php echo set_value('center_footer', $editcertificate[0]->center_footer); ?>" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('footer_right_text') ; ?></label>
+                                <label for="exampleInputEmail1">Footer Right Text --r</label>
                                 <input autofocus="" id="right_footer" name="right_footer" placeholder="" type="text" class="form-control"  value="<?php echo set_value('right_footer', $editcertificate[0]->right_footer); ?>" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('change_background') ; ?></label>
+                                <label for="exampleInputEmail1">Change Background --r</label>
                                 <input id="documents" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
                             </div>
                         </div><!-- /.box-body -->
@@ -81,7 +81,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('staff_certificate_list') ; ?></h3>
+                        <h3 class="box-title titlefix">Staff Certificate List --r</h3>
                         <div class="box-tools pull-right">
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
@@ -91,13 +91,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </div><!-- /.pull-right -->
                         </div>
                         <div class="table-responsive mailbox-messages">
-                            <div class="download_label"><?php echo $this->lang->line('staff_certificate_list') ; ?></div>
+                            <div class="download_label">Staff Certificate List --r</div>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
-                                        <th><?php echo $this->lang->line('certificate_name') ; ?></th>
-                                        <th><?php echo $this->lang->line('background') ; ?></th>
-                                        <th><?php echo $this->lang->line('action') ; ?></th>
+                                        <th>Certificate Name --r</th>
+                                        <!-- <th>Certificate Text</th> -->
+                                        <th>Background --r</th>
+                                        <th>Action --r</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -120,7 +121,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
                                                     <?php } ?>
                                                 </td>
-                                                <td class="mailbox-date pull-right no-print white-space-nowrap">
+                                                <td class="mailbox-date pull-right no-print">
                                                     <a href="<?php echo base_url(); ?>admin/Staffcertificate/edit/<?php echo $certificate->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
@@ -148,7 +149,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('.detail_popover').popover({

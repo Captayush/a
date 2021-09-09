@@ -50,7 +50,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label><?php echo $this->lang->line('session'); ?></label>
+                                    <label><?php echo $this->lang->line('session');?></label>
                                     <select  id="session_id" name="session_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php

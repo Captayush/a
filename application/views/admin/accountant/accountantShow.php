@@ -1,13 +1,13 @@
-<div class="content-wrapper" style="min-height: 946px;">
+<div class="content-wrapper" style="min-height: 946px;"> 
     <section class="content-header">
         <h1>
-            <i class="fa fa-money"></i> <?php echo $this->lang->line('fees_collection'); ?>
+            <i class="fa fa-money"></i> <?php echo $this->lang->line('fees_collection'); ?> 
         </h1>
     </section>
     <!-- Main content -->
     <section class="content">
-        <div class="row">
-            <div class="col-md-3">
+        <div class="row">          
+            <div class="col-md-3">              
                 <div class="box box-primary">
                     <div class="box-body box-profile">
                         <img class="profile-user-img img-responsive img-circle" src="<?php echo base_url() . $accountant['image'] ?>" alt="User profile picture">
@@ -38,7 +38,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+
+        </div> 
     </section>
 </div>
 

@@ -10,9 +10,7 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-
+<div class="content-wrapper" style="min-height: 946px;">
     <section class="content-header">
         <h1>
             <i class="fa fa-usd"></i> <?php echo $this->lang->line('income'); ?></h1>
@@ -21,38 +19,40 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     <!-- Main content -->
     <section class="content">
         <div class="row">
+            <!-- left column -->
             <div class="col-md-12">
+                <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                     </div>
-                <div class="box-body">
+                    <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
-                                    <form role="form" id="form1" action="<?php echo site_url('admin/income/incomeSearch') ?>" method="post" class="">
+                                    <form role="form" action="<?php echo site_url('admin/income/incomeSearch') ?>" method="post" class="">
                                         <?php echo $this->customlib->getCSRF(); ?>
                                         <div class="col-sm-6 col-md-6">
-                                            <div class="form-group">
-                                                <label><?php echo $this->lang->line('search') . " " . $this->lang->line('type'); ?></label><small class="req"> *</small>
-                                                <select class="form-control" name="search_type" id="search_type" onchange="showdate(this.value)">
+                                <div class="form-group">
+                                    <label><?php echo $this->lang->line('search') . " " . $this->lang->line('type'); ?></label>
+                                    <select class="form-control" name="search_type" onchange="showdate(this.value)">
+                                       
+                                        <?php foreach ($searchlist as $key => $search) {
+    ?>
+                                            <option value="<?php echo $key ?>" <?php
+if ((isset($search_type)) && ($search_type == $key)) {
+        echo "selected";
+    }
+    ?>><?php echo $search ?></option>
+<?php }?>
+                                    </select>
+                                    <span class="text-danger"><?php echo form_error('search_type'); ?></span>
+                                </div>
+                            </div>
 
-                                                    <?php foreach ($searchlist as $key => $search) {
-                                                        ?>
-                                                        <option value="<?php echo $key ?>" <?php
-                                                        if ((isset($search_type)) && ($search_type == $key)) {
-                                                            echo "selected";
-                                                        }
-                                                        ?>><?php echo $search ?></option>
-                                                            <?php } ?>
-                                                </select>
-                                                <span class="text-danger"><?php echo form_error('search_type'); ?></span>
-                                            </div>
-                                        </div>
+                            <div id='date_result'>
 
-                                        <div id='date_result'>
-
-                                        </div>
+                            </div>
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <button type="submit" name="search" value="search_filter" class="btn btn-primary btn-sm checkbox-toggle pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
@@ -63,12 +63,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </div>
                             <div class="col-md-6">
                                 <div class="row">
-                                    <form role="form" id="form2" action="<?php echo site_url('admin/income/incomeSearch') ?>" method="post" class="">
+                                    <form role="form" action="<?php echo site_url('admin/income/incomeSearch') ?>" method="post" class="">
                                         <?php echo $this->customlib->getCSRF(); ?>
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search'); ?></label><small class="req"> *</small>
-                                                <input autofocus="" type="text" value="<?php echo set_value('search_text', ""); ?>" name="search_text" id="search_text" class="form-control" placeholder="Search by Income">
+                                                <input autofocus="" type="text" value="<?php echo set_value('search_text', ""); ?>" name="search_text"  class="form-control" placeholder="Search by Income">
                                                 <span class="text-danger"><?php echo form_error('search_text'); ?></span>
                                             </div>
                                         </div>
@@ -84,35 +84,133 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div>
 
                     </div>
-                <div class="" id="exp">
-                            <div class="box-header ptbnull"></div>
-                            <div class="box-header ptbnull">
-                                <h3 class="box-title titlefix"><i class="fa fa-money"></i> <?php echo $this->lang->line('income_result'); ?></h3>
-                            </div>
-                            <div class="box-body table-responsive">
-                                <div class="download_label"><?php echo $this->lang->line('income_result'); ?></div>
-                                 <table class="table table-striped table-bordered table-hover income-list" data-export-title="<?php echo $this->lang->line('income_list'); ?>">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('name'); ?></th>
-                                            <th><?php echo $this->lang->line('invoice_no'); ?></th>
-                                            <th><?php echo $this->lang->line('income_head'); ?></th>
-                                            <th><?php echo $this->lang->line('date'); ?></th>
-                                            <th class="text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody> </tbody>
-                                </table>
 
-                            </div>
+
+                <?php if (isset($resultList)) {
+    ?>
+
+                    <div class="" id="exp">
+                        <div class="box-header ptbnull"></div>
+                        <div class="box-header ptbnull">
+                            <h3 class="box-title titlefix"><i class="fa fa-money"></i> <?php echo $this->lang->line('income_result'); ?></h3>
+                        </div>
+                        <div class="box-body table-responsive">
+                            <div class="download_label"><?php echo $this->lang->line('income_result'); ?></div>
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+
+                                        <th><?php echo $this->lang->line('name'); ?></th>
+                                        <th><?php echo $this->lang->line('invoice_no'); ?></th>
+                                        <th><?php echo $this->lang->line('income_head'); ?></th>
+                                        <th><?php echo $this->lang->line('date'); ?></th>
+                                        <th class="text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <?php
+if (empty($resultList)) {
+        ?>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
+
+                                        </tr>
+                                    </tfoot>
+                                    <?php
+} else {
+        $count       = 1;
+        $grand_total = 0;
+        foreach ($resultList as $key => $value) {
+            $grand_total = $grand_total + $value['amount'];
+            ?>
+                                        <tr>
+                                            <td><?php echo $value['name']; ?> </td>
+                                            <td><?php echo $value['invoice_no']; ?> </td>
+                                            <td><?php echo $value['income_category'] ?></td>
+                                            <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($value['date'])); ?>     </td>
+
+                                            <td class="pull-right"><?php echo ($value['amount']); ?>  </td>
+                                        </tr>
+                                        <?php
+$count++;
+        }
+        ?>
+                                    <tr class="total-bg">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="pull-right text-bold"><?php echo $this->lang->line('grand_total'); ?> : <?php echo ($currency_symbol . number_format($grand_total, 2, '.', '')); ?>
+
+                                        </td>
+                                    </tr>
+                                    <?php
+}
+    ?>
+
+                                </tbody>
+                            </table>
 
                         </div>
-                  </div>      
+
+                    </div>
+                  </div>
+                    <?php
+}
+?>
+
             </div>
-        </div>    
+
+        </div>   <!-- /.row -->
 
     </section><!-- /.content -->
-</div><!-- /.content-wrapper -->
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy']) ?>';
+        $(".date").datepicker({
+            // format: "dd-mm-yyyy",
+            format: date_format,
+            autoclose: true,
+            todayHighlight: true
+
+        });
+    });
+
+    <?php
+if ($search_type == 'period') {
+    ?>
+
+          $(document).ready(function () {
+            showdate('period');
+          });
+
+        <?php
+}
+?>
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $.extend($.fn.dataTable.defaults, {
+            ordering: false,
+            paging: false,
+            bSort: false,
+            info: false
+        });
+    });
+
+    // $(document).ready(function () {
+    //     $('.example').dataTable({
+    //         "bSort": false,
+    //         "paging": false,
+
+    //     });
+
+    // })
+</script>
 <script type="text/javascript">
 
     var base_url = '<?php echo base_url() ?>';
@@ -161,105 +259,4 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     }
 </script>
 
-<script>
-$(document).ready(function() {
-     emptyDatatable('income-list','data');
 
-});
-</script>
-  
-<script>
-   ( function ( $ ) {
-   'use strict';
-    $(document).ready(function () {
-       $('#form1').on('submit', (function (e) {
-        e.preventDefault();
-         var search= 'search_filter';
-         var formData = new FormData(this);
-         formData.append('search', 'search_filter');
-         var date_from=""; var date_to=""; var str="";
-         $("#search_text").val("");
-        $.ajax({
-            url: '<?php echo base_url(); ?>admin/income/checkvalidation',
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (data) {
-               
-                if (data.status == "fail") {
-                        var message = "";
-                        $.each(data.error, function (index, value) {
-                            message += value;
-                        });
-                        toastr.error(message);
-                    } else {
-                        var search_type = data.search_type ;
-                        if(search_type=='period'){
-                            date_from=data.date_from; 
-                            date_to=data.date_to;
-
-                             if(date_from!="" && date_to!="" ){
-                                 str=search_type+"-"+search+"-"+date_from+"-"+date_to ;
-                             }
-                            
-                        }else{
-                            str=search_type+"-"+search ;
-                        }
-                       
-                         initDatatable('income-list','admin/income/getincomesearchlist/'+str,[],[],100);
-                       
-                    }
-            }
-        });
-      
-        }
-
-       ));
-   });
-} ( jQuery ) );
-</script>
-<script>
-   ( function ( $ ) {
-   'use strict';
-    $(document).ready(function () {
-       $('#form2').on('submit', (function (e) {
-        e.preventDefault();
-         var search= 'search_full';var search_type="";
-         var formData = new FormData(this);
-         formData.append('search', 'search_full');
-         $("#search_type").val("");
-         var str="";
-        $.ajax({
-            url: '<?php echo base_url(); ?>admin/income/checkvalidation',
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (data) {
-               
-                if (data.status == "fail") {
-                        var message = "";
-                        $.each(data.error, function (index, value) {
-                            message += value;
-                        });
-                        toastr.error(message);
-                    } else {
-                        search_type=data.search_type;
-                        str=search_type+"-"+search ;
-                         initDatatable('income-list','admin/income/getincomesearchlist/'+str,[],[],100);
-                       
-                    }
-            }
-        });
-      
-        }
-
-       ));
-   });
-} ( jQuery ) );
-</script>

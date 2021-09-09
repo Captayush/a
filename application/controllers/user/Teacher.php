@@ -4,20 +4,23 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Teacher extends Student_Controller {
+class Teacher extends Student_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->current_classSection = $this->customlib->getStudentCurrentClsSection();
     }
 
-    public function index() {
-
+    public function index()
+    {
+		
         $this->session->set_userdata('top_menu', 'Teachers');
         $this->session->set_userdata('sub_menu', 'teacher/index');
-        $data['title'] = 'Add Teacher';
-        $data['teachers'] = $teachers = array();
-        $data['class_id'] = $class_id = $this->current_classSection->class_id;
+        $data['title']      = 'Add Teacher';
+        $data['teachers']   = $teachers   = array();
+        $data['class_id']   = $class_id   = $this->current_classSection->class_id;
         $data['section_id'] = $section_id = $this->current_classSection->section_id;
         $data['resultlist'] = $this->subjecttimetable_model->getTeacherByClassandSection($class_id, $section_id);
 
@@ -25,16 +28,16 @@ class Teacher extends Student_Controller {
         foreach ($data['resultlist'] as $value) {
             $teachers[$value->staff_id][] = $value;
         }
-        $session_id = $this->session->userdata('student');
-        $data['user_id'] = $session_id['id'];
-        $data['role'] = $session_id['role'];
+        $session_id          = $this->session->userdata('student');
+        $data['user_id']     = $session_id['id'];
+        $data['role']        = $session_id['role'];
         $data['teacherlist'] = $teachers;
-        $genderList = $this->customlib->getGender();
-        $data['genderList'] = $genderList;
+        $genderList          = $this->customlib->getGender();
+        $data['genderList']  = $genderList;
         $user_ratedstafflist = $this->staff_model->get_RatedStaffByUser($session_id['id']);
 
         $data['user_ratedstafflist'] = $user_ratedstafflist;
-        $get_ratingbystudent = $this->staff_model->get_ratingbyuser($data['user_id'], 'student');
+        $get_ratingbystudent         = $this->staff_model->get_ratingbyuser($data['user_id'], 'student');
 
         if ($data['role'] == "student") {
 
@@ -42,7 +45,7 @@ class Teacher extends Student_Controller {
                 $data['reviews'][$value['staff_id']] = $value['rate'];
             }
         } elseif ($data['role'] == "parent") {
-
+            
             $all_rating = $this->staff_model->all_rating();
 
             $data['rate_canview'] = 0;
@@ -52,12 +55,14 @@ class Teacher extends Student_Controller {
                     $r = ($value['rate'] / $value['total']);
 
                     $data['avg_rate'][$value['staff_id']] = $r;
-                    $data['rate_canview'] = 1;
+                    $data['rate_canview']                 = 1;
                 } else {
                     $data['avg_rate'][$value['staff_id']] = 0;
                 }
                 $data['reviews'][$value['staff_id']] = $value['total'];
             }
+          
+
         }
 
         $this->load->view('layout/student/header', $data);
@@ -65,42 +70,44 @@ class Teacher extends Student_Controller {
         $this->load->view('layout/student/footer', $data);
     }
 
-    public function getSubjctByClassandSection() {
-        $class_id = $this->input->post('class_id');
+    public function getSubjctByClassandSection()
+    {
+        $class_id   = $this->input->post('class_id');
         $section_id = $this->input->post('section_id');
-        $data = $this->teachersubject_model->getSubjectByClsandSection($class_id, $section_id);
+        $data       = $this->teachersubject_model->getSubjectByClsandSection($class_id, $section_id);
         echo json_encode($data);
     }
 
-    public function assignTeacher() {
+    public function assignTeacher()
+    {
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'teacher/assignTeacher');
-        $data['title'] = 'Assign Teacher with Class and Subject wise';
-        $teacher = $this->teacher_model->get();
+        $data['title']       = 'Assign Teacher with Class and Subject wise';
+        $teacher             = $this->teacher_model->get();
         $data['teacherlist'] = $teacher;
-        $subject = $this->subject_model->get();
+        $subject             = $this->subject_model->get();
         $data['subjectlist'] = $subject;
-        $class = $this->class_model->get();
-        $data['classlist'] = $class;
+        $class               = $this->class_model->get();
+        $data['classlist']   = $class;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/teacher/assignTeacher', $data);
         $this->load->view('layout/footer', $data);
         if ($this->input->server('REQUEST_METHOD') == "POST") {
-            $loop = $this->input->post('i');
+            $loop  = $this->input->post('i');
             $array = array();
             foreach ($loop as $key => $value) {
-                $s = array();
-                $s['session_id'] = $this->setting_model->getCurrentSession();
-                $class_id = $this->input->post('class_id');
-                $section_id = $this->input->post('section_id');
-                $dt = $this->classsection_model->getDetailbyClassSection($class_id, $section_id);
+                $s                     = array();
+                $s['session_id']       = $this->setting_model->getCurrentSession();
+                $class_id              = $this->input->post('class_id');
+                $section_id            = $this->input->post('section_id');
+                $dt                    = $this->classsection_model->getDetailbyClassSection($class_id, $section_id);
                 $s['class_section_id'] = $dt['id'];
-                $s['teacher_id'] = $this->input->post('teacher_id_' . $value);
-                $s['subject_id'] = $this->input->post('subject_id_' . $value);
-                $row_id = $this->input->post('row_id_' . $value);
+                $s['teacher_id']       = $this->input->post('teacher_id_' . $value);
+                $s['subject_id']       = $this->input->post('subject_id_' . $value);
+                $row_id                = $this->input->post('row_id_' . $value);
                 if ($row_id == 0) {
                     $insert_id = $this->teachersubject_model->add($s);
-                    $array[] = $insert_id;
+                    $array[]   = $insert_id;
                 } else {
                     $s['id'] = $row_id;
                     $array[] = $row_id;
@@ -114,32 +121,36 @@ class Teacher extends Student_Controller {
         }
     }
 
-    public function getSubjectTeachers() {
-        $class_id = $this->input->post('class_id');
+    public function getSubjectTeachers()
+    {
+        $class_id   = $this->input->post('class_id');
         $section_id = $this->input->post('section_id');
-        $dt = $this->classsection_model->getDetailbyClassSection($class_id, $section_id);
-        $data = $this->teachersubject_model->getDetailByclassAndSection($dt['id']);
+        $dt         = $this->classsection_model->getDetailbyClassSection($class_id, $section_id);
+        $data       = $this->teachersubject_model->getDetailByclassAndSection($dt['id']);
         echo json_encode($data);
     }
 
-    public function view($id) {
-        $data['title'] = 'Teacher List';
-        $teacher = $this->teacher_model->get($id);
+    public function view($id)
+    {
+        $data['title']   = 'Teacher List';
+        $teacher         = $this->teacher_model->get($id);
         $data['teacher'] = $teacher;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/teacher/teacherShow', $data);
         $this->load->view('layout/footer', $data);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $data['title'] = 'Teacher List';
         $this->teacher_model->remove($id);
         redirect('admin/teacher/index');
     }
 
-    public function create() {
-        $data['title'] = 'Add teacher';
-        $genderList = $this->customlib->getGender();
+    public function create()
+    {
+        $data['title']      = 'Add teacher';
+        $genderList         = $this->customlib->getGender();
         $data['genderList'] = $genderList;
         $this->form_validation->set_rules('name', 'Teacher', 'trim|required|xss_clean');
         $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean');
@@ -149,23 +160,23 @@ class Teacher extends Student_Controller {
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|xss_clean');
         $this->form_validation->set_rules('file', 'Image', 'callback_handle_upload');
         if ($this->form_validation->run() == false) {
-            $teacher_result = $this->teacher_model->get();
+            $teacher_result      = $this->teacher_model->get();
             $data['teacherlist'] = $teacher_result;
-            $genderList = $this->customlib->getGender();
-            $data['genderList'] = $genderList;
+            $genderList          = $this->customlib->getGender();
+            $data['genderList']  = $genderList;
             $this->load->view('layout/header', $data);
             $this->load->view('admin/teacher/teacherCreate', $data);
             $this->load->view('layout/footer', $data);
         } else {
             $data = array(
-                'name' => $this->input->post('name'),
-                'email' => $this->input->post('email'),
+                'name'     => $this->input->post('name'),
+                'email'    => $this->input->post('email'),
                 'password' => $this->input->post('password'),
-                'sex' => $this->input->post('gender'),
-                'dob' => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))),
-                'address' => $this->input->post('address'),
-                'phone' => $this->input->post('phone'),
-                'image' => $this->input->post('file'),
+                'sex'      => $this->input->post('gender'),
+                'dob'      => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))),
+                'address'  => $this->input->post('address'),
+                'phone'    => $this->input->post('phone'),
+                'image'    => $this->input->post('file'),
             );
             $insert_id = $this->teacher_model->add($data);
             if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
@@ -180,17 +191,18 @@ class Teacher extends Student_Controller {
         }
     }
 
-    public function handle_upload() {
+    public function handle_upload()
+    {
         if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
             $allowedExts = array('jpg', 'jpeg', 'png');
-            $temp = explode(".", $_FILES["file"]["name"]);
-            $extension = end($temp);
+            $temp        = explode(".", $_FILES["file"]["name"]);
+            $extension   = end($temp);
             if ($_FILES["file"]["error"] > 0) {
                 $error .= "Error opening the file<br />";
             }
             if ($_FILES["file"]["type"] != 'image/gif' &&
-                    $_FILES["file"]["type"] != 'image/jpeg' &&
-                    $_FILES["file"]["type"] != 'image/png') {
+                $_FILES["file"]["type"] != 'image/jpeg' &&
+                $_FILES["file"]["type"] != 'image/png') {
                 $this->form_validation->set_message('handle_upload', 'File type not allowed');
                 return false;
             }
@@ -210,13 +222,14 @@ class Teacher extends Student_Controller {
         }
     }
 
-    public function edit($id) {
-        $data['title'] = 'Edit Teacher';
-        $data['id'] = $id;
-        $genderList = $this->customlib->getGender();
+    public function edit($id)
+    {
+        $data['title']      = 'Edit Teacher';
+        $data['id']         = $id;
+        $genderList         = $this->customlib->getGender();
         $data['genderList'] = $genderList;
-        $teacher = $this->teacher_model->get($id);
-        $data['teacher'] = $teacher;
+        $teacher            = $this->teacher_model->get($id);
+        $data['teacher']    = $teacher;
         $this->form_validation->set_rules('name', 'Teacher', 'trim|required|xss_clean');
         $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
@@ -225,22 +238,22 @@ class Teacher extends Student_Controller {
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|xss_clean');
         $this->form_validation->set_rules('file', 'Image', 'callback_handle_upload');
         if ($this->form_validation->run() == false) {
-            $teacher_result = $this->teacher_model->get();
+            $teacher_result      = $this->teacher_model->get();
             $data['teacherlist'] = $teacher_result;
             $this->load->view('layout/header', $data);
             $this->load->view('admin/teacher/teacherEdit', $data);
             $this->load->view('layout/footer', $data);
         } else {
             $data = array(
-                'id' => $id,
-                'name' => $this->input->post('name'),
-                'email' => $this->input->post('email'),
+                'id'       => $id,
+                'name'     => $this->input->post('name'),
+                'email'    => $this->input->post('email'),
                 'password' => $this->input->post('password'),
-                'sex' => $this->input->post('gender'),
-                'dob' => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))),
-                'address' => $this->input->post('address'),
-                'phone' => $this->input->post('phone'),
-                'image' => $this->input->post('file'),
+                'sex'      => $this->input->post('gender'),
+                'dob'      => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))),
+                'address'  => $this->input->post('address'),
+                'phone'    => $this->input->post('phone'),
+                'image'    => $this->input->post('file'),
             );
             $insert_id = $this->teacher_model->add($data);
             if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
@@ -255,24 +268,26 @@ class Teacher extends Student_Controller {
         }
     }
 
-    public function rating() {
+    public function rating()
+    {
 
-        $this->form_validation->set_rules('comment', $this->lang->line('comment'), 'required');
-        $this->form_validation->set_rules('rate', $this->lang->line('rating'), 'required');
+        $this->form_validation->set_rules('comment', 'Comment', 'required');
+        $this->form_validation->set_rules('rate', 'Rating', 'required');
 
         if ($this->form_validation->run() == false) {
             $msg = array(
                 'comment' => form_error('comment'),
-                'rate' => form_error('rate'),
+                'rate'    => form_error('rate'),
             );
 
             $array = array('status' => 'fail', 'error' => $msg, 'message' => '');
+
         } else {
             $data['staff_id'] = $this->input->post('staff_id');
-            $data['comment'] = $this->input->post('comment');
-            $data['rate'] = $this->input->post('rate');
-            $data['user_id'] = $this->input->post('user_id');
-            $data['role'] = $this->input->post('role');
+            $data['comment']  = $this->input->post('comment');
+            $data['rate']     = $this->input->post('rate');
+            $data['user_id']  = $this->input->post('user_id');
+            $data['role']     = $this->input->post('role');
             $this->teacher_model->rating($data);
             $array = array('status' => 'success', 'error' => '', 'message' => 'Rating Successfully Saved.');
         }

@@ -8,10 +8,13 @@ Config::$serverKey = "<your server key>";
 
 // Uncomment for production environment
 // Config::$isProduction = true;
+
 // Uncomment to enable sanitization
 // Config::$isSanitized = true;
+
 // Uncomment to enable 3D-Secure
 // Config::$is3ds = true;
+
 // Required
 $transaction_details = array(
     'order_id' => rand(),
@@ -35,37 +38,37 @@ $item2_details = array(
 );
 
 // Optional
-$item_details = array($item1_details, $item2_details);
+$item_details = array ($item1_details, $item2_details);
 
 // Optional
 $billing_address = array(
-    'first_name' => "Andri",
-    'last_name' => "Litani",
-    'address' => "Mangga 20",
-    'city' => "Jakarta",
-    'postal_code' => "16602",
-    'phone' => "081122334455",
-    'country_code' => 'IDN'
+    'first_name'    => "Andri",
+    'last_name'     => "Litani",
+    'address'       => "Mangga 20",
+    'city'          => "Jakarta",
+    'postal_code'   => "16602",
+    'phone'         => "081122334455",
+    'country_code'  => 'IDN'
 );
 
 // Optional
 $shipping_address = array(
-    'first_name' => "Obet",
-    'last_name' => "Supriadi",
-    'address' => "Manggis 90",
-    'city' => "Jakarta",
-    'postal_code' => "16601",
-    'phone' => "08113366345",
-    'country_code' => 'IDN'
+    'first_name'    => "Obet",
+    'last_name'     => "Supriadi",
+    'address'       => "Manggis 90",
+    'city'          => "Jakarta",
+    'postal_code'   => "16601",
+    'phone'         => "08113366345",
+    'country_code'  => 'IDN'
 );
 
 // Optional
 $customer_details = array(
-    'first_name' => "Andri",
-    'last_name' => "Litani",
-    'email' => "andri@litani.com",
-    'phone' => "081122334455",
-    'billing_address' => $billing_address,
+    'first_name'    => "Andri",
+    'last_name'     => "Litani",
+    'email'         => "andri@litani.com",
+    'phone'         => "081122334455",
+    'billing_address'  => $billing_address,
     'shipping_address' => $shipping_address
 );
 
@@ -79,9 +82,10 @@ $params = array(
 try {
     // Get Snap Payment Page URL
     $paymentUrl = Snap::createTransaction($params)->redirect_url;
-
+  
     // Redirect to Snap Payment Page
     header('Location: ' . $paymentUrl);
-} catch (Exception $e) {
+}
+catch (Exception $e) {
     echo $e->getMessage();
 }

@@ -174,7 +174,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
+       
 
         $("#btnreset").click(function () {
             $("#form1")[0].reset();

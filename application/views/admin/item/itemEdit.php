@@ -56,7 +56,7 @@
                                     </select>
                                     <span class="text-danger"><?php echo form_error('item_category_id'); ?></span>
                                 </div>
-                                <div class="form-group">
+                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('unit'); ?></label><small class="req"> *</small>
                                     <input autofocus="" id="unit" name="unit" placeholder="" type="text" class="form-control"  value="<?php echo set_value('unit', $item['unit']); ?>" />
                                     <span class="text-danger"><?php echo form_error('unit'); ?></span>
@@ -141,7 +141,7 @@
 
                                                 </td>
                                                 <td class="mailbox-name">
-                                                    <?php echo $items['unit']; ?>
+                                                     <?php echo $items['unit']; ?>
 
                                                 </td>
                                                 <td class="mailbox-name">
@@ -156,55 +156,72 @@
 
 
                                                 <td class="mailbox-date pull-right">
-                                                    <?php if ($this->rbac->hasPrivilege('item', 'can_edit')) { ?> 
+        <?php if ($this->rbac->hasPrivilege('item', 'can_edit')) { ?> 
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/item/edit/<?php echo $items['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php }if ($this->rbac->hasPrivilege('item', 'can_delete')) { ?>  
+        <?php }if ($this->rbac->hasPrivilege('item', 'can_delete')) { ?>  
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/item/delete/<?php echo $items['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
-                                                    <?php } ?>
+        <?php } ?>
+                                                    
+                                                    </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
 
-                                                </td>
-                                            </tr>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-
-                                </tbody>
-                            </table><!-- /.table -->
+                                            </tbody>
+                                            </table><!-- /.table -->
 
 
 
-                        </div><!-- /.mail-box-messages -->
-                    </div><!-- /.box-body -->
-                </div>
-            </div><!--/.col (left) -->
-            <!-- right column -->
+                                            </div><!-- /.mail-box-messages -->
+                                            </div><!-- /.box-body -->
+                                            </div>
+                                            </div><!--/.col (left) -->
+                                            <!-- right column -->
 
-        </div>
-        <div class="row">
-            <!-- left column -->
+                                            </div>
+                                            <div class="row">
+                                            <!-- left column -->
 
-            <!-- right column -->
-            <div class="col-md-12">
+                                            <!-- right column -->
+                                            <div class="col-md-12">
 
-            </div><!--/.col (right) -->
-        </div>   <!-- /.row -->
-    </section><!-- /.content -->
-</div><!-- /.content-wrapper -->
-<script>
-    $(document).ready(function () {
-        $('.detail_popover').popover({
-            placement: 'right',
-            trigger: 'hover',
-            container: 'body',
-            html: true,
-            content: function () {
-                return $(this).closest('td').find('.fee_detail_popover').html();
-            }
-        });
-    });
-</script>
+                                            </div><!--/.col (right) -->
+                                            </div>   <!-- /.row -->
+                                            </section><!-- /.content -->
+                                            </div><!-- /.content-wrapper -->
+
+                                            <script type="text/javascript">
+                                            $(document).ready(function () {
+                                            var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+
+                                            $('#date').datepicker({
+                                            //  format: "dd-mm-yyyy",
+                                            format: date_format,
+                                            autoclose: true
+                                            });
+
+                                            $("#btnreset").click(function () {
+                                            $("#form1")[0].reset();
+                                            });
+
+                                            });
+                                            </script>
+                                            <script>
+                                            $(document).ready(function () {
+                                            $('.detail_popover').popover({
+                                            placement: 'right',
+                                            trigger: 'hover',
+                                            container: 'body',
+                                            html: true,
+                                            content: function () {
+                                            return $(this).closest('td').find('.fee_detail_popover').html();
+                                            }
+                                            });
+                                            });
+                                            </script>

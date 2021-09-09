@@ -50,6 +50,7 @@ class Adler32 {
         for ($i = 0; $i < $num; $i++) {
             $str = $str . "0";
             $str = substr($str, 1);
+            //echo "str : $str <BR>";
         }
         return $this->cdec($str);
     }

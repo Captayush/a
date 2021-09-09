@@ -14,7 +14,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <small><i class="fa fa-building-o"></i> <?php echo $this->lang->line('staff_certificate'); ?></small>
+            <small><i class="fa fa-building-o"></i> Staff Certificate --r</small>
         </h1>
     </section>
     <!-- Main content -->
@@ -24,7 +24,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <!-- Horizontal Form -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"> <?php echo $this->lang->line('add_staff_certificates') ; ?></h3>
+                        <h3 class="box-title">Add Staff Certificates --r</h3>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     <form id="form1" enctype="multipart/form-data" action="<?php echo site_url('admin/Staffcertificate/create') ?>"  id="certificateform" name="certificateform" method="post" accept-charset="utf-8">
@@ -37,42 +37,43 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 echo "<div class='alert alert-danger'>" . $error_message . "</div>";
                             }
                             ?>
+                            <?php //echo $this->customlib->getCSRF(); ?>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('certificate_name') ; ?> *</label>
+                                <label for="exampleInputEmail1">Certificate Name * --r</label>
                                 <input autofocus="" id="certificate_name" name="certificate_name" placeholder="" type="text" class="form-control" />
                                 <span class="text-danger"><?php echo form_error('certificate_name'); ?></span>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('header_left_text') ; ?></label>
+                                <label for="exampleInputEmail1">Header Left Text --r</label>
                                 <input id="left_header" name="left_header" placeholder="" type="text" class="form-control" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('header_center_text') ; ?></label>
+                                <label for="exampleInputEmail1">Header Center Text --r</label>
                                 <input id="center_header" name="center_header" placeholder="" type="text" class="form-control" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('header_right_text') ; ?></label>
+                                <label for="exampleInputEmail1">Header Right Text --r</label>
                                 <input id="right_header" name="right_header" placeholder="" type="text" class="form-control" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('certificate_text') ; ?> *</label>
+                                <label for="exampleInputEmail1">Certificate Text * --r</label>
                                 <textarea class="form-control" id="certificate_text" name="certificate_text" placeholder="" rows="3" placeholder=""></textarea>
                                 <span class="text-danger"><?php echo form_error('certificate_text'); ?></span>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('footer_left_text') ; ?></label>
+                                <label for="exampleInputEmail1">Footer Left Text --r</label>
                                 <input id="left_footer" name="left_footer" placeholder="" type="text" class="form-control" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('footer_center_text') ; ?></label>
+                                <label for="exampleInputEmail1">Footer Center Text --r</label>
                                 <input id="center_footer" name="center_footer" placeholder="" type="text" class="form-control" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('footer_right_text') ; ?></label>
+                                <label for="exampleInputEmail1">Footer Right Text --r</label>
                                 <input id="right_footer" name="right_footer" placeholder="" type="text" class="form-control" />
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo $this->lang->line('background') ; ?></label>
+                                <label for="exampleInputEmail1">Background --r</label>
                                 <input id="documents" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
                             </div>
                         </div><!-- /.box-body -->
@@ -88,7 +89,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <!-- general form elements -->
                 <div class="box box-primary" id="hroom">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('staff_certificate_list') ; ?></h3>
+                        <h3 class="box-title titlefix">Staff Certificate List --r</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <div class="mailbox-controls">
@@ -96,13 +97,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </div><!-- /.pull-right -->
                         </div>
                         <div class="table-responsive mailbox-messages">
-                            <div class="download_label"><?php echo $this->lang->line('staff_certificate_list') ; ?></div>
+                            <div class="download_label">Staff Certificate List --r</div>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
-                                        <th><?php echo $this->lang->line('certificate_name') ; ?></th>
-                                        <th><?php echo $this->lang->line('background') ; ?></th>
-                                        <th><?php echo $this->lang->line('action') ; ?> </th>
+                                        <th>Certificate Name --r</th>
+                                        <!-- <th>Certificate Text</th> -->
+                                        <th>Background --r</th>
+                                        <th>Action --r</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -154,7 +156,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+</script>
 <script type="text/javascript">
     var base_url = '<?php echo base_url() ?>';
     function printDiv(elem) {
@@ -181,6 +193,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/skins/_all-skins.min.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/iCheck/flat/blue.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/morris/morris.css">');
+
+
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/datepicker/datepicker3.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/daterangepicker/daterangepicker-bs3.css">');

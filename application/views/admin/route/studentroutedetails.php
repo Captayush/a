@@ -153,77 +153,75 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </div>
                         </div>
                     </form>
+               
+
+            <div class="">
+                <div class="box-header ptbnull"></div>
+                <div class="box-header ptbnull">
+                    <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo form_error('student'); ?> <?php echo $this->lang->line('student_transport_report'); ?></h3>
+                </div>
+                <div class="box-body table-responsive">
+                    <div class="download_label"><?php echo $this->lang->line('student_transport_report')."<br>";$this->customlib->get_postmessage(); ?></div>
+                    <table class="table table-striped table-bordered table-hover example">
+                        <thead>
+                            <tr>
+                                <th><?php echo $this->lang->line('class') . " - " . $this->lang->line('section'); ?></th>
+                                <th><?php echo $this->lang->line('admission_no'); ?></th>
+                                <th><?php echo $this->lang->line('student_name'); ?></th>
+                                <th><?php echo $this->lang->line('mobile_no'); ?></th>
+                                <th><?php echo $this->lang->line('father_name'); ?></th>
+                                <th><?php echo $this->lang->line('father_phone'); ?></th>
+                                <th><?php echo $this->lang->line('mother_name'); ?></th>
+                                <th><?php echo $this->lang->line('mother_phone'); ?></th>
+                                <th><?php echo $this->lang->line('route_title'); ?></th>
+                                <th><?php echo $this->lang->line('vehicle_no'); ?></th>
+                                <th><?php echo $this->lang->line('driver_name'); ?></th>
+                                <th><?php echo $this->lang->line('driver_contact'); ?></th>
+                                <th class="text-right"><?php echo $this->lang->line('fare') . " (" . $currency_symbol . ")"; ?></th>
 
 
-                    <div class="">
-                        <div class="box-header ptbnull"></div>
-                        <div class="box-header ptbnull">
-                            <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo form_error('student'); ?> <?php echo $this->lang->line('student_transport_report'); ?></h3>
-                        </div>
-                        <div class="box-body table-responsive">
-                            <div class="download_label"><?php echo $this->lang->line('student_transport_report') . " ";
-                                        $this->customlib->get_postmessage();
-                                        ?></div>
-                            <table class="table table-striped table-bordered table-hover example">
-                                <thead>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if (empty($resultlist)) {
+                                ?>
+
+                                <?php
+                            } else {
+                                $count = 1;
+                                foreach ($resultlist as $student) {
+                                    ?>
                                     <tr>
-                                        <th><?php echo $this->lang->line('class') . " - " . $this->lang->line('section'); ?></th>
-                                        <th><?php echo $this->lang->line('admission_no'); ?></th>
-                                        <th><?php echo $this->lang->line('student_name'); ?></th>
-                                        <th><?php echo $this->lang->line('mobile_no'); ?></th>
-                                        <th><?php echo $this->lang->line('father_name'); ?></th>
-                                        <th><?php echo $this->lang->line('father_phone'); ?></th>
-                                        <th><?php echo $this->lang->line('mother_name'); ?></th>
-                                        <th><?php echo $this->lang->line('mother_phone'); ?></th>
-                                        <th><?php echo $this->lang->line('route_title'); ?></th>
-                                        <th><?php echo $this->lang->line('vehicle_no'); ?></th>
-                                        <th><?php echo $this->lang->line('driver_name'); ?></th>
-                                        <th><?php echo $this->lang->line('driver_contact'); ?></th>
-                                        <th class="text-right"><?php echo $this->lang->line('fare') . " (" . $currency_symbol . ")"; ?></th>
-
+                                        <td><?php echo $student['class'] . " - " . $student["section"]; ?></td>
+                                        <td><?php echo $student['admission_no']; ?></td>
+                                        <td>
+                                            <a href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>"><?php echo $student['firstname'] . " " . $student['lastname']; ?>
+                                            </a>
+                                        </td>
+                                        <td><?php echo $student['mobileno']; ?></td>
+                                        <td><?php echo $student['father_name']; ?></td>
+                                        <td><?php echo $student['father_phone']; ?></td>
+                                        <td><?php echo $student['mother_name']; ?></td>
+                                        <td><?php echo $student['mother_phone']; ?></td>
+                                        <td><?php echo $student['route_title']; ?></td>
+                                        <td><?php echo $student['vehicle_no']; ?></td>
+                                        <td><?php echo $student['driver_name']; ?></td>
+                                        <td><?php echo $student['driver_contact']; ?></td>
+                                        <td class="text-right"><?php echo $student['fare']; ?></td>
 
                                     </tr>
-                                </thead>
-                                <tbody>
                                     <?php
-                                    if (empty($resultlist)) {
-                                        ?>
-
-                                        <?php
-                                    } else {
-                                        $count = 1;
-                                        foreach ($resultlist as $student) {
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $student['class'] . " - " . $student["section"]; ?></td>
-                                                <td><?php echo $student['admission_no']; ?></td>
-                                                <td>
-                                                    <a href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>"><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname);  ?>
-                                                    </a>
-                                                </td>
-                                                <td><?php echo $student['mobileno']; ?></td>
-                                                <td><?php echo $student['father_name']; ?></td>
-                                                <td><?php echo $student['father_phone']; ?></td>
-                                                <td><?php echo $student['mother_name']; ?></td>
-                                                <td><?php echo $student['mother_phone']; ?></td>
-                                                <td><?php echo $student['route_title']; ?></td>
-                                                <td><?php echo $student['vehicle_no']; ?></td>
-                                                <td><?php echo $student['driver_name']; ?></td>
-                                                <td><?php echo $student['driver_contact']; ?></td>
-                                                <td class="text-right"><?php echo $student['fare']; ?></td>
-
-                                            </tr>
-                                            <?php
-                                            $count++;
-                                        }
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div><!--./box box-primary-->
-            </div><!--./col-md-12--> 
+                                    $count++;
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          </div><!--./box box-primary-->
+        </div><!--./col-md-12--> 
         </div>   
 </div>  
 </section>

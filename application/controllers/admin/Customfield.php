@@ -3,26 +3,28 @@
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
-
-class Customfield extends Admin_Controller {
-
+ 
+class Customfield extends Admin_Controller
+{
     public $custom_fields_list = array();
-
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->library('encoding_lib');
         $this->custom_fields_list = $this->config->item('custom_fields');
         $this->custom_field_table = $this->config->item('custom_field_table');
     }
 
-    public function index() {
+    public function index()
+    {
 
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'System Settings/customfield');
         $customfields = $this->customfield_model->get();
         $data['custom_fields_list'] = $this->custom_fields_list;
-        $customfield_bundle = $this->myCustomFieldBundle($customfields);
+        $customfield_bundle   = $this->myCustomFieldBundle($customfields);
         $data['customfields'] = $customfield_bundle;
+    
         $data['custom_field_table'] = $this->custom_field_table;
         $this->form_validation->set_rules('belong_to', $this->lang->line('belong_to'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('type', $this->lang->line('type'), 'trim|required|xss_clean');
@@ -32,23 +34,17 @@ class Customfield extends Admin_Controller {
         if ($this->form_validation->run() == true) {
 
             $data = array(
-                'belong_to' => $this->input->post('belong_to'),
-                'type' => $this->input->post('type'),
-                'bs_column' => $this->input->post('column'),
-                'name' => $this->input->post('name'),
-                'field_values' => $this->input->post('field_values'),
-                'validation' => isset($_POST['validation']) ? $_POST['validation'] : "",
+                'belong_to'        => $this->input->post('belong_to'),
+                'type'             => $this->input->post('type'),
+                'bs_column'        => $this->input->post('column'),
+                'name'             => $this->input->post('name'),
+                'field_values'     => $this->input->post('field_values'),
+                'validation'       => isset($_POST['validation']) ? $_POST['validation'] : "",
                 'visible_on_table' => isset($_POST['display_tbl']) ? $_POST['display_tbl'] : "",
+
             );
 
-             $this->customfield_model->add($data);
-            
-
-           
-
-            /* code for adding custom fields in system field also */
-            
-
+            $this->customfield_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
             redirect('admin/customfield/index');
         }
@@ -58,28 +54,31 @@ class Customfield extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function validate_type() {
-        if (isset($_POST['type']) and ( $_POST['type'] == "select" || $_POST['type'] == "multiselect" || $_POST['type'] == "checkbox" || $_POST['type'] == "link")) {
+    public function validate_type()
+    {
+        if (isset($_POST['type']) and ($_POST['type'] == "select" || $_POST['type'] == "multiselect" || $_POST['type'] == "checkbox" || $_POST['type'] == "link")) {
             if ($this->input->post('field_values') == "") {
                 $this->form_validation->set_message('validate_type', $this->lang->line("fields_values_required"));
                 return false;
             }
+
         }
         return true;
     }
 
-    public function edit($id) {
-        $this->session->set_userdata('top_menu', 'System Settings');
+    public function edit($id)
+    {
+       $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'System Settings/customfield');
-        $cus_field = $this->customfield_model->get($id);
-        $data['cus_field'] = $cus_field;
-        $customfields = $this->customfield_model->get();
+        $cus_field                  = $this->customfield_model->get($id);
+        $data['cus_field']          = $cus_field;
+        $customfields               = $this->customfield_model->get();
         $data['custom_fields_list'] = $this->custom_fields_list;
 
-        $customfield_bundle = $this->myCustomFieldBundle($customfields);
+        $customfield_bundle   = $this->myCustomFieldBundle($customfields);
         $data['customfields'] = $customfield_bundle;
 
-
+      
 
         $data['custom_field_table'] = $this->custom_field_table;
         $this->form_validation->set_rules('belong_to', $this->lang->line('belong_to'), 'trim|required|xss_clean');
@@ -89,14 +88,15 @@ class Customfield extends Admin_Controller {
 
         if ($this->form_validation->run() == true) {
             $data = array(
-                'id' => $this->input->post('id'),
-                'bs_column' => $this->input->post('column'),
-                'belong_to' => $this->input->post('belong_to'),
-                'type' => $this->input->post('type'),
-                'name' => $this->input->post('name'),
-                'field_values' => $this->input->post('field_values'),
-                'validation' => isset($_POST['validation']) ? $_POST['validation'] : "",
+                'id'               => $this->input->post('id'),
+                'bs_column'        => $this->input->post('column'),
+                'belong_to'        => $this->input->post('belong_to'),
+                'type'             => $this->input->post('type'),
+                'name'             => $this->input->post('name'),
+                'field_values'     => $this->input->post('field_values'),
+                'validation'       => isset($_POST['validation']) ? $_POST['validation'] : "",
                 'visible_on_table' => isset($_POST['display_tbl']) ? $_POST['display_tbl'] : "",
+
             );
 
             $this->customfield_model->add($data);
@@ -109,18 +109,21 @@ class Customfield extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $this->customfield_model->remove($id);
         redirect('admin/customfield/index');
+
     }
 
-    public function updateorder() {
+    public function updateorder()
+    {
         $belong_to = $this->input->post('belong_to');
-        $items = $this->input->post('items');
+        $items     = $this->input->post('items');
 
         if (!empty($items)) {
             $updateorder = array();
-            $i = 1;
+            $i           = 1;
             foreach ($items as $item_key => $item_value) {
                 $updateorder[] = $array = array('id' => $item_value, 'weight' => $i);
 
@@ -128,22 +131,25 @@ class Customfield extends Admin_Controller {
             }
 
             $this->customfield_model->updateorder($updateorder);
+
         }
 
-        $array = array('status' => '1', 'msg' => 'Record updated successfully');
+      $array = array('status' => '1', 'msg' => 'Record updated successfully');
 
-        echo json_encode($array);
+      echo json_encode($array);
+
     }
 
-    public function myCustomFieldBundle($customfield_values) {
+    public function myCustomFieldBundle($customfield_values)
+    {
         $field_array = array();
-
+        
         if (!empty($customfield_values)) {
             foreach ($customfield_values as $f_key => $f_value) {
                 $field_array[$f_value['belong_to']][] = $customfield_values[$f_key];
             }
         }
         return $field_array;
-    }
 
+    }
 }

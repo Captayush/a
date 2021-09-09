@@ -8,8 +8,9 @@ class Source extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
-
+      
         $this->load->model("source_model");
+       
     }
 
     function index() {
@@ -20,18 +21,18 @@ class Source extends Admin_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             $data['source_list'] = $this->source_model->source_list();
-
+           
             $this->load->view('layout/header');
             $this->load->view('admin/frontoffice/sourceview', $data);
             $this->load->view('layout/footer');
         } else {
-
+           
             $source = array(
                 'source' => $this->input->post('source'),
                 'description' => $this->input->post('description')
             );
             $this->source_model->add($source);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('success_message').'</div>');
             redirect('admin/source');
         }
     }
@@ -49,13 +50,13 @@ class Source extends Admin_Controller {
             $this->load->view('admin/frontoffice/sourceeditview', $data);
             $this->load->view('layout/footer');
         } else {
-
+           
             $source = array(
                 'source' => $this->input->post('source'),
                 'description' => $this->input->post('description')
             );
             $this->source_model->update($source_id, $source);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('update_message').'</div>');
             redirect('admin/source');
         }
     }
@@ -65,7 +66,7 @@ class Source extends Admin_Controller {
             access_denied();
         }
         $this->source_model->delete($id);
-        $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('delete_message') . '</div>');
+        $this->session->set_flashdata('msg', '<div class="alert alert-success">'.$this->lang->line('delete_message').'</div>');
         redirect('admin/source');
     }
 

@@ -67,7 +67,12 @@
 <script>
     $(document).ready(function () {
         var popup_target = 'gallery_image';
-      
+        var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+        $('.date').datepicker({
+            format: date_format,
+            autoclose: true
+        });
+
         $('#mediaModal').modal({
             backdrop: 'static',
             keyboard: false,
@@ -180,44 +185,42 @@
         output += "</div>";
         $(output).appendTo(".gallery_content");
     }
-
+ 
     $(document).on('click', '.delete_gallery_img', function (e) {
         var content_id = $(this).data('record_id');
         var result = confirm("<?php echo $this->lang->line('delete_confirm'); ?>");
 
-        if (result == true) {
-            $.ajax({
-                type: "POST",
-                url: baseurl + "admin/front/banner/remove",
-                dataType: 'json',
-                data: {'content_id': content_id},
-                beforeSend: function () {
-                },
-                success: function (data) {
+        if (result==true) {
+           $.ajax({
+                    type: "POST",
+                    url: baseurl + "admin/front/banner/remove",
+                    dataType: 'json',
+                    data: {'content_id': content_id},
+                    beforeSend: function () {
+                    },
+                    success: function (data) {
 
-                    if (data.status == 1) {
-                        $(e.target).closest('.gallery_img').remove();
-                        successMsg(data.msg);
-                    } else {
-                        errorMsg(data.msg);
-                    }
-                },
-                error: function (xhr) { // if error occured
+                        if (data.status == 1) {
+                            $(e.target).closest('.gallery_img').remove();
+                            successMsg(data.msg);
+                        } else {
+                            errorMsg(data.msg);
+                        }
+                    },
+                    error: function (xhr) { // if error occured
 
-                },
-                complete: function () {
+                    },
+                    complete: function () {
 
-                },
-            });
+                    },
+                });
         }
+        
+
+
+
     });
 
-
-  $(document).on("click", ".pagination li a", function (event) {
-            event.preventDefault();
-            var page = $(this).data("ci-pagination-page");
-            load_country_data(page);
-        });
 </script>
 
 

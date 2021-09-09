@@ -1,11 +1,3 @@
-
-<?php $cookie_consent	=	$this->customlib->cookie_consent();
-if(!empty($cookie_consent)){ ?>
-<div id="cookieConsent" class="cookieConsent"> 
-    <?php echo $cookie_consent; ?> <a href="<?php echo base_url() . "page/cookie-policy" ?>" target="_blank" ></a> <a onclick="setsitecookies()" class="cookieConsentOK"><?php echo $this->lang->line('accept') ?></a>
-</div>
-<?php } ?>
-
 <footer>
     <div class="container text-center">
         <div class="row">
@@ -39,6 +31,8 @@ if(!empty($cookie_consent)){ ?>
 
                             <?php
                             ?>
+
+
                         </li>
                         <?php
                     }
@@ -51,9 +45,13 @@ if(!empty($cookie_consent)){ ?>
                 <ul class="company-social">
                     <?php $this->view('/themes/default/social_media'); ?>        
                 </ul>
-            </div><!--./col-md-3-->          
+            </div><!--./col-md-3-->
+            
+            <!--<div class="col-md-3 col-sm-6">
+                <a class="twitter-timeline" data-tweet-limit="1" href="#"></a>
+            </div>./col-md-3-->
 
-            <div class="col-md-4 col-sm-4">
+             <div class="col-md-4 col-sm-4">
                 <h3 class="fo-title"><?php echo $this->lang->line('feedback'); ?></h3>
                 <?php
                 if (in_array('complain', json_decode($front_setting->sidebar_options))) {
@@ -68,7 +66,7 @@ if(!empty($cookie_consent)){ ?>
             </div><!--./col-md-3-->
 
             <div class="col-md-12 col-sm-12">
-                
+                <!-- <h3 class="fo-title"><?php //echo $this->lang->line('contact'); ?></h3> -->
                 <ul class="co-list">
                     <li><i class="fa fa-envelope"></i>
                         <a href="mailto:<?php echo $school_setting->email; ?>"><?php echo $school_setting->email; ?></a></li>
@@ -82,32 +80,6 @@ if(!empty($cookie_consent)){ ?>
             </div>
         </div><!--./row-->
     </div><!--./container-->
-    <a class="scrollToTop" href="#"><i class="fa fa-arrow-up"></i></a>  
+  <a class="scrollToTop" href="#"><i class="fa fa-arrow-up"></i></a>  
 </footer>
 
-<script>
-    function setsitecookies() {
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url(); ?>welcome/setsitecookies",
-            data: {},
-            success: function (data) {
-                $('.cookieConsent').hide();
-
-            }
-        });
-    }
-	
-	function check_cookie_name(name)
-    {
-        var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        if (match) {
-            console.log(match[2]);
-            $('.cookieConsent').hide();
-        }
-        else{
-           $('.cookieConsent').show();
-        }
-    }
-    check_cookie_name('sitecookies');
-</script>

@@ -72,50 +72,50 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div>
                         <div class="mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('route_list'); ?></div>
-                            <div class="table-responsive">  
-                                <table class="table table-striped table-bordered table-hover example">
-                                    <thead>
-                                        <tr>
-                                            <th><?php echo $this->lang->line('route_title'); ?>
-                                            </th>
+                          <div class="table-responsive">  
+                            <table class="table table-striped table-bordered table-hover example">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('route_title'); ?>
+                                        </th>
 
-                                            <th><?php echo $this->lang->line('fare'); ?></th>
-                                            <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (empty($listroute)) {
-                                            ?>
-
-                                            <?php
-                                        } else {
-                                            $count = 1;
-                                            foreach ($listroute as $data) {
-                                                ?>
-                                                <tr>
-                                                    <td class="mailbox-name"> <?php echo $data['route_title'] ?></td>
-
-                                                    <td class="mailbox-name"> <?php echo $currency_symbol . $data['fare']; ?></td>
-                                                    <td class="mailbox-date pull-right no-print">
-                                                        <?php if ($this->rbac->hasPrivilege('routes', 'can_edit')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/route/edit/<?php echo $data['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-                                                                <i class="fa fa-pencil"></i>
-                                                            </a>
-                                                        <?php } if ($this->rbac->hasPrivilege('routes', 'can_delete')) { ?>
-                                                            <a data-placement="left" href="<?php echo base_url(); ?>admin/route/delete/<?php echo $data['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
-                                                                <i class="fa fa-remove"></i>
-                                                            </a>
-                                                        <?php } ?>
-                                                    </td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            $count++;
-                                        }
+                                        <th><?php echo $this->lang->line('fare'); ?></th>
+                                        <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($listroute)) {
                                         ?>
-                                    </tbody>
-                                </table>
-                            </div>  
+
+                                        <?php
+                                    } else {
+                                        $count = 1;
+                                        foreach ($listroute as $data) {
+                                            ?>
+                                            <tr>
+                                                <td class="mailbox-name"> <?php echo $data['route_title'] ?></td>
+
+                                                <td class="mailbox-name"> <?php echo $currency_symbol . $data['fare']; ?></td>
+                                                <td class="mailbox-date pull-right no-print">
+        <?php if ($this->rbac->hasPrivilege('routes', 'can_edit')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/route/edit/<?php echo $data['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+        <?php } if ($this->rbac->hasPrivilege('routes', 'can_delete')) { ?>
+                                                        <a data-placement="left" href="<?php echo base_url(); ?>admin/route/delete/<?php echo $data['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                            <i class="fa fa-remove"></i>
+                                                        </a>
+        <?php } ?>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                          </div>  
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-      
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
         $("#btnreset").click(function () {
             $("#form1")[0].reset();
         });

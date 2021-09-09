@@ -47,7 +47,7 @@
                                 <thead>
                                     <tr>
                                         <th align="left"><?php echo $this->lang->line('category'); ?></th>
-                                        <th><?php echo $this->lang->line('category') . " " . $this->lang->line('id'); ?></th>
+                                        <th><?php echo $this->lang->line('category')." ".$this->lang->line('id'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
@@ -58,7 +58,7 @@
                                         ?>
                                         <tr>                                         
                                             <td class="mailbox-name"><?php echo $category['category'] ?></td>
-                                            <td class="mailbox-name"><?php echo $category['id'] ?></td>
+                                             <td class="mailbox-name"><?php echo $category['id'] ?></td>
                                             <td align="right" class="mailbox-date">
                                                 <?php
                                                 if ($this->rbac->hasPrivilege('student_categories', 'can_edit')) {

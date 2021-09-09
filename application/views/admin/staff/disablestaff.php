@@ -28,16 +28,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <div class="form-group"> 
                                                 <label><?php echo $this->lang->line("role") ?></label><small class="req"> *</small>
                                                 <select name="role" class="form-control">
-                                                    <option value=""><?php echo $this->lang->line('select') ?></option>
+                                                    <option value=""><?php echo $this->lang->line('select')?></option>
                                                     <?php foreach ($role as $key => $role_value) {
                                                         ?>
-                                                        <option <?php
-                                                        if ($search_role == $role_value['id']) {
-                                                            echo "selected";
-                                                        }
-                                                        ?> value="<?php echo $role_value['id'] ?>"><?php echo $role_value['type'] ?></option>
-<?php }
-?>
+                                                        <option <?php if($search_role==$role_value['type']){ echo "selected";}?> value="<?php echo $role_value['type'] ?>"><?php echo $role_value['type'] ?></option>
+                                                    <?php }
+                                                    ?>
                                                 </select>
                                                 <span class="text-danger"><?php echo form_error('role'); ?></span>
                                             </div>  
@@ -55,7 +51,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <div class="col-md-6">
                                 <div class="row">
                                     <form role="form" action="<?php echo site_url('admin/staff/disablestafflist') ?>" method="post" class="">
-<?php echo $this->customlib->getCSRF(); ?>
+                                        <?php echo $this->customlib->getCSRF(); ?>
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search_by_keyword'); ?></label>
@@ -103,7 +99,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         if (empty($resultlist)) {
                                             ?>
                                             <tr>
-                                                <td colspan="4" class="text-danger text text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
+                                                <td colspan="12" class="text-danger text-center"><?php echo $this->lang->line('no_record_found'); ?></td>
                                             </tr> 
                                             <?php
                                         } else {
@@ -123,13 +119,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <td><?php echo $staff['contact_no']; ?></td>
 
                                                     <td class="pull-right">
-                                                        <?php  
-             $userdata = $this->customlib->getUserData();
-             if (($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view')) || ($userdata["id"] == $staff["id"])) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/staff/profile/<?php echo $staff['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
                                                             <i class="fa fa-reorder"></i>
                                                         </a>
-                                                        <?php } ?>
+                                                        <!-- <a href="<?php echo base_url(); ?>admin/staff/edit/<?php echo $staff['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a> -->
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -171,10 +166,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <p><font  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><?php echo $staff["contact_no"] ?></font></p>
 
                                                             <p><font  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><?php
-                                                                if (!empty($staff["location"])) {
-                                                                    echo $staff["location"] . ",";
-                                                                }
-                                                                ?></font><font  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"> <?php echo $staff["department"]; ?></font></p>
+                                                            if (!empty($staff["location"])) {
+                                                                echo $staff["location"] . ",";
+                                                            }
+                                                            ?></font><font  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"> <?php echo $staff["department"]; ?></font></p>
 
                                                             <p class="staffsub" ><span  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><?php echo $staff["user_type"] ?></span> 
 
@@ -182,19 +177,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         </div>
                                                         <div class="overlay3">
                                                             <div class="stafficons">
-                                                                <?php  
-             $userdata = $this->customlib->getUserData();
-             if (($this->rbac->hasPrivilege('can_see_other_users_profile', 'can_view')) || ($userdata["id"] == $staff["id"])) { ?>
+
                                                                 <a title="<?php echo $this->lang->line('show'); ?>" href="<?php echo base_url() . "admin/staff/profile/" . $staff["id"] ?>"><i class="fa fa-navicon"></i></a>
-                                                                   <?php }?> 
+            <?php if ($this->rbac->hasPrivilege('staff', 'can_edit')) { ?>
+                                                                 <a title="<?php echo $this->lang->line('edit'); ?>" href="<?php echo base_url() . "admin/staff/edit/" . $staff["id"] ?>"><i class=" fa fa-pencil"></i></a> 
+                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div><!--./col-md-3-->
-                                                <?php
-                                            }
-                                        }
-                                        ?>
+        <?php }
+    }
+    ?>
 
 
                                     </div><!--./col-md-3-->
@@ -205,9 +199,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div>                                                          
                     </div>                                                         
                 </div>
-                <?php
-            }
-            ?>
+    <?php
+}
+?>
         </div>  
 </div> 
 </section>

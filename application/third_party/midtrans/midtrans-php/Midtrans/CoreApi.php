@@ -5,14 +5,15 @@ namespace Midtrans;
 /**
  * Provide charge and capture functions for Core API
  */
-class CoreApi {
-
+class CoreApi
+{
     /**
      * Create transaction.
      *
      * @param mixed[] $params Transaction options
      */
-    public static function charge($params) {
+    public static function charge($params)
+    {
         $payloads = array(
             'payment_type' => 'credit_card'
         );
@@ -32,7 +33,9 @@ class CoreApi {
         }
 
         $result = ApiRequestor::post(
-                        Config::getBaseUrl() . '/charge', Config::$serverKey, $payloads
+            Config::getBaseUrl() . '/charge',
+            Config::$serverKey,
+            $payloads
         );
 
         return $result;
@@ -43,16 +46,18 @@ class CoreApi {
      *
      * @param string $param Order ID or transaction ID, that you want to capture
      */
-    public static function capture($param) {
+    public static function capture($param)
+    {
         $payloads = array(
-            'transaction_id' => $param,
+        'transaction_id' => $param,
         );
 
         $result = ApiRequestor::post(
-                        Config::getBaseUrl() . '/capture', Config::$serverKey, $payloads
+            Config::getBaseUrl() . '/capture',
+            Config::$serverKey,
+            $payloads
         );
 
         return $result;
     }
-
 }

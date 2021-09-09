@@ -2,14 +2,16 @@
 
 namespace Midtrans;
 
-class MidtransApiRequestorTest extends \PHPUnit_Framework_TestCase {
+class MidtransApiRequestorTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function testConfigOptionsOverrideCurlOptions() {
+    public function testConfigOptionsOverrideCurlOptions()
+    {
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{ "status_code": "200" }';
 
         Config::$curlOptions = array(
-            CURLOPT_HTTPHEADER => array("User-Agent: testing lib"),
+            CURLOPT_HTTPHEADER => array( "User-Agent: testing lib" ),
             CURLOPT_PROXY => "http://proxy.com"
         );
 
@@ -22,7 +24,8 @@ class MidtransApiRequestorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($fields["PROXY"], "http://proxy.com");
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         VT_Tests::reset();
         Config::$curlOptions = array();
     }

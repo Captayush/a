@@ -13,7 +13,7 @@
                 <div class="col-md-4">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('add') . " " . $this->lang->line('school') . " " . $this->lang->line('house') ?></h3>
+                            <h3 class="box-title"><?php echo $this->lang->line('add')." ".$this->lang->line('school')." ".$this->lang->line('house') ?></h3>
                         </div> 
                         <?php
                         $url = "";
@@ -25,15 +25,16 @@
                         ?>
                         <form id="form1" action="<?php echo $url ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
                             <div class="box-body">
-                                <?php
-                                if ($this->session->flashdata('msg')) {
-                                    $msg = $this->session->flashdata('msg');
+                                <?php if ($this->session->flashdata('msg')) { 
+                                    $msg=$this->session->flashdata('msg');
                                     ?>
-                                    <script>
-                                        $(document).ready(function () {
-
-                                        });
-                                    </script>
+                                <script>
+                                     $(document).ready(function() {
+                                   // var msg='<?php echo $msg;?>';
+                                //alert(msg);
+                            
+                            });
+                                </script>
                                     <?php echo $this->session->flashdata('msg') ?>
                                 <?php } ?>    
                                 <?php echo $this->customlib->getCSRF(); ?>
@@ -69,15 +70,15 @@
                     <div class="box-body">
                         <div class="download_label"><?php echo $this->lang->line('house_list'); ?></div>
                         <div class="mailbox-messages table-responsive">
-                            <?php if ($this->session->flashdata('msgdelete')) { ?>
-                                <?php echo $this->session->flashdata('msgdelete') ?>
-                            <?php } ?>
+						<?php if ($this->session->flashdata('msgdelete')) { ?>
+                                    <?php echo $this->session->flashdata('msgdelete') ?>
+                                <?php } ?>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('name'); ?></th>
                                         <th><?php echo $this->lang->line('description'); ?></th>
-                                        <th><?php echo $this->lang->line('house') . " " . $this->lang->line('id'); ?></th>
+                                        <th><?php echo $this->lang->line('house')." ".$this->lang->line('id'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>

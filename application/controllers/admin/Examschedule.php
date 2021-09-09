@@ -20,7 +20,7 @@ class ExamSchedule extends Admin_Controller {
         $class = $this->class_model->get();
         $data['classlist'] = $class;
         $userdata = $this->customlib->getUserData();
-
+       
         $feecategory = $this->feecategory_model->get();
         $data['feecategorylist'] = $feecategory;
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
@@ -54,7 +54,7 @@ class ExamSchedule extends Admin_Controller {
     }
 
     function delete($id) {
-
+       
         $data['title'] = 'Exam Schedule List';
         $this->exam_model->remove($id);
         redirect('admin/exam_schedule/index');
@@ -74,7 +74,7 @@ class ExamSchedule extends Admin_Controller {
         $data['examlist'] = $exam;
         $data['classlist'] = $class;
         $userdata = $this->customlib->getUserData();
-
+      
         $feecategory = $this->feecategory_model->get();
         $data['feecategorylist'] = $feecategory;
         $this->form_validation->set_rules('exam_id', $this->lang->line('exam'), 'trim|required|xss_clean');
@@ -139,7 +139,7 @@ class ExamSchedule extends Admin_Controller {
                 'note' => $this->input->post('note'),
             );
             $this->exam_model->add($data);
-            $this->session->set_flashdata('msg', '<div exam="alert alert-success text-center">' . $this->lang->line('success_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div exam="alert alert-success text-center">'.$this->lang->line('success_message').'</div>');
             redirect('admin/exam_schedule/index');
         }
     }

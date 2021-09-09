@@ -1,8 +1,10 @@
 <style type="text/css">
-    @media print {
-       .noprint {
-          visibility: hidden !important ;
-       }
+    @media print
+    {
+        .no-print, .no-print *
+        {
+            display: none !important;
+        }
     }
 </style>
 
@@ -37,7 +39,7 @@
                                         <th><?php echo $this->lang->line('email'); ?></th>
                                         <th><?php echo $this->lang->line('date_of_birth'); ?></th>
                                         <th><?php echo $this->lang->line('phone'); ?></th>
-                                        <th class="text text-right noExport" ><?php echo $this->lang->line('action'); ?>
+                                        <th class="text text-right"><?php echo $this->lang->line('action'); ?>
                                         </th>
                                     </tr>
                                 </thead>
@@ -77,7 +79,7 @@
                                                         <?php
                                                     } else {
                                                         ?>
-                                                        <button type="button" class="btn btn-default btn-xs surrender-teacher" data-placement="left" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.."  data-toggle="tooltip" data-memberid="<?php echo $member_id; ?>" title="<?php echo $this->lang->line('surrender_membership'); ?>"><i class="fa fa-mail-reply"></i></button>
+                                                        <button type="button" class="btn btn-default btn-xs surrender-teacher" data-placement="left" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.." data-toggle="tooltip" data-memberid="<?php echo $member_id; ?>" title="<?php echo $this->lang->line('surrender_membership'); ?>"><i class="fa fa-mail-reply"></i></button>
 
                                                         <?php
                                                     }
@@ -104,8 +106,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" onclick="window.location.reload
-                (true);" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="lineModalLabel"><?php echo $this->lang->line('add_member'); ?></h4>
             </div>
             <div class="modal-body">
@@ -220,10 +221,3 @@
     });
 </script>
 
-<script>
-$(document).ready(function(){
-  $(".buttons-print").click(function(){
-     alert("hlo");;
-  });
-});
-</script>

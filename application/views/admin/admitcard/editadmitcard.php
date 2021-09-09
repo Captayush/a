@@ -9,75 +9,81 @@
 </style>
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
-?>
+?>     
 <div class="content-wrapper">
+
     <section class="content-header">
         <h1><i class="fa fa-newspaper-o"></i> <?php echo $this->lang->line('certificate'); ?></h1>
     </section>
+
     <section class="content">
         <div class="row">
+
+
             <?php
-if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
-    ?>
+            if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
+                ?>
                 <div class="col-md-4">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('edit'); ?> <?php echo $this->lang->line('admit'); ?> <?php echo $this->lang->line('card'); ?></h3>
                         </div><!-- /.box-header -->
-                        <form  enctype="multipart/form-data" action="<?php echo site_url('admin/admitcard/edit/' . $admitcard->id) ?>"  id="editform" name="editform" method="post" accept-charset="utf-8">
+
+                        <form  enctype="multipart/form-data" action="<?php echo site_url('admin/admitcard/edit/'.$admitcard->id) ?>"  id="editform" name="editform" method="post" accept-charset="utf-8">
                             <div class="box-body">
                                 <?php echo validation_errors(); ?>
-                                <input type="hidden" name="id" value="<?php echo $admitcard->id; ?>">
-                                <?php if ($this->session->flashdata('msg')) {?>
+                                <input type="hidden" name="id" value="<?php echo $admitcard->id;?>">
+                                <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
-                                <?php }?>
+                                <?php } ?>
                                 <?php
-if (isset($error_message)) {
-        echo "<div class='alert alert-danger'>" . $error_message . "</div>";
-    }
-    ?>
-                                <div class="form-group">
-                                    <label><?php echo $this->lang->line('template') ?></label><small class="req"> *</small>
-                                    <input autofocus="" id="template" name="template" placeholder="" type="text" class="form-control" value="<?php echo set_value('template', $admitcard->template); ?>"/>
+                                if (isset($error_message)) {
+                                    echo "<div class='alert alert-danger'>" . $error_message . "</div>";
+                                }
+                                ?>                           
+                               <div class="form-group">
+                                    <label><?php echo $this->lang->line('template')?></label><small class="req"> *</small>
+                                    <input autofocus="" id="template" name="template" placeholder="" type="text" class="form-control" value="<?php echo set_value('template',$admitcard->template);?>"/>
                                     <span class="text-danger"><?php echo form_error('template'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('heading'); ?></label>
-                                    <input autofocus="" id="heading" name="heading" placeholder="" type="text" class="form-control" value="<?php echo set_value('heading', $admitcard->heading); ?>"/>
+                                    <label><?php echo $this->lang->line('heading');?></label>
+                                    <input autofocus="" id="heading" name="heading" placeholder="" type="text" class="form-control" value="<?php echo set_value('heading',$admitcard->heading);?>"/>
                                     <span class="text-danger"><?php echo form_error('heading'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('title') ?></label>
-                                    <input autofocus="" id="title" name="title" placeholder="" type="text" class="form-control" value="<?php echo set_value('title', $admitcard->title); ?>"/>
+                                    <label><?php  echo $this->lang->line('title')?></label>
+                                    <input autofocus="" id="title" name="title" placeholder="" type="text" class="form-control" value="<?php echo set_value('title',$admitcard->title);?>"/>
                                     <span class="text-danger"><?php echo form_error('title'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('exam') . " " . $this->lang->line('name') ?></label>
-                                    <input autofocus="" id="exam_name" name="exam_name" placeholder="" type="text" class="form-control" value="<?php echo set_value('exam_name', $admitcard->exam_name); ?>"/>
+                                    <label><?php  echo $this->lang->line('exam')." ".$this->lang->line('name')?></label>
+                                    <input autofocus="" id="exam_name" name="exam_name" placeholder="" type="text" class="form-control" value="<?php echo set_value('exam_name',$admitcard->exam_name);?>"/>
                                     <span class="text-danger"><?php echo form_error('exam_name'); ?></span>
                                 </div>
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('school_name'); ?></label>
-                                    <input autofocus="" id="school_name" name="school_name" placeholder="" type="text" class="form-control" value="<?php echo set_value('school_name', $admitcard->school_name); ?>"/>
+                                    <input autofocus="" id="school_name" name="school_name" placeholder="" type="text" class="form-control" value="<?php echo set_value('school_name',$admitcard->school_name);?>"/>
                                     <span class="text-danger"><?php echo form_error('school_name'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('exam') . " " . $this->lang->line('center') ?></label>
-                                    <input autofocus="" id="exam_center" name="exam_center" placeholder="" type="text" class="form-control" value="<?php echo set_value('template', $admitcard->exam_center); ?>"/>
+                                    <label><?php echo $this->lang->line('exam')." ".$this->lang->line('center')?></label>
+                                    <input autofocus="" id="exam_center" name="exam_center" placeholder="" type="text" class="form-control" value="<?php echo set_value('template',$admitcard->exam_center);?>"/>
                                     <span class="text-danger"><?php echo form_error('exam_center'); ?></span>
                                 </div>
-                                <div class="form-group">
-                                    <label><?php echo $this->lang->line('footer_text'); ?></label>
-                                    <textarea name="content_footer" type="text" class="form-control"><?php echo set_value('content_footer', htmlspecialchars_decode(($admitcard->content_footer))); ?></textarea>
+                                 <div class="form-group">
+                                    <label><?php  echo $this->lang->line('footer_text');?></label>
+                                    <textarea name="content_footer" type="text" class="form-control"><?php echo set_value('content_footer',htmlspecialchars_decode(($admitcard->content_footer))); ?></textarea>
+                                 
                                     <span class="text-danger"><?php echo form_error('content_footer'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('left') . " " . $this->lang->line('logo') ?></label>
+                                    <label><?php echo $this->lang->line('left')." ".$this->lang->line('logo')?></label>
                                     <input id="documents" name="left_logo" placeholder="" type="file" class="filestyle form-control" data-height="28">
                                     <span class="text-danger"><?php echo form_error('left_logo'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('right') . " " . $this->lang->line('logo'); ?></label>
+                                    <label><?php echo $this->lang->line('right')." ".$this->lang->line('logo'); ?></label>
                                     <input id="documents" name="right_logo" placeholder="" type="file" class="filestyle form-control" data-height="28">
                                     <span class="text-danger"><?php echo form_error('right_logo'); ?></span>
                                 </div>
@@ -87,84 +93,90 @@ if (isset($error_message)) {
                                     <span class="text-danger"><?php echo form_error('sign'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('background') . " " . $this->lang->line('image'); ?></label>
+                                    <label><?php echo $this->lang->line('background')." ".$this->lang->line('image'); ?></label>
                                     <input id="documents" name="background_img" placeholder="" type="file" class="filestyle form-control" data-height="28"  name="background_image">
                                     <span class="text-danger"><?php echo form_error('background_img'); ?></span>
                                 </div>
+
                                 <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('name'); ?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_name" name="is_name" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_name', '1', (set_value('is_name', $admitcard->is_name) == 1) ? true : false); ?>>
+                                        <input id="is_name" name="is_name" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_name', '1', (set_value('is_name', $admitcard->is_name) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_name" class="label-success"></label>
                                     </div>
                                 </div>
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('father') . " " . $this->lang->line('name'); ?></label>
+                                    <label><?php echo $this->lang->line('father')." ".$this->lang->line('name'); ?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_father_name" name="is_father_name" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_father_name', '1', (set_value('is_father_name', $admitcard->is_father_name) == 1) ? true : false); ?>>
+                                        <input id="is_father_name" name="is_father_name" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_father_name', '1', (set_value('is_father_name', $admitcard->is_father_name) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_father_name" class="label-success"></label>
                                     </div>
                                 </div>
+
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('mother') . " " . $this->lang->line('name') ?></label>
+                                    <label><?php echo $this->lang->line('mother')." ".$this->lang->line('name')?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_mother_name" name="is_mother_name" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_mother_name', '1', (set_value('is_mother_name', $admitcard->is_mother_name) == 1) ? true : false); ?>>
+                                        <input id="is_mother_name" name="is_mother_name" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_mother_name', '1', (set_value('is_mother_name', $admitcard->is_mother_name) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_mother_name" class="label-success"></label>
                                     </div>
                                 </div>
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('date') . " " . $this->lang->line('of') . " " . $this->lang->line('birth'); ?></label>
+                                    <label><?php echo $this->lang->line('date')." ".$this->lang->line('of')." ".$this->lang->line('birth');?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_dob" name="is_dob" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_dob', '1', (set_value('is_dob', $admitcard->is_dob) == 1) ? true : false); ?>>
+                                        <input id="is_dob" name="is_dob" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_dob', '1', (set_value('is_dob', $admitcard->is_dob) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_dob" class="label-success"></label>
                                     </div>
-                                </div>
+                                </div> 
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('admission') . " " . $this->lang->line('no') ?></label>
+                                    <label><?php echo $this->lang->line('admission')." ".$this->lang->line('no')?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_admission_no" name="is_admission_no" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_admission_no', '1', (set_value('is_admission_no', $admitcard->is_admission_no) == 1) ? true : false); ?>>
+                                        <input id="is_admission_no" name="is_admission_no" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_admission_no', '1', (set_value('is_admission_no', $admitcard->is_admission_no) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_admission_no" class="label-success"></label>
                                     </div>
                                 </div>
+
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('roll') . " " . $this->lang->line('no') ?></label>
+                                    <label><?php echo $this->lang->line('roll')." ".$this->lang->line('no')?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_roll_no" name="is_roll_no" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_roll_no', '1', (set_value('is_roll_no', $admitcard->is_roll_no) == 1) ? true : false); ?>>
+                                        <input id="is_roll_no" name="is_roll_no" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_roll_no', '1', (set_value('is_roll_no', $admitcard->is_roll_no) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_roll_no" class="label-success"></label>
                                     </div>
                                 </div>
+
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('address') ?></label>
+                                    <label><?php echo $this->lang->line('address')?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_address" name="is_address" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_address', '1', (set_value('is_address', $admitcard->is_address) == 1) ? true : false); ?>>
+                                        <input id="is_address" name="is_address" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_address', '1', (set_value('is_address', $admitcard->is_address) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_address" class="label-success"></label>
                                     </div>
                                 </div>
+
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('gender'); ?></label>
+                                    <label><?php echo $this->lang->line('gender');?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_gender" name="is_gender" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_gender', '1', (set_value('is_gender', $admitcard->is_gender) == 1) ? true : false); ?>>
+                                        <input id="is_gender" name="is_gender" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_gender', '1', (set_value('is_gender', $admitcard->is_gender) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_gender" class="label-success"></label>
                                     </div>
                                 </div>
+
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('photo') ?></label>
+                                    <label><?php echo $this->lang->line('photo')?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_photo" name="is_photo" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_photo', '1', (set_value('is_photo', $admitcard->is_photo) == 1) ? true : false); ?>>
+                                        <input id="is_photo" name="is_photo" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_photo', '1', (set_value('is_photo', $admitcard->is_photo) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_photo" class="label-success"></label>
                                     </div>
                                 </div>
-                                <div class="form-group switch-inline">
+                                  <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('class'); ?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_class" name="is_class" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_class', '1', (set_value('is_class', $admitcard->is_class) == 1) ? true : false); ?>>
+                                        <input id="is_class" name="is_class" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_class', '1', (set_value('is_class', $admitcard->is_class) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_class" class="label-success"></label>
                                     </div>
                                 </div>
-                                <div class="form-group switch-inline">
+                                      <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('section'); ?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_section" name="is_section" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_section', '1', (set_value('is_section', $admitcard->is_section) == 1) ? true : false); ?>>
+                                        <input id="is_section" name="is_section" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_section', '1', (set_value('is_section', $admitcard->is_section) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_section" class="label-success"></label>
                                     </div>
                                 </div>
@@ -174,16 +186,17 @@ if (isset($error_message)) {
                             </div>
                         </form>
                     </div>
+
                 </div><!--/.col (right) -->
                 <!-- left column -->
-            <?php }?>
+            <?php } ?>
             <div class="col-md-<?php
-if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
-    echo "8";
-} else {
-    echo "12";
-}
-?>">
+            if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
+                echo "8";
+            } else {
+                echo "12";
+            }
+            ?>">
                 <!-- general form elements -->
                 <div class="box box-primary" id="hroom">
                     <div class="box-header ptbnull">
@@ -196,55 +209,57 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('certificate'); ?> <?php echo $this->lang->line('name'); ?></th>
+
                                         <th><?php echo $this->lang->line('background_image'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (empty($admitcardList)) {
-    ?>
+                                        ?>
 
                                         <?php
-} else {
-    $count = 1;
-    foreach ($admitcardList as $certificate) {
-        ?>
+                                    } else {
+                                        $count = 1;
+                                        foreach ($admitcardList as $certificate) {
+                                            ?>
                                             <tr>
                                                 <td class="mailbox-name">
                                                     <a style="cursor: pointer;" class="view_data" id="<?php echo $certificate->id ?>" data-toggle="popover" class="detail_popover" ><?php echo $certificate->template; ?></a>
                                                 </td>
                                                 <td class="mailbox-name">
-                                                    <?php if ($certificate->background_img != '' && !is_null($certificate->background_img)) {?>
+                                                    <?php if ($certificate->background_img != '' && !is_null($certificate->background_img)) { ?>
                                                         <img src="<?php echo base_url('uploads/admit_card/') ?><?php echo $certificate->background_img ?>" width="40">
-                                                    <?php } else {?>
+                                                    <?php } else { ?>
                                                         <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
-                                                    <?php }?>
+                                                    <?php } ?>
+
                                                 </td>
-                                                <td class="mailbox-date text-right no-print white-space-nowrap">
+                                                <td class="mailbox-date text-right no-print">
                                                     <a id="<?php echo $certificate->id ?>" class="btn btn-default btn-xs view_data" title="<?php echo $this->lang->line('view'); ?>">
                                                         <i class="fa fa-reorder"></i>
                                                     </a>
                                                     <?php
-if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
-            ?>
+                                                    if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
+                                                        ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/admitcard/edit/' . $certificate->id); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                         <?php
-}
-        if ($this->rbac->hasPrivilege('design_admit_card', 'can_delete')) {
-            ?>
+                                                    }
+                                                    if ($this->rbac->hasPrivilege('design_admit_card', 'can_delete')) {
+                                                        ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/admitcard/delete/<?php echo $certificate->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
-                                                    <?php }?>
+                                                    <?php } ?>
                                                 </td>
                                             </tr>
                                             <?php
-}
-    $count++;
-}
-?>
+                                        }
+                                        $count++;
+                                    }
+                                    ?>
                                 </tbody>
                             </table><!-- /.table -->
                         </div><!-- /.mail-box-messages -->
@@ -265,14 +280,25 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><?php echo $this->lang->line('view'); ?> <?php echo $this->lang->line('admit') . " " . $this->lang->line('card'); ?></h4>
+                <h4 class="modal-title"><?php echo $this->lang->line('view'); ?> <?php echo $this->lang->line('admit')." ".$this->lang->line('card'); ?></h4>
             </div>
             <div class="modal-body" id="certificate_detail">
+
             </div>
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#postdate').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true
+        });
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+</script>
 <script type="text/javascript">
     var base_url = '<?php echo base_url() ?>';
     function printDiv(elem) {
@@ -299,6 +325,8 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/skins/_all-skins.min.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/iCheck/flat/blue.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/morris/morris.css">');
+
+
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/datepicker/datepicker3.css">');
         frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/daterangepicker/daterangepicker-bs3.css">');
@@ -313,6 +341,7 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
             window.frames["frame1"].print();
             frame1.remove();
         }, 500);
+
 
         return true;
     }
@@ -338,7 +367,7 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
                 url: "<?php echo base_url('admin/admitcard/view') ?>",
                 method: "post",
                 data: {certificateid: certificateid},
-                dataType: 'JSON',
+                dataType:'JSON',
                 success: function (data) {
                     $('#certificate_detail').html(data.page);
                     $('#myModal').modal("show");
@@ -351,8 +380,10 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
     function valueChanged()
     {
         if ($('#enable_student_img').is(":checked"))
-            $("#enableImageDiv").show();        
+            $("#enableImageDiv").show();
+        // alert("Hii")
         else
-            $("#enableImageDiv").hide();        
+            $("#enableImageDiv").hide();
+        //alert("Bye")
     }
 </script>
