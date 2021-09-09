@@ -52,7 +52,7 @@ class Cms_page_model extends MY_Model {
         $content_result = array();
         $content = $this->cms_page_content_model->getContentByPage($page_id);
         if (!empty($content)) {
-            foreach ($content as $content_k => $content_v) {               
+            foreach ($content as $content_k => $content_v) {
                 $content_result[$content_v['content_type']] = $content_v['content_type'];
             }
         }
@@ -64,46 +64,46 @@ class Cms_page_model extends MY_Model {
      * @param $id
      */
     public function remove($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('front_cms_pages');
-		$message      = DELETE_RECORD_CONSTANT." On Page List id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On Page List id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
     public function removeBySlug($slug) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('slug', $slug);
         $this->db->delete('front_cms_pages');
-		$message      = DELETE_RECORD_CONSTANT." On Page List id ".$slug;
-        $action       = "Delete";
-        $record_id    = $slug;
+        $message = DELETE_RECORD_CONSTANT . " On Page List id " . $slug;
+        $action = "Delete";
+        $record_id = $slug;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -114,51 +114,48 @@ class Cms_page_model extends MY_Model {
      * @param $data
      */
     public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('front_cms_pages', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On  Page List id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $data['id'];
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
+            $message = UPDATE_RECORD_CONSTANT . " On  Page List id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         } else {
             $this->db->insert('front_cms_pages', $data);
-           $insert_id = $this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On Page List id ".$insert_id;
-			$action       = "Insert";
-			$record_id    = $insert_id;
-			$this->log($message, $record_id, $action);
-			//echo $this->db->last_query();die;
-			//======================Code End==============================
+            $insert_id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On Page List id " . $insert_id;
+            $action = "Insert";
+            $record_id = $insert_id;
+            $this->log($message, $record_id, $action);            
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
-			return $insert_id;
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
+            return $insert_id;
         }
     }
 

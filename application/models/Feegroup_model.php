@@ -31,25 +31,25 @@ class Feegroup_model extends MY_Model {
      * @param $id
      */
     public function remove($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->where('is_system', 0);
         $this->db->delete('fee_groups');
-		$message      = DELETE_RECORD_CONSTANT." On  fee groups id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On  fee group id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -60,41 +60,38 @@ class Feegroup_model extends MY_Model {
      * @param $data
      */
     public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('fee_groups', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On  fee groups id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $id = $data['id'];
-			$this->log($message, $record_id, $action);
-			
+            $message = UPDATE_RECORD_CONSTANT . " On  fee group id " . $data['id'];
+            $action = "Update";
+            $record_id = $id = $data['id'];
+            $this->log($message, $record_id, $action);
         } else {
             $this->db->insert('fee_groups', $data);
-            $id= $this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On  fee groups id ".$id;
-			$action       = "Insert";
-			$record_id    = $id;
-			$this->log($message, $record_id, $action);
-			
-			//return $id;
+            $id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On  fee group id " . $id;
+            $action = "Insert";
+            $record_id = $id;
+            $this->log($message, $record_id, $action);
+
         }
-		//echo $this->db->last_query();die;
-			//======================Code End==============================
+      
+        //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				return $id;
-			}
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            return $id;
+        }
     }
 
     public function check_exists($str) {

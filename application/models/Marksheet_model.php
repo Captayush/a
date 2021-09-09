@@ -10,9 +10,6 @@ class Marksheet_model extends MY_model {
         $this->current_session = $this->setting_model->getCurrentSession();
     }
 
-   
-
-
     public function get($id = null) {
         $this->db->select()->from('template_marksheets');
         if ($id != null) {
@@ -36,65 +33,61 @@ class Marksheet_model extends MY_model {
         return $query->result();
     }
 
-      public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+    public function add($data) {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('template_marksheets', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On  marksheets id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $data['id'];
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
+            $message = UPDATE_RECORD_CONSTANT . " On  marksheets id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         } else {
             $this->db->insert('template_marksheets', $data);
-            $id=$this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On  marksheets id ".$id;
-			$action       = "Insert";
-			$record_id    = $id;
-			$this->log($message, $record_id, $action);
-			//echo $this->db->last_query();die;
-			//======================Code End==============================
+            $id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On  marksheets id " . $id;
+            $action = "Insert";
+            $record_id = $id;
+            $this->log($message, $record_id, $action);           
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
-			return $id;
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
+            return $id;
         }
-        
     }
 
-    function remove($id){
-		$this->db->trans_start(); # Starting Transaction
+    function remove($id) {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where('id',$id);
+        $this->db->where('id', $id);
         $this->db->delete('template_marksheets');
-		$message      = DELETE_RECORD_CONSTANT." On marksheets id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On marksheets id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
         $this->db->trans_complete();
         if ($this->db->trans_status() === false) {
@@ -103,7 +96,6 @@ class Marksheet_model extends MY_model {
             return true;
         }
     }
-
 
 }
 

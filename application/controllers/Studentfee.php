@@ -6,7 +6,6 @@ if (!defined('BASEPATH')) {
 
 class Studentfee extends Admin_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -1043,10 +1042,16 @@ class Studentfee extends Admin_Controller
         $this->load->view('studentfee/discount_caution_report', $data);
         $this->load->view('layout/footer', $data);
     }
+<<<<<<< HEAD
 
     public function collection_caution_report()
     {
 
+=======
+nk
+    public function collection_report()
+nk    {
+>>>>>>> 4e9610f89573e4937a524c6dc4791c1208e9a17e
         if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
             access_denied();
         }

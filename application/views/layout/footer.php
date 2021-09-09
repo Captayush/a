@@ -218,6 +218,8 @@ if ($this->session->flashdata('success_msg')) {
 
 
 <?php $this->load->view('layout/routine_update'); ?>
+<?php //$this->load->view('layout/routine_update');?>
+<?php $this->load->view('layout/addon_update');?>
 
 <script type="text/javascript">
 

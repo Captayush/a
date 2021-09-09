@@ -31,27 +31,23 @@ class Book_model extends MY_Model {
         }
     }
 
-       public function bookgetall(){
-       
-         $sql = "SELECT books.*,IFNULL(total_issue, '0') as `total_issue` FROM books LEFT JOIN (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0  GROUP by book_id) as `book_count` on books.id=book_count.book_id where 0=0  ";
+    public function getbooklist() {
 
-        $query = $this->db->query($sql);
-        
-        if ($query->num_rows() > 0) {
-            return $query->result_array();
-        }
-        return false;
-     
-        
+       $this->datatables
+            ->select('books.*,IFNULL(total_issue, "0") as `total_issue` ')
+            ->searchable('book_title,description,book_no,isbn_no,publish,author,subject,rack_no,qty," ",perunitcost,postdate')
+            ->orderable('book_title,description,book_no,isbn_no,publish,author,subject,rack_no,qty," ",perunitcost,postdate')
+            ->join(" (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0  GROUP by book_id) as `book_count`","books.id=book_count.book_id","left")
+            ->from('books');
+            return $this->datatables->generate('json');
     }
 
-  public function getBookwithQty()
-    {
+    public function getBookwithQty() {
 
         $sql = "SELECT books.*,IFNULL(total_issue, '0') as `total_issue` FROM books LEFT JOIN (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0 GROUP by book_id) as `book_count` on books.id=book_count.book_id";
 
         $query = $this->db->query($sql);
-        
+
         if ($query->num_rows() > 0) {
             return $query->result_array();
         }
@@ -63,26 +59,26 @@ class Book_model extends MY_Model {
      * @param $id
      */
     public function remove($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('books');
-        $this->db->where('book_id',$id);
+        $this->db->where('book_id', $id);
         $this->db->delete('book_issues');
-		$message      = DELETE_RECORD_CONSTANT." On books id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On books id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -93,57 +89,53 @@ class Book_model extends MY_Model {
      * @param $data
      */
     public function addbooks($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('books', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On books id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $data['id'];
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
+            $message = UPDATE_RECORD_CONSTANT . " On books id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         } else {
             $this->db->insert('books', $data);
-			$insert_id =  $this->db->insert_id();
-            $message      = INSERT_RECORD_CONSTANT." On books id ".$insert_id;
-			$action       = "Insert";
-			$record_id    = $insert_id;
-			$this->log($message, $record_id, $action);
-			//echo $this->db->last_query();die;
-			//======================Code End==============================
+            $insert_id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On books id " . $insert_id;
+            $action = "Insert";
+            $record_id = $insert_id;
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
-			 return $insert_id ;
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
+            return $insert_id;
         }
     }
 
     public function listbook() {
         $this->db->select()->from('books');
-        $this->db->limit(10);
         $this->db->order_by("id", "desc");
         $listbook = $this->db->get();
         return $listbook->result_array();
@@ -176,32 +168,31 @@ class Book_model extends MY_Model {
         return $query->row_array();
     }
 
-     public function bookinventory($start_date,$end_date){
-        $condition=" and date_format(`books`.`postdate`,'%Y-%m-%d') between '".$start_date."' and '".$end_date."'"; 
-         $sql = "SELECT books.*,IFNULL(total_issue, '0') as `total_issue` FROM books LEFT JOIN (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0  GROUP by book_id) as `book_count` on books.id=book_count.book_id where 0=0 ".$condition." ";
+    public function bookinventory($start_date, $end_date) {
+        $condition = " and date_format(`books`.`postdate`,'%Y-%m-%d') between '" . $start_date . "' and '" . $end_date . "'";
+        $sql = "SELECT books.*,IFNULL(total_issue, '0') as `total_issue` FROM books LEFT JOIN (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0  GROUP by book_id) as `book_count` on books.id=book_count.book_id where 0=0 " . $condition . " ";
 
-        $query = $this->db->query($sql);
-        
-        if ($query->num_rows() > 0) {
-            return $query->result_array();
-        }
-        return false;
+        $this->datatables->query($sql)
+        ->orderable('book_title,book_no,isbn_no,publish,author,subject,rack_no,qty,null,null,perunitcost,postdate')
+        ->searchable('book_title,book_no,isbn_no,publish,author,subject,rack_no,qty,null,null,perunitcost,postdate')
      
-        
+        ->query_where_enable(TRUE);
+       
+        return $this->datatables->generate('json');  
+
+
     }
 
-     public function bookoverview($start_date,$end_date){
-        $condition=" and date_format(`books`.`postdate`,'%Y-%m-%d') between '".$start_date."' and '".$end_date."'"; 
-         $sql = "SELECT sum(books.qty) as qty,sum(IFNULL(total_issue, '0')) as `total_issue` FROM books LEFT JOIN (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0  GROUP by book_id) as `book_count` on books.id=book_count.book_id where 0=0 ".$condition." ";
+    public function bookoverview($start_date, $end_date) {
+        $condition = " and date_format(`books`.`postdate`,'%Y-%m-%d') between '" . $start_date . "' and '" . $end_date . "'";
+        $sql = "SELECT sum(books.qty) as qty,sum(IFNULL(total_issue, '0')) as `total_issue` FROM books LEFT JOIN (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0  GROUP by book_id) as `book_count` on books.id=book_count.book_id where 0=0 " . $condition . " ";
 
         $query = $this->db->query($sql);
-        
+
         if ($query->num_rows() > 0) {
             return $query->result_array();
         }
         return false;
-     
-        
     }
 
 }

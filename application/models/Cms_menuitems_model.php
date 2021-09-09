@@ -48,46 +48,46 @@ class Cms_menuitems_model extends MY_Model {
      * @param $id
      */
     public function removeBySlug($slug) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('slug', $slug);
         $this->db->delete('front_cms_menu_items');
-		$message      = DELETE_RECORD_CONSTANT." On menu id ".$slug;
-        $action       = "Delete";
-        $record_id    = $slug;
+        $message = DELETE_RECORD_CONSTANT . " On menu id " . $slug;
+        $action = "Delete";
+        $record_id = $slug;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
     public function remove($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('front_cms_menu_items');
-        $message      = DELETE_RECORD_CONSTANT." On menu id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On menu id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        return true;
+            return true;
         }
     }
 
@@ -98,41 +98,37 @@ class Cms_menuitems_model extends MY_Model {
      * @param $data
      */
     public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('front_cms_menu_items', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On Menu id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $insert_id = $data['id'];
-			$this->log($message, $record_id, $action);
-			
+            $message = UPDATE_RECORD_CONSTANT . " On Menu id " . $data['id'];
+            $action = "Update";
+            $record_id = $insert_id = $data['id'];
+            $this->log($message, $record_id, $action);
         } else {
             $this->db->insert('front_cms_menu_items', $data);
             $insert_id = $this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On Menu id ".$insert_id;
-			$action       = "Insert";
-			$record_id    = $insert_id;
-			$this->log($message, $record_id, $action);
-			
+            $message = INSERT_RECORD_CONSTANT . " On Menu id " . $insert_id;
+            $action = "Insert";
+            $record_id = $insert_id;
+            $this->log($message, $record_id, $action);
         }
-		//echo $this->db->last_query();die;
-			//======================Code End==============================
+        //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				return $insert_id;
-			}
-			// return $insert_id;
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            return $insert_id;
+        }
+        // return $insert_id;
     }
 
     function getMenus($menu_id, $parent = 0, $spacing = '', $user_tree_array = '') {
@@ -146,6 +142,9 @@ class Cms_menuitems_model extends MY_Model {
         $result = $query->result();
 
         foreach ($result as $r_key => $obj) {
+         if(substr($obj->ext_url_link, -16)== "online_admission"){
+         $obj->page_slug=substr($obj->ext_url_link, -16);
+         }
 
 
             if ($obj->parent_id == 0) {
@@ -173,10 +172,10 @@ class Cms_menuitems_model extends MY_Model {
                 $sub_menu[$obj->id]['link'] = $obj->slug;
                 $sub_menu[$obj->id]['page_slug'] = $obj->page_slug;
                 $sub_menu[$obj->id]['page_url'] = $obj->page_url;
-                $sub_menu[$obj->id]['is_homepage'] = $obj->is_homepage;                
+                $sub_menu[$obj->id]['is_homepage'] = $obj->is_homepage;
             }
         }
-       
+
         $result = $this->dyn_menu($parent_menu, $sub_menu, 'menu', 'nav', 'subnav');
         return $result;
     }
@@ -220,7 +219,6 @@ class Cms_menuitems_model extends MY_Model {
                         'page_slug' => $sval['page_slug'],
                         'page_url' => $sval['page_url'],
                     );
-                    
                 }
             }
         }

@@ -72,6 +72,21 @@
 
     </head>
     <body class="hold-transition skin-blue fixed sidebar-mini">
+         <?php
+if (!$this->config->item('SSLK') == "") {
+    ?>
+ <div class="topaleart">
+    <div class="slidealert">
+    <div class="alert alert-dismissible topaleart-inside">
+
+   <p class="palert"><strong>Alert!</strong> You are using unregistered version of Smart School.</p>
+</div></div>
+</div>
+                    <?php
+}
+
+
+?> 
         <script>
 
     function collapseSidebar() {
@@ -251,6 +266,28 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                             <?php
                          if($this->module_lib->hasModule('zoom_live_classes')){
                        if ($this->studentmodule_lib->hasActive('live_classes')) {
+						
+						
+						<?php
+                       if($this->module_lib->hasModule('online_course') && $this->studentmodule_lib->hasActive('online_course') && $this->auth->addonchk('ssoclc',false)){                    
+                       ?>								
+							<li class="<?php echo set_topmenu('user/studentcourse'); ?>"><a href="<?php echo base_url(); ?>user/studentcourse"><i class="fa fa-file-video-o ftlayer"></i> <span><?php echo $this->lang->line('online_course'); ?></span></a></li>
+							
+						<?php } ?>  
+						
+						
+                               <?php
+                       if($this->module_lib->hasModule('zoom_live_classes') && $this->studentmodule_lib->hasActive('live_classes') && $this->auth->addonchk('sszlc',false)){                     
+                            ?>
+ <li class="<?php echo set_topmenu('Conference'); ?>"><a href="<?php echo base_url('user/conference'); ?>"><i class="fa fa-video-camera ftlayer"></i> <?php echo $this->lang->line('zoom_live_classes'); ?></a></li>
+<?php 
+}
+
+  ?>
+
+ <?php
+                         if($this->module_lib->hasModule('gmeet_live_classes') && $this->studentmodule_lib->hasActive('gmeet_live_classes') && $this->auth->addonchk('ssglc',false)){
+                     
                             ?>
  <li class="<?php echo set_topmenu('Conference'); ?>"><a href="<?php echo base_url('user/conference'); ?>"><i class="fa fa-video-camera ftlayer"></i> <?php echo $this->lang->line('live_class'); ?></a></li>
 <?php } } ?>

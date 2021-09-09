@@ -252,6 +252,35 @@ class Lessonplan extends Admin_Controller {
         $data['lesson_subject_group_subjectid']       = $editresult['subject_group_subject_id'];  
 		
 		$this->load->view('layout/header');
+            $data['class_array'][] = $class_value['id'];
+        }
+
+        $carray = array();
+		$result = $this->lessonplan_model->get($this->sch_current_session, '');		
+        if (!empty($result)) {
+            foreach ($result as $key => $value) {
+                $lesson = $this->lessonplan_model->getlesson($value["subject_group_subject_id"], $value["subject_group_class_sections_id"], $this->sch_current_session);
+                if ($lesson != '') {
+                    $lessonname[$key] = $lesson;
+                }
+            }
+        }
+        $data['result'] = $result;
+        if (!empty($lessonname)) {
+            $data['lessonname'] = $lessonname;
+        }
+		
+		$editresult = $this->lessonplan_model->get($this->sch_current_session, $id, $subject_group_subject_id);
+        $editlesson = $this->lessonplan_model->getlesson($editresult["subject_group_subject_id"], $editresult["subject_group_class_sections_id"], $this->sch_current_session);
+
+        $data['editlessonname']                 = $editlesson;
+        $data['class_id']                       = $editresult['classid'];
+        $data['section_id']                     = $editresult['sectionid'];
+        $data['subject_group_id']               = $editresult['subjectgroupsid'];
+        $data['subject_id']                     = $editresult['subjectid'];
+        $data['lesson_subject_group_subjectid'] = $editresult['subject_group_subject_id'];
+
+        $this->load->view('layout/header');
         $this->load->view('admin/lessonplan/editlesson', $data);
         $this->load->view('layout/footer');
       }

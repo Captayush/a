@@ -5,12 +5,10 @@ if (!defined('BASEPATH'))
 
 class Studentsubjectgroup_model extends CI_Model {
 
-
-
     public function __construct() {
         parent::__construct();
         $this->load->config('ci-blog');
-        
+
         $this->current_session = $this->setting_model->getCurrentSession();
     }
 
@@ -19,7 +17,7 @@ class Studentsubjectgroup_model extends CI_Model {
                 . " `student_session`.`id` as `student_session_id`, `students`.`id`, "
                 . "`classes`.`class`, `sections`.`id` AS `section_id`, `sections`.`section`, "
                 . "`students`.`id`, `students`.`admission_no`, `students`.`roll_no`,"
-                . " `students`.`admission_date`, `students`.`firstname`, `students`.`lastname`,"
+                . " `students`.`admission_date`, `students`.`firstname`, `students`.`middlename`,`students`.`lastname`,"
                 . " `students`.`image`, `students`.`mobileno`, `students`.`email`, `students`.`state`,"
                 . " `students`.`city`, `students`.`pincode`, `students`.`religion`, `students`.`dob`, "
                 . "`students`.`current_address`, `students`.`permanent_address`,"
@@ -75,12 +73,11 @@ class Studentsubjectgroup_model extends CI_Model {
         }
     }
 
-       public function delete($fee_session_groups, $array) {
+    public function delete($fee_session_groups, $array) {
 
         $this->db->where('subject_group_id', $fee_session_groups);
         $this->db->where_in('student_session_id', $array);
         $this->db->delete('student_subject_groups');
     }
-
 
 }

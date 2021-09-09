@@ -4,13 +4,10 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class customfield_model extends MY_Model
-{
+class customfield_model extends MY_Model {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
-
     }
 
     /**
@@ -19,15 +16,13 @@ class customfield_model extends MY_Model
      * @param int $id
      * @return mixed
      */
-    public function get($id = null)
-    {
+    public function get($id = null) {
         $this->db->select()->from('custom_fields');
         if ($id != null) {
             $this->db->where('custom_fields.id', $id);
         } else {
-            $this->db->order_by('custom_fields.belong_to','asc');
-            $this->db->order_by('custom_fields.weight','asc');
-           
+            $this->db->order_by('custom_fields.belong_to', 'asc');
+            $this->db->order_by('custom_fields.weight', 'asc');
         }
         $query = $this->db->get();
         if ($id != null) {
@@ -41,26 +36,25 @@ class customfield_model extends MY_Model
      * This function will delete the record based on the id
      * @param $id
      */
-    public function remove($id)
-    {
-		$this->db->trans_start(); # Starting Transaction
+    public function remove($id) {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('custom_fields');
-		$message      = DELETE_RECORD_CONSTANT." On custom fields id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On custom fields id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -70,74 +64,67 @@ class customfield_model extends MY_Model
      * else an insert. One function doing both add and edit.
      * @param $data
      */
-    public function add($data)
-    {
-		$this->db->trans_start(); # Starting Transaction
+    public function add($data) {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('custom_fields', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On  custom fields id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $data['id'];
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
+            $message = UPDATE_RECORD_CONSTANT . " On  custom fields id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         } else {
             $this->db->insert('custom_fields', $data);
             $insert_id = $this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On custom fields id ".$insert_id;
-			$action       = "Insert";
-			$record_id    = $insert_id;
-			$this->log($message, $record_id, $action);
-			//echo $this->db->last_query();die;
-			//======================Code End==============================
+            $message = INSERT_RECORD_CONSTANT . " On custom fields id " . $insert_id;
+            $action = "Insert";
+            $record_id = $insert_id;
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
-			return $insert_id;
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
+            return $insert_id;
         }
     }
 
-        public function updateorder($data)
-    {
-       $this->db->update_batch('custom_fields',$data, 'id'); 
+    public function updateorder($data) {
+        $this->db->update_batch('custom_fields', $data, 'id');
     }
 
-    public function getByBelong($belong_to)
-    {
+    public function getByBelong($belong_to) {
         $this->db->from('custom_fields');
         $this->db->where('belong_to', $belong_to);
-        $this->db->order_by('custom_fields.belong_to','asc');
-        $this->db->order_by('custom_fields.weight','asc');
-        $query  = $this->db->get();
+        $this->db->order_by('custom_fields.belong_to', 'asc');
+        $this->db->order_by('custom_fields.weight', 'asc');
+        $query = $this->db->get();
         $result = $query->result_array();
         return $result;
     }
 
-    public function insertRecord($custom_value_array, $insert_id)
-    {
+    public function insertRecord($custom_value_array, $insert_id) {
 
         $this->db->trans_begin();
 
@@ -152,8 +139,8 @@ class customfield_model extends MY_Model
             $this->db->trans_commit();
         }
     }
-    public function updateRecord($custom_value_array, $id, $belong_to)
-    {
+
+    public function updateRecord($custom_value_array, $id, $belong_to) {
 
         $this->db->trans_begin();
         foreach ($custom_value_array as $custom_value_key => $custom_value_value) {
@@ -169,7 +156,6 @@ class customfield_model extends MY_Model
 
                 $this->db->insert('custom_field_values', $custom_value_value);
             }
-
         }
 
         if ($this->db->trans_status() === false) {
@@ -179,19 +165,19 @@ class customfield_model extends MY_Model
         }
     }
 
-  function get_custom_fields($belongs_to,$display_table=null) {
-      
+    function get_custom_fields($belongs_to, $display_table = null) {
+
 
         $this->db->from('custom_fields');
         $this->db->where('belong_to', $belongs_to);
-        
-      if (!empty($display_table)) {
-         $this->db->where('visible_on_table', $display_table);
-      }
+
+        if (!empty($display_table)) {
+            $this->db->where('visible_on_table', $display_table);
+        }
         $this->db->order_by("custom_fields.weight", "asc");
-        $query  = $this->db->get();
+        $query = $this->db->get();
         $result = $query->result();
-        return $result;       
+        return $result;
     }
 
 }

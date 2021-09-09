@@ -21,11 +21,9 @@ class Frontcms_setting_model extends MY_Model {
         if ($id != null) {
 
             $this->db->where('id', $id);
-
         } else {
 
             $this->db->order_by('id');
-
         }
 
         $query = $this->db->get();
@@ -33,11 +31,9 @@ class Frontcms_setting_model extends MY_Model {
         if ($query->num_rows() > 0) {
 
             return $query->row();
-
         } else {
 
             return false;
-            
         }
     }
 
@@ -48,51 +44,48 @@ class Frontcms_setting_model extends MY_Model {
      * @param $data
      */
     public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id']) && $data['id'] != 0) {
             $this->db->where('id', $data['id']);
             $this->db->update('front_cms_settings', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On Front CMS Setting id ". $data['id'];
-			$action       = "Update";
-			$record_id    =  $data['id'];
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
+            $message = UPDATE_RECORD_CONSTANT . " On Front CMS Setting id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         } else {
             $this->db->insert('front_cms_settings', $data);
             $insert_id = $this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On payment settings id ".$insert_id;
-			$action       = "Insert";
-			$record_id    = $insert_id;
-			$this->log($message, $record_id, $action);
-			//echo $this->db->last_query();die;
-			//======================Code End==============================
+            $message = INSERT_RECORD_CONSTANT . " On payment settings id " . $insert_id;
+            $action = "Insert";
+            $record_id = $insert_id;
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
-			return $insert_id;
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
+            return $insert_id;
         }
     }
 
