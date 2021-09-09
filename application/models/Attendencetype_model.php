@@ -36,7 +36,7 @@ class Attendencetype_model extends CI_Model {
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
-           
+
             $this->db->order_by('id');
         }
         $query = $this->db->get();
@@ -49,12 +49,11 @@ class Attendencetype_model extends CI_Model {
 
     public function getstdAttType($id) {
 
-        $this->db->select()->from('attendence_type');  
-        $this->db->where_not_in('id', $id);        
-        $this->db->order_by('id');       
+        $this->db->select()->from('attendence_type');
+        $this->db->where_not_in('id', $id);
+        $this->db->order_by('id');
         $query = $this->db->get();
         return $query->result_array();
-     
     }
 
     /**

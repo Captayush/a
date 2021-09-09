@@ -13,25 +13,24 @@ class general_call_model extends MY_Model {
     }
 
     function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->insert('general_calls', $data);
-		$id=$this->db->insert_id();
-        $message      = INSERT_RECORD_CONSTANT." On  Phone Call Log id ".$id;
-        $action       = "Insert";
-        $record_id    = $id;
+        $id = $this->db->insert_id();
+        $message = INSERT_RECORD_CONSTANT . " On  Phone Call Log id " . $id;
+        $action = "Insert";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//echo $this->db->last_query();die;
         //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -50,49 +49,64 @@ class general_call_model extends MY_Model {
         }
     }
 
+    public function getcalllist($id = null) {
+        
+        if ($id != null) {
+            $this->datatables->where('general_calls.id', $id);
+        } else {
+            $this->datatables->orderable('general_calls.id');
+        }
+       
+         $this->datatables
+            ->select('general_calls.id,general_calls.name,general_calls.contact,general_calls.call_type,general_calls.follow_up_date,general_calls.date')
+            ->searchable('general_calls.name,general_calls.contact,general_calls.date,general_calls.follow_up_date,general_calls.call_type')
+            ->orderable('general_calls.name,general_calls.contact,general_calls.date,general_calls.follow_up_date,general_calls.call_type')
+            ->from('general_calls');
+            return $this->datatables->generate('json');
+    }
+
     function delete($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
-        $this->db->delete('general_calls');  
-		$message      = DELETE_RECORD_CONSTANT." On Phone Call Log id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $this->db->delete('general_calls');
+        $message = DELETE_RECORD_CONSTANT . " On Phone Call Log id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
     public function call_update($id, $data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->update('general_calls', $data);
-		$message      = UPDATE_RECORD_CONSTANT." On Phone Call Log id ".$id;
-        $action       = "Update";
-        $record_id    = $id;
+        $message = UPDATE_RECORD_CONSTANT . " On Phone Call Log id " . $id;
+        $action = "Update";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
 
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
-
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 

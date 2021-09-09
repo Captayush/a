@@ -13,30 +13,28 @@ class complaint_Model extends MY_Model {
     }
 
     public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->insert('complaint', $data);
         $query = $this->db->insert_id();
-		$message      = INSERT_RECORD_CONSTANT." On  Complain id ".$query;
-        $action       = "Insert";
-        $record_id    = $query;
+        $message = INSERT_RECORD_CONSTANT . " On  Complain id " . $query;
+        $action = "Insert";
+        $record_id = $query;
         $this->log($message, $record_id, $action);
-		//echo $this->db->last_query();die;
         //======================Code End==============================
 
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
 
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
-
         } else {
-        //return $return_value;
+            //return $return_value;
         }
-		return $query;
+        return $query;
     }
 
     public function image_add($complaint_id, $image) {
@@ -70,49 +68,48 @@ class complaint_Model extends MY_Model {
     }
 
     public function compalaint_update($id, $data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->update('complaint', $data);
-		$message      = UPDATE_RECORD_CONSTANT." On Complaint id ".$id;
-        $action       = "Update";
-        $record_id    = $id;
+        $message = UPDATE_RECORD_CONSTANT . " On Complaint id " . $id;
+        $action = "Update";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
 
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
 
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
-
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
     function delete($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('complaint');
-		$message      = DELETE_RECORD_CONSTANT." On Complaint id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On Complaint id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 

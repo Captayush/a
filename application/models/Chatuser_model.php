@@ -15,27 +15,26 @@ class Chatuser_model extends CI_Model {
      * This funtion takes id as a parameter and will fetch the record.
      * If id is not provided, then it will fetch all the records form the table.
      * @param int $id
-     * @return mixed
+     * @return mixed 
      */
-    public function searchForUser($keyword, $chat_user_id, $user_type = 'staff',$login_id) {
+       public function searchForUser($keyword, $chat_user_id, $login_id, $user_type = 'staff') {
 
         if ($user_type == 'staff') {
-            $sql = "SELECT staff.id as `staff_id`,Null as `student_id`,(CASE WHEN staff.surname != '' THEN CONCAT(staff.name, ' ',staff.surname) ELSE staff.name END) as `name`,staff.image FROM `staff` WHERE staff.name LIKE '%" . $keyword . "%' and id NOT IN(SELECT chat_users.staff_id FROM `chat_users` inner JOIN (SELECT chat_connections.id, CASE  WHEN chat_user_one =" . $chat_user_id . " THEN chat_user_two ELSE chat_connections.chat_user_one END as 'chat_user_id' FROM `chat_connections` WHERE  (chat_user_one=" . $chat_user_id . " or chat_user_two=" . $chat_user_id . ")) as chat_connections on chat_connections.chat_user_id=chat_users.id WHERE staff_id IS NOT NULL) and staff.id != ".$login_id." Union SELECT Null as `staff_id`,students.id as `student_id`,(CASE WHEN students.lastname != '' THEN CONCAT(students.firstname, ' ',students.lastname) ELSE students.firstname END) as `name`,students.image FROM `students` WHERE (students.firstname LIKE '%" . $keyword . "%' or students.lastname LIKE '%" . $keyword . "%') and students.id NOT IN(SELECT chat_users.student_id FROM `chat_users` inner JOIN (SELECT chat_connections.id, CASE  WHEN chat_user_one =" . $chat_user_id . " THEN chat_user_two ELSE chat_connections.chat_user_one END as 'chat_user_id' FROM `chat_connections` WHERE  (chat_user_one=" . $chat_user_id . " or chat_user_two=" . $chat_user_id . ")) as chat_connections on chat_connections.chat_user_id=chat_users.id WHERE student_id IS NOT NULL)";
+            $sql = "SELECT staff.id as `staff_id`,Null as `student_id`, staff.name, staff.surname , Null as `first_name`,Null as `middle_name`,Null as `last_name`,staff.image FROM `staff` WHERE staff.name LIKE '%" . $keyword . "%'  and is_active= 1 and id NOT IN(SELECT chat_users.staff_id FROM `chat_users` inner JOIN (SELECT chat_connections.id, CASE  WHEN chat_user_one =" . $chat_user_id . " THEN chat_user_two ELSE chat_connections.chat_user_one END as 'chat_user_id' FROM `chat_connections` WHERE  (chat_user_one=" . $chat_user_id . " or chat_user_two=" . $chat_user_id . ")) as chat_connections on chat_connections.chat_user_id=chat_users.id WHERE staff_id IS NOT NULL) and staff.id != " . $login_id . " Union  SELECT Null as `staff_id`,students.id as `student_id`,Null as `name`,Null as `surname`,students.firstname,students.middlename,students.lastname,students.image FROM `students` WHERE (students.firstname LIKE '%" . $keyword . "%' or students.middlename LIKE '%" . $keyword . "%' or students.lastname LIKE '%" . $keyword . "%')  and students.is_active='yes' and students.id NOT IN(SELECT chat_users.student_id FROM `chat_users` inner JOIN (SELECT chat_connections.id, CASE  WHEN chat_user_one =" . $chat_user_id . " THEN chat_user_two ELSE chat_connections.chat_user_one END as 'chat_user_id' FROM `chat_connections` WHERE  (chat_user_one=" . $chat_user_id . " or chat_user_two=" . $chat_user_id . ")) as chat_connections on chat_connections.chat_user_id=chat_users.id WHERE student_id IS NOT NULL)";
         } else if ($user_type == 'student') {
 
-            $sql = "SELECT staff.id as `staff_id`,Null as `student_id`,(CASE WHEN staff.surname != '' THEN CONCAT(staff.name, ' ',staff.surname) ELSE staff.name END) as `name`,staff.image FROM `staff` WHERE staff.name LIKE '%" . $keyword . "%' and id NOT IN(SELECT chat_users.staff_id FROM `chat_users` inner JOIN (SELECT chat_connections.id, CASE  WHEN chat_user_one =" . $chat_user_id . " THEN chat_user_two ELSE chat_connections.chat_user_one END as 'chat_user_id' FROM `chat_connections` WHERE  (chat_user_one=" . $chat_user_id . " or chat_user_two=" . $chat_user_id . ")) as chat_connections on chat_connections.chat_user_id=chat_users.id WHERE staff_id IS NOT NULL)";
+            $sql = "SELECT staff.id as `staff_id`,Null as `student_id`,staff.name, staff.surname ,staff.image FROM `staff` WHERE staff.name LIKE '%" . $keyword . "%' and is_active= 1 and id NOT IN(SELECT chat_users.staff_id FROM `chat_users` inner JOIN (SELECT chat_connections.id, CASE  WHEN chat_user_one =" . $chat_user_id . " THEN chat_user_two ELSE chat_connections.chat_user_one END as 'chat_user_id' FROM `chat_connections` WHERE  (chat_user_one=" . $chat_user_id . " or chat_user_two=" . $chat_user_id . ")) as chat_connections on chat_connections.chat_user_id=chat_users.id WHERE staff_id IS NOT NULL)";
         }
-       
+
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     public function myUser($staff_id, $chat_connection_id, $user_type = 'staff') {
-        
+
         if ($user_type == 'staff') {
 
             $sql = " SELECT * from chat_connections WHERE chat_connections.chat_user_one= (SELECT id FROM `chat_users` WHERE staff_id=" . $staff_id . ") or chat_connections.chat_user_two = (SELECT id FROM `chat_users` WHERE staff_id=" . $staff_id . ") ORDER BY `chat_connections`.`id` DESC";
-
         } else if ($user_type == 'student') {
             $sql = " SELECT * from chat_connections WHERE chat_connections.chat_user_one= (SELECT id FROM `chat_users` WHERE student_id=" . $staff_id . ") or chat_connections.chat_user_two = (SELECT id FROM `chat_users` WHERE student_id=" . $staff_id . ") ORDER BY `chat_connections`.`id` DESC";
         }
@@ -71,9 +70,9 @@ class Chatuser_model extends CI_Model {
         return $chat_messages;
     }
 
-    public function getChatUserDetail($chat_user_id) {
-        $sql = "SELECT chat_users.id as `chat_user_id`, chat_users.user_type,chat_users.student_id,staff_id,(CASE WHEN staff_id IS NULL THEN (SELECT (CASE WHEN students.lastname != '' THEN CONCAT(students.firstname, ' ',students.lastname) ELSE students.firstname END) as `name` FROM students WHERE students.id=chat_users.student_id) ELSE (SELECT (CASE WHEN staff.surname != '' THEN CONCAT(staff.name, ' ',staff.surname) ELSE staff.name END) as `name` FROM staff WHERE staff.id=chat_users.staff_id) END) as name,(CASE WHEN staff_id IS NULL THEN (SELECT
-students.image as `image` FROM students WHERE students.id=chat_users.student_id) ELSE (SELECT staff.image as `image` FROM staff WHERE staff.id=chat_users.staff_id) END) as image FROM `chat_users` WHERE chat_users.id=" . $chat_user_id;
+     public function getChatUserDetail($chat_user_id) {
+        $sql = "SELECT chat_users.id as `chat_user_id`, chat_users.user_type,chat_users.student_id,staff_id ,students.firstname,students.middlename,students.lastname,staff.name,staff.surname,(CASE WHEN staff_id IS NULL THEN (SELECT
+students.image as `image` FROM students WHERE students.id=chat_users.student_id) ELSE (SELECT staff.image as `image` FROM staff WHERE staff.id=chat_users.staff_id) END) as image FROM `chat_users` left JOIN students on students.id=chat_users.student_id left JOIN staff on staff.id=chat_users.staff_id WHERE chat_users.id=" . $chat_user_id;
         $query = $this->db->query($sql);
         $chat_user = $query->row();
 
@@ -113,11 +112,8 @@ students.image as `image` FROM students WHERE students.id=chat_users.student_id)
 
     public function getChatConnectionByID($id) {
         $this->db->select()->from('chat_connections');
-
         $this->db->where('id', $id);
-
         $query = $this->db->get();
-
         return $query->row();
     }
 
@@ -138,7 +134,7 @@ students.image as `image` FROM students WHERE students.id=chat_users.student_id)
         return $chat_messages;
     }
 
-    public function addNewUser($first_entry, $insert_data, $panel = "staff", $id, $insert_message) {
+    public function addNewUser($first_entry, $insert_data, $id, $insert_message, $panel = "staff") {
 
         $chat_connections = array('chat_user_one' => '', 'chat_user_two' => '');
         $this->db->where('staff_id', $first_entry['staff_id']);
@@ -207,7 +203,7 @@ students.image as `image` FROM students WHERE students.id=chat_users.student_id)
         }
     }
 
-    public function addNewUserForStudent($first_entry, $insert_data, $panel = "student", $id, $insert_message) {
+    public function addNewUserForStudent($first_entry, $insert_data, $id, $insert_message, $panel = "student") {
         $chat_connections = array('chat_user_one' => '', 'chat_user_two' => '');
         $this->db->where('student_id', $first_entry['student_id']);
         $this->db->where('user_type', $first_entry['user_type']);
@@ -266,13 +262,13 @@ students.image as `image` FROM students WHERE students.id=chat_users.student_id)
     }
 
     public function mynewuser($user_id, $userlist) {
-        $ids="";
-        if(!empty($userlist)){
-          $ids = join("','",$userlist);   
-           $ids= " and id NOT IN ('$ids') ";
+        $ids = "";
+        if (!empty($userlist)) {
+            $ids = join("','", $userlist);
+            $ids = " and id NOT IN ('$ids') ";
         }
 
-        $sql = "SELECT * FROM `chat_connections` WHERE (chat_user_one =" . $user_id . " or chat_user_two=" . $user_id . ")".$ids."ORDER BY `chat_connections`.`id` ASC";
+        $sql = "SELECT * FROM `chat_connections` WHERE (chat_user_one =" . $user_id . " or chat_user_two=" . $user_id . ")" . $ids . "ORDER BY `chat_connections`.`id` ASC";
         $query = $this->db->query($sql);
         $chat_users = $query->result();
         foreach ($chat_users as $chat_users_key => $chat_users_value) {

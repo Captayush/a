@@ -52,24 +52,24 @@ class Feediscount_model extends MY_Model {
      * @param $id
      */
     public function remove($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('fees_discounts');
-		$message      = DELETE_RECORD_CONSTANT." On  fees discounts id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On  fees discounts id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-        //return $return_value;
+            //return $return_value;
         }
     }
 
@@ -80,52 +80,49 @@ class Feediscount_model extends MY_Model {
      * @param $data
      */
     public function add($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('fees_discounts', $data);
-			$message      = UPDATE_RECORD_CONSTANT." On  fees discounts id ".$data['id'];
-			$action       = "Update";
-			$record_id    = $data['id'];
-			$this->log($message, $record_id, $action);
-			//======================Code End==============================
+            $message = UPDATE_RECORD_CONSTANT . " On  fees discounts id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
         } else {
             $data['session_id'] = $this->current_session;
             $this->db->insert('fees_discounts', $data);
-            $id=$this->db->insert_id();
-			$message      = INSERT_RECORD_CONSTANT." On  fees discounts id ".$id;
-			$action       = "Insert";
-			$record_id    = $id;
-			$this->log($message, $record_id, $action);
-			//echo $this->db->last_query();die;
-			//======================Code End==============================
+            $id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On  fees discounts id " . $id;
+            $action = "Insert";
+            $record_id = $id;
+            $this->log($message, $record_id, $action);           
+            //======================Code End==============================
 
-			$this->db->trans_complete(); # Completing transaction
-			/*Optional*/
+            $this->db->trans_complete(); # Completing transaction
+            /* Optional */
 
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-
-			} else {
-				//return $return_value;
-			}
-			return $id;
+            if ($this->db->trans_status() === false) {
+                # Something went wrong.
+                $this->db->trans_rollback();
+                return false;
+            } else {
+                //return $return_value;
+            }
+            return $id;
         }
     }
 
@@ -137,7 +134,6 @@ class Feediscount_model extends MY_Model {
     }
 
     public function allotdiscount($data) {
-
         $this->db->where('student_session_id', $data['student_session_id']);
         $this->db->where('fees_discount_id', $data['fees_discount_id']);
         $q = $this->db->get('student_fees_discounts');
@@ -148,7 +144,7 @@ class Feediscount_model extends MY_Model {
             $this->db->insert('student_fees_discounts', $data);
             return $this->db->insert_id();
         }
-    }
+    } 
 
     public function searchAssignFeeByClassSection($class_id = null, $section_id = null, $fees_discount_id = null, $category = null, $gender = null, $rte = null) {
         $sql = "SELECT IFNULL(`student_fees_discounts`.`id`, '0') as `student_fees_discount_id`,"
@@ -156,7 +152,7 @@ class Feediscount_model extends MY_Model {
                 . " `students`.`id`, `classes`.`class`, `sections`.`id` AS `section_id`,"
                 . " `sections`.`section`, `students`.`id`, `students`.`admission_no`,"
                 . " `students`.`roll_no`, `students`.`admission_date`, `students`.`firstname`,"
-                . " `students`.`lastname`, `students`.`image`, `students`.`mobileno`,"
+                . " `students`.`lastname`,`students`.`middlename`, `students`.`image`, `students`.`mobileno`,"
                 . " `students`.`email`, `students`.`state`, `students`.`city`, `students`.`pincode`,"
                 . " `students`.`religion`, `students`.`dob`, `students`.`current_address`,"
                 . " `students`.`permanent_address`, IFNULL(students.category_id, 0) as `category_id`,"
@@ -213,19 +209,6 @@ class Feediscount_model extends MY_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
-    
-    public function getSchoolFeesDiscount($student_session_id = null) {
-        $this->db->select('student_fees_discounts.id ,student_fees_discounts.student_session_id,student_fees_discounts.status,student_fees_discounts.payment_id,student_fees_discounts.description as `student_fees_discount_description`, student_fees_discounts.fees_discount_id, fees_discounts.name,fees_discounts.code,fees_discounts.amount,fees_discounts.description,fees_discounts.session_id')->from('student_fees_discounts');
-        $this->db->join('fees_discounts', 'fees_discounts.id = student_fees_discounts.fees_discount_id');
-
-        $this->db->where('student_fees_discounts.student_session_id', $student_session_id);
-
-        $this->db->order_by('student_fees_discounts.id');
-        $query = $this->db->get();
-        return $query->result_array();
-    }
-    
-    
 
     public function getDiscountNotApplied($student_session_id = null) {
         $query = "SELECT fees_discounts.*,student_fees_discounts.id as `student_fees_discount_id`,student_fees_discounts.status,student_fees_discounts.student_session_id,student_fees_discounts.payment_id FROM `student_fees_discounts` INNER JOIN fees_discounts on fees_discounts.id=student_fees_discounts.fees_discount_id WHERE student_session_id=$student_session_id and (student_fees_discounts.payment_id IS NULL OR student_fees_discounts.payment_id = '')";

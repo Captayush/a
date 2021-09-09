@@ -17,7 +17,7 @@ class Module_model extends MY_Model {
         $query = $this->db->where("system", 0)->get("permission_student");
         return $query->result_array();
     }
-    
+
     function getStudentPermission() {
 
         $query = $this->db->where("system", 0)->get("permission_student");
@@ -25,29 +25,28 @@ class Module_model extends MY_Model {
     }
 
     Public function changeStatus($data) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $permission_parent=array('student'=>$data['is_active'],'parent'=>$data['is_active']);
+        $permission_parent = array('student' => $data['is_active'], 'parent' => $data['is_active']);
         $this->db->where("id", $data["id"])->update("permission_group", $data);
         $this->db->where("group_id", $data["id"])->update("permission_student", $permission_parent);
-		$message      = UPDATE_RECORD_CONSTANT." On permission group id ".$data['id'];
-		$action       = "Update";
-		$record_id    = $data['id'];
-		$this->log($message, $record_id, $action);
-		//======================Code End==============================
+        $message = UPDATE_RECORD_CONSTANT . " On permission group id " . $data['id'];
+        $action = "Update";
+        $record_id = $data['id'];
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
 
-		$this->db->trans_complete(); # Completing transaction
-		/*Optional*/
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-		if ($this->db->trans_status() === false) {
-			# Something went wrong.
-			$this->db->trans_rollback();
-			return false;
-
-		} else {
-			//return $return_value;
-		}
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
+        }
     }
 
     Public function getPermissionByModulename($module_name) {
@@ -73,7 +72,7 @@ class Module_model extends MY_Model {
         }
     }
 
-     public function get_parent($id = null) {
+    public function get_parent($id = null) {
         $this->db->select()->from('permission_parent');
         if ($id != null) {
             $this->db->where('permission_parent.id', $id);
@@ -87,8 +86,8 @@ class Module_model extends MY_Model {
             return $query->result();
         }
     }
- 
-     public function get_student($id = null) {
+
+    public function get_student($id = null) {
         $this->db->select()->from('permission_student');
         if ($id != null) {
             $this->db->where('permission_student.id', $id);
@@ -101,75 +100,70 @@ class Module_model extends MY_Model {
         } else {
             return $query->result();
         }
-    } 
- 
-    public function get_userpermission($role){
-
-        
-            $this->db->select()->from('permission_student');
-           // $this->db->where($role,1);
-            $this->db->order_by('permission_student.id');
-            $query = $this->db->get();
-             return $query->result();
-        
-
     }
 
-    public function changeParentStatus($data){
-		$this->db->trans_start(); # Starting Transaction
+    public function get_userpermission($role) {
+
+
+        $this->db->select()->from('permission_student');
+        // $this->db->where($role,1);
+        $this->db->order_by('permission_student.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function changeParentStatus($data) {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where("id", $data["id"])->update("permission_parent", $data);
-		$message      = UPDATE_RECORD_CONSTANT." On permission parent id ".$data['id'];
-		$action       = "Update";
-		$record_id    = $data['id'];
-		$this->log($message, $record_id, $action);
-		//======================Code End==============================
+        $message = UPDATE_RECORD_CONSTANT . " On permission parent id " . $data['id'];
+        $action = "Update";
+        $record_id = $data['id'];
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
 
-		$this->db->trans_complete(); # Completing transaction
-		/*Optional*/
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-		if ($this->db->trans_status() === false) {
-			# Something went wrong.
-			$this->db->trans_rollback();
-			return false;
-
-		} else {
-			//return $return_value;
-		}
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
+        }
     }
 
-      public function changeStudentStatus($data){
-		$this->db->trans_start(); # Starting Transaction
+    public function changeStudentStatus($data) {
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where("id", $data["id"])->update("permission_student", $data);
-		$message      = UPDATE_RECORD_CONSTANT." On  permission student id ".$data['id'];
-		$action       = "Update";
-		$record_id    = $data['id'];
-		$this->log($message, $record_id, $action);
-		//======================Code End==============================
+        $message = UPDATE_RECORD_CONSTANT . " On  permission student id " . $data['id'];
+        $action = "Update";
+        $record_id = $data['id'];
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
 
-		$this->db->trans_complete(); # Completing transaction
-		/*Optional*/
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
 
-		if ($this->db->trans_status() === false) {
-			# Something went wrong.
-			$this->db->trans_rollback();
-			return false;
-
-		} else {
-			//return $return_value;
-		}
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
+        }
     }
 
-    public function hasModule($module_shortcode){
-        $query = $this->db->where("system", 0)->where('short_code',$module_shortcode)->get("permission_group");
-     $count=$query->num_rows();
+    public function hasModule($module_shortcode) {
+        $query = $this->db->where("system", 0)->where('short_code', $module_shortcode)->get("permission_group");
+        $count = $query->num_rows();
 
-     return $count;
+        return $count;
     }
-
 
 }
 

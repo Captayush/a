@@ -16,13 +16,13 @@ class Librarymember_model extends MY_Model {
      * @return mixed
      */
     public function get() {
- 
-        $query = "SELECT libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,students.admission_no,students.firstname,students.lastname,students.guardian_phone,null as `teacher_name`,null as `teacher_email`,null as `teacher_sex`,null as `teacher_phone` FROM `libarary_members` INNER JOIN students on libarary_members.member_id= students.id WHERE libarary_members.member_type='student' and students.is_active = 'yes' UNION SELECT libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,null,null,null,null,CONCAT_WS(' ',staff.name,staff.surname) as name,staff.email,null,staff.contact_no FROM `libarary_members` INNER JOIN staff on libarary_members.member_id= staff.id WHERE libarary_members.member_type='teacher' ";
+
+       $query = "SELECT libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,students.admission_no,students.firstname,students.lastname,students.guardian_phone,null as `teacher_name`,null as `teacher_email`,null as `teacher_sex`,null as `teacher_phone`,students.middlename FROM `libarary_members` INNER JOIN students on libarary_members.member_id= students.id WHERE libarary_members.member_type='student' and students.is_active = 'yes' UNION SELECT libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,null,null,null,null,CONCAT_WS(' ',staff.name,staff.surname) as name,staff.email,null,staff.contact_no,null FROM `libarary_members` INNER JOIN staff on libarary_members.member_id= staff.id WHERE libarary_members.member_type='teacher' ";
 
         $query = $this->db->query($query);
         return $query->result_array();
     }
- 
+
     public function checkIsMember($member_type, $id) {
         $this->db->select()->from('libarary_members');
 
@@ -61,7 +61,7 @@ class Librarymember_model extends MY_Model {
     function getTeacherData($id) {
         $this->db->select('libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,staff.*');
         $this->db->from('libarary_members');
-        $this->db->join('staff', 'libarary_members.member_id = staff.id');        
+        $this->db->join('staff', 'libarary_members.member_id = staff.id');
         $this->db->where('libarary_members.id', $id);
 
         $query = $this->db->get();
@@ -81,33 +81,32 @@ class Librarymember_model extends MY_Model {
     }
 
     function surrender($id) {
-		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('libarary_members');
-		$message      = DELETE_RECORD_CONSTANT." On libarary members id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On libarary members id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		
+
         $this->db->where('member_id', $id);
         $this->db->delete('book_issues');
-		$message      = DELETE_RECORD_CONSTANT." On book issues id ".$id;
-        $action       = "Delete";
-        $record_id    = $id;
+        $message = DELETE_RECORD_CONSTANT . " On book issues id " . $id;
+        $action = "Delete";
+        $record_id = $id;
         $this->log($message, $record_id, $action);
-		//======================Code End==============================
+        //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
             return false;
         } else {
-         return true;
+            return true;
         }
-        
     }
 
 }

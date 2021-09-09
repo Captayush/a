@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Feemaster_model extends CI_Model {
+class Feemaster_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
@@ -39,8 +39,29 @@ class Feemaster_model extends CI_Model {
      * @param $id
      */
     public function remove($id) {
+		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('feemasters');
+		
+		$message = DELETE_RECORD_CONSTANT . " On  fee master  id " . $id;
+        $action = "Delete";
+        $record_id = $id;
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
+
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+
+            // return $return_value;
+        }
     }
 
     /**
@@ -50,14 +71,41 @@ class Feemaster_model extends CI_Model {
      * @param $data
      */
     public function add($data) {
+		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
-            $this->db->update('feemasters', $data);
+            $this->db->update('feemasters', $data);			
+			$message = UPDATE_RECORD_CONSTANT . " On  fee master  id " . $data['id'];
+            $action = "Update";
+            $record_id = $data['id'];
+            $this->log($message, $record_id, $action);
+           
         } else {
             $data['session_id'] = $this->current_session;
-            $this->db->insert('feemasters', $data);
-            return $this->db->insert_id();
+            $this->db->insert('feemasters', $data);            
+			$id = $this->db->insert_id();
+            $message = INSERT_RECORD_CONSTANT . " On fee master id " . $id;
+            $action = "Insert";
+            $record_id = $id;
+            $this->log($message, $record_id, $action);
+            
         }
+		
+		//======================Code End==============================
+		
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            return $id;
+        }
+        
     }
 
     public function check_Exits_group($data) {

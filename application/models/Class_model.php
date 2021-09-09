@@ -4,11 +4,9 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Class_model extends MY_Model
-{
+class Class_model extends MY_Model {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->current_session = $this->setting_model->getCurrentSession();
     }
@@ -19,9 +17,7 @@ class Class_model extends MY_Model
      * @param int $id
      * @return mixed
      */
-
-    public function getAll($id = null)
-    {
+    public function getAll($id = null) {
 
         $this->db->select()->from('classes');
         if ($id != null) {
@@ -39,21 +35,18 @@ class Class_model extends MY_Model
         return $classlist;
     }
 
-    public function get($id = null, $classteacher = null)
-    {
+
+
+    public function get($id = null, $classteacher = null) {
 
         $userdata = $this->customlib->getUserData();
-
         $role_id = $userdata["role_id"];
-        $carray  = array();
-
+        $carray = array();
         if (isset($role_id) && ($userdata["role_id"] == 2) && ($userdata["class_teacher"] == "yes")) {
             if ($userdata["class_teacher"] == 'yes') {
 
                 $classlist = $this->teacher_model->get_teacherrestricted_mode($userdata["id"]);
-
             }
-
         } else {
 
             $this->db->select()->from('classes');
@@ -77,8 +70,7 @@ class Class_model extends MY_Model
      * This function will delete the record based on the id
      * @param $id
      */
-    public function remove($id)
-    {
+    public function remove($id) {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
@@ -88,13 +80,13 @@ class Class_model extends MY_Model
         $this->db->where('class_id', $id);
         $this->db->delete('class_sections'); //class_sections record delete.
 
-        $message   = DELETE_RECORD_CONSTANT . " On classes id " . $id;
-        $action    = "Delete";
+        $message = DELETE_RECORD_CONSTANT . " On classes id " . $id;
+        $action = "Delete";
         $record_id = $id;
         $this->log($message, $record_id, $action);
         //======================Code End==============================
         $this->db->trans_complete(); # Completing transaction
-        /*Optional*/
+        /* Optional */
         if ($this->db->trans_status() === false) {
             # Something went wrong.
             $this->db->trans_rollback();
@@ -110,8 +102,7 @@ class Class_model extends MY_Model
      * else an insert. One function doing both add and edit.
      * @param $data
      */
-    public function add($data)
-    {
+    public function add($data) {
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('classes', $data);
@@ -120,8 +111,7 @@ class Class_model extends MY_Model
         }
     }
 
-    public function check_data_exists($data)
-    {
+    public function check_data_exists($data) {
         $this->db->where('class', $data);
 
         $query = $this->db->get('classes');
@@ -132,11 +122,10 @@ class Class_model extends MY_Model
         }
     }
 
-    public function class_exists($str)
-    {
+    public function class_exists($str) {
 
         $class = $this->security->xss_clean($str);
-        $res   = $this->check_data_exists($class);
+        $res = $this->check_data_exists($class);
 
         if ($res) {
             $pre_class_id = $this->input->post('pre_class_id');
@@ -152,30 +141,25 @@ class Class_model extends MY_Model
         }
     }
 
-    public function check_classteacher_exists($class, $section, $teacher)
-    {
+    public function check_classteacher_exists($class, $section, $teacher) {
 
-        $this->db->where(array('class_id' => $class, 'section_id' => $section,'session_id'=>$this->current_session));
+        $this->db->where(array('class_id' => $class, 'section_id' => $section, 'session_id' => $this->current_session));
         // $this->db->where_in('staff_id', $teacher);
 
         $query = $this->db->get('class_teacher');
         if ($query->num_rows() > 0) {
 
             return $query->row();
-
         } else {
 
             return false;
         }
-
-      
     }
 
-    public function class_teacher_exists($str)
-    {
+    public function class_teacher_exists($str) {
 
-        $class    = $this->input->post('class');
-        $section  = $this->input->post('section');
+        $class = $this->input->post('class');
+        $section = $this->input->post('section');
         $teachers = $this->input->post('teachers');
 
         $res = $this->check_classteacher_exists($class, $section, $teachers);
@@ -183,7 +167,7 @@ class Class_model extends MY_Model
         if ($res) {
             $prev_class_id = $this->input->post('prev_class_id');
             $prev_section_id = $this->input->post('prev_section_id');
-            if (isset($prev_class_id) && isset($prev_section_id) ) {
+            if (isset($prev_class_id) && isset($prev_section_id)) {
                 if ($prev_class_id == $class && $prev_section_id == $section) {
                     return true;
                 }
@@ -193,12 +177,10 @@ class Class_model extends MY_Model
         } else {
             return true;
         }
-
     }
 
-    public function getClassTeacher()
-    {
-        $query = $this->db->query('SELECT class_teacher.*,classes.class,sections.section FROM `class_teacher` INNER JOIN classes on classes.id=class_teacher.class_id INNER JOIN sections on sections.id=class_teacher.section_id where class_teacher.session_id="'.$this->current_session.'" GROUP BY class_teacher.class_id , class_teacher.section_id ORDER by length(classes.class), classes.class');
+    public function getClassTeacher() {
+        $query = $this->db->query('SELECT class_teacher.*,classes.class,sections.section FROM `class_teacher` INNER JOIN classes on classes.id=class_teacher.class_id INNER JOIN sections on sections.id=class_teacher.section_id where class_teacher.session_id="' . $this->current_session . '" GROUP BY class_teacher.class_id , class_teacher.section_id ORDER by length(classes.class), classes.class');
 
         //     $query = $this->db->query('SELECT distinct class_id AS class_id ,section_id,
         //  (SELECT C.class FROM classes C WHERE C.ID = CT.CLASS_ID) class,
@@ -210,11 +192,9 @@ class Class_model extends MY_Model
         return $result;
     }
 
-    public function get_section($id)
-    {
+    public function get_section($id) {
 
         return $this->db->select('sections.id,sections.section')->from('class_sections')->join('sections', 'class_sections.section_id=sections.id')->where('class_id', $id)->get()->result_array();
-
     }
 
 }
